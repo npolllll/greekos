@@ -1,0 +1,10 @@
+/* Real Greek module — v5.1 real-layout with required provenance fields. */
+.expression{display:block;text-decoration:none;color:inherit}
+.expression .tag-row{display:flex;flex-wrap:wrap;gap:5px}
+.rg-fields{display:grid;gap:10px;margin-top:6px}
+.rg-field{display:grid;grid-template-columns:118px minmax(0,1fr);gap:10px;font-size:11.5px;line-height:1.55}
+.rg-field dt{color:var(--muted)}
+.rg-field dd{margin:0;overflow-wrap:anywhere}
+.rg-sources{margin:6px 0 0;padding:0;list-style:none;font-size:10.5px;color:#7a726b;display:grid;gap:5px}
+.rg-sources a{color:var(--orange-dark);overflow-wrap:anywhere}
+@media(max-width:650px){.rg-field{grid-template-columns:1fr;gap:2px}}

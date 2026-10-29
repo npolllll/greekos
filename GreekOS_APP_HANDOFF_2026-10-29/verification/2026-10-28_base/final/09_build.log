@@ -1,0 +1,112 @@
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/piratantoha/Новая папка/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/piratantoha/Новая папка/Nik/greekos/package-lock.json
+
+✓ Running next.config.ts took 18ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1170ms
+  Running TypeScript ...
+  Finished TypeScript in 2.9s ...
+  Collecting page data using 9 workers ...
+  Generating static pages using 9 workers (0/33) ...
+  Generating static pages using 9 workers (8/33) 
+  Generating static pages using 9 workers (16/33) 
+  Generating static pages using 9 workers (24/33) 
+✓ Generating static pages using 9 workers (33/33) in 99ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /admin
+├ ƒ /admin/audio
+├ ƒ /admin/audio/[audioId]
+├ ƒ /admin/consents
+├ ƒ /admin/content
+├ ƒ /admin/content/units/[unitId]
+├ ƒ /admin/exams
+├ ƒ /admin/exams/[formId]
+├ ƒ /admin/learners
+├ ƒ /admin/learners/[id]
+├ ƒ /admin/learners/[id]/sessions/[sessionId]
+├ ƒ /admin/policy
+├ ƒ /admin/providers
+├ ƒ /admin/reviews
+├ ƒ /api/activity
+├ ƒ /api/admin/appeals
+├ ƒ /api/admin/audio/render
+├ ƒ /api/admin/audio/rights
+├ ƒ /api/admin/invite
+├ ƒ /api/admin/learners/[id]/deactivate
+├ ƒ /api/admin/learners/[id]/delete
+├ ƒ /api/admin/learners/[id]/export
+├ ƒ /api/admin/learners/[id]/link
+├ ƒ /api/admin/learners/[id]/reactivate
+├ ƒ /api/admin/learners/[id]/route
+├ ƒ /api/admin/policy
+├ ƒ /api/admin/policy/revoke
+├ ƒ /api/admin/providers/check
+├ ƒ /api/admin/qa
+├ ƒ /api/admin/releases
+├ ƒ /api/admin/releases/revoke
+├ ƒ /api/admin/reviews
+├ ƒ /api/appeals
+├ ƒ /api/attempts
+├ ƒ /api/consents
+├ ƒ /api/cron/retention
+├ ƒ /api/diagnostic
+├ ƒ /api/exams/attempts/[attemptId]
+├ ƒ /api/exams/autosave
+├ ƒ /api/exams/preview-score
+├ ƒ /api/exams/start
+├ ƒ /api/exams/submit
+├ ƒ /api/feedback/[attemptId]/context
+├ ƒ /api/health
+├ ƒ /api/lessons/complete
+├ ƒ /api/lessons/start
+├ ƒ /api/me/activate
+├ ƒ /api/me/delete
+├ ƒ /api/me/export
+├ ƒ /api/me/onboarding
+├ ƒ /api/me/preferences
+├ ƒ /api/me/schedule
+├ ƒ /api/media/audio/[assetId]
+├ ƒ /api/speaking
+├ ƒ /api/speech/transcribe
+├ ƒ /auth/confirm
+├ ƒ /auth/set-password
+├ ƒ /course
+├ ƒ /diagnostic
+├ ƒ /errors
+├ ƒ /exams
+├ ƒ /exams/[componentId]
+├ ƒ /exams/results/[attemptId]
+├ ƒ /lesson/[unitId]
+├ ƒ /listening
+├ ƒ /login
+├ ƒ /pegp
+├ ƒ /pegp/[topic]
+├ ƒ /practice
+├ ƒ /practice/[itemId]
+├ ƒ /progress
+├ ƒ /real-greek
+├ ƒ /real-greek/[expressionId]
+├ ƒ /search
+├ ƒ /settings
+├ ƒ /speaking
+├ ƒ /speaking/[sessionId]
+├ ƒ /welcome
+└ ƒ /writing
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

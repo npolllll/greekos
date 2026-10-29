@@ -1,0 +1,9 @@
+
+ RUN  v4.1.12 /Users/piratantoha/Новая папка/Nik/greekos
+
+
+ Test Files  3 passed (3)
+      Tests  25 passed (25)
+   Start at  01:26:40
+   Duration  2.19s (transform 114ms, setup 0ms, import 434ms, tests 1.39s, environment 0ms)
+

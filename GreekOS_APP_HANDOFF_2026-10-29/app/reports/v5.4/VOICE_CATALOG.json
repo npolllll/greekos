@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-10-29T03:34:55.099Z",
+  "voices": [
+    {
+      "voice_id": "local:macos:com.apple.voice.compact.el-GR.Melina",
+      "provider": "local_macos",
+      "provider_voice_name": "com.apple.voice.compact.el-GR.Melina",
+      "display_name": "Мелина (macOS)",
+      "locale": "el-GR",
+      "presentation": "female",
+      "presentation_source": "NSSpeechSynthesizer.VoiceGender",
+      "quality_tier": "compact",
+      "engine_kind": "local",
+      "available": true,
+      "streaming_capable": false,
+      "speed_profile": {
+        "fast": 1.1,
+        "slow": 0.88,
+        "normal": 1
+      },
+      "style_support": [],
+      "version": null,
+      "rights": {
+        "scope": "Personal, non-commercial use on this Mac. Not cleared for distribution to learners.",
+        "status": "DEV_LOCAL_ONLY",
+        "license": "macOS System Voice (Apple Software License Agreement)"
+      },
+      "distribution_allowed": false,
+      "sample_object_path": null,
+      "sample_sha256": null,
+      "approved_by_owner": false,
+      "approved_by": null,
+      "approved_at": null,
+      "qa_status": "NOT_TESTED",
+      "last_synced_at": "2026-10-29T03:28:52.652+00:00",
+      "notes": "Локальный движок разработки: реальная речь, но только для локальной проверки (лицензия macOS)."
+    }
+  ],
+  "cast_roles": [
+    {
+      "cast_role_id": "NARRATOR_F",
+      "requested_presentation": "female",
+      "locale": "el-GR",
+      "use_case": "course lessons / neutral",
+      "target_speed": "normal",
+      "voice_id": "local:macos:com.apple.voice.compact.el-GR.Melina",
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "proposed"
+    },
+    {
+      "cast_role_id": "NARRATOR_M",
+      "requested_presentation": "male",
+      "locale": "el-GR",
+      "use_case": "course dialogues / neutral",
+      "target_speed": "normal",
+      "voice_id": null,
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "unapproved"
+    },
+    {
+      "cast_role_id": "ROLE_CAFE_F",
+      "requested_presentation": "female",
+      "locale": "el-GR",
+      "use_case": "cafe / public situations",
+      "target_speed": "normal",
+      "voice_id": null,
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "unapproved"
+    },
+    {
+      "cast_role_id": "ROLE_CAFE_M",
+      "requested_presentation": "male",
+      "locale": "el-GR",
+      "use_case": "shop / public situations",
+      "target_speed": "normal",
+      "voice_id": null,
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "unapproved"
+    },
+    {
+      "cast_role_id": "TUTOR_F",
+      "requested_presentation": "female",
+      "locale": "el-GR",
+      "use_case": "optional tutor persona",
+      "target_speed": "normal",
+      "voice_id": "local:macos:com.apple.voice.compact.el-GR.Melina",
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "proposed"
+    },
+    {
+      "cast_role_id": "TUTOR_M",
+      "requested_presentation": "male",
+      "locale": "el-GR",
+      "use_case": "optional tutor persona",
+      "target_speed": "normal",
+      "voice_id": null,
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "unapproved"
+    }
+  ]
+}

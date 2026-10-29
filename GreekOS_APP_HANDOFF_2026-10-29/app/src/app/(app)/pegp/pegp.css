@@ -1,0 +1,11 @@
+/* ΠΕΓΠ module — layout helpers on v5.1 tokens. */
+.pegp-topics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pegp-topic{display:flex;flex-direction:column;gap:8px;padding:18px;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s var(--ease)}
+.pegp-topic:hover{border-color:#e7c7b3;transform:translateY(-2px)}
+.pegp-topic h3{margin:0;font-size:20px;letter-spacing:-.6px}
+.pegp-counts{display:flex;gap:6px;flex-wrap:wrap}
+.pegp-sources{margin:8px 0 0;padding:0;list-style:none;font-size:10.5px;color:#7a726b;display:grid;gap:4px}
+.pegp-sources a{color:var(--orange-dark);overflow-wrap:anywhere}
+.pegp-card-fact{font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.6}
+@media(max-width:920px){.pegp-topics{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.pegp-topics{grid-template-columns:1fr}}

@@ -1,0 +1,5486 @@
+{
+  "generated_at": "2026-10-29T03:34:55.062Z",
+  "scope": "LOCAL DEVELOPMENT ENVIRONMENT",
+  "total_jobs": 142,
+  "summary": {
+    "rendered": 65,
+    "qa_pass": 54,
+    "qa_fail": 0,
+    "needs_linguistic_review": 11,
+    "release_eligible": 0,
+    "gated": 142,
+    "missing_voice_metadata": 65,
+    "no_suitable_voice": 12,
+    "pending": 0,
+    "cost_usd": 0
+  },
+  "notes": [
+    "Local renders use macOS System Voice(s): real synthesized Greek speech for development; rights DEV_LOCAL_ONLY (not distributable to learners).",
+    "ASR round-trip uses local faster-whisper medium: a screening signal, not proof of pronunciation.",
+    "No job is silently skipped: every job has a status and reason. Casting proposals are unapproved until the owner approves them."
+  ],
+  "jobs": [
+    {
+      "audio_id": "D-A1-LISTENING-01-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Δάφνη» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Δάφνη",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Δάφνη» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Ορέστης",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Ορέστης» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "D-A2-LISTENING-01-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Υπάλληλος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Πελάτισσα",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πελάτισσα» (женский)"
+        },
+        {
+          "role": "Υπάλληλος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "«Υπάλληλος» — существительное общего рода (ο/η): нужен выбор владельца"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "D-B1-LISTENING-01-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Ομιλήτρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Ομιλήτρια» (женский)"
+        },
+        {
+          "role": "Συμμετέχων",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συμμετέχων» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "KEG-B2-L01-AUD1",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "Συντονίστρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συντονίστρια» (женский)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "2678d2f1-564a-4241-9848-011c43ca9cf1",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 219381,
+        "sha256": "3d1c630d6cff37a2f8fb69b352f6b80ca468e8652a29993cbadeffe317d794dd",
+        "master_sha256": "62a43b3c66abb12b412b7d7c2b84235a07081f441c64b51aa6fdfc1d2acfc5c0",
+        "storage": "course-audio/KEG-B2-L01-AUD1/3d1c630d6cff37a2f8fb69b352f6b80ca468e8652a29993cbadeffe317d794dd.wav",
+        "cues": 10,
+        "roundtrip": {
+          "wer": 0.0356,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 505,
+          "accent_mismatches": [
+            "πλαϊνή",
+            "αντίγραφο"
+          ],
+          "cer_accent_insensitive": 0.0106
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.39
+          },
+          "before": {
+            "rms_dbfs": -17.25,
+            "peak_dbfs": -3.64
+          },
+          "gain_db": -2.75,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "KEG-B2-L01-AUD2",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άννα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Μάνος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Μάνος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Ελένη",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Ελένη» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "KEG-B2-L02-AUD1",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "Συντονίστρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συντονίστρια» (женский)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "2a858202-fe0d-4238-ad39-3d40a944c192",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 212601,
+        "sha256": "24b54c604455552d5c7b65dda5694542abe546c1480094000fcfb86ad39bd39a",
+        "master_sha256": "8536657e4576c064a673534eb63f5a8237f4aaa9766a89d56249f1f8080bfd6c",
+        "storage": "course-audio/KEG-B2-L02-AUD1/24b54c604455552d5c7b65dda5694542abe546c1480094000fcfb86ad39bd39a.wav",
+        "cues": 10,
+        "roundtrip": {
+          "wer": 0.0525,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 495,
+          "accent_mismatches": [
+            "μία",
+            "επί"
+          ],
+          "cer_accent_insensitive": 0.0187
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.66
+          },
+          "before": {
+            "rms_dbfs": -17.15,
+            "peak_dbfs": -3.8
+          },
+          "gain_db": -2.85,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "KEG-B2-L02-AUD2",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Δανάη» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Δανάη",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Δανάη» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Πέτρος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πέτρος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Σοφία",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Σοφία» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "KEG-B2-L03-AUD1",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Υπεύθυνος",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Υπεύθυνος» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "KEG-B2-L03-AUD2",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Λένα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Λένα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Λένα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Ορέστης",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Ορέστης» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Μυρτώ",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Μυρτώ» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0001-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0002-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0003-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0004-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0005-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0006-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0007-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0008-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0009-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0010-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0011-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "RG-0012-TONE01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-001-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Υπάλληλος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Υπάλληλος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "«Υπάλληλος» — существительное общего рода (ο/η): нужен выбор владельца"
+        },
+        {
+          "role": "Μαθητής",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Μαθητής» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-002-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άννα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Λένα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Λένα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-003-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Πελάτης",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πελάτης» (мужской)"
+        },
+        {
+          "role": "Πωλήτρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πωλήτρια» (женский)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-004-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Επιβάτης",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Επιβάτης» (мужской)"
+        },
+        {
+          "role": "Οδηγός",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "«Οδηγός» — существительное общего рода (ο/η): нужен выбор владельца"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-005-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Ελένη» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Ελένη",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Ελένη» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Νικόλας",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Νικόλας» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-006-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Πελάτης",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πελάτης» (мужской)"
+        },
+        {
+          "role": "Πωλήτρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πωλήτρια» (женский)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-007-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-008-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-009-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Πέτρος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Πέτρος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πέτρος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-010-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Πέτρος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Πέτρος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πέτρος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Μάνος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Μάνος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-011-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Πωλητής",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πωλητής» (мужской)"
+        },
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-012-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-013-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-014-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-015-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-016-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-017-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-018-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A1-019-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "68adeac5-d17a-45ba-94f6-0507cf5f0772",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 813,
+        "sha256": "7bd9ebc6f6a40681e0d4eb85fe1b36e9ac87dafddeecd0ef6a70c6c6014799bc",
+        "master_sha256": "ae7dfa267a01c58b0a2ebd3f96735a45ceb5897aa583be4f71e3854a127207c4",
+        "storage": "course-audio/U-A1-019-AUD01/7bd9ebc6f6a40681e0d4eb85fe1b36e9ac87dafddeecd0ef6a70c6c6014799bc.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "diff": {
+            "missing": [],
+            "inserted": [],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 3,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.18
+          },
+          "before": {
+            "rms_dbfs": -17.15,
+            "peak_dbfs": -5.32
+          },
+          "gain_db": -2.85,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD02",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "ce42ebad-65fe-4bd5-a103-8596bc18f306",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 720,
+        "sha256": "888c58bb87f5320b35818af7e4294e1389cb94a12fe66f2969fe6c1fc9b518b6",
+        "master_sha256": "d4afce72f2f4df70a830e6cb4354b47d8655f2c4850febbc64464cc9f95f7d12",
+        "storage": "course-audio/U-A1-019-AUD02/888c58bb87f5320b35818af7e4294e1389cb94a12fe66f2969fe6c1fc9b518b6.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 1,
+          "diff": {
+            "missing": [
+              "που",
+              "μενεισ"
+            ],
+            "inserted": [
+              "επομενεισ"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 2,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.3
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -10.23
+          },
+          "before": {
+            "rms_dbfs": -16.37,
+            "peak_dbfs": -6.59
+          },
+          "gain_db": -3.63,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "97290e29-6abb-4bf8-9cd2-2d667bf7f923",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2740,
+        "sha256": "642937dddd570cc712cf8cb1ae69e4aea6d696acba065f95c1452c8c5c64f477",
+        "master_sha256": "0dffe95fafae8c00863bcbc1f1ac7678ce923bb926b412795bba9fdde4ec1fd1",
+        "storage": "course-audio/U-A1-019-AUD03/642937dddd570cc712cf8cb1ae69e4aea6d696acba065f95c1452c8c5c64f477.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 8,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.17
+          },
+          "before": {
+            "rms_dbfs": -16.68,
+            "peak_dbfs": -4.86
+          },
+          "gain_db": -3.32,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "ad02b3ed-c5ac-4ea2-9433-b43a0bc444e2",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2647,
+        "sha256": "3d95037e17cc9a0e9c414715a5367a7fde3996d1e7f4bc4340937cd091788d81",
+        "master_sha256": "ca65b0f1cd998eb9fb0e3358ecad5099a293fbb5137d79e467eaf7eec3651695",
+        "storage": "course-audio/U-A1-019-AUD04/3d95037e17cc9a0e9c414715a5367a7fde3996d1e7f4bc4340937cd091788d81.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 7,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.48
+          },
+          "before": {
+            "rms_dbfs": -16.91,
+            "peak_dbfs": -5.39
+          },
+          "gain_db": -3.09,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD05",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "4479a3eb-6759-449a-b0e3-704a06c94822",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 1138,
+        "sha256": "4223fc38e5705e8c52a5f09f0f1ee179163ee39a5ce6b1a04ba833c585587deb",
+        "master_sha256": "11147e7220da14df73facacb307f28d95f059b49d5757b0ee0bdd79912b524e7",
+        "storage": "course-audio/U-A1-019-AUD05/4223fc38e5705e8c52a5f09f0f1ee179163ee39a5ce6b1a04ba833c585587deb.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.3333,
+          "diff": {
+            "missing": [
+              "μενεισ"
+            ],
+            "inserted": [
+              "μενει"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 3,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0588
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.11
+          },
+          "before": {
+            "rms_dbfs": -17.24,
+            "peak_dbfs": -5.35
+          },
+          "gain_db": -2.76,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "c67f654f-4151-4d37-b60c-62e1979f864e",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 1091,
+        "sha256": "8f162ef33b474d6deeabf406b9b41417ca9e68159a08a2dadc2c25a9db8edc3c",
+        "master_sha256": "1e7458a4b734cd88a3f5fa246ede6dfb5a2ed73d31c116caab5423a6f4ab0177",
+        "storage": "course-audio/U-A1-019-AUD06/8f162ef33b474d6deeabf406b9b41417ca9e68159a08a2dadc2c25a9db8edc3c.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 3,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -9.22
+          },
+          "before": {
+            "rms_dbfs": -17.06,
+            "peak_dbfs": -6.28
+          },
+          "gain_db": -2.94,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "02dde1ba-1fba-4a87-8b90-611f3c44cd77",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 3669,
+        "sha256": "49852420d285447265326589fe8fc1a0685e0339ca3f65b2f6e9289197565a73",
+        "master_sha256": "89cd7957b1d8e6a0198662d6614d1485ca6241d283b0efd23ead83a82edd313e",
+        "storage": "course-audio/U-A1-019-AUD07/49852420d285447265326589fe8fc1a0685e0339ca3f65b2f6e9289197565a73.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 10,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.75
+          },
+          "before": {
+            "rms_dbfs": -16.43,
+            "peak_dbfs": -5.19
+          },
+          "gain_db": -3.57,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD01",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "9c64d7bc-7c5d-446e-aba9-a53d2ee20cf2",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2183,
+        "sha256": "e93f8c9b64d8275307359b704b458dd61af31bb120268b736ec16811422dc9b5",
+        "master_sha256": "ad792e171ce5b2156427befd76b9c5f84c1a0eb54bbc85e2773d583ddfc53440",
+        "storage": "course-audio/U-A1-020-AUD01/e93f8c9b64d8275307359b704b458dd61af31bb120268b736ec16811422dc9b5.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.3333,
+          "diff": {
+            "missing": [
+              "δωδεκα",
+              "φευγει",
+              "στισ",
+              "τρεισ"
+            ],
+            "inserted": [
+              "12",
+              "εβγεισ",
+              "τισ",
+              "3"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 6,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.1379
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.61
+          },
+          "before": {
+            "rms_dbfs": -17.49,
+            "peak_dbfs": -5.1
+          },
+          "gain_db": -2.51,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD02",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "327ce7f2-abd0-4f7e-a307-12da57699526",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2183,
+        "sha256": "e93f8c9b64d8275307359b704b458dd61af31bb120268b736ec16811422dc9b5",
+        "master_sha256": "ad792e171ce5b2156427befd76b9c5f84c1a0eb54bbc85e2773d583ddfc53440",
+        "storage": "course-audio/U-A1-020-AUD02/e93f8c9b64d8275307359b704b458dd61af31bb120268b736ec16811422dc9b5.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.3333,
+          "diff": {
+            "missing": [
+              "δωδεκα",
+              "φευγει",
+              "στισ",
+              "τρεισ"
+            ],
+            "inserted": [
+              "12",
+              "εβγεισ",
+              "τισ",
+              "3"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 6,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.1379
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.61
+          },
+          "before": {
+            "rms_dbfs": -17.49,
+            "peak_dbfs": -5.1
+          },
+          "gain_db": -2.51,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD03",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "b6614290-3488-4ed7-bb5d-03cb6b7e18db",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2879,
+        "sha256": "b4854c3d5d1e77bc525d7a78c57ee4b79fb164d1cbf3f864e4e63b4528e9120c",
+        "master_sha256": "ca33f8a3844267e74c2b46ce2095f72807485d87422057486fc4e5c8324ea6f4",
+        "storage": "course-audio/U-A1-020-AUD03/b4854c3d5d1e77bc525d7a78c57ee4b79fb164d1cbf3f864e4e63b4528e9120c.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.2222,
+          "diff": {
+            "missing": [
+              "τρεισ",
+              "και",
+              "μιση"
+            ],
+            "inserted": [
+              "3",
+              "30"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 9,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.1778
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.68
+          },
+          "before": {
+            "rms_dbfs": -17.04,
+            "peak_dbfs": -4.72
+          },
+          "gain_db": -2.96,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "9ce0319c-5c82-49ff-ac89-d87a45d5d253",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 3390,
+        "sha256": "39c368fa717f68551a0acf8410ef528099fd8d11e17f1f7354e425d40296ac38",
+        "master_sha256": "7729942f6f9064131e1bdba62666064db62cad8aa1ed7fb4bd559b100fce439f",
+        "storage": "course-audio/U-A1-020-AUD04/39c368fa717f68551a0acf8410ef528099fd8d11e17f1f7354e425d40296ac38.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "diff": {
+            "missing": [
+              "τεσσερισ"
+            ],
+            "inserted": [
+              "4"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 9,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.41
+          },
+          "before": {
+            "rms_dbfs": -17.17,
+            "peak_dbfs": -4.57
+          },
+          "gain_db": -2.83,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD05",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "a7bbb676-89c8-44ba-ba2b-5577abff2776",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 3855,
+        "sha256": "b826b103a98033dc074c4f50c3cbfcf7579de564e9a1f832cc927b678c74fe64",
+        "master_sha256": "043418275ffee6468f3a95cf7935fa0aa2d03a991999525b7bcee8f7a2919a10",
+        "storage": "course-audio/U-A1-020-AUD05/b826b103a98033dc074c4f50c3cbfcf7579de564e9a1f832cc927b678c74fe64.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.1667,
+          "diff": {
+            "missing": [
+              "αιθουσα",
+              "δυο",
+              "αιθουσα",
+              "τρια"
+            ],
+            "inserted": [
+              "εθωσα",
+              "2",
+              "εθωσα",
+              "3"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 12,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.129
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.77
+          },
+          "before": {
+            "rms_dbfs": -16.71,
+            "peak_dbfs": -4.48
+          },
+          "gain_db": -3.29,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "dcce85c4-b53a-4d38-934b-091427d77d61",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 3529,
+        "sha256": "674d8429f1fcced5aef62c4472858df425fb0a826c1c016575f97b152a00f6dd",
+        "master_sha256": "a3e235de8f85562835085da86c27e634d2c5d8e7e9e50660dd7b01a22ae70504",
+        "storage": "course-audio/U-A1-020-AUD06/674d8429f1fcced5aef62c4472858df425fb0a826c1c016575f97b152a00f6dd.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.1,
+          "diff": {
+            "missing": [
+              "δεκα",
+              "αιθουσα",
+              "τεσσερα"
+            ],
+            "inserted": [
+              "10",
+              "εθουσα",
+              "4"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 10,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0417
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.54
+          },
+          "before": {
+            "rms_dbfs": -17.6,
+            "peak_dbfs": -5.15
+          },
+          "gain_db": -2.4,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "5f322667-5926-473d-8101-4b9013724feb",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 3483,
+        "sha256": "1f221829d98933e1dcf84764f885941d970c15a94e6a9f38ea05627d56ef5325",
+        "master_sha256": "df214a011851bb0a6e93f43d293ff69a5ed8a3f735615cc650e44d47b2ec4f19",
+        "storage": "course-audio/U-A1-020-AUD07/1f221829d98933e1dcf84764f885941d970c15a94e6a9f38ea05627d56ef5325.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "diff": {
+            "missing": [
+              "πεντε",
+              "τεσσερισ"
+            ],
+            "inserted": [
+              "5",
+              "4"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 9,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.88
+          },
+          "before": {
+            "rms_dbfs": -17.21,
+            "peak_dbfs": -5.09
+          },
+          "gain_db": -2.79,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD08",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "71766c21-2f8f-4edd-bf78-4d8a9c4e0656",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2601,
+        "sha256": "6705fc534805aef5d804362bb95597286ff4c5134fa5a525125a6bb0049cdfac",
+        "master_sha256": "58d9aa28219daac1b18a05193dc0e474dbcbc8a9b64dbb8dd555e95c638f1185",
+        "storage": "course-audio/U-A1-020-AUD08/6705fc534805aef5d804362bb95597286ff4c5134fa5a525125a6bb0049cdfac.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.25,
+          "diff": {
+            "missing": [
+              "εικοσι",
+              "φευγει",
+              "στισ",
+              "οκτω"
+            ],
+            "inserted": [
+              "20",
+              "φευγεισ",
+              "τησ",
+              "8"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 8,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0811
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.83
+          },
+          "before": {
+            "rms_dbfs": -17.25,
+            "peak_dbfs": -5.08
+          },
+          "gain_db": -2.75,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD09",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "f20fadad-5bb0-400b-962f-d003003a099d",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 4365,
+        "sha256": "31ea6c7b3421aedb8d16b2a3b87b207c5dd52e7be91a1790bab8dc6d098a5d7e",
+        "master_sha256": "da067abfd844cf5b211ac12ffbe9c84fbb996b0db7ddc120d2117bb3b1f4a900",
+        "storage": "course-audio/U-A1-020-AUD09/31ea6c7b3421aedb8d16b2a3b87b207c5dd52e7be91a1790bab8dc6d098a5d7e.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.25,
+          "diff": {
+            "missing": [
+              "εξι",
+              "και",
+              "μιση",
+              "αιθουσα",
+              "πεντε"
+            ],
+            "inserted": [
+              "6",
+              "30",
+              "εθουσα",
+              "5"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 12,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.1667
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.92
+          },
+          "before": {
+            "rms_dbfs": -17.19,
+            "peak_dbfs": -4.11
+          },
+          "gain_db": -2.81,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-001-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Πάνος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Φίλη",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Φίλη» (женский)"
+        },
+        {
+          "role": "Πάνος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πάνος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-002-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Υπάλληλος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Υπάλληλος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "«Υπάλληλος» — существительное общего рода (ο/η): нужен выбор владельца"
+        },
+        {
+          "role": "Πελάτης",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πελάτης» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-003-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άρης» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Άρης",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άρης» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Έλλη",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Έλλη» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-004-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Ενοικιαστής",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Ενοικιαστής» (мужской)"
+        },
+        {
+          "role": "Ιδιοκτήτρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Ιδιοκτήτρια» (женский)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-005-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Αδελφή",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Αδελφή» (женский)"
+        },
+        {
+          "role": "Αδελφός",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Αδελφός» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-006-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-007-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άννα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Μάνος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Μάνος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-008-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άννα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Πάνος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πάνος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-009-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-010-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-011-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-012-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-013-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-014-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-015-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «A» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "A",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «A» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "B",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «B» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-A2-016-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "2c8e2fd6-e070-4f9e-a9b6-accde804243e",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 720,
+        "sha256": "ccfe64011e72a3350739ff9d3d85ab81e6f87e580df0085a20b29c65150285a6",
+        "master_sha256": "07a347468f76f40b072d500086656cab859ab5010e90e595ca936f2dfa858b7e",
+        "storage": "course-audio/U-A2-016-AUD01/ccfe64011e72a3350739ff9d3d85ab81e6f87e580df0085a20b29c65150285a6.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 1,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.05
+          },
+          "before": {
+            "rms_dbfs": -19.38,
+            "peak_dbfs": -5.43
+          },
+          "gain_db": -0.62,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-016-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "4cac75cc-d15b-4af9-b6c9-6ed2cd0826f1",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 836,
+        "sha256": "d5c62461e22c9b755f2fd86b9c0b224bfc1ab90a2ddbfafa8738c2ae235d6476",
+        "master_sha256": "40474f54a7abd055e82e5b9151ac885e69555077841a3b4dc4f3d6bd54b6688f",
+        "storage": "course-audio/U-A2-016-AUD02/d5c62461e22c9b755f2fd86b9c0b224bfc1ab90a2ddbfafa8738c2ae235d6476.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 1,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.19
+          },
+          "before": {
+            "rms_dbfs": -17.66,
+            "peak_dbfs": -4.84
+          },
+          "gain_db": -2.34,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "d069e5da-52ed-45bf-8101-9ad28e0fee76",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 12260,
+        "sha256": "b0daa1a9edd70ea43d765f0b82ff8d7139fcf2d0593ef4ea565d99a31bb0da9b",
+        "master_sha256": "adfcfc32601d86ec349049f74e86c693f43c8d45f472b08cba50a326049c0c19",
+        "storage": "course-audio/U-A2-017-AUD01/b0daa1a9edd70ea43d765f0b82ff8d7139fcf2d0593ef4ea565d99a31bb0da9b.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.1538,
+          "diff": {
+            "missing": [
+              "τριτη",
+              "τριτη",
+              "πεμπτη",
+              "δεκα",
+              "πεμπτη",
+              "δεκα"
+            ],
+            "inserted": [
+              "3η",
+              "3η",
+              "5η",
+              "10",
+              "5η",
+              "10"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 26,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.1169
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.47
+          },
+          "before": {
+            "rms_dbfs": -17.69,
+            "peak_dbfs": -4.16
+          },
+          "gain_db": -2.31,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD02",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "b002d6f3-310e-42e3-99ac-1df3f3eb74da",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 11262,
+        "sha256": "6e3515f0d696281f329f7b894ce8fbec875dee67a27dcc4766b6f80ddc62fba9",
+        "master_sha256": "fc3a5314d09cc62a3962c96db5f39400972b5959aa649401b5bad3f73106a0e5",
+        "storage": "course-audio/U-A2-017-AUD02/6e3515f0d696281f329f7b894ce8fbec875dee67a27dcc4766b6f80ddc62fba9.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.16,
+          "diff": {
+            "missing": [
+              "τριτη",
+              "τριτη",
+              "πεμπτη",
+              "δεκα",
+              "πεμπτη",
+              "δεκα"
+            ],
+            "inserted": [
+              "3η",
+              "3η",
+              "5η",
+              "10",
+              "5η",
+              "10"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 25,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.125
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.6
+          },
+          "before": {
+            "rms_dbfs": -17.56,
+            "peak_dbfs": -4.16
+          },
+          "gain_db": -2.44,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "5c1a5c85-e47c-49ba-a459-b905b840edc8",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 3762,
+        "sha256": "530356bbd95eb0a058084c73129adda66b8685d50fc99904fabb2effec96e073",
+        "master_sha256": "6d96474ee914ffbf58dd7c0e975bbf77d3ea4bc44c568c4c6ad1fc45d96d1d59",
+        "storage": "course-audio/U-A2-017-AUD03/530356bbd95eb0a058084c73129adda66b8685d50fc99904fabb2effec96e073.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 9,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.03
+          },
+          "before": {
+            "rms_dbfs": -17.13,
+            "peak_dbfs": -4.16
+          },
+          "gain_db": -2.87,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "9c491d13-6ba9-4f43-b3ac-24d194513465",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 8777,
+        "sha256": "f27cdcc286e4b045ba2be921c737a9ea0fb9edd5fe856d685d36b0c7296fb812",
+        "master_sha256": "ac1c2e827278bb1c1e21ef215349e1b5458c9940e6d31ce5471787dee94a8680",
+        "storage": "course-audio/U-A2-017-AUD04/f27cdcc286e4b045ba2be921c737a9ea0fb9edd5fe856d685d36b0c7296fb812.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.1765,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 17,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.04
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.77
+          },
+          "before": {
+            "rms_dbfs": -17.38,
+            "peak_dbfs": -4.15
+          },
+          "gain_db": -2.62,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "f4d8b735-104d-4e07-a7f6-62008751326a",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 6711,
+        "sha256": "c659ad9e9963b93b66f52e833e62a41554e2a7408b1586ec236fb051c250232d",
+        "master_sha256": "5881b2387b213b58c34d76f5a4a476f01851f9b8a6891627aed3df1fa5669d58",
+        "storage": "course-audio/U-A2-017-AUD05/c659ad9e9963b93b66f52e833e62a41554e2a7408b1586ec236fb051c250232d.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 10,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.32
+          },
+          "before": {
+            "rms_dbfs": -17.55,
+            "peak_dbfs": -4.87
+          },
+          "gain_db": -2.45,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "6c5b2a57-17b9-4f64-aefb-c55007dc08d1",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 9195,
+        "sha256": "3d8b89ff7d90efa3878074e23cd77c1998672979b124076ffaff64d7ce3c448a",
+        "master_sha256": "1ddd1bb57db899cad06e9ca67c7754f9460a8bc0a42a78b2cd62bf9913e25b4a",
+        "storage": "course-audio/U-A2-017-AUD06/3d8b89ff7d90efa3878074e23cd77c1998672979b124076ffaff64d7ce3c448a.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 17,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6
+          },
+          "before": {
+            "rms_dbfs": -17.72,
+            "peak_dbfs": -3.72
+          },
+          "gain_db": -2.28,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "72285a74-7856-4fff-878a-e441250ad797",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 7454,
+        "sha256": "ae6877ca503cebc1b097d75e82f4c854c1a4ba1c668ae96531af453db07e0b94",
+        "master_sha256": "219b23c756545f4532420c01059a60725c9c0c001e04afdefe993907893e82f2",
+        "storage": "course-audio/U-A2-017-AUD07/ae6877ca503cebc1b097d75e82f4c854c1a4ba1c668ae96531af453db07e0b94.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.2,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 15,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0941
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.67
+          },
+          "before": {
+            "rms_dbfs": -18.11,
+            "peak_dbfs": -4.77
+          },
+          "gain_db": -1.89,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "fb3f9d7b-5966-4b9e-86cf-985b86f210f0",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 4644,
+        "sha256": "fa30ee355732a53b1268ccb68930e69a577f76dfe783758183ef5acde1eeea7f",
+        "master_sha256": "112333316cf27936829d4101050942af30c875ff417de0126e391c70d668870f",
+        "storage": "course-audio/U-A2-018-AUD01/fa30ee355732a53b1268ccb68930e69a577f76dfe783758183ef5acde1eeea7f.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 12,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.96
+          },
+          "before": {
+            "rms_dbfs": -17.21,
+            "peak_dbfs": -4.17
+          },
+          "gain_db": -2.79,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "3a09fd73-cb51-4745-9f26-866b1bd09143",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2299,
+        "sha256": "765fad83b9234ed53749c9a5452b2b53b2ddfcac2f353ee35f034ad40892fdcf",
+        "master_sha256": "b1ec8ebe8eb806844960cf58b7c8c1fa669b8d365b7fdd393d545b85c6b8bf6d",
+        "storage": "course-audio/U-A2-018-AUD02/765fad83b9234ed53749c9a5452b2b53b2ddfcac2f353ee35f034ad40892fdcf.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 6,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.4
+          },
+          "before": {
+            "rms_dbfs": -16.54,
+            "peak_dbfs": -4.94
+          },
+          "gain_db": -3.46,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "35864251-d271-4c94-8be7-43b9ad274fc7",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 6177,
+        "sha256": "d8f3f7120a11defd4ab1ab26a66f19335373a6ff78168455e688079c529b0a65",
+        "master_sha256": "59a2bf1eb1096cb92d7fcb19ecc8472be71dd7d227dce412a4c27aabdd26e6a0",
+        "storage": "course-audio/U-A2-018-AUD03/d8f3f7120a11defd4ab1ab26a66f19335373a6ff78168455e688079c529b0a65.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 15,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7
+          },
+          "before": {
+            "rms_dbfs": -17.29,
+            "peak_dbfs": -4.29
+          },
+          "gain_db": -2.71,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "5725eabe-f11e-471b-9f7e-4f486d0b3838",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 4319,
+        "sha256": "5341306c82a988047c441e2554fab0e815df7103a4e74fe786ddf65409fc8839",
+        "master_sha256": "2b9e894c93a1a5ce9bf1a04e06b9293b7b152ff8af1e75836d6aaa622537833a",
+        "storage": "course-audio/U-A2-018-AUD04/5341306c82a988047c441e2554fab0e815df7103a4e74fe786ddf65409fc8839.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 10,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.68
+          },
+          "before": {
+            "rms_dbfs": -16.4,
+            "peak_dbfs": -4.08
+          },
+          "gain_db": -3.6,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "35dca111-ca9a-4ffb-8e1c-40937040befb",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2833,
+        "sha256": "c132e84cef360b58b14cd0199e2337959fd5726e2606f1f1a58e6866e491a06c",
+        "master_sha256": "030e58225ce319e58438ab0546839d965ead789ef2dfa010e168a192e9c86c54",
+        "storage": "course-audio/U-A2-018-AUD05/c132e84cef360b58b14cd0199e2337959fd5726e2606f1f1a58e6866e491a06c.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 6,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.93
+          },
+          "before": {
+            "rms_dbfs": -16.82,
+            "peak_dbfs": -5.74
+          },
+          "gain_db": -3.18,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "d5a02ca5-d2fc-4811-85fb-6042fa06fe1a",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 4714,
+        "sha256": "4c26dc549528cd9f0d13a5d2115b734edeea2a5d0232d21b3bfc37c0cda3b8d1",
+        "master_sha256": "37eb54db8f7497c0de83f8c958a853dff47d8ef6eac628ebb4e4b95dc0282fdb",
+        "storage": "course-audio/U-A2-018-AUD06/4c26dc549528cd9f0d13a5d2115b734edeea2a5d0232d21b3bfc37c0cda3b8d1.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0833,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 12,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0156
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.2
+          },
+          "before": {
+            "rms_dbfs": -17.91,
+            "peak_dbfs": -5.1
+          },
+          "gain_db": -2.09,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "c8f2fecc-ffb8-49ad-b7ae-58501bba5ea7",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 4017,
+        "sha256": "4942ef32795d5190bce73718b94993107b13eb5acd800b4380e3f47bec8175a1",
+        "master_sha256": "18a4bea8fe3e19920795ccd945523cf396f994e7bfd7d7a47802dac10f2f27e5",
+        "storage": "course-audio/U-A2-018-AUD07/4942ef32795d5190bce73718b94993107b13eb5acd800b4380e3f47bec8175a1.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.1818,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 11,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0833
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.36
+          },
+          "before": {
+            "rms_dbfs": -17.02,
+            "peak_dbfs": -4.38
+          },
+          "gain_db": -2.98,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD08",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "01da496a-a8a6-4e41-8993-6af5bfe33308",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 6548,
+        "sha256": "02245bbbbffcbaff5e6db313645355b13bbcabc1e33684e952d2655cbed73270",
+        "master_sha256": "64cfd2735b4ac8a8785c4b02846f2c9efacd1104706dfbcf436e31425c9b3570",
+        "storage": "course-audio/U-A2-018-AUD08/02245bbbbffcbaff5e6db313645355b13bbcabc1e33684e952d2655cbed73270.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 12,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.59
+          },
+          "before": {
+            "rms_dbfs": -17.56,
+            "peak_dbfs": -4.15
+          },
+          "gain_db": -2.44,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-001-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Νίκος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Εύα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Εύα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Νίκος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Νίκος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-002-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Ρένα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Πέτρος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πέτρος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Ρένα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Ρένα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-003-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άννα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Μάνος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Μάνος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-004-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Εύα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Τάσος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Τάσος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Εύα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Εύα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-005-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Βοηθός» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Βοηθός",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "«Βοηθός» — существительное общего рода (ο/η): нужен выбор владельца"
+        },
+        {
+          "role": "Συντονίστρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συντονίστρια» (женский)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-006-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Ιώ» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Μάνος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Μάνος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Ιώ",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Ιώ» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-007-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Γραμματέας» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Νεφέλη",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Νεφέλη» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Γραμματέας",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "«Γραμματέας» — существительное общего рода (ο/η): нужен выбор владельца"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-008-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άννα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Πέτρος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πέτρος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-009-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-010-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άννα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Μάνος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Μάνος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-011-SCRIPT",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Ελένη» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Πέτρος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πέτρος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Ελένη",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Ελένη» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-012-SCRIPT",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Νίκος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Εύα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Εύα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Νίκος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Νίκος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-013-SCRIPT",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Ελένη» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Νίκος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Νίκος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Ελένη",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Ελένη» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-014-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Άννα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Πέτρος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Πέτρος» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Άννα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άννα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-015-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Μαρία» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Υπάλληλος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "«Υπάλληλος» — существительное общего рода (ο/η): нужен выбор владельца"
+        },
+        {
+          "role": "Μαρία",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Μαρία» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-016-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Πωλήτρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πωλήτρια» (женский)"
+        },
+        {
+          "role": "Πελάτης",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Πελάτης» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-017-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Υπάλληλος» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Επισκέπτρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Επισκέπτρια» (женский)"
+        },
+        {
+          "role": "Υπάλληλος",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "«Υπάλληλος» — существительное общего рода (ο/η): нужен выбор владельца"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B1-018-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "63b53ca2-243b-4ab7-85d5-30abbda126d7",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 46672,
+        "sha256": "7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a",
+        "master_sha256": "857d6227033d549884190b44d87c90407cf014aa83b883e145c068560eaf9b1b",
+        "storage": "course-audio/U-B1-018-AUD01/7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0354,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 113,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.016
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.66
+          },
+          "before": {
+            "rms_dbfs": -17.11,
+            "peak_dbfs": -3.77
+          },
+          "gain_db": -2.89,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "969542b9-ac5e-4d5a-bf24-db41a295af73",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 46672,
+        "sha256": "7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a",
+        "master_sha256": "857d6227033d549884190b44d87c90407cf014aa83b883e145c068560eaf9b1b",
+        "storage": "course-audio/U-B1-018-AUD02/7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0354,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 113,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.016
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.66
+          },
+          "before": {
+            "rms_dbfs": -17.11,
+            "peak_dbfs": -3.77
+          },
+          "gain_db": -2.89,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "72e4a5be-a526-48c1-98de-3a031df8d551",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 46672,
+        "sha256": "7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a",
+        "master_sha256": "857d6227033d549884190b44d87c90407cf014aa83b883e145c068560eaf9b1b",
+        "storage": "course-audio/U-B1-018-AUD03/7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0354,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 113,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.016
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.66
+          },
+          "before": {
+            "rms_dbfs": -17.11,
+            "peak_dbfs": -3.77
+          },
+          "gain_db": -2.89,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "da9b7e35-1c23-48a5-bbe4-dca426d003b5",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 46672,
+        "sha256": "7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a",
+        "master_sha256": "857d6227033d549884190b44d87c90407cf014aa83b883e145c068560eaf9b1b",
+        "storage": "course-audio/U-B1-018-AUD04/7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0354,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 113,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.016
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.66
+          },
+          "before": {
+            "rms_dbfs": -17.11,
+            "peak_dbfs": -3.77
+          },
+          "gain_db": -2.89,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "603a9f27-0bfc-4600-b0db-39ce1d121af4",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 46672,
+        "sha256": "7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a",
+        "master_sha256": "857d6227033d549884190b44d87c90407cf014aa83b883e145c068560eaf9b1b",
+        "storage": "course-audio/U-B1-018-AUD05/7b9b900b78384308e09935d37de568682c02e41ec5beecc8f5be76d58cdad91a.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0354,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 113,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.016
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.66
+          },
+          "before": {
+            "rms_dbfs": -17.11,
+            "peak_dbfs": -3.77
+          },
+          "gain_db": -2.89,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "3625f5d0-8bce-4d85-bd59-5e7ccc930154",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 10124,
+        "sha256": "99c6786e965f6e7a6dd507f082189f1845010e89a9fa22045f37fb5ff065a650",
+        "master_sha256": "e5f5757537a97a31f26524395cd3c81d527921c5f02b9b99ed2d583c57fe0485",
+        "storage": "course-audio/U-B1-018-AUD06/99c6786e965f6e7a6dd507f082189f1845010e89a9fa22045f37fb5ff065a650.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.069,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 29,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0305
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.09
+          },
+          "before": {
+            "rms_dbfs": -17.06,
+            "peak_dbfs": -4.15
+          },
+          "gain_db": -2.94,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "459ab3c4-bade-445f-9edb-40062f10702b",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 9636,
+        "sha256": "4fc42ecb108aa1238b589d8bded5e9448b521d132b6bba3e8f32f8516af34654",
+        "master_sha256": "f6d8af3fcbaf6fe6abbe3427f970ac4504b3a5af44362c2a5ed832986eb73bde",
+        "storage": "course-audio/U-B1-018-AUD07/4fc42ecb108aa1238b589d8bded5e9448b521d132b6bba3e8f32f8516af34654.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 22,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.56
+          },
+          "before": {
+            "rms_dbfs": -16.67,
+            "peak_dbfs": -4.23
+          },
+          "gain_db": -3.33,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD08",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "ce951d91-1a1d-4f78-b57d-f72fa822c24c",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 9288,
+        "sha256": "eb15219ec79763df8d817f97231f9c1cde6816c21e25891033586f4d5838c1df",
+        "master_sha256": "d5a4321238bc02677f85fca810214595bb6712828f92904220f01b7b2032ea41",
+        "storage": "course-audio/U-B1-018-AUD08/eb15219ec79763df8d817f97231f9c1cde6816c21e25891033586f4d5838c1df.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0435,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 23,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0135
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.35
+          },
+          "before": {
+            "rms_dbfs": -17.29,
+            "peak_dbfs": -4.64
+          },
+          "gain_db": -2.71,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "818943eb-dddf-4661-b49f-154b8b7e7543",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 51897,
+        "sha256": "85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df",
+        "master_sha256": "8b902a360037c13b9e8dd1aa854d64be7465ef2cd8780d46978dd1c792bec729",
+        "storage": "course-audio/U-B1-019-AUD01/85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0625,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 128,
+          "accent_mismatches": [
+            "πώσ",
+            "πού"
+          ],
+          "cer_accent_insensitive": 0.0168
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.05
+          },
+          "before": {
+            "rms_dbfs": -17.01,
+            "peak_dbfs": -4.06
+          },
+          "gain_db": -2.99,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "b7761e2a-91dd-4cf8-a8de-656cc45de244",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 51897,
+        "sha256": "85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df",
+        "master_sha256": "8b902a360037c13b9e8dd1aa854d64be7465ef2cd8780d46978dd1c792bec729",
+        "storage": "course-audio/U-B1-019-AUD02/85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0625,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 128,
+          "accent_mismatches": [
+            "πώσ",
+            "πού"
+          ],
+          "cer_accent_insensitive": 0.0168
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.05
+          },
+          "before": {
+            "rms_dbfs": -17.01,
+            "peak_dbfs": -4.06
+          },
+          "gain_db": -2.99,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "eb9963a3-754e-4acd-b5f2-4c3d4e1421fa",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 51897,
+        "sha256": "85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df",
+        "master_sha256": "8b902a360037c13b9e8dd1aa854d64be7465ef2cd8780d46978dd1c792bec729",
+        "storage": "course-audio/U-B1-019-AUD03/85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0625,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 128,
+          "accent_mismatches": [
+            "πώσ",
+            "πού"
+          ],
+          "cer_accent_insensitive": 0.0168
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.05
+          },
+          "before": {
+            "rms_dbfs": -17.01,
+            "peak_dbfs": -4.06
+          },
+          "gain_db": -2.99,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "aa0cb61e-9b50-4d12-a95e-a6f4c694cdbc",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 51897,
+        "sha256": "85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df",
+        "master_sha256": "8b902a360037c13b9e8dd1aa854d64be7465ef2cd8780d46978dd1c792bec729",
+        "storage": "course-audio/U-B1-019-AUD04/85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0625,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 128,
+          "accent_mismatches": [
+            "πώσ",
+            "πού"
+          ],
+          "cer_accent_insensitive": 0.0168
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.05
+          },
+          "before": {
+            "rms_dbfs": -17.01,
+            "peak_dbfs": -4.06
+          },
+          "gain_db": -2.99,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "eb06196b-0d54-42cc-826f-7c831f95d737",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 51897,
+        "sha256": "85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df",
+        "master_sha256": "8b902a360037c13b9e8dd1aa854d64be7465ef2cd8780d46978dd1c792bec729",
+        "storage": "course-audio/U-B1-019-AUD05/85557a831d9da178fcc529a2f1f6189ed620b42acb939f427edafd3cc79642df.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0625,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 128,
+          "accent_mismatches": [
+            "πώσ",
+            "πού"
+          ],
+          "cer_accent_insensitive": 0.0168
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.05
+          },
+          "before": {
+            "rms_dbfs": -17.01,
+            "peak_dbfs": -4.06
+          },
+          "gain_db": -2.99,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "6d362582-aae3-486f-b867-4b740e6f12bc",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 9543,
+        "sha256": "86a5a9b2bf15a5c686e84f4d0a6f44dd1b9e1f51a3b2fbc5b1ff187388c640bd",
+        "master_sha256": "5613ffbaef946c06f69d7ef3b97dafce19b7304f80f840a46233aa70e1b7caa0",
+        "storage": "course-audio/U-B1-019-AUD06/86a5a9b2bf15a5c686e84f4d0a6f44dd1b9e1f51a3b2fbc5b1ff187388c640bd.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 23,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.5
+          },
+          "before": {
+            "rms_dbfs": -17.2,
+            "peak_dbfs": -4.7
+          },
+          "gain_db": -2.8,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "28dcada5-299e-452a-8683-2c4b10175b28",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 6432,
+        "sha256": "9166557057f52311d6907a2776ee13341eb5d3f1e227dcf0d489f68f3128d467",
+        "master_sha256": "c90095a1ff7e1f5375ed27642ec3616a7e26ec785c33343ead9b409cc9b77fba",
+        "storage": "course-audio/U-B1-019-AUD07/9166557057f52311d6907a2776ee13341eb5d3f1e227dcf0d489f68f3128d467.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 18,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.91
+          },
+          "before": {
+            "rms_dbfs": -17.04,
+            "peak_dbfs": -4.94
+          },
+          "gain_db": -2.96,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD08",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "d2544d1a-6370-49b8-9796-86428182d6fd",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 9985,
+        "sha256": "1f4a869716775020cf93812dd47ae258b15bd0c530c599d5bf55a54223c72740",
+        "master_sha256": "6b0af5ba64a2d2eeae4f881c1668549187c22578badd49c2d82f54ea04350795",
+        "storage": "course-audio/U-B1-019-AUD08/1f4a869716775020cf93812dd47ae258b15bd0c530c599d5bf55a54223c72740.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0357,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 28,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0124
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.45
+          },
+          "before": {
+            "rms_dbfs": -17.15,
+            "peak_dbfs": -4.6
+          },
+          "gain_db": -2.85,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-021-AUD01",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "7e6bde05-e7ac-468e-997e-2b06827db79c",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2090,
+        "sha256": "d9c3d4eeab46a48dec3e73620fff1bdf6912875240ad29af39fd0eeaf59bd24f",
+        "master_sha256": "afd4875b4d43aab5081fdd0e0b2a0f7d1ab00ff75ab8deb7e7fbba99bec90093",
+        "storage": "course-audio/U-B1-021-AUD01/d9c3d4eeab46a48dec3e73620fff1bdf6912875240ad29af39fd0eeaf59bd24f.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.4286,
+          "diff": {
+            "missing": [
+              "η",
+              "αννα",
+              "εισιτηρια"
+            ],
+            "inserted": [
+              "ιαννα",
+              "εισυτηρια"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 7,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0882
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.21
+          },
+          "before": {
+            "rms_dbfs": -16.85,
+            "peak_dbfs": -5.06
+          },
+          "gain_db": -3.15,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B1-021-AUD02",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "1305fb69-7e76-4828-9892-c26c2d87bc6f",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 2090,
+        "sha256": "d9c3d4eeab46a48dec3e73620fff1bdf6912875240ad29af39fd0eeaf59bd24f",
+        "master_sha256": "afd4875b4d43aab5081fdd0e0b2a0f7d1ab00ff75ab8deb7e7fbba99bec90093",
+        "storage": "course-audio/U-B1-021-AUD02/d9c3d4eeab46a48dec3e73620fff1bdf6912875240ad29af39fd0eeaf59bd24f.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.4286,
+          "diff": {
+            "missing": [
+              "η",
+              "αννα",
+              "εισιτηρια"
+            ],
+            "inserted": [
+              "ιαννα",
+              "εισυτηρια"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 7,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0882
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -8.21
+          },
+          "before": {
+            "rms_dbfs": -16.85,
+            "peak_dbfs": -5.06
+          },
+          "gain_db": -3.15,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-001-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Αλέξης» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Αλέξης",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Αλέξης» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Συντονίστρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συντονίστρια» (женский)"
+        },
+        {
+          "role": "Νάντια",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Νάντια» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B2-002-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Συντάκτρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συντάκτρια» (женский)"
+        },
+        {
+          "role": "Επιμελητής",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Επιμελητής» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B2-003-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Λίνα» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Λίνα",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Λίνα» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Άρης",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Άρης» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B2-004-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Σοφία» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Σοφία",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Σοφία» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Λέων",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Λέων» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B2-005-AUD01",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B2-006-SCRIPT",
+      "status": "BLOCKED_MISSING_VOICE_METADATA",
+      "reason": "роль «Α» без назначенного голоса (нужен кастинг владельцем)",
+      "casting": [
+        {
+          "role": "Α",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Α» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        },
+        {
+          "role": "Β",
+          "cast_role_id": null,
+          "source": "needs_casting",
+          "approved": false,
+          "evidence": "роль «Β» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_MISSING_VOICE_METADATA",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B2-007-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Συντονίστρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συντονίστρια» (женский)"
+        },
+        {
+          "role": "Συνεργάτης",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συνεργάτης» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B2-008-AUD01",
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для NARRATOR_M (male) нет голоса в каталоге",
+      "casting": [
+        {
+          "role": "Συντονίστρια",
+          "cast_role_id": "NARRATOR_F",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συντονίστρια» (женский)"
+        },
+        {
+          "role": "Συνεργάτης",
+          "cast_role_id": "NARRATOR_M",
+          "source": "grammatical_gender_proposal",
+          "approved": false,
+          "evidence": "грамматический род ролевого существительного «Συνεργάτης» (мужской)"
+        }
+      ],
+      "plan_ok": false,
+      "plan_block": "BLOCKED_NO_SUITABLE_VOICE",
+      "asset": null
+    },
+    {
+      "audio_id": "U-B2-012-AUD00",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "b4c61afe-e4b9-4d0c-87ee-2a4db25fac24",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 5898,
+        "sha256": "8f89a9269b0809dd1d73bab97cd630c1d56831cb2e984e8204bd888f60f37c3e",
+        "master_sha256": "dd43d8ddd27c881e3a1e38739880c2c8b0abb50871c936c88346e617089f6518",
+        "storage": "course-audio/U-B2-012-AUD00/8f89a9269b0809dd1d73bab97cd630c1d56831cb2e984e8204bd888f60f37c3e.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.1875,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 16,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.1149
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.92
+          },
+          "before": {
+            "rms_dbfs": -17.59,
+            "peak_dbfs": -4.51
+          },
+          "gain_db": -2.41,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-012-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "e167506a-22dd-4366-9a40-e3ab166ea07f",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 163863,
+        "sha256": "14160644b2916c4f829b837302e2f4fec5a0c339c49f08a759971ab2b2ec3379",
+        "master_sha256": "ca876b1943b30182347a368d5644794f8528076c5b3384bf808ac8cb8ed93122",
+        "storage": "course-audio/U-B2-012-AUD01/14160644b2916c4f829b837302e2f4fec5a0c339c49f08a759971ab2b2ec3379.wav",
+        "cues": 6,
+        "roundtrip": {
+          "wer": 0.0249,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 401,
+          "accent_mismatches": [
+            "κάτοικοι"
+          ],
+          "cer_accent_insensitive": 0.0058
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.56
+          },
+          "before": {
+            "rms_dbfs": -17.1,
+            "peak_dbfs": -3.66
+          },
+          "gain_db": -2.9,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-012-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "e98182da-aa73-4c9e-b1bd-d88c905cb78f",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 30627,
+        "sha256": "64d214eb01157b140b14b056081a0e1c56e79166ef63dade9ea4af318e942b2f",
+        "master_sha256": "bdbe9aa2cc47d0fbc9ba5333a5254d5ef5f90b01a40aaa5e19356ed5f585672b",
+        "storage": "course-audio/U-B2-012-AUD02/64d214eb01157b140b14b056081a0e1c56e79166ef63dade9ea4af318e942b2f.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0405,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 74,
+          "accent_mismatches": [
+            "απογεύματα"
+          ],
+          "cer_accent_insensitive": 0.0041
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.07
+          },
+          "before": {
+            "rms_dbfs": -16.99,
+            "peak_dbfs": -4.06
+          },
+          "gain_db": -3.01,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-012-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "c1b268c3-2f3f-4368-a54f-350721013ccf",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 14977,
+        "sha256": "64844f67ffe7b6d5eb8a9fd1f6d4778c1a20cc859b4c34640117df2d938fa03b",
+        "master_sha256": "7681663b168d98e678e4658d1d1590d2755293930abc40578e1cb95630093699",
+        "storage": "course-audio/U-B2-012-AUD03/64844f67ffe7b6d5eb8a9fd1f6d4778c1a20cc859b4c34640117df2d938fa03b.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 42,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.36
+          },
+          "before": {
+            "rms_dbfs": -16.81,
+            "peak_dbfs": -4.18
+          },
+          "gain_db": -3.19,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-015-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "644e4b3d-9647-452c-8859-41f6df94ffa1",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 190751,
+        "sha256": "356f92629f1ad3123a38c99179ad898549084cd44605553a3f7d0c00898bb4e8",
+        "master_sha256": "f7f61d99f838f6167d6e66dde73e8a413cd1454d819be539501b78e65e5d66d2",
+        "storage": "course-audio/U-B2-015-AUD01/356f92629f1ad3123a38c99179ad898549084cd44605553a3f7d0c00898bb4e8.wav",
+        "cues": 12,
+        "roundtrip": {
+          "wer": 0.0547,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 457,
+          "accent_mismatches": [
+            "επίβλεψη",
+            "πού",
+            "μία"
+          ],
+          "cer_accent_insensitive": 0.0096
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.56
+          },
+          "before": {
+            "rms_dbfs": -17.12,
+            "peak_dbfs": -3.68
+          },
+          "gain_db": -2.88,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-015-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "4c3723f4-5680-4cb9-9479-e5a76495d48d",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 37152,
+        "sha256": "564a46de9b1601fca1859d56d5531012e580e81c1db10f08e409e6d5312d820c",
+        "master_sha256": "f0adc62a6700380f939cc6c1096ff83a6053d3a75550529d6e6209710ce71dd0",
+        "storage": "course-audio/U-B2-015-AUD02/564a46de9b1601fca1859d56d5531012e580e81c1db10f08e409e6d5312d820c.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0538,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 93,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0368
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.42
+          },
+          "before": {
+            "rms_dbfs": -17.19,
+            "peak_dbfs": -4.61
+          },
+          "gain_db": -2.81,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-015-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "7302ec40-aa6b-4728-9a31-63449bc41ff3",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 29652,
+        "sha256": "ffc267ab25eb139b1dbf03b069d0399067a68ec23bc28843e1191f39080d4bc0",
+        "master_sha256": "a4cfb0ee9f491971ee8cefe1eedd3a1ef6cff0298b5c47c5fca57ef8d3565461",
+        "storage": "course-audio/U-B2-015-AUD03/ffc267ab25eb139b1dbf03b069d0399067a68ec23bc28843e1191f39080d4bc0.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0429,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 70,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0192
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.1
+          },
+          "before": {
+            "rms_dbfs": -17.35,
+            "peak_dbfs": -4.45
+          },
+          "gain_db": -2.65,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I11-AUDIO",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "ba38e6ac-06d6-42aa-a5b6-9f8d8cceb438",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 6223,
+        "sha256": "8a653c18df04103bdabc3015db1a1e6aeb62a1e24c6ac1ff1c0549ebf159032d",
+        "master_sha256": "01ef8c076f96059de285fd37b76e3fae4ce8fd39e4c3414fd2aed2bd41850c52",
+        "storage": "course-audio/U-B2-016-I11-AUDIO/8a653c18df04103bdabc3015db1a1e6aeb62a1e24c6ac1ff1c0549ebf159032d.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.1538,
+          "diff": {
+            "missing": [
+              "εξι",
+              "συγγνωμη",
+              "επτα"
+            ],
+            "inserted": [
+              "6",
+              "στην",
+              "πνωμη",
+              "7"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 13,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.0676
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.4
+          },
+          "before": {
+            "rms_dbfs": -17.67,
+            "peak_dbfs": -4.07
+          },
+          "gain_db": -2.33,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I12-AUDIO",
+      "status": "TECH_QA_PASS",
+      "reason": "ASR round-trip выше порогов — нужен разбор",
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "c4d9ee1b-0dd9-4205-ab5b-b19abb2a7b99",
+        "render_status": "LINGUISTIC_QA_PENDING",
+        "digital_status": "NEEDS_REVIEW",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 4203,
+        "sha256": "6b5773ed049afae069782ac8538cbbb38d85daf851641f09b515d8c041b48855",
+        "master_sha256": "02b7ee849d6dac5aa82611e04b0b5f72e9a90bd5220d49c6ccae425dcc7c5ae0",
+        "storage": "course-audio/U-B2-016-I12-AUDIO/6b5773ed049afae069782ac8538cbbb38d85daf851641f09b515d8c041b48855.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.2857,
+          "diff": {
+            "missing": [
+              "αιτηση",
+              "αυριο",
+              "αιτηση",
+              "αυριο"
+            ],
+            "inserted": [
+              "ετησ",
+              "ηαβριο",
+              "ετησ",
+              "ηαβριο"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 14,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.1408
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.98
+          },
+          "before": {
+            "rms_dbfs": -16.61,
+            "peak_dbfs": -3.59
+          },
+          "gain_db": -3.39,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I13-AUDIO",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "393a2795-b05a-4ef1-a0ec-871162660e8c",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 7895,
+        "sha256": "9b59022d1ca62c91f9792d93286dbfac6272069189ffb0bede3f7c554525c91d",
+        "master_sha256": "52d951ca51b0fef54479892d689a69ef8a7268ee0197089479b1c13a72f8ac26",
+        "storage": "course-audio/U-B2-016-I13-AUDIO/9b59022d1ca62c91f9792d93286dbfac6272069189ffb0bede3f7c554525c91d.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 21,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.92
+          },
+          "before": {
+            "rms_dbfs": -17,
+            "peak_dbfs": -4.91
+          },
+          "gain_db": -3,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I14-AUDIO",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "669545e3-38c8-4d4a-b10f-50157dc1e9e8",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 9311,
+        "sha256": "317de9d9cb554207889ce27317b816091ab49286390e0e4a3c55ac0fa8eb0394",
+        "master_sha256": "7446dfdb405920b91db1c02c3ede50beb141bd28dfc0a833d37a17bba36e1671",
+        "storage": "course-audio/U-B2-016-I14-AUDIO/317de9d9cb554207889ce27317b816091ab49286390e0e4a3c55ac0fa8eb0394.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0,
+          "diff": {
+            "missing": [
+              "πενηντα",
+              "δεκαπεντε",
+              "πενηντα"
+            ],
+            "inserted": [
+              "50",
+              "15",
+              "50"
+            ],
+            "repeated": []
+          },
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 22,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -7.61
+          },
+          "before": {
+            "rms_dbfs": -16.98,
+            "peak_dbfs": -4.59
+          },
+          "gain_db": -3.02,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I15-AUDIO",
+      "status": "DIGITAL_REVIEWED",
+      "reason": null,
+      "casting": [
+        {
+          "role": "__narrator__",
+          "cast_role_id": "NARRATOR_F",
+          "source": "narrator_default_proposal",
+          "approved": false,
+          "evidence": "повествование без персонажей: голос диктора выбирается методически (по умолчанию NARRATOR_F, можно сменить)"
+        }
+      ],
+      "plan_ok": true,
+      "plan_block": null,
+      "asset": {
+        "asset_id": "ce9d6fcd-1c6b-4985-bb49-ef108d2a6947",
+        "render_status": "DIGITAL_REVIEWED",
+        "digital_status": "AUDIO_VERIFIED_DIGITAL",
+        "rights_status": "DEV_LOCAL_ONLY",
+        "cast_approved": false,
+        "voices": [
+          "local:macos:com.apple.voice.compact.el-GR.Melina"
+        ],
+        "duration_ms": 14396,
+        "sha256": "aa5e171ea33d1bc88c04a8542688e0c0e6c59c110d1e08cd4e6bf8cc40ab52ba",
+        "master_sha256": "092dd7249fff4b6be6a2eebbfa89e56e611e5d0ac723d09be1fb651402a00fa4",
+        "storage": "course-audio/U-B2-016-I15-AUDIO/aa5e171ea33d1bc88c04a8542688e0c0e6c59c110d1e08cd4e6bf8cc40ab52ba.wav",
+        "cues": 1,
+        "roundtrip": {
+          "wer": 0.0541,
+          "engine": "local:faster-whisper-medium-int8",
+          "reference_words": 37,
+          "accent_mismatches": [],
+          "cer_accent_insensitive": 0.009
+        },
+        "normalization": {
+          "after": {
+            "rms_dbfs": -20,
+            "peak_dbfs": -6.92
+          },
+          "before": {
+            "rms_dbfs": -17.23,
+            "peak_dbfs": -4.15
+          },
+          "gain_db": -2.77,
+          "target_rms_dbfs": -20,
+          "peak_ceiling_dbfs": -1
+        }
+      }
+    }
+  ]
+}

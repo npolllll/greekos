@@ -1,0 +1,33 @@
+
+ RUN  v4.1.12 /Users/piratantoha/Новая папка/Nik/greekos
+
+ ❯ |integration| tests/integration/voice-stream.test.ts (3 tests | 1 failed) 17554ms
+     × learner speech → VAD → Whisper → dialogue → streamed persona voice, with barge-in, metrics and idempotent recovery 13136ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > learner speech → VAD → Whisper → dialogue → streamed persona voice, with barge-in, metrics and idempotent recovery
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ tests/integration/voice-stream.test.ts:185:32
+    183|     expect(rows.find((x) => x.turn_seq === 0)?.listen_ready_ms).toBe(1…
+    184|     const learnerRows = rows.filter((x) => x.turn_seq > 0);
+    185|     expect(learnerRows.length).toBe(2);
+       |                                ^
+    186|     expect(learnerRows.every((x) => x.input_source === 'synthetic_test…
+    187|     expect(learnerRows[0].playback_start_ms).toBeGreaterThan(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 31 passed (32)
+   Start at  06:21:09
+   Duration  26.47s (transform 236ms, setup 0ms, import 1.03s, tests 24.75s, environment 0ms)
+

@@ -1,0 +1,59 @@
+{
+  "name": "greekos",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "next dev --port 3210",
+    "build": "next build",
+    "start": "next start --port 3210",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:e2e": "playwright test",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "import:validate": "tsx scripts/import-corpus.ts --validate-only",
+    "import": "tsx scripts/import-corpus.ts",
+    "owner:create": "tsx scripts/create-owner.ts",
+    "audio": "tsx scripts/audio-cli.ts",
+    "security:bundle": "tsx scripts/check-bundle.ts",
+    "local:asr": "PYENV_VERSION=${PYENV_VERSION:-3.9.6} HF_HUB_OFFLINE=1 LOCAL_ASR_PRELOAD=small,medium python local-services/asr_server.py",
+    "voice:gateway": "tsx --conditions=react-server voice-gateway/server.ts",
+    "voice:bench": "tsx --conditions=react-server scripts/voice-bench.ts --out reports/v5.4",
+    "audio:benchmark": "tsx scripts/audio-cli.ts benchmark --out reports/v5.4"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.3.0",
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.118.0",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1",
+    "ws": "8.22.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/ws": "8.18.2",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.3",
+    "postgres": "3.4.9",
+    "supabase": "2.122.0",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "4.1.12"
+  }
+}
