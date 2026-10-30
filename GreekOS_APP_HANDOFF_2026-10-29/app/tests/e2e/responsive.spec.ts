@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { readState } from './fixtures';
 import { login, noHorizontalScroll } from './helpers';
 
-const LEARNER_PAGES = ['/', '/course', '/lesson/SYN-UNIT-A1', '/practice', '/speaking', '/listening', '/writing', '/errors', '/progress', '/exams', '/pegp', '/real-greek', '/diagnostic', '/settings'];
+const LEARNER_PAGES = ['/', '/course', '/alphabet', '/lesson/SYN-UNIT-A1', '/practice', '/speaking', '/listening', '/writing', '/errors', '/progress', '/exams', '/pegp', '/real-greek', '/diagnostic', '/settings'];
 
 test('learner screens: no horizontal scroll and no serious axe violations', async ({ page }, info) => {
   const s = readState();
@@ -24,7 +24,7 @@ test('learner screens: no horizontal scroll and no serious axe violations', asyn
 test('owner admin screens: no horizontal scroll', async ({ page }, info) => {
   const s = readState();
   await login(page, s.owner);
-  for (const path of ['/admin', '/admin/learners', '/admin/content', '/admin/audio', '/admin/voices', '/admin/policy', '/admin/reviews', '/admin/providers']) {
+  for (const path of ['/admin', '/admin/learners', '/admin/qa', '/admin/qa/release', '/admin/content', '/admin/audio', '/admin/voices', '/admin/policy', '/admin/preview', '/admin/reviews', '/admin/providers']) {
     const res = await page.goto(path);
     if (res && res.status() === 404) continue;
     await page.waitForLoadState('networkidle');

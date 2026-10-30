@@ -52,3 +52,11 @@ export function dateTimeRu(iso: string | null | undefined): string {
   if (!iso) return '—';
   return new Date(iso).toLocaleString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
+
+export const ERROR_KIND_LABEL: Record<string, string> = {
+  wrong_option: 'неверный вариант', wrong_order: 'неверный порядок', wrong_assignment: 'неверное соответствие', accent_orthography: 'ударение',
+  final_sigma_orthography: 'форма сигмы (σ/ς)', typography_only: 'типографика',
+};
+export const ERROR_STATUS_LABEL: Record<string, string> = { open: 'открыта', resolved: 'исправлена', superseded: 'заменена', disputed: 'оспорена' };
+export const ROUTE_KIND_LABEL: Record<string, string> = { foundations: 'основы чтения (с нуля)', provisional: 'предварительный по диагностике', verified: 'подтверждённый', manual: 'задан владельцем' };
+export const SESSION_STATUS_LABEL: Record<string, string> = { ACTIVE: 'идёт', ENDED: 'завершён', ABANDONED: 'брошен' };

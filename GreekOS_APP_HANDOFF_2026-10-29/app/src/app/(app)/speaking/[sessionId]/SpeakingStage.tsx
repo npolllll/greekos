@@ -191,7 +191,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
             </div>
           </div>
           <div className="row between" style={{ margin: '12px 0 4px' }}>
-            <span className={`turn-state ${turnClass}`} role="status" aria-live="polite"><i aria-hidden="true" />{statusLabel}</span>
+            <span className={`turn-state status-live ${turnClass}`} role="status" aria-live="polite"><i aria-hidden="true" />{statusLabel}</span>
             {view.input_mode === 'voice' ? <span className="tiny quiet">{wantsStream && !fallback ? 'Живой потоковый разговор' : 'Пошаговый режим'}{view.persona.voice_name ? ` · голос ${view.persona.voice_name}${view.persona.dev_only ? ' (dev)' : ''}` : ''}</span> : null}
           </div>
           <div className="transcript" ref={listRef} aria-live="polite">

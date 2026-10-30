@@ -27,7 +27,7 @@ test('from-zero learner: lesson, feedback, context card and realtime sync', asyn
 
   await a.getByRole('link', { name: /Продолжить урок/ }).click();
   await a.waitForURL(/\/lesson\/SYN-UNIT-A1/);
-  await a.getByRole('tab', { name: /Контролируемая практика/ }).click();
+  await a.getByRole('tab', { name: /Практика/ }).click();
 
   // Correct short answer with case/space normalisation (accents preserved).
   const first = a.locator('.player').filter({ hasText: 'Η Ρόζα' });

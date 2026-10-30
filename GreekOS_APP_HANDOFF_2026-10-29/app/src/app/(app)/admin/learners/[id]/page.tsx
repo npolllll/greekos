@@ -4,7 +4,8 @@ import { requireOwnerPage } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { planEndDate } from '@/lib/learning/calendar';
 import { MASTERY_LABEL_RU, type MasteryState } from '@/lib/learning/mastery';
-import { LIFECYCLE_LABEL, ENTRY_LABEL, AXIS_LABEL, minutesLabel, dateTimeRu } from '@/lib/admin/labels';
+import { LIFECYCLE_LABEL, ENTRY_LABEL, AXIS_LABEL, ERROR_KIND_LABEL, ERROR_STATUS_LABEL, ROUTE_KIND_LABEL, SESSION_STATUS_LABEL, minutesLabel, dateTimeRu } from '@/lib/admin/labels';
+import { MODE_LABEL_RU } from '@/lib/speaking/state-machine';
 import { LearnerActions } from '../../_components/LearnerActions';
 import { RouteForm } from '../../_components/RouteForm';
 import { nowMs } from '@/lib/admin/time';
@@ -64,7 +65,7 @@ export default async function LearnerCard({ params }: { params: Promise<{ id: st
         <div className="stack">
           <div className="card cardpad">
             <div className="card-title">Маршрут</div>
-            <p className="small">Тип: <b>{route.data?.route_kind ?? '—'}</b> · старт: <b>{route.data?.start_unit_id ?? 'не назначен'}</b></p>
+            <p className="small">Тип: <b>{ROUTE_KIND_LABEL[route.data?.route_kind ?? ''] ?? route.data?.route_kind ?? '—'}</b> · старт: <b>{route.data?.start_unit_id ?? 'не назначен'}</b></p>
             <p className="small quiet">{route.data?.reason ?? ''}</p>
             <RouteForm userId={id} current={route.data?.start_unit_id ?? null} units={(units.data ?? []).map((u) => ({ id: u.unit_id, label: `${u.unit_id} · ${u.title_ru}` }))} />
             {(routeHist.data ?? []).length ? (
@@ -95,7 +96,7 @@ export default async function LearnerCard({ params }: { params: Promise<{ id: st
           </div>
           <div className="card cardpad">
             <div className="card-title">Ошибки с доказательствами</div>
-            {(errors.data ?? []).length ? (errors.data ?? []).map((e) => <div key={e.id} className="review-row"><div><b>{e.competency_id ?? '—'}</b><span className="event-text">{e.error_kind ?? ''}</span></div><small>{e.status}</small></div>) : <p className="small quiet">Подтверждённых ошибок нет.</p>}
+            {(errors.data ?? []).length ? (errors.data ?? []).map((e) => <div key={e.id} className="review-row"><div><b>{e.competency_id ?? '—'}</b><span className="event-text">{ERROR_KIND_LABEL[e.error_kind ?? ''] ?? e.error_kind ?? ''}</span></div><small>{ERROR_STATUS_LABEL[e.status] ?? e.status}</small></div>) : <p className="small quiet">Подтверждённых ошибок нет.</p>}
           </div>
           <div className="card cardpad">
             <div className="card-title">Разговорная практика</div>
@@ -104,7 +105,7 @@ export default async function LearnerCard({ params }: { params: Promise<{ id: st
               const goal = (s.summary_private as { communicative_goal?: string } | null)?.communicative_goal;
               return (
                 <div key={s.session_id} className="review-row">
-                  <div><b>{s.scenario_id} · {s.mode}</b><span className="event-text">{s.input_mode === 'voice' ? 'голос' : 'текст (не речь)'} · {s.status}{goal ? ` · цель: ${goal}` : ''}</span></div>
+                  <div><b>{s.scenario_id} · {MODE_LABEL_RU[s.mode as keyof typeof MODE_LABEL_RU] ?? s.mode}</b><span className="event-text">{s.input_mode === 'voice' ? 'голос' : 'текст (не речь)'} · {SESSION_STATUS_LABEL[s.status] ?? s.status}{goal ? ` · цель: ${goal}` : ''}</span></div>
                   {transcriptConsent.has(s.session_id) ? <Link className="text-link" href={`/admin/learners/${id}/sessions/${s.session_id}`}>Транскрипт</Link> : <small>нет согласия</small>}
                 </div>
               );

@@ -15,18 +15,18 @@ async function gatewayUp() {
 }
 
 test('live streaming conversation in the browser', async ({ page }) => {
-  test.skip(!existsSync(VOICE_CLIP), 'нет синтетического клипа (нужен macOS say)');
+  test.skip(!existsSync(VOICE_CLIP), 'нет синтетического клипа (нужен macOS say или локальный сервис речи)');
   test.skip(!(await gatewayUp()), 'голосовой шлюз не запущен');
   const { owner } = readState();
   await page.addInitScript(() => localStorage.setItem('greekos.inputSource', 'synthetic_test_clip'));
   await login(page, owner);
   await page.goto('/speaking');
-  await expect(page.getByRole('radio', { name: 'Живой разговор (потоковый)' })).toHaveAttribute('aria-checked', 'true');
-  const row = page.locator('.scenario', { hasText: 'SC01' });
+  await expect(page.getByRole('radio', { name: 'Живой (потоковый)' })).toHaveAttribute('aria-checked', 'true');
+  const row = page.locator('.sc-card', { hasText: 'SC01' });
   await row.getByRole('button', { name: 'Голосом' }).click();
   await page.waitForURL(/\/speaking\/[0-9a-f-]{36}$/);
   const sessionId = page.url().split('/').pop()!;
-  await expect(page.getByText('Живой разговор (потоковый)')).toBeVisible();
+  await expect(page.getByText(/Живой потоковый разговор/)).toBeVisible();
   await page.getByRole('button', { name: 'Начать разговор' }).click();
   const status = page.locator('.voice-stage .status-live');
   await expect(status).toHaveText(/Слушаю|Говорю|Распознаю|Думаю/, { timeout: 15_000 });

@@ -22,7 +22,10 @@ export default async function CoursePage({ searchParams }: { searchParams: Promi
   const next = nextUnit(course);
   const { data: enr } = await adminClient().from('enrollments').select('start_date, exam_date').eq('user_id', u.userId).maybeSingle();
   const byLevel = Object.fromEntries(LEVELS.map((l) => [l, course.units.filter((x) => levelOf(x) === l)])) as Record<string, UnitSummary[]>;
-  const nextLevel = next ? levelOf(next) : 'A1';
+  // A from-zero route starts with the foundations (alphabet, sounds) even while they are still gated:
+  // the learner sees where the path begins instead of a later released unit.
+  const foundationsOpen = course.routeKind === 'foundations' && course.units.some((u) => FOUNDATION_UNITS.includes(u.unit_id) && !u.completed);
+  const nextLevel = foundationsOpen ? 'A0' : next ? levelOf(next) : 'A1';
   const level = (LEVELS as readonly string[]).includes(sp.level ?? '') ? sp.level! : nextLevel;
   const list = byLevel[level] ?? [];
   const stats = (l: string) => { const xs = byLevel[l]; const done = xs.filter((x) => x.completed).length; return { done, total: xs.length, pct: xs.length ? Math.round((done / xs.length) * 100) : 0, open: xs.filter((x) => x.released).length }; };

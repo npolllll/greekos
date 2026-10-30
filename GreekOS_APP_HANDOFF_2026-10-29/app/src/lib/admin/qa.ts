@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { adminClient } from '../supabase/admin.ts';
 import { audit, HttpError, type SessionUser } from '../auth.ts';
 import { env } from '../env.ts';
-import { llmConfigured, structuredCall } from '../providers/llm.ts';
+import { llmConfigured, llmInfo, structuredCall } from '../providers/llm.ts';
 import { asrStatus, synthesize, transcribe, ttsStatus } from '../providers/speech.ts';
 import { analyzeWav } from '../audio/wav.ts';
 import { roundTrip, roundTripPass } from '../audio/roundtrip.ts';
@@ -81,8 +81,10 @@ export async function runLinguisticQa(actor: SessionUser, itemId: string) {
 export async function checkProviders(actor: SessionUser) {
   const results: Record<string, unknown> = {};
   if (llmConfigured()) {
-    const r = await structuredCall({ userId: actor.userId, operation: 'provider_check', model: env.llmModelDialogue, system: 'Ответь строго по схеме.', user: 'Верни ok=true и echo="Καλημέρα".', schema: z.object({ ok: z.boolean(), echo: z.string() }), effort: 'low', maxTokens: 1000, timeoutMs: 30_000 });
-    results.llm = r.ok ? { status: 'OK', model: r.model, echo_ok: r.data.echo.includes('Καλημέρα') } : { status: 'FAILED', reason: r.reason };
+    const t0 = Date.now();
+    const r = await structuredCall({ userId: actor.userId, operation: 'provider_check', model: env.llmModelDialogue, system: 'Ответь строго по схеме.', user: 'Верни ok=true и echo="Καλημέρα".', schema: z.object({ ok: z.boolean(), echo: z.string() }), effort: 'low', maxTokens: 1000, timeoutMs: Math.max(30_000, env.llmTurnTimeoutMs) });
+    const info = llmInfo();
+    results.llm = r.ok ? { status: 'OK', model: r.model, provider: info.provider, local_unvalidated: info.local, latency_ms: Date.now() - t0, echo_ok: r.data.echo.includes('Καλημέρα') } : { status: 'FAILED', provider: info.provider, reason: r.reason, latency_ms: Date.now() - t0 };
   } else results.llm = { status: 'NOT_CONFIGURED' };
   let wav: Uint8Array | null = null;
   const tts = ttsStatus();

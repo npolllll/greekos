@@ -740,3 +740,8 @@ p>.ic,small>.ic,.tiny>.ic,.small>.ic,li>.ic,h2>.ic{display:inline-block;vertical
 @media (max-width:560px){.alpha-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.alpha-hero{font-size:64px}}
 @media (prefers-reduced-motion:reduce){.alpha-tile,.alpha-tile:hover{transition:none;transform:none}}
 .context-coach textarea.greek-input{width:100%;min-height:76px;font-size:18px;line-height:1.45;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#fff;resize:vertical}
+/* narrow screens: card headers wrap, long technical paths break instead of pushing the layout */
+.card-top{flex-wrap:wrap;row-gap:10px}
+.card-top>.row,.card-top>span.row{flex-wrap:wrap;max-width:100%}
+.card-top .btn{max-width:100%;white-space:normal;text-align:center}
+.code{overflow-wrap:anywhere}
