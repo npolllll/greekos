@@ -68,3 +68,53 @@ export function AssetPlayer({ assetId }: { assetId: string }) {
   }
   return url ? <audio controls src={url} style={{ width: '100%' }}><track kind="captions" /></audio> : <span><button type="button" className="text-link" onClick={load} title="Подписанная ссылка действует 5 минут"><Icon name="play" size={13} /> Прослушать</button>{err ? <span className="error-text"> {err}</span> : null}</span>;
 }
+
+/** Owner listening verdict on one exact file (v6): required before any audio release. */
+export function ListenVerdict({ assetId, current }: { assetId: string; current: { decision: 'OK' | 'ISSUE'; at: string; note: string | null } | null }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  async function send(decision: 'OK' | 'ISSUE') {
+    const note = decision === 'ISSUE' ? window.prompt('Что слышно не так и где? (например: «Α:» искажено ударение в «έρχεσαι», 0:07)') : null;
+    if (decision === 'ISSUE' && !note) return;
+    setBusy(true); setErr(null);
+    const r = await fetch('/api/admin/qa/audio', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'listen', asset_id: assetId, decision, note: note ?? undefined }) });
+    const j = await r.json().catch(() => ({}));
+    setBusy(false);
+    if (!r.ok) return setErr(j.message ?? 'Не сохранено');
+    router.refresh();
+  }
+  return (
+    <span className="row" style={{ gap: 8 }}>
+      {current ? <span className={`tag ${current.decision === 'OK' ? 'green' : ''}`}>{current.decision === 'OK' ? 'прослушано владельцем: ОК' : `проблема: ${current.note ?? ''}`}</span> : <span className="tag gray">владелец не слушал</span>}
+      <button type="button" className="btn small outline" disabled={busy} onClick={() => send('OK')}>Прослушано — ОК</button>
+      <button type="button" className="btn small flat" disabled={busy} onClick={() => send('ISSUE')}>Есть проблема</button>
+      {err ? <span className="error-text" role="alert">{err}</span> : null}
+    </span>
+  );
+}
+
+/** Release decision for audio under the signed digital policy (v6); shows why a file is not eligible. */
+export function AudioReleaseButton({ assetIds, blockers, label, policyActive }: { assetIds: string[]; blockers: string[]; label: string; policyActive: boolean }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const reasons = [...(policyActive ? [] : ['цифровая политика выпуска не подписана']), ...blockers];
+  async function release() {
+    if (!window.confirm(`Выпустить ${assetIds.length} аудиофайл(ов) ученикам по цифровой политике? Ученики увидят пометку «синтезированный голос, цифровая проверка, не проверено носителем».`)) return;
+    setBusy(true); setMsg(null);
+    const r = await fetch('/api/admin/qa/audio', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'release', asset_ids: assetIds }) });
+    const j = await r.json().catch(() => ({}));
+    setBusy(false);
+    if (!r.ok) return setMsg({ ok: false, text: j.message ?? 'Решение не принято' });
+    setMsg({ ok: true, text: `Выпущено: ${j.released}${j.already_released ? `, уже было: ${j.already_released}` : ''}` });
+    router.refresh();
+  }
+  return (
+    <span className="stack" style={{ gap: 4 }}>
+      <button type="button" className="btn small" disabled={busy || reasons.length > 0 || !assetIds.length} onClick={release}>{busy ? 'Выпускаю…' : label}</button>
+      {reasons.length ? <span className="tiny quiet">Пока нельзя: {reasons.join('; ')}.</span> : null}
+      {msg ? <span className={msg.ok ? 'msg-ok' : 'error-text'} role="status">{msg.text}</span> : null}
+    </span>
+  );
+}

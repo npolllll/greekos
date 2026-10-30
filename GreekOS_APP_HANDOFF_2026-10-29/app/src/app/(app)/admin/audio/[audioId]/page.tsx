@@ -9,8 +9,8 @@ import { releaseMap } from '@/lib/content/repo';
 import { activePolicy } from '@/lib/admin/releases';
 import { DIGITAL_STATUS_LABEL, dateTimeRu } from '@/lib/admin/labels';
 import { env } from '@/lib/env';
-import { AudioRender, RightsForm, AssetPlayer } from '../../_components/AudioControls';
-import { ReleaseDialog } from '../../_components/ReleaseDialog';
+import { AudioRender, RightsForm, AssetPlayer, ListenVerdict, AudioReleaseButton } from '../../_components/AudioControls';
+import { audioReleaseBlockers, ownerListening } from '@/lib/qa/audio-release';
 import { ActionButton } from '../../_components/ActionButton';
 
 export const metadata = { title: 'Аудио · задание' };
@@ -86,13 +86,14 @@ export default async function AudioJobPage({ params }: { params: Promise<{ audio
               <p className="small">Права: <b>{a.rights_status}</b>{a.rights_evidence ? ` · ${(a.rights_evidence as { terms_url?: string }).terms_url ?? ''}` : ''}</p>
               <AssetPlayer assetId={a.id} />
               {current ? (
-                <div className="row mt8">
-                  {a.rights_status !== 'PROVIDER_TERMS_RECORDED' ? <RightsForm assetId={a.id} provider={a.provider} /> : null}
-                  {rel.has(a.id)
-                    ? <ActionButton url="/api/admin/releases/revoke" body={{ expand: 'audio_asset', id: a.id }} label="Отозвать аудио" promptReason="Причина отзыва аудио" variant="flat" />
-                    : a.digital_status === 'AUDIO_VERIFIED_DIGITAL' && a.rights_status === 'PROVIDER_TERMS_RECORDED'
-                      ? <ReleaseDialog expand="audio_asset" id={a.id} label="Выпустить аудио" title={`Выпуск аудио ${job.audio_id}`} variant="flat" policyActive={!!policy} policyStatement={policy?.statement_ru ?? null} note="Ученики увидят пометку: синтезированный голос, цифровая проверка, не проверено носителем." />
-                      : <span className="tiny muted">Выпуск возможен после цифровой проверки и записи прав.</span>}
+                <div className="stack mt8" style={{ gap: 8 }}>
+                  <ListenVerdict assetId={a.id} current={ownerListening(a)} />
+                  <div className="row">
+                    {a.rights_status !== 'PROVIDER_TERMS_RECORDED' && a.rights_status !== 'DEV_LOCAL_ONLY' ? <RightsForm assetId={a.id} provider={a.provider} /> : null}
+                    {rel.has(a.id)
+                      ? <ActionButton url="/api/admin/releases/revoke" body={{ expand: 'audio_asset', id: a.id }} label="Отозвать аудио" promptReason="Причина отзыва аудио" variant="flat" />
+                      : <AudioReleaseButton assetIds={[a.id]} blockers={audioReleaseBlockers(a, job.script_hash)} label="Выпустить по цифровой политике" policyActive={!!policy} />}
+                  </div>
                 </div>
               ) : null}
             </div>
