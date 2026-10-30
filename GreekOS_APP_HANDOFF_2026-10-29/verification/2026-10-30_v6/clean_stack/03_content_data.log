@@ -1,0 +1,19 @@
+ set_config 
+------------
+ 
+(1 row)
+
+ setval 
+--------
+   5275
+(1 row)
+
+ setval 
+--------
+      1
+(1 row)
+
+items|1843
+units|87
+audio_jobs|142
+content_releases|0
