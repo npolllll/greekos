@@ -212,13 +212,13 @@ async function report() {
   const jobs = (await loadJobs()).map(normalizeAudioJob);
   const [{ data: statuses }, { data: assets }, { data: casting }] = await Promise.all([
     db.from('audio_job_render_status').select('*'),
-    db.from('audio_assets').select('id, audio_id, render_status, digital_status, technical_status, rights_status, cast_approved, voice_ids, duration_ms, sha256, object_path, master_sha256, segment_cues, asr_roundtrip, normalization, created_at, invalidated_at').is('invalidated_at', null),
+    db.from('audio_assets').select('id, audio_id, script_hash, render_status, digital_status, technical_status, rights_status, cast_approved, voice_ids, duration_ms, sha256, object_path, master_sha256, segment_cues, asr_roundtrip, normalization, created_at, invalidated_at').is('invalidated_at', null),
     db.from('audio_job_casting').select('*'),
   ]);
   const st = new Map((statuses ?? []).map((s) => [s.audio_id, s]));
   const items = jobs.map((j) => {
     const s = st.get(j.audio_id);
-    const a = (assets ?? []).find((x) => x.audio_id === j.audio_id);
+    const a = (assets ?? []).find((x) => x.audio_id === j.audio_id && (x as { script_hash?: string }).script_hash === j.script_hash);
     const plan = planJob(j, ctx);
     return {
       audio_id: j.audio_id, status: s?.status ?? 'AUDIO_PENDING', reason: s?.reason ?? null,
@@ -238,13 +238,26 @@ async function report() {
       pending: count((i) => i.status === 'AUDIO_PENDING'), cost_usd: 0,
     },
     notes: [
-      'Local renders use macOS System Voice(s): real synthesized Greek speech for development; rights DEV_LOCAL_ONLY (not distributable to learners).',
-      'ASR round-trip uses local faster-whisper medium: a screening signal, not proof of pronunciation.',
+      'Local renders: Coqui VITS el (female, BSD-3; distributable after the owner records terms and listens) and MBROLA gr1/gr2 via espeak-ng (male, non-commercial: DEV_LOCAL_ONLY).',
+      'ASR round-trip: local Whisper turbo (sherpa-onnx int8), per segment, phonetic comparison; a screening signal, not proof of pronunciation or naturalness.',
       'No job is silently skipped: every job has a status and reason. Casting proposals are unapproved until the owner approves them.',
     ],
     jobs: items,
   };
   writeFileSync(join(outDir, 'AUDIO_RENDER_REPORT.json'), JSON.stringify(rep, null, 2) + '\n');
+  const voiceName = (id: string) => ctx.voices.get(id)?.display_name?.split(' · ')[0] ?? id;
+  const md = [
+    '# Аудио курса — статус всех заданий', '', `Сформировано ${rep.generated_at} (локальная среда). Всего заданий: ${items.length}.`, '',
+    `Файлов: ${rep.summary.rendered} · цифровая проверка пройдена: ${rep.summary.qa_pass} · нужен разбор: ${rep.summary.needs_linguistic_review} · техн. брак: ${rep.summary.qa_fail} · роли без пола (кастинг владельца): ${rep.summary.missing_voice_metadata} · нет голоса нужного пола: ${rep.summary.no_suitable_voice} · не отрендерено: ${rep.summary.pending}.`, '',
+    ...rep.notes.map((n) => `- ${n}`), '',
+    '| Задание | Статус | Голоса | Сегменты (прошли/всего) | CER фонет. | Длит., с | Права | Причина |', '|---|---|---|---|---|---|---|---|',
+    ...items.map((i) => {
+      const rt = i.asset?.roundtrip as { cer_phonetic?: number; segments?: Array<{ pass: boolean }> } | null | undefined;
+      const segs = rt?.segments ?? [];
+      return `| ${i.audio_id} | ${i.asset ? i.asset.digital_status : i.status} | ${(i.asset?.voices as string[] | undefined)?.map(voiceName).join(', ') ?? '—'} | ${segs.length ? `${segs.filter((x) => x.pass).length}/${segs.length}` : '—'} | ${rt?.cer_phonetic ?? '—'} | ${i.asset?.duration_ms ? (i.asset.duration_ms / 1000).toFixed(1) : '—'} | ${i.asset?.rights_status ?? '—'} | ${(i.reason ?? '').replace(/\|/g, '/')} |`;
+    }),
+  ].join('\n');
+  writeFileSync(join(outDir, 'AUDIO_V6.md'), md + '\n');
   const { data: voices } = await db.from('voice_catalog').select('*').order('voice_id');
   const { data: roles } = await db.from('cast_roles').select('*').order('cast_role_id');
   writeFileSync(join(outDir, 'VOICE_CATALOG.json'), JSON.stringify({ generated_at: new Date().toISOString(), voices, cast_roles: roles }, null, 2) + '\n');

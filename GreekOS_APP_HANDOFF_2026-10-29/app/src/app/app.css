@@ -9,7 +9,7 @@ a.navbtn,a.mobile-nav,a.btn,a.text-link,a.chip{text-decoration:none}
 .status-live.offline .dot{background:#c9a28e;box-shadow:none}
 .status-live.reconnecting .dot{background:var(--gold)}
 .mode-badge{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:4px 10px;font-size:11px;font-weight:750;letter-spacing:.3px;background:rgba(63,111,128,.14);color:#2f5a69}
-.mode-badge.preview{background:rgba(201,139,31,.18);color:#7d5609}
+.mode-badge.preview{background:rgba(201,139,31,.18);color:#6b4a08}
 
 .banner{border-radius:16px;padding:14px 16px;font-size:13px;line-height:1.6;display:flex;gap:11px;align-items:flex-start;margin:0 0 14px;border:1px solid var(--glass-border);background:var(--glass-2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:var(--glass-hi)}
 .banner .ic{flex:none;margin-top:2px}
@@ -31,7 +31,7 @@ a.navbtn,a.mobile-nav,a.btn,a.text-link,a.chip{text-decoration:none}
 .small{font-size:13px}
 .tiny{font-size:12px}
 .watermark{position:relative}
-.watermark::after{content:"ПРЕДПРОСМОТР РЕДАКТОРА · не влияет на прогресс";position:absolute;top:10px;right:12px;font-size:10px;letter-spacing:1px;font-weight:800;color:#7d5609;background:var(--gold-soft);border-radius:7px;padding:4px 8px;pointer-events:none;z-index:2}
+.watermark::after{content:"ПРЕДПРОСМОТР РЕДАКТОРА · не влияет на прогресс";position:absolute;top:10px;right:12px;font-size:10px;letter-spacing:1px;font-weight:800;color:#6b4a08;background:var(--gold-soft);border-radius:7px;padding:4px 8px;pointer-events:none;z-index:2}
 .field .hint{font-size:12px;color:var(--muted)}
 .field textarea{min-height:120px;resize:vertical;line-height:1.7}
 .input{width:100%;border:1px solid var(--line-strong);background:rgba(255,255,255,.88);border-radius:14px;padding:13px 15px;font-size:15px;outline:none;color:var(--ink);font-family:inherit;transition:border-color var(--t-2),box-shadow var(--t-2)}
