@@ -287,10 +287,10 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
 
         <aside className="stack">
           <div className="card cardpad">
-            <div className="card-top"><div className="card-title"><Icon name="target" /> Прогресс разговора</div><span className="mono small">{view.progress.reached} / {view.progress.total}</span></div>
-            <div className="progress-track"><div className="progress-fill" style={{ width: `${view.progress.total ? Math.round((view.progress.reached / view.progress.total) * 100) : 0}%` }} /></div>
+            <div className="card-top"><div className="card-title"><Icon name="target" /> Прогресс разговора</div><span className="mono small">{(view.progress?.reached ?? 0)} / {(view.progress?.total ?? 0)}</span></div>
+            <div className="progress-track"><div className="progress-fill" style={{ width: `${(view.progress?.total ?? 0) ? Math.round(((view.progress?.reached ?? 0) / (view.progress?.total ?? 0)) * 100) : 0}%` }} /></div>
             <div className="focus-list" style={{ marginTop: 12 }}>
-              {view.progress.steps.map((st) => (
+              {(view.progress?.steps ?? []).map((st) => (
                 <div key={st.node_id} className="focus-row" style={{ padding: '3px 8px' }}>
                   <span className={`check-dot ${st.reached && !st.current ? 'done' : st.current ? 'open' : ''}`} aria-hidden="true">{st.reached && !st.current ? <Icon name="check" /> : null}</span>
                   <span className="small" style={{ color: st.current ? 'var(--ink)' : 'var(--ink-2)', fontWeight: st.current ? 650 : 500 }}>{st.goal_ru ?? st.node_id}</span>
@@ -298,7 +298,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
               ))}
             </div>
           </div>
-          {view.examples_el.length && view.status === 'ACTIVE' ? (
+          {view.examples_el?.length && view.status === 'ACTIVE' ? (
             <div className="card cardpad">
               <div className="card-title"><Icon name="chat" /> Полезные фразы</div>
               <p className="tiny quiet" style={{ marginTop: 4 }}>Один из возможных вариантов — не ключ. Отвечайте своими словами.</p>

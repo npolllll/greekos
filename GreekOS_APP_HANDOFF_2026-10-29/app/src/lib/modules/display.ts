@@ -108,8 +108,37 @@ export function registerLabel(p: RgPayload): string {
   return (p.register ?? []).map((r) => REGISTER_RU[r] ?? r).join(', ') || 'не указан';
 }
 
+/**
+ * The Real Greek corpus keeps some authoring metadata in English. Learners see a faithful Russian
+ * rendering of that finite set; an unknown Latin-only string is shown as is rather than guessed.
+ */
+const META_RU: Record<string, string> = {
+  'Original teaching situation': 'Учебная ситуация',
+  Contrast: 'Контраст',
+  'friends unless task specifies formal': 'между друзьями, если задание не требует официального тона',
+  'context-specific': 'зависит от ситуации',
+  'No invariant translation inferred from spelling alone': 'Одно написание не даёт единственного перевода — смысл определяет ситуация.',
+  Greece: 'Греция',
+  'Greece; Thessaloniki cultural association': 'Греция; культурная ассоциация с Салониками',
+  'Northern Greece / Thessaloniki association': 'Северная Греция / ассоциация с Салониками',
+  'Greece; Northern association': 'Греция; ассоциация с севером',
+  'Literary voice; not modern frequency or model of standard pronunciation': 'литературный голос; не показатель современной частотности и не образец нормативного произношения',
+  'Dictionary not proof of frequency, exact prosody or 2026 age distribution': 'словарь не доказывает частотность, точную интонацию или возраст говорящих в 2026 году',
+  'Self-report historical, not representative or independently verified sociolinguistics': 'исторический самоотчёт; не репрезентативен и не проверен социолингвистически',
+  'Stereotyped humor; not exclusive geography or rate of use': 'стереотипный юмор; не доказывает исключительную географию или частоту',
+  'Cyprus-based teacher page; no Greece prevalence/age claim; video not listened or licensed': 'страница преподавателя с Кипра; без утверждений о распространённости в Греции и возрасте; видео не прослушано и не лицензировано',
+  'Single occurrence; self-reported location not demographic evidence; no frequency claim': 'единичное употребление; указанное место — не демографическое доказательство; без утверждений о частоте',
+  'One community entry; not prevalence survey': 'одна запись сообщества; не исследование распространённости',
+  'Single community evidence; current frequency unknown': 'одно свидетельство сообщества; текущая частотность неизвестна',
+  'No sound inspected; not all uses exhausted': 'звук не проверялся; перечислены не все употребления',
+};
+export function metaRu(s: string | null | undefined): string {
+  if (!s) return '';
+  return META_RU[s.trim()] ?? s;
+}
+
 export function regionLabel(p: RgPayload): string {
-  const tag = p.region?.tag ?? 'не указан';
+  const tag = p.region?.tag ? metaRu(p.region.tag) : 'не указан';
   const ev = p.region?.evidence_strength;
   return ev ? `${tag} (основание: ${EVIDENCE_RU[ev] ?? ev})` : tag;
 }

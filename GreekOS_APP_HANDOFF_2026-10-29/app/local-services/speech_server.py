@@ -189,19 +189,36 @@ def get_asr(name):
         return _asr[name], _asr_locks[name]
 
 
-def split_long(audio, rate, max_s=27.0, search_s=5.0):
-    """Cuts audio longer than Whisper's 30 s window at the quietest 20 ms frame near each boundary."""
+# sherpa-onnx caps Whisper output at ~6 tokens per second of INPUT audio, while fluent Greek needs
+# ~10 tokens/s (about 2 characters per token): every chunk silently lost its tail. Chunks therefore stay
+# <= 15 s, are cut in the longest pause near the boundary, and each is padded with trailing silence to
+# ~29 s so the cap (~174 tokens) exceeds what 15 s of speech can need. The encoder sees a 30 s window
+# either way, so the padding costs no extra encoder time.
+ASR_CHUNK_S = float(os.environ.get("LOCAL_ASR_CHUNK_S", "15"))
+ASR_WINDOW_S = 29.0
+ASR_HEAD_S = 0.3
+
+
+def split_long(audio, rate, max_s=ASR_CHUNK_S, search_s=8.0):
+    """Cuts long audio into <= max_s chunks at the longest low-energy run near each boundary."""
     if audio.size <= int(rate * max_s):
         return [audio]
     win = int(rate * 0.02)
     n = audio.size // win
     energy = np.sqrt((audio[: n * win].reshape(n, win) ** 2).mean(axis=1))
+    floor = max(float(np.percentile(energy, 10)) * 2.5, 1e-4)
     cuts, start = [], 0
     while (audio.size - start) > int(rate * max_s):
-        target = start + int(rate * (max_s - search_s / 2))
-        lo, hi = max(start + win, target - int(rate * search_s / 2)), min(audio.size - win, target + int(rate * search_s / 2))
-        fl, fh = lo // win, max(lo // win + 1, hi // win)
-        cut = (fl + int(np.argmin(energy[fl:fh]))) * win
+        hi = min(n - 1, (start + int(rate * max_s)) // win)
+        lo = max(start // win + 1, hi - int(search_s / 0.02))
+        best, best_len, run = None, 0, 0
+        for i in range(lo, hi):
+            run = run + 1 if energy[i] <= floor else 0
+            if run > best_len:
+                best_len, best = run, i - run // 2
+        if best is None or best_len < 3:  # no real pause (< 60 ms): fall back to the quietest frame
+            best = lo + int(np.argmin(energy[lo:hi]))
+        cut = best * win
         cuts.append((start, cut))
         start = cut
     cuts.append((start, audio.size))
@@ -219,8 +236,8 @@ def transcribe(data, name):
     t0 = time.time()
     offset = 0.0
     for part in split_long(audio, rate):
-        # Whisper drops the last syllables without trailing context: pad with silence on both sides.
-        padded = np.concatenate([np.zeros(int(rate * 0.3), dtype=np.float32), part, np.zeros(int(rate * 0.8), dtype=np.float32)])
+        tail = max(0.8, ASR_WINDOW_S - ASR_HEAD_S - part.size / rate)
+        padded = np.concatenate([np.zeros(int(rate * ASR_HEAD_S), dtype=np.float32), part, np.zeros(int(rate * tail), dtype=np.float32)])
         with lock:
             s = rec.create_stream()
             s.accept_waveform(rate, padded)

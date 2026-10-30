@@ -5,6 +5,8 @@ import { formatLocalDateRu } from '@/lib/learning/calendar';
 import { adminClient } from '@/lib/supabase/admin';
 import { Icon } from '@/components/Icon';
 
+const BLOCK_RU: Record<string, string> = { correction: 'работа над ошибками', weak_correction: 'слабые темы', strong_correction: 'поддержание', retention: 'отсроченное повторение', new_content: 'новый материал', independent_application: 'самостоятельное применение' };
+
 export const metadata = { title: 'Практика' };
 
 export default async function PracticeHub() {
@@ -30,7 +32,7 @@ export default async function PracticeHub() {
         {s.reviews.upcoming.length ? s.reviews.upcoming.map((r) => (
           <div className="review-row" key={`${r.competency_id}-${r.interval_days}`}><b>{nm.get(r.competency_id) ?? r.competency_id}</b><small>D{r.interval_days} · {formatLocalDateRu(r.due_local_date)}</small></div>
         )) : <div className="empty"><strong>Пока нет запланированных проверок</strong>Они появятся после первого самостоятельного верного ответа.</div>}
-        {s.plan.log.length ? <p className="tiny muted mt8">Перераспределение времени: {s.plan.log.map((l) => `${l.minutes} мин ${l.from} → ${l.to}`).join('; ')} (пустые блоки не заполняются выдуманными задачами).</p> : null}
+        {s.plan.log.length ? <p className="tiny muted mt8">Перераспределение времени: {s.plan.log.map((l) => `${l.minutes} мин: «${BLOCK_RU[l.from] ?? l.from}» → «${BLOCK_RU[l.to] ?? l.to}»`).join('; ')} — пустые блоки не заполняются выдуманными задачами.</p> : null}
       </div>
     </section>
   );

@@ -16,7 +16,7 @@ export default async function ListeningPage() {
       <div className="screen-head"><div><div className="eyebrow">GreekOS / Аудирование</div><h1 className="screen-title">Аудирование</h1><p className="screen-sub">Только с реальным проверенным звуком. Транскрипт не заменяет прослушивание; без аудио задание не проводится и не оценивается.</p></div></div>
       <div className="admin-top">
         <div className="card admin-stat"><small className="quiet">Заданий на слух в курсе</small><div className="metric mono">{items.length}</div></div>
-        <div className="card admin-stat"><small className="quiet">Доступны сейчас</small><div className="metric mono">{usable.length}</div></div>
+        <div className="card admin-stat"><small className="quiet">Доступны сейчас</small><div className="metric mono">{usable.length}</div>{u.devPreview ? <small className="quiet">DEV-PREVIEW: звук не выпущен</small> : null}</div>
         <div className="card admin-stat"><small className="quiet">Ждут аудио</small><div className="metric mono">{items.filter((i) => i.access.released && !i.access.audioReady).length}</div></div>
         <div className="card admin-stat"><small className="quiet">Цифровых аудио прошли QA</small><div className="metric mono">{verified ?? 0}</div></div>
       </div>

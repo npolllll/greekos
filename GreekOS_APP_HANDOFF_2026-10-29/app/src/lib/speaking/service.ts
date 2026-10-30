@@ -6,6 +6,7 @@ import { HttpError, type SessionUser } from '../session-user.ts';
 import { releaseMap } from '../content/repo.ts';
 import { env } from '../env.ts';
 import { llmConfigured, llmInfo, structuredCall } from '../providers/llm.ts';
+import { courseGlossary, glossGreek, glossRussian } from './glossary.ts';
 import { asrStatus, synthesizeWithVoice, type SpeedProfile } from '../providers/speech.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
 import { localDateOf } from '../learning/calendar.ts';
@@ -208,14 +209,21 @@ export async function help(user: SessionUser, b: { session_id: string; kind: 'hi
   if (b.kind === 'hint') {
     return { kind: b.kind, answer_ru: `Цель: ${node?.learner_goal_ru ?? '—'}. Смысл → опорные слова → пример.`, example_el: node?.acceptable_examples_el?.[0] ?? null, source: 'authored', note: 'Пример из сценария — один из возможных, не ключ. Использование подсказки отмечается как помощь.' };
   }
-  if (!llmConfigured()) return { kind: b.kind, answer_ru: 'AI-подсказки не подключены. Доступна подсказка из сценария.', example_el: node?.acceptable_examples_el?.[0] ?? null, source: 'unavailable', note: null };
+  if (!llmConfigured() || llmInfo().local) {
+    // No AI model validated for Greek: answer only from authored course material, never generate.
+    const glossary = await courseGlossary(user);
+    const found = b.kind === 'how_to_say' ? glossRussian(b.question ?? '', glossary) : glossGreek(b.question?.trim() || lastA?.text_el || '', glossary);
+    const note = llmConfigured() ? 'Локальная AI-модель не проверена для греческого, поэтому подсказка — только из словаря курса.' : 'AI-подсказки не подключены; ответ — из словаря курса.';
+    if (!found.length) return { kind: b.kind, answer_ru: b.kind === 'why' ? 'Объяснение правил требует проверенной AI-модели. Посмотрите теорию урока или возьмите подсказку сценария.' : 'В словаре открытых вам уроков этого нет. Возьмите подсказку сценария.', example_el: node?.acceptable_examples_el?.[0] ?? null, source: 'course_glossary', note };
+    return { kind: b.kind, answer_ru: found.map((g) => `${g.lemma} — ${g.meaning_ru}`).join('; '), example_el: found.find((g) => g.example)?.example ?? null, source: 'course_glossary', note: `${note} Уроки: ${[...new Set(found.map((g) => g.unit_title))].slice(0, 2).join(', ')}.` };
+  }
   const prompts: Record<string, string> = {
     translate: `Переведи на русский реплику персонажа: «${lastA?.text_el ?? ''}». Коротко, без пересказа ответа ученика.`,
     explain: `Объясни по-русски кратко (2–3 предложения) фразу или слово: «${(b.question ?? lastA?.text_el ?? '').slice(0, 300)}». Дай один короткий пример на греческом.`,
     why: `Ученик спрашивает «Почему так?» о реплике или исправлении: «${(b.question ?? lastA?.text_el ?? '').slice(0, 300)}». Объясни по-русски правило в 2–3 предложениях (грамматика, порядок слов или регистр) и дай один короткий греческий пример.`,
     how_to_say: `Ученик спрашивает, как сказать по-гречески: «${(b.question ?? '').slice(0, 300)}». Дай одну естественную нейтральную фразу уровня ${(sc!.payload as ScenarioPayload).cefr_level ?? 'A2'} и короткое пояснение по-русски.`,
   };
-  const r = await structuredCall({ userId: user.userId, operation: `speaking_help_${b.kind}`, model: env.llmModelDialogue, system: 'Ты помощник-репетитор новогреческого для русскоязычного ученика. Отвечай кратко и точно; не выдумывай фактов о реальном мире.', user: prompts[b.kind], schema: HelpOut, effort: 'low', maxTokens: 1500, timeoutMs: 20_000 });
+  const r = await structuredCall({ userId: user.userId, operation: `speaking_help_${b.kind}`, model: env.llmModelDialogue, system: 'Ты помощник-репетитор новогреческого для русскоязычного ученика. Отвечай кратко и точно; не выдумывай фактов о реальном мире.', user: prompts[b.kind], schema: HelpOut, effort: 'low', maxTokens: 1500, timeoutMs: env.llmTurnTimeoutMs });
   if (!r.ok) return { kind: b.kind, answer_ru: 'Подсказка сейчас недоступна. Попробуйте подсказку из сценария.', example_el: null, source: 'error', note: r.reason };
   return { kind: b.kind, ...r.data, source: 'ai_draft', note: 'AI-подсказка (черновик, не материал курса). Использование отмечается как помощь.' };
 }
@@ -289,9 +297,10 @@ export async function endSession(user: SessionUser, sessionId: string) {
     const r = await summarizeSession({ userId: user.userId, scenario: payload, mode: s.mode, turns: usable });
     if (r.ok) {
       const sum = r.summary;
-      summary = { status: 'ASSESSED_PROVISIONAL', model: r.model, ...sum, label: 'Учебная автоматическая оценка, не официальный экзамен и не оценка произношения' };
+      const unvalidated = llmInfo().local;
+      summary = { status: 'ASSESSED_PROVISIONAL', model: r.model, ...sum, unvalidated_model: unvalidated, label: unvalidated ? 'Черновой итог локальной модели, не проверенной для греческого: только для разработки, на освоение не влияет' : 'Учебная автоматическая оценка, не официальный экзамен и не оценка произношения' };
       const task = sum.dimensions.find((d) => d.dimension === 'task_success');
-      const eligible = s.input_mode === 'voice' && !helpUsed && s.mode !== 'a0_guided' && sum.confidence === 'high' && sum.communicative_goal === 'achieved' && task?.level === 'independent';
+      const eligible = !unvalidated && s.input_mode === 'voice' && !helpUsed && s.mode !== 'a0_guided' && sum.confidence === 'high' && sum.communicative_goal === 'achieved' && task?.level === 'independent';
       const now = new Date().toISOString();
       const localDate = localDateOf(new Date(), user.profile.timezone);
       if (eligible) {
@@ -302,9 +311,9 @@ export async function endSession(user: SessionUser, sessionId: string) {
         }));
       }
       summary.mastery_counted = eligible;
-      summary.mastery_reason = eligible ? 'Самостоятельная устная задача с доказательствами' : s.input_mode !== 'voice' ? 'Текстовый режим не засчитывается как говорение' : helpUsed ? 'Использовались подсказки' : 'Недостаточно надёжного доказательства';
+      summary.mastery_reason = eligible ? 'Самостоятельная устная задача с доказательствами' : unvalidated ? 'оценивала невалидированная локальная модель' : s.input_mode !== 'voice' ? 'Текстовый режим не засчитывается как говорение' : helpUsed ? 'Использовались подсказки' : 'Недостаточно надёжного доказательства';
     } else {
-      summary = { status: 'ABSTAIN', reason: r.reason, label: 'Итог не сформирован — оценка воздержалась, без штрафа' };
+      summary = { status: 'ABSTAIN', reason: r.reason, label: r.reason === 'INSUFFICIENT_TURNS' ? (s.input_mode === 'voice' ? 'Итог не сформирован: нужно хотя бы две подтверждённые голосовые реплики. Без штрафа.' : 'Итог не сформирован: текстовый режим не оценивается как говорение. Без штрафа.') : 'Итог не сформирован — оценка воздержалась, без штрафа' };
     }
   }
   const idem = `speaking-end-${sessionId}`;

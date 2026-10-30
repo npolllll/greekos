@@ -26,7 +26,7 @@ export default async function PegpTopicPage({ params }: { params: Promise<{ topi
   return (
     <section className="screen active">
       <div className="screen-head">
-        <div><div className="eyebrow">GreekOS / ΠΕΓΠ / {topic}</div><h1 className="screen-title">ΠΕΓΠ · {topic}</h1><p className="screen-sub">{v.items.length} заданий сопоставлено; доступно {v.items.filter((i) => i.delivered.access.learnerUsable).length}.</p></div>
+        <div><div className="eyebrow">GreekOS / ΠΕΓΠ / {topic}</div><h1 className="screen-title">ΠΕΓΠ · пакет {Number(topic.slice(1))}</h1><p className="screen-sub">{v.items.length} заданий сопоставлено; доступно {v.items.filter((i) => i.delivered.access.learnerUsable).length}.</p></div>
         <Link className="btn outline" href="/pegp"><Icon name="flag" size={15} /> Все темы</Link>
       </div>
       <div className="banner info"><Icon name="info" /><span>Факт и язык оцениваются раздельно; ошибка ударения ≠ неверный гражданский факт. Не ΚΕΓ B2 и не официальный экзамен.</span></div>

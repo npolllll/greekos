@@ -1,5 +1,5 @@
 import type { RgPayload } from '@/lib/modules/display';
-import { CATEGORY_RU, CURRENTNESS_RU, attestationLabel, prosodyLabel, regionLabel, registerLabel, riskWarnings } from '@/lib/modules/display';
+import { CATEGORY_RU, CURRENTNESS_RU, metaRu, attestationLabel, prosodyLabel, regionLabel, registerLabel, riskWarnings } from '@/lib/modules/display';
 
 /** Required Real Greek display: register, context, neutral equivalent, region, attestation, prosody, risk. */
 export function RgDetail({ p, full }: { p: RgPayload; full?: boolean }) {
@@ -23,10 +23,10 @@ export function RgDetail({ p, full }: { p: RgPayload; full?: boolean }) {
       <div className="subtle-divider" />
       {(full ? contexts : contexts.slice(0, 1)).map((c, i) => (
         <div className="dialogue mt8" key={i}>
-          <small>{[c.setting, c.relationship].filter(Boolean).join(' · ')}</small>
+          <small>{[c.setting, c.relationship].filter(Boolean).map((x) => metaRu(x)).join(' · ')}</small>
           {c.example_original ? <p lang="el" style={{ whiteSpace: 'pre-line', marginTop: 8 }}>{c.example_original}</p> : null}
           {c.neutral_alternative ? <small>Нейтральный вариант: <span lang="el" className="greek-serif" style={{ fontSize: 14 }}>{c.neutral_alternative}</span></small> : null}
-          {c.pitfall ? <div className="tiny muted mt8">{c.pitfall}</div> : null}
+          {c.pitfall ? <div className="tiny muted mt8">{metaRu(c.pitfall)}</div> : null}
         </div>
       ))}
       {full && p.source_evidence?.length ? (
@@ -38,7 +38,7 @@ export function RgDetail({ p, full }: { p: RgPayload; full?: boolean }) {
               <li key={i}>
                 {s.url && /^https:\/\//.test(s.url) ? <a href={s.url} target="_blank" rel="noreferrer noopener">{s.source_id ?? 'источник'}</a> : s.source_id ?? 'источник'}
                 {s.specific_section ? ` · ${s.specific_section}` : ''}{s.publication_date ? ` · ${s.publication_date}` : ' · дата неизвестна'}{s.checked_on ? ` · проверено ${s.checked_on}` : ''}
-                {s.limitations ? <div className="tiny muted">Ограничения: {s.limitations}</div> : null}
+                {s.limitations ? <div className="tiny muted">Ограничения: {metaRu(s.limitations)}</div> : null}
               </li>
             ))}
           </ul>

@@ -21,3 +21,11 @@
 .result-row:last-child{border:0}
 .result-row .answer-line{color:var(--ink-2);overflow-wrap:anywhere}
 @media(max-width:650px){.exam-runbar{top:59px;padding:10px 12px}.exam-item{padding:13px}}
+.exam-parts.list{display:flex;flex-direction:column;gap:6px}
+.exam-parts.list .exam-part{flex-direction:row;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;border-radius:14px;text-align:left;min-height:0}
+.exam-parts.list .exam-part .exam-part-name{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
+.exam-parts.list .exam-part .exam-part-name small{color:var(--muted)}
+.exam-parts.list .exam-part .chip-state{margin:0;font-size:11px;padding:3px 8px;white-space:nowrap}
+.exam-parts.list .exam-part svg{color:var(--faint);flex:none;transition:transform var(--t-2) var(--ease)}
+.exam-parts.list .exam-part:hover svg{transform:translateX(3px);color:var(--accent)}
+.exam-parts.list .exam-part b{margin:0}

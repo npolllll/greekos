@@ -9,6 +9,13 @@ import { Icon } from '@/components/Icon';
 import { EventFeed } from '@/components/EventFeed';
 import { AnimatedNumber, ProgressRing } from '@/components/ui/Motion';
 
+/** 1 день, 2 дня, 5 дней — Russian plural for the streak counter. */
+function daysWord(n: number): string {
+  const a = n % 100, b = n % 10;
+  if (a >= 11 && a <= 14) return 'дней';
+  return b === 1 ? 'день' : b >= 2 && b <= 4 ? 'дня' : 'дней';
+}
+
 export const metadata = { title: 'Главная' };
 
 const STATE_RU: Record<string, string> = { recognition: 'узнаю', controlled: 'применяю с опорой', spontaneous: 'применяю сам', retention_due: 'ждёт повторения', retained: 'сохранено D7+D28', transfer_confirmed: 'перенос подтверждён', needs_review: 'нужно повторить' };
@@ -122,7 +129,7 @@ export default async function TodayPage() {
           <div className="card-top"><div className="card-title"><Icon name="flame" /> Серия дней</div><Link className="text-link" href="/progress">Ритм <Icon name="arrow" size={12} /></Link></div>
           <div className="row" style={{ alignItems: 'flex-end', gap: 12 }}>
             <span className="big-num" style={{ color: s.stats.active_days_streak ? 'var(--accent-strong)' : 'var(--ink)' }}><AnimatedNumber value={s.stats.active_days_streak} /></span>
-            <span className="small quiet" style={{ paddingBottom: 4 }}>{s.stats.active_days_streak ? 'дней подряд с занятиями' : 'серия начнётся с первого ответа'}</span>
+            <span className="small quiet" style={{ paddingBottom: 4 }}>{s.stats.active_days_streak ? `${daysWord(s.stats.active_days_streak)} подряд с занятиями` : 'серия начнётся с первого ответа'}</span>
           </div>
           <div className="week" aria-label="Активность за 7 дней">
             {s.week.map((w) => (

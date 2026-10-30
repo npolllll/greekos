@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { env } from '../env.ts';
-import { structuredCall } from '../providers/llm.ts';
+import { structuredCall, llmInfo } from '../providers/llm.ts';
 import { greekLetterRatio } from '../scoring/normalize.ts';
 import { AUTHORED_LINE_MODES, HINTS_ALLOWED, type SpeakingMode } from './state-machine.ts';
 
@@ -97,8 +97,11 @@ export async function nextTurn(params: {
       if (loops > maxRepairs && nodeById(scenario, 'RETRY')) to = 'RETRY';
     }
     const targetNode = nodeById(scenario, to) ?? node;
-    const line = generated && !AUTHORED_LINE_MODES.includes(params.mode) ? assistantEl : targetNode.assistant_el;
-    return { nextNode: targetNode.node_id, assistantEl: line, intent, hintRu: HINTS_ALLOWED(params.mode) ? hintRu : null, generated: generated && !AUTHORED_LINE_MODES.includes(params.mode), engine, ended: isTerminal(targetNode), repairLoops: loops };
+    // An unvalidated local model only classifies the transition: learners hear the authored line, except
+    // in free talk, where no authored line exists. Generated Greek from such a model is never course text.
+    const useGenerated = generated && !AUTHORED_LINE_MODES.includes(params.mode) && (!llmInfo().local || params.mode === 'free_talk');
+    const line = useGenerated ? assistantEl : targetNode.assistant_el;
+    return { nextNode: targetNode.node_id, assistantEl: line, intent, hintRu: HINTS_ALLOWED(params.mode) ? hintRu : null, generated: useGenerated, engine, ended: isTerminal(targetNode), repairLoops: loops };
   };
 
   if (params.repairRequested && hasRepair && allowed.has('REPAIR')) {
@@ -122,7 +125,7 @@ export async function nextTurn(params: {
     schema: DialogueOutput,
     effort: 'low',
     maxTokens: 2000,
-    timeoutMs: 25_000,
+    timeoutMs: env.llmTurnTimeoutMs,
   });
 
   if (!r.ok) {

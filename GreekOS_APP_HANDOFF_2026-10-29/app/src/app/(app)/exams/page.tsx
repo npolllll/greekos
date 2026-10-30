@@ -26,17 +26,17 @@ export default async function ExamsPage() {
               <div><span className="tag gray">Форма {formNumber(f.form_id)}</span><h3>{f.form_id}</h3></div>
               <span className="tag">{f.components.length} компонентов</span>
             </div>
-            <p>{f.text_assembly_complete ? 'Тексты всех компонентов собраны. ' : 'Тексты компонентов присутствуют. '}Статус формы: <span className="code">{f.status ?? '—'}</span></p>
-            <div className="exam-parts" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(92px,1fr))' }}>
+            <p title={f.status ?? undefined}>{f.components.filter((c) => c.availability.startable).length} из {f.components.length} компонентов можно начать сейчас{f.components.some((c) => c.availability.reason === 'AUDIO_PENDING') ? '; аудирование ждёт проверенного звука' : ''}{f.components.some((c) => c.availability.reason === 'SPEAKING') ? '; говорение проходит в «Разговорах»' : ''}.</p>
+            <div className="exam-parts list">
               {f.components.map((c) => {
                 const done = c.last?.status === 'SUBMITTED';
                 const cls = c.availability.startable ? (done ? 'done' : 'ok') : c.availability.reason === 'AUDIO_PENDING' ? 'audio' : '';
                 const label = c.open_attempt_id ? 'продолжить' : done ? 'сдано' : c.availability.startable ? 'доступно' : c.availability.reason === 'SPEAKING' ? 'в «Разговорах»' : c.availability.reason === 'AUDIO_PENDING' ? 'нет аудио' : 'на проверке';
                 return (
                   <Link key={c.component_id} href={`/exams/${c.component_id}`} className="exam-part" aria-label={`${KIND_RU[c.kind]} ${c.display_id}: ${REASON_RU[c.availability.reason]}`}>
-                    <b>{KIND_RU[c.kind]}</b>
-                    <small>{c.display_id.replace('KEG-B2-', '')}{c.duration_minutes ? ` · ${c.duration_minutes} мин` : ''}</small>
+                    <span className="exam-part-name"><b>{KIND_RU[c.kind]}</b><small>{c.display_id.replace('KEG-B2-', '')}{c.duration_minutes ? ` · ${c.duration_minutes} мин` : ''}</small></span>
                     <span className={`chip-state ${cls}`}>{label}</span>
+                    <Icon name="arrow" size={14} />
                   </Link>
                 );
               })}

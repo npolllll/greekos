@@ -32,7 +32,7 @@ export default async function PegpPage() {
 
       <div className="admin-top">
         <div className="card admin-stat"><small className="quiet">Заданий в модуле</small><div className="metric mono">{o.totalMapped}</div><small className="quiet">сопоставлено с темами</small></div>
-        <div className="card admin-stat"><small className="quiet">Доступно сейчас</small><div className="metric mono">{o.totalAvailable}</div><small className="quiet">выпущено и не просрочено</small></div>
+        <div className="card admin-stat"><small className="quiet">Доступно сейчас</small><div className="metric mono">{o.totalAvailable}</div><small className="quiet">{u.devPreview ? "DEV-PREVIEW: не выпущено, открыто для теста" : "выпущено и не просрочено"}</small></div>
         <div className="card admin-stat"><small className="quiet">Документы каталога</small><div className="metric mono">{o.catalog.total}</div><small className="quiet">снимок {o.catalog.snapshot ?? '—'}</small></div>
         <div className="card admin-stat"><small className="quiet">Темы без заданий</small><div className="metric mono">{o.catalog.pending}</div><small className="quiet">недоступны, не генерируются</small></div>
       </div>
@@ -40,14 +40,13 @@ export default async function PegpPage() {
       <div className="pegp-topics">
         {o.topics.map((t) => (
           <Link className="card pegp-topic" key={t.topic} href={`/pegp/${t.topic}`}>
-            <span className="tag gray">{t.packets.map((p) => (p.kind === 'language_support' ? 'язык' : 'темы')).join(' + ') || 'темы'}</span>
-            <h3>{t.topic}</h3>
+            <span className="eyebrow">Пакет {Number(t.topic.slice(1))}{t.packets.some((p) => p.kind === 'language_support') ? ' · факты + язык' : ' · факты'}</span>
+            <h3>География, история, культура, институты</h3>
             <div className="pegp-counts">
-              <span className="tag blue">сопоставлено {t.mapped}</span>
-              <span className={`tag ${t.available ? 'green' : 'gray'}`}>доступно {t.available}</span>
+              <span className={`tag ${t.available ? 'green' : 'gray'}`}>доступно {t.available} из {t.mapped}</span>
               {t.expired ? <span className="tag">допуск истёк: {t.expired}</span> : null}
             </div>
-            <small className="quiet">{t.packets.map((p) => [p.packet_id.replace('PEGP-', ''), p.bank_version, p.date].filter(Boolean).join(' · ')).join(' | ')}</small>
+            <small className="quiet">{[...new Set(t.packets.map((p) => p.bank_version).filter(Boolean))].map((b) => `банк ${b}`).join(', ') || 'версия банка не указана'}{t.packets.find((p) => p.date)?.date ? ` · снимок ${t.packets.find((p) => p.date)!.date}` : ''}</small>
           </Link>
         ))}
       </div>

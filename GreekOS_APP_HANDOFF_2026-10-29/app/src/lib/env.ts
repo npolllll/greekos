@@ -36,6 +36,8 @@ export const env = {
   get llmBaseUrl() { return opt('LLM_BASE_URL'); },
   get llmApiKey() { return opt('LLM_API_KEY'); },
   get llmCompatModel() { return opt('LLM_MODEL') ?? 'local-model'; },
+  /** Per-call budget for a speaking turn / help request. A CPU-only local model may need more than a cloud one. */
+  get llmTurnTimeoutMs() { return Number(opt('LLM_TURN_TIMEOUT_MS') ?? 25_000); },
   get llmModelDialogue() { return opt('LLM_MODEL_DIALOGUE') ?? 'claude-opus-5-5'; },
   get llmModelAssessor() { return opt('LLM_MODEL_ASSESSOR') ?? 'claude-opus-5-5'; },
 
