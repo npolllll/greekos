@@ -1,0 +1,1487 @@
+{
+  "command": "render-batch",
+  "total": 123,
+  "rendered": 123,
+  "counts": {
+    "TECH_QA_PASS": 55,
+    "DIGITAL_REVIEWED": 68
+  },
+  "jobs": [
+    {
+      "audio_id": "D-A1-LISTENING-01-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 48919,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.25,
+        "cer": 0.1266,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "D-B1-LISTENING-01-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 41295,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1765,
+        "cer": 0.0588,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "KEG-B2-L01-AUD1",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 601242,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1584,
+        "cer": 0.054,
+        "accent": 4
+      }
+    },
+    {
+      "audio_id": "KEG-B2-L02-AUD1",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 493759,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1737,
+        "cer": 0.0532,
+        "accent": 3
+      }
+    },
+    {
+      "audio_id": "KEG-B2-L03-AUD1",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 518517,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1113,
+        "cer": 0.0211,
+        "accent": 8
+      }
+    },
+    {
+      "audio_id": "RG-0001-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 35614,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1333,
+        "cer": 0.0449,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "RG-0002-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 41465,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.16,
+        "cer": 0.0678,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "RG-0003-TONE01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 28342,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0455,
+        "cer": 0.0238,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "RG-0004-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 32858,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1304,
+        "cer": 0.0263,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "RG-0005-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 61623,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2308,
+        "cer": 0.0465,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "RG-0006-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 66312,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2593,
+        "cer": 0.0301,
+        "accent": 2
+      }
+    },
+    {
+      "audio_id": "RG-0007-TONE01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 27314,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1905,
+        "cer": 0.0583,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "RG-0008-TONE01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 39571,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.125,
+        "cer": 0.0522,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "RG-0009-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 68078,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3158,
+        "cer": 0.1071,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "RG-0010-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 58266,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3214,
+        "cer": 0.0994,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "RG-0011-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 54619,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3333,
+        "cer": 0.069,
+        "accent": 4
+      }
+    },
+    {
+      "audio_id": "RG-0012-TONE01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 68624,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.4545,
+        "cer": 0.144,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-003-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 53606,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2381,
+        "cer": 0.0769,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-006-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 52737,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0952,
+        "cer": 0.0734,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-007-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 61051,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2941,
+        "cer": 0.1084,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-008-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 44887,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.4615,
+        "cer": 0.1528,
+        "accent": 2
+      }
+    },
+    {
+      "audio_id": "U-A1-009-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 48642,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3889,
+        "cer": 0.1354,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-010-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 48963,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2917,
+        "cer": 0.0806,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-011-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 64593,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3333,
+        "cer": 0.1278,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-A1-012-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 86346,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1579,
+        "cer": 0.0521,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-013-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 38558,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0286,
+        "cer": 0.0054,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-014-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 64783,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3571,
+        "cer": 0.1644,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-015-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 59924,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1786,
+        "cer": 0.0537,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-A1-016-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 89627,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.5,
+        "cer": 0.1154,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-017-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 33342,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0345,
+        "cer": 0.0184,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-018-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 85458,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3929,
+        "cer": 0.1455,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 17873,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD02",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 17724,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.5,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7006,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 6969,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 6291,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3333,
+        "cer": 0.0588,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD06",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 18981,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-019-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7612,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1,
+        "cer": 0.0204,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7028,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1667,
+        "cer": 0.0345,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7185,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7952,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1111,
+        "cer": 0.1111,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 15489,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2222,
+        "cer": 0.0204,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7662,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7397,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1,
+        "cer": 0.1042,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7386,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD08",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 6722,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.25,
+        "cer": 0.1081,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A1-020-AUD09",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 21820,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.25,
+        "cer": 0.15,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-001-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 53905,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1875,
+        "cer": 0.044,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-A2-004-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 41347,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1875,
+        "cer": 0.0437,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-005-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 25282,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1111,
+        "cer": 0.0313,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-006-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 51138,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.05,
+        "cer": 0.0636,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-007-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 20935,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1071,
+        "cer": 0.0493,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-008-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 40150,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2,
+        "cer": 0.0349,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-009-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 47638,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0278,
+        "cer": 0,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-A2-010-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 50683,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0556,
+        "cer": 0.022,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-011-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 136610,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3333,
+        "cer": 0.1233,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-012-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 79181,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1739,
+        "cer": 0.1193,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-013-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 99656,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2979,
+        "cer": 0.149,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-014-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 89966,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1176,
+        "cer": 0.0496,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-A2-015-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 130451,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2766,
+        "cer": 0.0906,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-A2-016-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 12150,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-016-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 18939,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 24750,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2308,
+        "cer": 0.0974,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 11759,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.12,
+        "cer": 0.0764,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 10281,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2222,
+        "cer": 0.0727,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 11695,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2941,
+        "cer": 0.06,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 8381,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD06",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 30783,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.4118,
+        "cer": 0.1028,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-017-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 8801,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3333,
+        "cer": 0.0988,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7917,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 6744,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3333,
+        "cer": 0.0833,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 8810,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2,
+        "cer": 0.093,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 8521,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1,
+        "cer": 0.0333,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7227,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1667,
+        "cer": 0.0526,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7943,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0833,
+        "cer": 0.0156,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7583,
+      "error": null,
+      "roundtrip": {
+        "wer": 0,
+        "cer": 0,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-A2-018-AUD08",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 9655,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0833,
+        "cer": 0.0575,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-001-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 40766,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.119,
+        "cer": 0.0261,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-B1-003-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 40357,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1379,
+        "cer": 0.0696,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-008-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 41124,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0667,
+        "cer": 0.0491,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-009-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 69107,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.24,
+        "cer": 0.0377,
+        "accent": 2
+      }
+    },
+    {
+      "audio_id": "U-B1-010-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 59405,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1667,
+        "cer": 0.0683,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-011-SCRIPT",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 76812,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.18,
+        "cer": 0.055,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-012-SCRIPT",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 76536,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2321,
+        "cer": 0.0478,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-B1-013-SCRIPT",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 57218,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0667,
+        "cer": 0.0247,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-014-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 61625,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2308,
+        "cer": 0.0493,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-B1-016-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 52327,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0909,
+        "cer": 0.0165,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 53365,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0885,
+        "cer": 0.0459,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 54828,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1239,
+        "cer": 0.0391,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 55721,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0973,
+        "cer": 0.0472,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 54948,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1593,
+        "cer": 0.0621,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 58089,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.115,
+        "cer": 0.0499,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 13169,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0345,
+        "cer": 0.0124,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 11995,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0455,
+        "cer": 0.0205,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-018-AUD08",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 11628,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1739,
+        "cer": 0.0608,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 60342,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2656,
+        "cer": 0.0843,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 63192,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2422,
+        "cer": 0.0661,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 57737,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.3125,
+        "cer": 0.0999,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD04",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 55388,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2422,
+        "cer": 0.0765,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD05",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 53398,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2656,
+        "cer": 0.0869,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD06",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 11638,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0435,
+        "cer": 0.0282,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD07",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 9980,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0556,
+        "cer": 0.0098,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-019-AUD08",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 13140,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0357,
+        "cer": 0,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-B1-021-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 7546,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2857,
+        "cer": 0.0882,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B1-021-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 14722,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2857,
+        "cer": 0.0882,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-002-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 62074,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1563,
+        "cer": 0.0455,
+        "accent": 2
+      }
+    },
+    {
+      "audio_id": "U-B2-003-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 47857,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.129,
+        "cer": 0.0602,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-005-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 33980,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0526,
+        "cer": 0.0169,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-006-SCRIPT",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 94958,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0625,
+        "cer": 0.025,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-007-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 49824,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0645,
+        "cer": 0.0157,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-008-AUD01",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 79865,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1333,
+        "cer": 0.0606,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-012-AUD00",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 9663,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1875,
+        "cer": 0.0875,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-012-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 183745,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1471,
+        "cer": 0.0446,
+        "accent": 2
+      }
+    },
+    {
+      "audio_id": "U-B2-012-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 34197,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1892,
+        "cer": 0.0625,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-012-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 17052,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1429,
+        "cer": 0.0458,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-015-AUD01",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 208999,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1357,
+        "cer": 0.0411,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-B2-015-AUD02",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 35818,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2903,
+        "cer": 0.1098,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-015-AUD03",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 57610,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.2714,
+        "cer": 0.0801,
+        "accent": 1
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I11-AUDIO",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 8263,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0769,
+        "cer": 0.0676,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I12-AUDIO",
+      "status": "TECH_QA_PASS",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "ms": 20605,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.5,
+        "cer": 0.507,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I13-AUDIO",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 9140,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1429,
+        "cer": 0.0263,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I14-AUDIO",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 9502,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.0455,
+        "cer": 0.018,
+        "accent": 0
+      }
+    },
+    {
+      "audio_id": "U-B2-016-I15-AUDIO",
+      "status": "DIGITAL_REVIEWED",
+      "render_status": "DIGITAL_REVIEWED",
+      "ms": 13483,
+      "error": null,
+      "roundtrip": {
+        "wer": 0.1622,
+        "cer": 0.0317,
+        "accent": 1
+      }
+    }
+  ]
+}

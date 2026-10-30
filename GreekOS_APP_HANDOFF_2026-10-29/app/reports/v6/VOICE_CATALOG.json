@@ -1,0 +1,181 @@
+{
+  "generated_at": "2026-10-30T07:00:07.318Z",
+  "voices": [
+    {
+      "voice_id": "local:coqui-el-css10",
+      "provider": "local_coqui",
+      "provider_voice_name": "coqui-el-css10",
+      "display_name": "Ελένη · CSS10 (Coqui VITS)",
+      "locale": "el-GR",
+      "presentation": "female",
+      "presentation_source": "release speaker_ids.json {\"female\": 0}",
+      "quality_tier": "neural-vits-22k",
+      "engine_kind": "local",
+      "available": true,
+      "streaming_capable": true,
+      "speed_profile": {
+        "fast": 1.1,
+        "slow": 0.85,
+        "normal": 1
+      },
+      "style_support": [],
+      "version": "coqui-vits",
+      "rights": {
+        "source": "https://github.com/coqui-ai/TTS/releases/download/v0.8.0_models/tts_models--el--cv--vits.zip",
+        "status": "LICENSE_ALLOWS_DISTRIBUTION_OWNER_MUST_RECORD",
+        "license": "BSD-3-Clause (model), CSS10 Greek dataset: public domain (LibriVox)"
+      },
+      "distribution_allowed": true,
+      "sample_object_path": null,
+      "sample_sha256": null,
+      "approved_by_owner": false,
+      "approved_by": null,
+      "approved_at": null,
+      "qa_status": "NOT_TESTED",
+      "last_synced_at": "2026-10-30T05:36:50.97+00:00",
+      "notes": "Открытая нейросетевая модель (локально, без сети). Лицензия допускает распространение; условия фиксирует владелец."
+    },
+    {
+      "voice_id": "local:mbrola-gr1",
+      "provider": "local_mbrola",
+      "provider_voice_name": "mbrola-gr1",
+      "display_name": "Νίκος · MBROLA gr1",
+      "locale": "el-GR",
+      "presentation": "male",
+      "presentation_source": "MBROLA gr1 voice description \"Greek male\"",
+      "quality_tier": "diphone-low-naturalness",
+      "engine_kind": "local",
+      "available": true,
+      "streaming_capable": true,
+      "speed_profile": {
+        "fast": 1.1,
+        "slow": 0.85,
+        "normal": 1
+      },
+      "style_support": [],
+      "version": "espeak-ng+mbrola",
+      "rights": {
+        "source": "Ubuntu package mbrola-gr1 (github.com/mbrola/mbrola-voices)",
+        "status": "DEV_LOCAL_ONLY",
+        "license": "MBROLA gr1: free for non-commercial use (MBROLA licence)"
+      },
+      "distribution_allowed": false,
+      "sample_object_path": null,
+      "sample_sha256": null,
+      "approved_by_owner": false,
+      "approved_by": null,
+      "approved_at": null,
+      "qa_status": "NOT_TESTED",
+      "last_synced_at": "2026-10-30T05:36:50.97+00:00",
+      "notes": "Дифонный синтез MBROLA: настоящий мужской голос, но низкая естественность; лицензия только некоммерческая (DEV_LOCAL_ONLY)."
+    },
+    {
+      "voice_id": "local:mbrola-gr2",
+      "provider": "local_mbrola",
+      "provider_voice_name": "mbrola-gr2",
+      "display_name": "Γιώργος · MBROLA gr2",
+      "locale": "el-GR",
+      "presentation": "male",
+      "presentation_source": "MBROLA gr2 voice description \"Greek male\"",
+      "quality_tier": "diphone-low-naturalness",
+      "engine_kind": "local",
+      "available": true,
+      "streaming_capable": true,
+      "speed_profile": {
+        "fast": 1.1,
+        "slow": 0.85,
+        "normal": 1
+      },
+      "style_support": [],
+      "version": "espeak-ng+mbrola",
+      "rights": {
+        "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+        "status": "DEV_LOCAL_ONLY",
+        "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+      },
+      "distribution_allowed": false,
+      "sample_object_path": null,
+      "sample_sha256": null,
+      "approved_by_owner": false,
+      "approved_by": null,
+      "approved_at": null,
+      "qa_status": "NOT_TESTED",
+      "last_synced_at": "2026-10-30T05:36:50.97+00:00",
+      "notes": "Дифонный синтез MBROLA: настоящий мужской голос, но низкая естественность; лицензия только некоммерческая (DEV_LOCAL_ONLY)."
+    }
+  ],
+  "cast_roles": [
+    {
+      "cast_role_id": "NARRATOR_F",
+      "requested_presentation": "female",
+      "locale": "el-GR",
+      "use_case": "course lessons / neutral",
+      "target_speed": "normal",
+      "voice_id": "local:coqui-el-css10",
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "proposed"
+    },
+    {
+      "cast_role_id": "NARRATOR_M",
+      "requested_presentation": "male",
+      "locale": "el-GR",
+      "use_case": "course dialogues / neutral",
+      "target_speed": "normal",
+      "voice_id": "local:mbrola-gr2",
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "proposed"
+    },
+    {
+      "cast_role_id": "ROLE_CAFE_F",
+      "requested_presentation": "female",
+      "locale": "el-GR",
+      "use_case": "cafe / public situations",
+      "target_speed": "normal",
+      "voice_id": null,
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "unapproved"
+    },
+    {
+      "cast_role_id": "ROLE_CAFE_M",
+      "requested_presentation": "male",
+      "locale": "el-GR",
+      "use_case": "shop / public situations",
+      "target_speed": "normal",
+      "voice_id": "local:mbrola-gr1",
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "proposed"
+    },
+    {
+      "cast_role_id": "TUTOR_F",
+      "requested_presentation": "female",
+      "locale": "el-GR",
+      "use_case": "optional tutor persona",
+      "target_speed": "normal",
+      "voice_id": "local:coqui-el-css10",
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "proposed"
+    },
+    {
+      "cast_role_id": "TUTOR_M",
+      "requested_presentation": "male",
+      "locale": "el-GR",
+      "use_case": "optional tutor persona",
+      "target_speed": "normal",
+      "voice_id": "local:mbrola-gr2",
+      "approved": false,
+      "approved_by": null,
+      "approved_at": null,
+      "status": "proposed"
+    }
+  ]
+}
