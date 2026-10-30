@@ -16,7 +16,7 @@ export interface ItemDTO {
   stimulus: StimulusDTO | null;
   criteria_ru: string[];
   requires_audio: boolean;
-  audio: { status: 'available'; asset_id: string; synthetic: true; dev_only?: true } | { status: 'unavailable'; reason: string } | null;
+  audio: { status: 'available'; asset_id: string; synthetic: true; dev_only?: true; qa?: 'verified' | 'needs_review' } | { status: 'unavailable'; reason: string } | null;
   format_hint_ru: string | null;
   spoken_task: boolean;
 }

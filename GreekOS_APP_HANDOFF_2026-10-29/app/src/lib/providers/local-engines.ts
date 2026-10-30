@@ -1,7 +1,8 @@
 /**
  * Local development speech engines (no network, no paid services):
- *  - TTS: macOS System Voices via `say` (only voices the OS reports as installed for el_GR).
- *  - ASR: GreekOS local Whisper service (local-services/asr_server.py) on 127.0.0.1.
+ *  - TTS: macOS System Voices via `say` (only voices the OS reports as installed for el_GR), and the
+ *    GreekOS local speech service (local-services/speech_server.py): Coqui VITS + MBROLA voices.
+ *  - ASR: the same service (sherpa-onnx Whisper) or the legacy Whisper service, on 127.0.0.1.
  * These produce REAL audio / REAL recognition, but they are development engines: macOS voices
  * are licensed for personal non-commercial use, so their output is marked DEV_LOCAL_ONLY.
  */
@@ -88,7 +89,7 @@ export function localAsrUrl(): string {
   return process.env.LOCAL_ASR_URL?.trim() || 'http://127.0.0.1:3312';
 }
 
-export async function localAsrHealth(): Promise<{ ok: boolean; available: string[]; loaded: string[] } | null> {
+export async function localAsrHealth(): Promise<{ ok: boolean; available: string[]; loaded: string[]; voices?: string[] } | null> {
   try {
     const r = await fetch(`${localAsrUrl()}/health`, { signal: AbortSignal.timeout(1500) });
     return r.ok ? ((await r.json()) as { ok: boolean; available: string[]; loaded: string[] }) : null;
@@ -97,10 +98,47 @@ export async function localAsrHealth(): Promise<{ ok: boolean; available: string
   }
 }
 
-export async function localTranscribe(wav: Uint8Array, model: 'small' | 'medium' = 'small', timeoutMs = 60_000, maxTokens?: number): Promise<LocalAsrResult> {
+export async function localTranscribe(wav: Uint8Array, model: 'small' | 'medium' | 'turbo' | 'base' = 'small', timeoutMs = 60_000, maxTokens?: number): Promise<LocalAsrResult> {
   const headers: Record<string, string> = { 'content-type': 'audio/wav' };
   if (process.env.LOCAL_ASR_TOKEN) headers['x-local-asr-token'] = process.env.LOCAL_ASR_TOKEN;
   const r = await fetch(`${localAsrUrl()}/transcribe?model=${model}&lang=el${maxTokens ? `&max_tokens=${Math.round(maxTokens)}` : ''}`, { method: 'POST', headers, body: wav as BodyInit, signal: AbortSignal.timeout(timeoutMs) });
   if (!r.ok) throw new Error(`local asr ${r.status}`);
   return (await r.json()) as LocalAsrResult;
+}
+
+// ---------- GreekOS local speech service (local-services/speech_server.py) ----------
+// Open models on this machine: Coqui VITS (CSS10 Greek, declared female), MBROLA gr1/gr2
+// (declared male) and sherpa-onnx Whisper ASR. Same URL as the ASR contract above.
+
+export interface ServiceVoice {
+  id: string;
+  name: string;
+  engine: string;
+  presentation: 'female' | 'male' | 'other' | 'unspecified';
+  presentation_source: string;
+  quality_tier: string;
+  license: string;
+  distribution_allowed_by_license: boolean;
+  streaming_capable: boolean;
+  source: string;
+  available: boolean;
+  sample_rate: number;
+}
+
+export async function listServiceVoices(): Promise<ServiceVoice[]> {
+  try {
+    const r = await fetch(`${localAsrUrl()}/voices`, { signal: AbortSignal.timeout(2500) });
+    return r.ok ? ((await r.json()) as ServiceVoice[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function serviceTts(voiceId: string, text: string, speed: 'normal' | 'slow' | 'fast' = 'normal', timeoutMs = 60_000): Promise<{ wav: Uint8Array; synthesisMs: number | null }> {
+  const headers: Record<string, string> = { 'content-type': 'application/json' };
+  if (process.env.LOCAL_ASR_TOKEN) headers['x-local-asr-token'] = process.env.LOCAL_ASR_TOKEN;
+  const r = await fetch(`${localAsrUrl()}/tts`, { method: 'POST', headers, body: JSON.stringify({ voice: voiceId, text, speed }), signal: AbortSignal.timeout(timeoutMs) });
+  if (!r.ok) throw new Error(`local tts ${r.status}`);
+  const ms = Number(r.headers.get('x-synthesis-ms'));
+  return { wav: new Uint8Array(await r.arrayBuffer()), synthesisMs: Number.isFinite(ms) ? ms : null };
 }

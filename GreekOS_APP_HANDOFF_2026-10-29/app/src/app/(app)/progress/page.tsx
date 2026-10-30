@@ -14,7 +14,7 @@ const ORDER: MasteryState[] = ['transfer_confirmed', 'retained', 'retention_due'
 
 export default async function ProgressPage() {
   const u = await requireLearner();
-  const s = await learnerSnapshot(u.userId, u.profile.timezone, u.profile);
+  const s = await learnerSnapshot(u.userId, u.profile.timezone, u.profile, u);
   const db = adminClient();
   const [{ data: states }, { data: comps }, { data: placement }] = await Promise.all([
     db.from('competency_state').select('competency_id, state, summary').eq('user_id', u.userId),

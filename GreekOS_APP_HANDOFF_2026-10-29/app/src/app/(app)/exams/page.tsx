@@ -9,7 +9,7 @@ export const metadata = { title: 'Экзамены ΚΕΓ' };
 
 export default async function ExamsPage() {
   const u = await requireLearner();
-  const forms = await examOverview(u.userId);
+  const forms = await examOverview(u.userId, u);
   const startable = forms.flatMap((f) => f.components).filter((c) => c.availability.startable).length;
   return (
     <section className="screen active">

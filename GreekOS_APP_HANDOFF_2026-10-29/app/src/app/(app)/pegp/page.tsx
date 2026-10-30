@@ -18,7 +18,7 @@ const BLOCKER_RU: Record<string, string> = {
 
 export default async function PegpPage() {
   const u = await requireLearner();
-  const o = await pegpOverview();
+  const o = await pegpOverview(u);
   const m = (o.moduleInfo ?? {}) as { status?: string; source_version?: string; ordinary_written_path?: WrittenPath; blockers?: string[] };
   const w = m.ordinary_written_path ?? {};
   return (

@@ -35,7 +35,7 @@ export async function createUser(opts: { owner?: boolean; tz?: string } = {}): P
   if (s.error) throw s.error;
   return {
     id, email, client,
-    session: { userId: id, email, isOwner: !!opts.owner, profile: { user_id: id, display_name: 'Synthetic', email, timezone: tz, active: true, entry_path: 'from_zero', lifecycle_state: 'studying', invited_at: null, activated_at: null } },
+    session: { userId: id, email, isOwner: !!opts.owner, devPreview: false, profile: { user_id: id, display_name: 'Synthetic', email, timezone: tz, active: true, entry_path: 'from_zero', lifecycle_state: 'studying', invited_at: null, activated_at: null } },
   };
 }
 

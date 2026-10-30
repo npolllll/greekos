@@ -11,7 +11,7 @@ const LEVELS = ['A1', 'A2', 'B1', 'B2'] as const;
 export default async function CoursePage({ searchParams }: { searchParams: Promise<{ level?: string }> }) {
   const u = await requireLearner();
   const sp = await searchParams;
-  const course = await loadCourse(u.userId);
+  const course = await loadCourse(u.userId, u);
   const next = nextUnit(course);
   const { data: enr } = await adminClient().from('enrollments').select('start_date, exam_date').eq('user_id', u.userId).maybeSingle();
   const level = (LEVELS as readonly string[]).includes(sp.level ?? '') ? sp.level! : next?.level ?? 'A1';

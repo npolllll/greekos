@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import type { ItemDTO } from '@/lib/content/dto';
 import { Icon } from './Icon';
 import { ContextCoach } from './ContextCoach';
+import { AudioPlayer } from './AudioPlayer';
+import { AnimatePresence, motion } from 'motion/react';
 
 export interface AttemptResultClient {
   attempt_id: string;
@@ -14,6 +16,7 @@ export interface AttemptResultClient {
   error_kind: string | null;
   ai: { used: boolean; confidence: string | null; dimensions: Array<{ criterion_id: string; label_ru: string; level: string; note_ru: string }>; improved_el: string | null; errors: Array<{ quote: string; correction_el: string; explanation_ru: string }> } | null;
   reveal: { key: string[]; model_response: string | null } | null;
+  explanation_ru?: string | null;
   feedback_event_id: string | null;
   review: { outcome: string; interval_days: number } | null;
   scheduled_reviews: string[];
@@ -66,7 +69,6 @@ export function ItemPlayer(props: {
   const [showContext, setShowContext] = useState(false);
   const [appeal, setAppeal] = useState<'idle' | 'open' | 'sent'>('idle');
   const [appealText, setAppealText] = useState('');
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const keyRef = useRef<string>(newKey());
   const startedAt = useRef<number>(0);
   const audioBlocked = item.requires_audio && item.audio?.status !== 'available';
@@ -76,10 +78,6 @@ export function ItemPlayer(props: {
     startedAt.current = Date.now();
   }, []);
 
-  useEffect(() => {
-    if (item.audio?.status !== 'available') return;
-    fetch(`/api/media/audio/${item.audio.asset_id}`).then((r) => (r.ok ? r.json() : null)).then((j) => j?.url && setAudioUrl(j.url)).catch(() => undefined);
-  }, [item.audio]);
 
   async function submit() {
     setError(null);
@@ -158,10 +156,10 @@ export function ItemPlayer(props: {
       ) : null}
 
       {item.requires_audio ? (
-        audioUrl ? (
+        item.audio?.status === 'available' ? (
           <div className="mt8">
-            <audio controls preload="none" src={audioUrl} style={{ width: '100%' }}><track kind="captions" /></audio>
-            <p className="disclosure">{item.audio?.status === 'available' && item.audio.dev_only ? 'Локальный голос macOS — только для разработки и предпросмотра владельца. Не выпускается ученикам.' : 'Синтезированный голос (цифровая озвучка el-GR). Прошёл технические и цифровые проверки, не проверен носителем языка.'}</p>
+            <AudioPlayer assetId={item.audio.asset_id} devOnly={!!item.audio.dev_only} qa={item.audio.qa} />
+            <p className="disclosure">{item.audio.dev_only ? 'Локальная синтезированная озвучка (открытая модель на этом компьютере) — для разработки и DEV-PREVIEW, ученикам не выпускается.' : 'Синтезированный голос el-GR. Прошёл технические и цифровые проверки, не проверен носителем языка.'}</p>
           </div>
         ) : (
           <div className="banner warn"><Icon name="headphones" /><span><strong>Аудио пока недоступно.</strong> Без проверенной записи задание на аудирование не проводится и не оценивается; транскрипт не заменяет звук.</span></div>
@@ -212,11 +210,13 @@ export function ItemPlayer(props: {
         </div>
       ) : null}
 
+      <AnimatePresence>
       {result && v ? (
-        <div aria-live="polite">
+        <motion.div aria-live="polite" initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}>
           <div className={`verdict ${v.cls}`}>
-            <b>{v.title}{result.replayed ? ' (повторная отправка не создала дубль)' : ''}</b>
+            <b>{v.cls === 'good' ? <VerdictMark ok /> : v.cls === 'bad' ? <VerdictMark /> : null}{v.title}{result.replayed ? ' (повторная отправка не создала дубль)' : ''}</b>
             {result.feedback_ru}
+            {result.explanation_ru ? <div className="mt8" style={{ color: 'var(--ink-2)' }}><b style={{ display: 'inline', fontSize: 13 }}>Почему: </b>{result.explanation_ru}</div> : null}
             {result.ai?.used ? <div className="mt8"><span className="ai-label">AI-проверка по критериям · не преподаватель{result.ai.confidence ? ` · уверенность: ${result.ai.confidence === 'high' ? 'высокая' : result.ai.confidence === 'medium' ? 'средняя' : 'низкая'}` : ''}</span></div> : null}
             {result.ai?.dimensions?.length ? <ul className="criteria">{result.ai.dimensions.map((d) => <li key={d.criterion_id}><b>{d.label_ru}</b>: {LEVEL_RU[d.level] ?? d.level}. {d.note_ru}</li>)}</ul> : null}
             {result.ai?.errors?.length ? <ul className="criteria">{result.ai.errors.map((e, i) => <li key={i}><span lang="el">«{e.quote}» → <b>{e.correction_el}</b></span> — {e.explanation_ru}</li>)}</ul> : null}
@@ -246,8 +246,20 @@ export function ItemPlayer(props: {
             </div>
           ) : appeal === 'sent' ? <p className="small muted">Оспаривание отправлено. Исходная оценка сохранена, отрицательное влияние заморожено до решения.</p> : null}
           {showContext ? <ContextCoach attemptId={result.attempt_id} feedbackEventId={result.feedback_event_id} preview={!!props.preview} /> : null}
-        </div>
+        </motion.div>
       ) : null}
+      </AnimatePresence>
     </div>
+  );
+}
+
+/** Check/cross drawn once when the verdict arrives (stroke animation, no confetti). */
+function VerdictMark({ ok }: { ok?: boolean }) {
+  return (
+    <svg className="verdict-mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <circle cx="12" cy="12" r="11" fill={ok ? 'var(--olive)' : 'var(--danger)'} />
+      <motion.path d={ok ? 'M7 12.5l3.2 3.2L17 9' : 'M8 8l8 8M16 8l-8 8'} fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"
+        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.36, ease: [0.16, 1, 0.3, 1], delay: 0.08 }} />
+    </svg>
   );
 }

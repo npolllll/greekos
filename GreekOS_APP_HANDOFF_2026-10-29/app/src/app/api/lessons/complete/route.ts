@@ -18,7 +18,7 @@ export const POST = route(async (req) => {
   if (!s || s.user_id !== u.userId) throw new HttpError(404, 'NOT_FOUND', 'Сессия не найдена');
   if (s.status === 'COMPLETED') return { ok: true, already: true };
   const rows = await selectAll<ItemRow>((f, t) => db.from('items').select('item_id, module, unit_id, item_type, level, pool, section, requires_audio, scoring_strategy, competency_ids, prerequisite_ids, audio_job_ids, error_tags, envelope, current_hash').eq('unit_id', s.unit_id).neq('section', 'retention').order('item_id').range(f, t));
-  const usable = (await deliverItems(rows)).filter((d) => d.access.learnerUsable).map((d) => d.dto.item_id);
+  const usable = (await deliverItems(rows, { viewer: u })).filter((d) => d.access.learnerUsable).map((d) => d.dto.item_id);
   const { data: tried } = await db.from('attempts').select('item_id').eq('user_id', u.userId).eq('preview', false).in('item_id', usable.length ? usable : ['-']);
   const triedSet = new Set((tried ?? []).map((t) => t.item_id));
   const missing = usable.filter((i) => !triedSet.has(i));

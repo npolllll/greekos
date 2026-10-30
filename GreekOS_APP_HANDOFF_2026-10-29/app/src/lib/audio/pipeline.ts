@@ -152,23 +152,20 @@ async function setJobStatus(audioId: string, status: string, reason: string | nu
   });
 }
 
-/** ASR round-trip: local Whisper medium when the local service is up, else the configured cloud ASR. */
-async function roundTripFor(rendered: Uint8Array[], texts: string[], actorId: string | null): Promise<(RoundTripMetrics & { engine: string; diff: ReturnType<typeof alignmentDiff> }) | null> {
+type SegmentRoundTrip = RoundTripMetrics & { segment_id: string; voice_id: string; reference: string; hypothesis: string; pass: boolean };
+type JobRoundTrip = RoundTripMetrics & { engine: string; diff: ReturnType<typeof alignmentDiff>; segments: SegmentRoundTrip[] };
+
+/** Best ASR for screening: local Whisper turbo/medium when the local service is up, else configured cloud ASR. */
+async function asrEngine(): Promise<{ engine: string; run: (b: Uint8Array, actorId: string | null) => Promise<string> } | null> {
   const local = env.localEnginesAllowed ? await localAsrHealth() : null;
-  const hyps: string[] = [];
-  let engine = '';
-  try {
-    if (local?.available.includes('medium')) {
-      for (const b of rendered) hyps.push((await localTranscribe(b, 'medium', 300_000)).text);
-      engine = 'local:faster-whisper-medium-int8';
-    } else if (asrStatus().configured && !asrStatus().synthetic && asrStatus().provider !== 'local') {
-      for (const b of rendered) hyps.push((await transcribe(b, actorId)).text);
-      engine = `cloud:${asrStatus().provider}`;
-    } else return null;
-  } catch {
-    return null;
-  }
-  return { ...roundTrip(texts.join(' '), hyps.join(' ')), engine, diff: alignmentDiff(texts.join(' '), hyps.join(' ')) };
+  const best = local?.available.includes('turbo') ? 'turbo' : local?.available.includes('medium') ? 'medium' : null;
+  if (best) return { engine: `local:sherpa-onnx:whisper-${best}-int8`, run: async (b) => (await localTranscribe(b, best, 300_000)).text };
+  if (asrStatus().configured && !asrStatus().synthetic && asrStatus().provider !== 'local') return { engine: `cloud:${asrStatus().provider}`, run: async (b, actor) => (await transcribe(b, actor)).text };
+  return null;
+}
+
+function jobRoundTrip(engine: string, segs: SegmentRoundTrip[]): JobRoundTrip {
+  return { ...roundTrip(segs.map((x) => x.reference).join(' '), segs.map((x) => x.hypothesis).join(' ')), engine, diff: alignmentDiff(segs.map((x) => x.reference).join(' '), segs.map((x) => x.hypothesis).join(' ')), segments: segs };
 }
 
 export async function renderJob(job: AudioJobRow, opts: { actorId: string | null; budgetCapUsd?: number; approvedPlanHash?: string; ctx?: CastingContext; force?: boolean }): Promise<RenderResult> {
@@ -189,12 +186,16 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
   if (existing && !existing.invalidated_at && !opts.force) return { status: 'REUSED', job_status: existing.render_status, asset_id: existing.id, render_status: existing.render_status };
 
   const rendered: Uint8Array[] = [];
-  for (const seg of plan.segments) {
+  const synthOnce = async (seg: PlannedSegment, speed: 'normal' | 'careful') => {
     const voice = ctx.voices.get(seg.voice_id)!;
+    // 'careful' = the voice's slower, more articulated profile (deterministic engines change output).
+    return (await synthesizeWithVoice(seg.text, voice, { speed: speed === 'careful' ? 'slow' : 'normal', userId: opts.actorId, operation: 'tts_course_audio' })).bytes;
+  };
+  for (const seg of plan.segments) {
     let attempt = 0;
     for (;;) {
       try {
-        rendered.push((await synthesizeWithVoice(seg.text, voice, { speed: 'normal', userId: opts.actorId, operation: 'tts_course_audio' })).bytes);
+        rendered.push(await synthOnce(seg, 'normal'));
         break;
       } catch (e) {
         attempt += 1;
@@ -204,6 +205,37 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
         }
         await new Promise((r) => setTimeout(r, 400 * 2 ** attempt));
       }
+    }
+  }
+  // Per-segment ASR screening with automatic regeneration of failing segments (best result kept).
+  const asr = await asrEngine().catch(() => null);
+  const regeneration: Array<{ segment_id: string; voice_id: string; attempts: Array<{ variant: string; cer_phonetic: number; wer: number; pass: boolean }> }> = [];
+  let segRt: SegmentRoundTrip[] | null = null;
+  if (asr) {
+    try {
+      segRt = [];
+      for (let k = 0; k < plan.segments.length; k++) {
+        const seg = plan.segments[k];
+        const hyp = await asr.run(rendered[k], opts.actorId);
+        const m = roundTrip(seg.text, hyp);
+        let best = { ...m, segment_id: seg.segment_id, voice_id: seg.voice_id, hypothesis: hyp, reference: seg.text, pass: roundTripPass(m) };
+        if (!best.pass) {
+          const log = { segment_id: seg.segment_id, voice_id: seg.voice_id, attempts: [{ variant: 'normal', cer_phonetic: m.cer_phonetic, wer: m.wer, pass: false }] };
+          for (const variant of ['normal', 'careful'] as const) {
+            const bytes = await synthOnce(seg, variant);
+            const h2 = await asr.run(bytes, opts.actorId);
+            const m2 = roundTrip(seg.text, h2);
+            const pass2 = roundTripPass(m2);
+            log.attempts.push({ variant: `regenerate:${variant}`, cer_phonetic: m2.cer_phonetic, wer: m2.wer, pass: pass2 });
+            if (pass2 || m2.cer_phonetic < best.cer_phonetic) { best = { ...m2, segment_id: seg.segment_id, voice_id: seg.voice_id, hypothesis: h2, reference: seg.text, pass: pass2 }; rendered[k] = bytes; }
+            if (pass2) break;
+          }
+          regeneration.push(log);
+        }
+        segRt.push(best);
+      }
+    } catch {
+      segRt = null;
     }
   }
   // Master keeps the raw synthesis; delivery is loudness-normalised (single gain, no compression).
@@ -221,12 +253,13 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
       return { status: 'FAILED', job_status: 'RENDER_FAILED', error: `UPLOAD ${up.error.message}` };
     }
   }
-  const rt = tech?.pass ? await roundTripFor(rendered, plan.segments.map((s) => s.text), opts.actorId) : null;
+  const rt = tech?.pass && segRt && asr ? jobRoundTrip(asr.engine, segRt) : null;
   const signals = segmentSignals(plan.segments.map((s) => s.text), rendered, (b) => { const i = parseWav(b); return i ? { samples: pcmSamples(b, i), rate: i.sampleRate } : null; });
   const truncated = signals.filter((x) => x.truncated_end).map((x) => x.segment);
   const technicalPass = !!tech?.pass;
   // A possibly cut-off segment always goes to a reviewer, even when the round-trip looks fine.
-  const rtPass = !!rt && roundTripPass(rt) && !truncated.length;
+  // Every segment must pass on its own: a good female line cannot hide a failed male line.
+  const rtPass = !!rt && rt.segments.every((x) => x.pass) && !truncated.length;
   const renderStatus = !technicalPass ? 'TECH_QA_FAIL' : rtPass ? 'DIGITAL_REVIEWED' : 'LINGUISTIC_QA_PENDING';
   const voices = [...new Set(plan.segments.map((s) => s.voice_id))].map((id) => ctx.voices.get(id)!);
   const devOnly = voices.some((v) => !v.distribution_allowed);
@@ -244,7 +277,7 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
     asr_roundtrip: rt, digital_status: rtPass ? 'AUDIO_VERIFIED_DIGITAL' : technicalPass ? 'NEEDS_REVIEW' : 'BLOCKED',
     rights_status: devOnly ? 'DEV_LOCAL_ONLY' : 'RIGHTS_PENDING', rights_evidence: devOnly ? { voices: voices.filter((v) => !v.distribution_allowed).map((v) => ({ voice_id: v.voice_id, rights: v.rights })) } : null,
     render_status: renderStatus, created_by: opts.actorId,
-    history: [{ at: new Date().toISOString(), event: 'rendered', render_status: renderStatus, superseded: (prevAssets ?? []).map((p) => p.id) }],
+    history: [{ at: new Date().toISOString(), event: 'rendered', render_status: renderStatus, regenerated_segments: regeneration.length, superseded: (prevAssets ?? []).map((p) => p.id) }],
   }).select('id').single();
   if (error) {
     await setJobStatus(job.audio_id, 'RENDER_FAILED', error.message, { attempted: true });
@@ -254,7 +287,7 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
   if (stale.length) await db.from('audio_assets').update({ invalidated_at: new Date().toISOString(), invalidated_reason: 'SUPERSEDED_BY_RERENDER' }).in('id', stale);
   await db.from('digital_qa_runs').insert({
     content_kind: 'audio_asset', content_id: inserted.id, content_hash: sha, check_kind: 'DIGITAL_AUDIO_QA', tool_id: `${tech?.profile ?? 'n/a'}+${rt?.engine ?? 'no-asr'}`,
-    verdict: renderStatus === 'DIGITAL_REVIEWED' ? 'PASS' : renderStatus === 'TECH_QA_FAIL' ? 'FAIL' : 'NEEDS_REVIEW', report: { technical: tech, roundtrip: rt, signals, plan_hash: plan.plan_hash, normalization: norm.report }, run_by: opts.actorId,
+    verdict: renderStatus === 'DIGITAL_REVIEWED' ? 'PASS' : renderStatus === 'TECH_QA_FAIL' ? 'FAIL' : 'NEEDS_REVIEW', report: { technical: tech, roundtrip: rt, regeneration, signals, plan_hash: plan.plan_hash, normalization: norm.report }, run_by: opts.actorId,
   });
   const jobStatus = renderStatus === 'TECH_QA_FAIL' ? 'TECH_QA_FAIL' : renderStatus === 'DIGITAL_REVIEWED' ? 'DIGITAL_REVIEWED' : 'TECH_QA_PASS';
   await setJobStatus(job.audio_id, jobStatus, renderStatus === 'LINGUISTIC_QA_PENDING' ? (truncated.length ? `возможный обрыв в конце сегментов ${truncated.join(', ')}` : rt ? 'ASR round-trip выше порогов — нужен разбор' : 'ASR round-trip не выполнен') : null, { attempted: true, asset_id: inserted.id, cost: plan.estimated_cost_usd });

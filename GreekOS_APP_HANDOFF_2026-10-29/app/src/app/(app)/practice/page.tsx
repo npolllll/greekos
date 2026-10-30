@@ -9,7 +9,7 @@ export const metadata = { title: 'Практика' };
 
 export default async function PracticeHub() {
   const u = await requireLearner();
-  const s = await learnerSnapshot(u.userId, u.profile.timezone, u.profile);
+  const s = await learnerSnapshot(u.userId, u.profile.timezone, u.profile, u);
   const { data: names } = await adminClient().from('competencies').select('competency_id, name').eq('scope', 'core');
   const nm = new Map((names ?? []).map((n) => [n.competency_id, n.name]));
   return (

@@ -8,8 +8,15 @@ export function normalizeByPolicy(input: string, steps: readonly string[] = DEFA
   if (steps.includes('NFC')) s = s.normalize('NFC');
   if (steps.includes('collapse_whitespace')) s = s.replace(/\s+/gu, ' ');
   if (steps.includes('trim')) s = s.trim();
-  if (steps.includes('casefold')) s = s.toLowerCase().replace(/ς/g, 'σ');
+  // Case-insensitive, but final sigma stays meaningful: String#toLowerCase applies the Unicode
+  // Final_Sigma rule (ΝΙΚΟΣ → νικος), so ς/σ are NOT merged — writing σ at the end is an error.
+  if (steps.includes('casefold')) s = s.toLowerCase();
   return s;
+}
+
+/** Both sigma forms mapped to one: used ONLY to detect a sigma-form-only difference, never to accept. */
+export function foldSigma(s: string): string {
+  return s.replace(/ς/g, 'σ');
 }
 
 /** Removes combining diacritics — used ONLY to detect accent-only differences, never to accept. */

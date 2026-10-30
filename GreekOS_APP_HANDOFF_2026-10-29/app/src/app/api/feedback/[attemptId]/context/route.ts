@@ -21,12 +21,13 @@ export async function GET(_req: Request, ctx: { params: Promise<{ attemptId: str
     const item = await loadItem(attempt.item_id);
     if (!item) throw new HttpError(404, 'NOT_FOUND', 'Задание не найдено');
     const preview = attempt.preview && u.isOwner;
+    const viewer = { devPreview: u.devPreview };
     const comps = item.competency_ids;
     const { data: compRows } = await db.from('competencies').select('competency_id, name, level').in('competency_id', comps.length ? comps : ['-']);
 
     // Explanation source: the item's own unit if released, else released units teaching the competency.
     const { data: units } = await db.from('units').select('unit_id, title_ru, level, current_hash, primary_competencies, competency_ids, teaching');
-    const unitRel = await releaseMap('unit', (units ?? []).map((x) => ({ id: x.unit_id, hash: x.current_hash })));
+    const unitRel = await releaseMap('unit', (units ?? []).map((x) => ({ id: x.unit_id, hash: x.current_hash })), viewer);
     const usableUnit = (id: string | null) => (units ?? []).find((x) => x.unit_id === id && (unitRel.has(x.unit_id) || preview));
     const teachingUnit = usableUnit(item.unit_id) ?? (units ?? []).find((x) => (unitRel.has(x.unit_id) || preview) && (x.primary_competencies as string[]).some((c) => comps.includes(c)));
     const t = teachingUnit?.teaching as { theory_ru?: string; examples_el?: string[]; title_ru?: string } | undefined;
@@ -45,7 +46,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ attemptId: str
     if (comps.length) {
       const candidates = await selectAll<ItemRow>((f, to) => db.from('items').select('item_id, module, unit_id, item_type, level, pool, section, requires_audio, scoring_strategy, competency_ids, prerequisite_ids, audio_job_ids, error_tags, envelope, current_hash').overlaps('competency_ids', comps).neq('item_id', item.item_id).eq('module', item.module === 'synthetic_fixture' ? 'synthetic_fixture' : item.module).order('item_id').range(f, to));
       const eligible = candidates.filter((c) => c.pool !== 'diagnostic_holdout' && c.pool !== 'exam_holdout' && c.module !== 'keg_b2');
-      const delivered = (await deliverItems(eligible)).filter((d) => preview || d.access.learnerUsable);
+      const delivered = (await deliverItems(eligible, { viewer })).filter((d) => preview || d.access.learnerUsable);
       const { data: seen } = await db.from('attempts').select('item_id, created_at').eq('user_id', u.userId).order('created_at', { ascending: false }).limit(2000);
       const last = new Map<string, string>();
       for (const s of seen ?? []) if (!last.has(s.item_id)) last.set(s.item_id, s.created_at);

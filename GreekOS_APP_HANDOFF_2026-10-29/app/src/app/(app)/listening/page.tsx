@@ -8,7 +8,7 @@ export const metadata = { title: 'Аудирование' };
 
 export default async function ListeningPage() {
   const u = await requireLearner();
-  const items = await sectionItems('listening');
+  const items = await sectionItems('listening', u);
   const { count: verified } = await adminClient().from('audio_assets').select('id', { count: 'exact', head: true }).eq('digital_status', 'AUDIO_VERIFIED_DIGITAL').is('invalidated_at', null);
   const usable = items.filter((i) => i.access.learnerUsable);
   return (

@@ -19,7 +19,7 @@ export default async function PegpTopicPage({ params }: { params: Promise<{ topi
   const u = await requireLearner();
   const { topic } = await params;
   if (!PEGP_TOPICS.includes(topic as PegpTopic)) notFound();
-  const v = await pegpTopic(topic as PegpTopic);
+  const v = await pegpTopic(topic as PegpTopic, u);
   const visibleItems = v.items.filter((i) => u.isOwner || i.delivered.access.learnerUsable);
   const locked = v.items.filter((i) => !u.isOwner && !i.delivered.access.learnerUsable);
 

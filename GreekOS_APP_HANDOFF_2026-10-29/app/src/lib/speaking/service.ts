@@ -74,7 +74,8 @@ export async function personaOptions() {
 async function scenarioFor(id: string, user: SessionUser) {
   const { data } = await adminClient().from('speaking_scenarios').select('scenario_id, level, domain, objective_ru, competency_ids, payload, current_hash').eq('scenario_id', id).maybeSingle();
   if (!data) throw new HttpError(404, 'NOT_FOUND', 'Сценарий не найден');
-  const released = (await releaseMap('scenario', [{ id: data.scenario_id, hash: data.current_hash }])).has(data.scenario_id);
+  // DEV-PREVIEW: an owner-granted test account runs gated scenarios as real (labelled) sessions.
+  const released = (await releaseMap('scenario', [{ id: data.scenario_id, hash: data.current_hash }], user)).has(data.scenario_id);
   if (!released && !user.isOwner) throw new HttpError(403, 'CONTENT_GATED', 'Сценарий проходит проверку');
   return { row: data, payload: data.payload as ScenarioPayload & { module?: string; unscored?: boolean }, preview: !released };
 }

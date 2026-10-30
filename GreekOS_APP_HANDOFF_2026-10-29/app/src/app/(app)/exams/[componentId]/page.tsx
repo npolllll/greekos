@@ -17,7 +17,7 @@ export default async function ExamComponentPage({ params, searchParams }: { para
   const sp = await searchParams;
   const c = await loadComponent(decodeURIComponent(componentId));
   if (!c) notFound();
-  const view = await candidateComponent(c);
+  const view = await candidateComponent(c, u);
   const display = displayComponentId(c.component_id, c.logical_id);
   const kindRu = KIND_RU[view.kind];
   const preview = u.isOwner && (sp.preview === '1' || !view.availability.startable);

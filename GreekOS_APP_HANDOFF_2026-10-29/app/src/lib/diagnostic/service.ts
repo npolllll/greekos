@@ -1,7 +1,7 @@
 import 'server-only';
 import { adminClient } from '../supabase/admin.ts';
 import { HttpError, type SessionUser } from '../auth.ts';
-import { loadItems } from '../content/repo.ts';
+import { loadItems, PUBLIC_VIEWER, type Viewer } from '../content/repo.ts';
 import { deliverItems } from '../content/delivery.ts';
 import { asrStatus } from '../providers/speech.ts';
 import { submitAttempt, type AttemptResult } from '../learning/attempts.ts';
@@ -10,10 +10,10 @@ import type { ItemDTO } from '../content/dto.ts';
 
 const SPOKEN_AXES = new Set(['spoken_interaction', 'spoken_production']);
 
-async function probes(): Promise<{ list: ProbeItem[]; dtos: Map<string, ItemDTO> }> {
+async function probes(viewer: Viewer = PUBLIC_VIEWER): Promise<{ list: ProbeItem[]; dtos: Map<string, ItemDTO> }> {
   const { data } = await adminClient().from('items').select('item_id').eq('pool', 'diagnostic_holdout').order('item_id');
   const rows = await loadItems((data ?? []).map((d) => d.item_id));
-  const delivered = await deliverItems(rows);
+  const delivered = await deliverItems(rows, { viewer });
   const voice = asrStatus().configured && !asrStatus().synthetic;
   const list: ProbeItem[] = [];
   const dtos = new Map<string, ItemDTO>();
@@ -60,7 +60,7 @@ export async function currentView(user: SessionUser): Promise<DiagView> {
   const { data: s } = await db.from('placement_sessions').select('id, status, state, result').eq('user_id', user.userId).order('started_at', { ascending: false }).limit(1).maybeSingle();
   if (!s) return { session_id: null, status: 'NONE', state: null, current: null, current_axis: null, voice_required: false, result: null };
   if (s.status !== 'IN_PROGRESS') return { session_id: s.id, status: 'COMPLETED', state: s.state as DiagState, current: null, current_axis: null, voice_required: false, result: s.result as Record<string, unknown> };
-  const { list, dtos } = await probes();
+  const { list, dtos } = await probes(user);
   const { state, item } = nextProbe(s.state as DiagState, list);
   return { session_id: s.id, status: 'IN_PROGRESS', state, current: item ? dtos.get(item.item_id) ?? null : null, current_axis: item?.axis ?? null, voice_required: !!item?.voice_required, result: null };
 }
@@ -70,7 +70,7 @@ export async function startDiagnostic(user: SessionUser) {
   const { data: open } = await db.from('placement_sessions').select('id').eq('user_id', user.userId).eq('status', 'IN_PROGRESS').maybeSingle();
   if (open) return currentView(user);
   const { data: proto } = await db.from('content_singletons').select('current_hash').eq('singleton_id', 'diagnostic_protocol').single();
-  const { list } = await probes();
+  const { list } = await probes(user);
   const { state } = nextProbe(initialState(), list);
   const { data, error } = await db.from('placement_sessions').insert({ user_id: user.userId, entry_path: user.profile.entry_path ?? 'unsure', protocol_hash: proto!.current_hash, state }).select('id').single();
   if (error) throw error;
@@ -83,7 +83,7 @@ export async function answerDiagnostic(user: SessionUser, body: { session_id: st
   const db = adminClient();
   const { data: s } = await db.from('placement_sessions').select('id, user_id, status, state').eq('id', body.session_id).maybeSingle();
   if (!s || s.user_id !== user.userId || s.status !== 'IN_PROGRESS') throw new HttpError(404, 'NOT_FOUND', 'Диагностика не найдена');
-  const { list } = await probes();
+  const { list } = await probes(user);
   const { state, item } = nextProbe(s.state as DiagState, list);
   if (!item || item.item_id !== body.item_id) throw new HttpError(409, 'OUT_OF_ORDER', 'Это задание сейчас не активно. Обновите страницу.');
   if (item.voice_required && body.response_source !== 'asr_confirmed') throw new HttpError(422, 'VOICE_REQUIRED', 'Для этого навыка нужен устный ответ: письменный текст не измеряет говорение.');
@@ -101,7 +101,7 @@ export async function skipCurrentAxis(user: SessionUser, sessionId: string) {
   const db = adminClient();
   const { data: s } = await db.from('placement_sessions').select('id, user_id, status, state').eq('id', sessionId).maybeSingle();
   if (!s || s.user_id !== user.userId || s.status !== 'IN_PROGRESS') throw new HttpError(404, 'NOT_FOUND', 'Диагностика не найдена');
-  const { list } = await probes();
+  const { list } = await probes(user);
   const st = nextProbe(skipAxis(nextProbe(s.state as DiagState, list).state), list).state;
   await persist(s.id, user.userId, st);
   return currentView(user);
@@ -114,7 +114,7 @@ export async function finishDiagnostic(user: SessionUser, sessionId: string) {
   const { data: s } = await db.from('placement_sessions').select('id, user_id, status, state').eq('id', sessionId).maybeSingle();
   if (!s || s.user_id !== user.userId) throw new HttpError(404, 'NOT_FOUND', 'Диагностика не найдена');
   if (s.status === 'COMPLETED') return currentView(user);
-  const { list } = await probes();
+  const { list } = await probes(user);
   const st = nextProbe(s.state as DiagState, list).state;
   for (const ax of st.axes) if (ax.status === 'IN_PROGRESS') { ax.status = ax.observations.length ? 'OBSERVED' : 'STOPPED'; ax.not_observed_reason ??= ax.observations.length ? null : 'NOT_REACHED'; }
   const route = routeStart(st.axes);

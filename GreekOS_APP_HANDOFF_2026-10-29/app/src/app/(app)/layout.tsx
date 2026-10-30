@@ -24,6 +24,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         learnerCount={learners.count ?? null}
         envLabel={envLabel}
         reducedMotion={!!prefs?.reduced_motion}
+        devPreview={u.devPreview}
+        tester={u.profile.account_kind === 'dev_preview_tester'}
       >
         {children}
       </AppShell>

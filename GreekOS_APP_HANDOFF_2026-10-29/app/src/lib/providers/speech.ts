@@ -5,7 +5,7 @@
 import { env } from '../env.ts';
 import { assertBudget, COST, recordUsage } from './budget.ts';
 import { buildWav, parseWav } from '../audio/wav.ts';
-import { localTranscribe, sayToWav, localTtsSupported } from './local-engines.ts';
+import { localTranscribe, sayToWav, localTtsSupported, serviceTts } from './local-engines.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
 
 export interface AsrResult {
@@ -44,7 +44,8 @@ export function ttsStatus(): { provider: string; configured: boolean; synthetic:
   if (p === 'openai') return { provider: p, configured: !!env.openaiKey, synthetic: false, voices: env.openaiTtsVoices };
   if (p === 'azure') return { provider: p, configured: !!env.azureSpeechKey && !!env.azureSpeechRegion, synthetic: false, voices: env.azureTtsVoices };
   if (p === 'google') return { provider: p, configured: !!env.googleTtsKey, synthetic: false, voices: env.googleTtsVoices };
-  if (p === 'local') return { provider: p, configured: env.localEnginesAllowed && localTtsSupported(), synthetic: false, voices: [] };
+  // local = macOS `say` on a Mac, otherwise the GreekOS local speech service (open models).
+  if (p === 'local') return { provider: p, configured: env.localEnginesAllowed, synthetic: false, voices: localTtsSupported() ? [] : ['coqui-el-css10'] };
   if (p === 'mock') return { provider: p, configured: env.allowSyntheticProviders, synthetic: true, voices: ['mock-a', 'mock-b'] };
   return { provider: 'none', configured: false, synthetic: false, voices: [] };
 }
@@ -152,8 +153,14 @@ export async function synthesize(text: string, opts: { voice?: string; rate?: 's
       const json = (await res.json()) as { audioContent?: string };
       bytes = Uint8Array.from(Buffer.from(json.audioContent ?? '', 'base64'));
     } else if (st.provider === 'local') {
-      model = 'macos-say';
-      bytes = await sayToWav(text, voice, slow ? 0.88 : 1);
+      if (localTtsSupported() && voice && !voice.includes('coqui') && !voice.includes('mbrola')) {
+        model = 'macos-say';
+        bytes = await sayToWav(text, voice, slow ? 0.88 : 1);
+      } else {
+        const id = voice ?? 'coqui-el-css10';
+        model = id.startsWith('mbrola') ? 'espeak-ng+mbrola' : 'coqui-vits-el-css10';
+        bytes = (await serviceTts(id, text, slow ? 'slow' : 'normal')).wav;
+      }
     } else {
       // Synthetic test tone (not speech) — labelled mock; never released to learners.
       model = 'mock-synthetic';
@@ -188,6 +195,9 @@ export async function synthesizeWithVoice(text: string, voice: CatalogVoice, opt
     if (voice.provider === 'local_macos') {
       if (!env.localEnginesAllowed || !localTtsSupported()) throw new ProviderUnavailableError('Локальный голос доступен только в локальной среде macOS.');
       bytes = await sayToWav(text, voice.provider_voice_name, mult);
+    } else if (voice.provider === 'local_coqui' || voice.provider === 'local_mbrola') {
+      if (!env.localEnginesAllowed) throw new ProviderUnavailableError('Локальный речевой сервис доступен только в локальной среде.');
+      bytes = (await serviceTts(voice.provider_voice_name, text, opts.speed ?? 'normal')).wav;
     } else if (voice.provider === 'azure') {
       if (!env.azureSpeechKey || !env.azureSpeechRegion) throw new ProviderUnavailableError('Azure Speech не подключён.');
       await assertBudget(opts.userId);
@@ -213,7 +223,8 @@ export async function synthesizeWithVoice(text: string, voice: CatalogVoice, opt
     }
     if (!parseWav(bytes)) throw new Error('provider returned non-WAV/undecodable audio');
     ok = true;
-    return { bytes, mime: 'audio/wav', provider: voice.provider, model: voice.provider === 'local_macos' ? 'macos-say' : voice.provider, voice: voice.voice_id, synthetic: true };
+    const model = voice.provider === 'local_macos' ? 'macos-say' : voice.provider === 'local_coqui' ? 'coqui-vits-el-css10' : voice.provider === 'local_mbrola' ? `espeak-ng+mbrola:${voice.provider_voice_name}` : voice.provider;
+    return { bytes, mime: 'audio/wav', provider: voice.provider, model, voice: voice.voice_id, synthetic: true };
   } finally {
     if (voice.engine_kind === 'cloud') {
       await recordUsage({ userId: opts.userId, provider: voice.provider, operation: opts.operation ?? 'tts_voice', units: text.length, unitKind: 'characters', costUsd: text.length * COST.ttsPerChar, ok, latencyMs: Date.now() - started }).catch(() => undefined);

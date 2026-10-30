@@ -18,7 +18,7 @@ function ctxFor(voices: CatalogVoice[], roles: CastRole[], owner: Record<string,
   for (const j of jobs) {
     const segs = normalizeSegments(j.audio_id, j.segments);
     const names = [...new Set(segs.map((s) => s.role).filter((r): r is string => !!r))];
-    const proposals = names.length ? names.map(proposeRoleCasting) : [proposeNarratorCasting(j.text_el ?? '')];
+    const proposals = names.length ? names.map((n) => proposeRoleCasting(n)) : [proposeNarratorCasting(j.text_el ?? '')];
     const cast = castRolesForJob(proposals);
     for (const p of proposals) {
       const key = `${j.audio_id}|${p.speaker_role}`;

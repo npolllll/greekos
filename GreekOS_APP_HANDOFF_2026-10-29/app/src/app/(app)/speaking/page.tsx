@@ -32,7 +32,7 @@ export default async function SpeakingPage({ searchParams }: { searchParams: Pro
     db.from('speaking_scenarios').select('scenario_id, level, domain, objective_ru, current_hash').order('scenario_id'),
     db.from('speaking_sessions').select('session_id, scenario_id, mode, input_mode, status, started_at, summary_private').eq('user_id', u.userId).order('started_at', { ascending: false }).limit(6),
   ]);
-  const rel = await releaseMap('scenario', (scenarios ?? []).map((s) => ({ id: s.scenario_id, hash: s.current_hash })));
+  const rel = await releaseMap('scenario', (scenarios ?? []).map((s) => ({ id: s.scenario_id, hash: s.current_hash })), u);
   const list = (scenarios ?? []).map((s) => ({ id: s.scenario_id, level: s.level ?? '', domain: s.domain ?? '', objective: s.objective_ru ?? '', released: rel.has(s.scenario_id), rg: s.scenario_id.startsWith('RG-') }));
   const voice = asrStatus().configured && !asrStatus().synthetic;
   const personas = await personaOptions();

@@ -1,5 +1,5 @@
 import { adapterFor, choiceOptions, type ItemEnvelope, type Verdict } from '../content/types.ts';
-import { DEFAULT_STEPS, normalizeByPolicy, stripAccents, stripPunctuation, typographic } from './normalize.ts';
+import { DEFAULT_STEPS, foldSigma, normalizeByPolicy, stripAccents, stripPunctuation, typographic } from './normalize.ts';
 
 export interface LearnerResponse {
   /** For choice items: the stable option key. */
@@ -73,6 +73,13 @@ export function compareText(item: ItemEnvelope, raw: string): DeterministicScore
       errorKind: 'typography_only', feedbackRu: 'Верно по смыслу и форме; отличаются только знаки препинания или типографика.',
       evidence: [{ kind: 'typographic_equivalence' }] });
   }
+  // Final-sigma form only (φίλοσ for φίλος, Νικος/Νίκοσ…): a confirmed orthographic error, not a new meaning.
+  const sigmaOnly = all.find((k) => loose(k) !== loose(raw) && foldSigma(loose(k)) === foldSigma(loose(raw)));
+  if (sigmaOnly !== undefined) {
+    return base({ verdict: 'INCORRECT_CONFIRMED', scorer: 'key', reliable: true, meaningChanging: false, matchedKey: sigmaOnly,
+      errorKind: 'final_sigma_orthography', feedbackRu: 'Буквы верные, но форма сигмы нет: в конце слова пишется ς, внутри слова — σ.',
+      evidence: [{ kind: 'sigma_form_only_difference' }] });
+  }
   const accentless = all.find((k) => stripAccents(loose(k)) === stripAccents(loose(raw)));
   if (accentless !== undefined) {
     return base({ verdict: 'INCORRECT_CONFIRMED', scorer: 'key', reliable: true, meaningChanging: false, matchedKey: accentless,
@@ -135,6 +142,21 @@ export function compareStructured(item: ItemEnvelope, raw: string): Deterministi
 }
 
 /**
+ * Option keys that the item's answer designates. Exact label (or key) equality wins; the policy
+ * normalisation is used only when it still points at exactly the same options. Returns null when
+ * the key matches no option or a normalised match would be ambiguous (several options).
+ */
+export function keyedOptions(item: ItemEnvelope, opts: Array<{ key: string; label: string }>): Set<string> | null {
+  const answers = keyStrings(item.answer).map((a) => a.normalize('NFC').trim());
+  const exact = opts.filter((o) => answers.includes(o.label.normalize('NFC').trim()) || answers.includes(o.key));
+  if (exact.length) return new Set(exact.map((o) => o.key));
+  const st = steps(item);
+  const keys = answers.map((k) => normalizeByPolicy(k, st));
+  const loose = opts.filter((o) => keys.includes(normalizeByPolicy(o.label, st)));
+  return loose.length === 1 ? new Set([loose[0].key]) : null;
+}
+
+/**
  * Deterministic part of scoring. Open responses and REVIEW_REQUIRED items return needsReview
  * so the AI assessor (validated JSON, may ABSTAIN) or a human can decide; no invented score.
  */
@@ -151,9 +173,12 @@ export function scoreDeterministic(item: ItemEnvelope, response: LearnerResponse
     const opts = choiceOptions(item.options);
     const chosen = opts.find((o) => o.key === response.choice);
     if (!chosen) throw new InvalidResponseError('Выбранный вариант отсутствует в задании.');
-    const st = steps(item);
-    const keys = keyStrings(item.answer).map((k) => normalizeByPolicy(k, st));
-    const correct = keys.includes(normalizeByPolicy(chosen.label, st)) || keys.includes(normalizeByPolicy(chosen.key, st));
+    const correctKeys = keyedOptions(item, opts);
+    if (!correctKeys) {
+      // The key does not identify exactly one option (e.g. σ/ς after normalisation): never guess.
+      return base({ verdict: 'AMBIGUOUS', scorer: 'key', reliable: false, uncertainty: 'AMBIGUOUS_CHOICE_KEY', feedbackRu: 'Ключ этого задания неоднозначен — ответ сохранён без оценки и передан на проверку.', evidence: [{ kind: 'choice_key_ambiguous', option_key: chosen.key }] });
+    }
+    const correct = correctKeys.has(chosen.key);
     const r = correct
       ? base({ verdict: 'CORRECT', scorer: 'key', reliable: true, meaningChanging: false, matchedKey: chosen.label, feedbackRu: 'Верно.', evidence: [{ kind: 'choice_key', option_key: chosen.key }] })
       : base({ verdict: 'INCORRECT_CONFIRMED', scorer: 'key', reliable: true, meaningChanging: true, errorKind: 'wrong_option', feedbackRu: 'Этот вариант не подходит.', evidence: [{ kind: 'choice_key', option_key: chosen.key }] });

@@ -2,7 +2,9 @@ import { stripAccents } from '../scoring/normalize.ts';
 
 /** Tokenise Greek text for round-trip comparison: NFC, lowercase, punctuation removed, accents KEPT. */
 export function tokens(s: string): string[] {
-  return s.normalize('NFC').toLowerCase().replace(/ς/g, 'σ').replace(/[^\p{L}\p{N}\s]/gu, ' ').split(/\s+/).filter(Boolean);
+  // ASR writes symbols/units where the script has words («3 €/kg» for «τρία ευρώ το κιλό»).
+  const expanded = s.normalize('NFC').replace(/€/g, ' ευρώ ').replace(/%/g, ' τοις εκατό ').replace(/\bkg\b/gi, ' κιλό ').replace(/\bkm\b/gi, ' χιλιόμετρα ');
+  return expanded.toLowerCase().replace(/ς/g, 'σ').replace(/[^\p{L}\p{N}\s]/gu, ' ').split(/\s+/).filter(Boolean);
 }
 
 // Greek number words (accent-stripped, all gender forms) → value; ASR often writes digits instead.
@@ -36,7 +38,8 @@ export function normalizeNumerals(tok: string[]): string[] {
     while (i + 1 < tok.length && (v = numberValue(stripAccents(tok[i + 1]))) !== null) { total = v >= 1000 ? Math.max(1, total) * v : total + v; i++; }
     out.push(String(total));
   }
-  return out;
+  // A lone «ένα/μία» stays a word above; a lone digit 1 from the ASR is mapped back to it.
+  return out.map((t) => (t === '1' ? 'ένα' : t));
 }
 
 function editDistance<T>(a: T[], b: T[]): number {
@@ -56,8 +59,28 @@ function editDistance<T>(a: T[], b: T[]): number {
 export interface RoundTripMetrics {
   wer: number;
   cer_accent_insensitive: number;
+  /** CER over a coarse phonemic transcription: ASR homophone spellings (βήτα/βίτα, παιδί/πεδί) do not count. */
+  cer_phonetic: number;
   accent_mismatches: string[];
   reference_words: number;
+}
+
+const DIGRAPHS: Array<[RegExp, string]> = [
+  [/ου/g, 'u'], [/αι/g, 'e'], [/ει|οι|υι/g, 'i'], [/αυ(?=[θκξπστφχψ]|$)/g, 'af'], [/ευ(?=[θκξπστφχψ]|$)/g, 'ef'], [/αυ/g, 'av'], [/ευ/g, 'ev'], [/ηυ/g, 'iv'],
+  [/μπ/g, 'b'], [/ντ/g, 'd'], [/γκ|γγ/g, 'g'], [/τσ|τς/g, 'c'], [/τζ/g, 'j'],
+];
+const LETTERS: Record<string, string> = { α: 'a', ε: 'e', η: 'i', ι: 'i', υ: 'i', ο: 'o', ω: 'o', β: 'v', γ: 'G', δ: 'D', ζ: 'z', θ: 'T', κ: 'k', λ: 'l', μ: 'm', ν: 'n', ξ: 'ks', π: 'p', ρ: 'r', σ: 's', ς: 's', τ: 't', φ: 'f', χ: 'x', ψ: 'ps' };
+
+/** Coarse Modern Greek grapheme→phoneme key (screening only): «βήτα» and «βίτα» both give "vita". */
+export function phonemicKey(s: string): string {
+  let t = s.normalize('NFD').toLowerCase();
+  t = t.replace(/[\u0301\u0300]/g, ''); // tonos/oxia; keep diaeresis to block digraphs
+  t = t.normalize('NFC');
+  for (const [re, rep] of DIGRAPHS) t = t.replace(re, rep);
+  t = t.replace(/[ϊΐ]/g, 'i').replace(/[ϋΰ]/g, 'i');
+  let out = '';
+  for (const ch of t) out += LETTERS[ch] ?? (/[a-zGDTx0-9 ]/.test(ch) ? ch : /\s/.test(ch) ? ' ' : '');
+  return out.replace(/([bcdfgGjklmnprstvxzDT])\1+/g, '$1').replace(/\s+/g, ' ').trim();
 }
 
 /**
@@ -74,13 +97,23 @@ export function roundTrip(reference: string, hypothesis: string): RoundTripMetri
   const hypSet = new Set(hyp);
   const hypBare = new Map(hyp.map((h) => [stripAccents(h), h]));
   const accent = ref.filter((w) => !hypSet.has(w) && hypBare.has(stripAccents(w)) && hypBare.get(stripAccents(w)) !== w);
-  return { wer: Number(wer.toFixed(4)), cer_accent_insensitive: Number(cer.toFixed(4)), accent_mismatches: [...new Set(accent)], reference_words: ref.length };
+  const pRef = [...phonemicKey(ref.join(' '))];
+  const pHyp = [...phonemicKey(hyp.join(' '))];
+  const pcer = pRef.length ? editDistance(pRef, pHyp) / pRef.length : 0;
+  return { wer: Number(wer.toFixed(4)), cer_accent_insensitive: Number(cer.toFixed(4)), cer_phonetic: Number(pcer.toFixed(4)), accent_mismatches: [...new Set(accent)], reference_words: ref.length };
 }
 
-export const ROUNDTRIP_THRESHOLDS = { maxWer: 0.25, maxCer: 0.12, maxAccentMismatchRatio: 0.05 };
+export const ROUNDTRIP_THRESHOLDS = { maxWer: 0.25, maxCer: 0.12, maxPhoneticCer: 0.1, maxPhoneticWer: 0.35, maxAccentMismatchRatio: 0.05 };
 
+/**
+ * Orthographic pass (WER/CER) or, because ASR spells homophones freely, a phonemic pass: low
+ * phonemic CER with bounded WER (any WER for ≤3-word scripts such as letter names and greetings).
+ */
 export function roundTripPass(m: RoundTripMetrics): boolean {
-  return m.wer <= ROUNDTRIP_THRESHOLDS.maxWer && m.cer_accent_insensitive <= ROUNDTRIP_THRESHOLDS.maxCer && m.accent_mismatches.length <= Math.max(0, Math.floor(m.reference_words * ROUNDTRIP_THRESHOLDS.maxAccentMismatchRatio));
+  const accentsOk = m.accent_mismatches.length <= Math.max(0, Math.floor(m.reference_words * ROUNDTRIP_THRESHOLDS.maxAccentMismatchRatio));
+  const ortho = m.wer <= ROUNDTRIP_THRESHOLDS.maxWer && m.cer_accent_insensitive <= ROUNDTRIP_THRESHOLDS.maxCer;
+  const phon = typeof m.cer_phonetic === 'number' && m.cer_phonetic <= ROUNDTRIP_THRESHOLDS.maxPhoneticCer && (m.reference_words <= 3 || m.wer <= ROUNDTRIP_THRESHOLDS.maxPhoneticWer);
+  return accentsOk && (ortho || phon);
 }
 
 /** Split long monologues into provider-safe chunks on sentence boundaries. */

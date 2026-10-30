@@ -17,10 +17,10 @@ export default async function PracticeItemPage({ params, searchParams }: { param
   const sp = await searchParams;
   const row = await loadItem(decodeURIComponent(itemId));
   if (!row) notFound();
-  const [d] = await deliverItems([row], { ownerPreview: u.isOwner });
-  const preview = u.isOwner && (sp.preview === '1' || !d?.access.learnerUsable);
+  const [d] = await deliverItems([row], { ownerPreview: u.isOwner, viewer: u });
+  const preview = u.isOwner && !u.devPreview && (sp.preview === '1' || !d?.access.learnerUsable);
   const context = CONTEXTS.has(sp.context ?? '') ? sp.context! : 'corrective';
-  const release = (await releaseMap('item', [{ id: row.item_id, hash: row.current_hash }])).get(row.item_id);
+  const release = (await releaseMap('item', [{ id: row.item_id, hash: row.current_hash }], u)).get(row.item_id);
   return (
     <section className="screen active">
       <div className="screen-head"><div><div className="eyebrow">GreekOS / {CONTEXT_RU[context]}</div><h1 className="screen-title">Задание</h1><p className="screen-sub">Ответ проверяется на сервере. Помощь и предпросмотр не засчитываются как самостоятельное освоение.</p></div><Link className="btn outline" href="/practice"><Icon name="layers" size={15} /> Все задания</Link></div>
@@ -34,6 +34,7 @@ export default async function PracticeItemPage({ params, searchParams }: { param
           <aside className="stack">
             <div className="card cardpad"><div className="card-title"><Icon name="info" /> Как оценивается</div><p className="small quiet">Сначала ключ задания с его правилами нормализации (ударения сохраняются). Незнакомый правдоподобный ответ уходит на проверку без штрафа. Свободные ответы — по критериям, с возможностью воздержаться.</p></div>
             {release?.review_type === 'OWNER_DIGITAL_POLICY' ? <div className="card cardpad"><span className="tag">Цифровая проверка</span><p className="small quiet mt8">Задание выпущено по цифровой политике владельца — без независимой проверки преподавателем.</p></div> : null}
+            {release?.review_type === 'DEV_PREVIEW_LOCAL' ? <div className="card cardpad"><span className="mode-badge preview">DEV-PREVIEW</span><p className="small quiet mt8">Материал не выпущен для учеников. Тестовый аккаунт проходит его в локальной среде по решению владельца; ответы сохраняются с отметкой «не выпущено».</p></div> : null}
             {preview ? <div className="card cardpad"><span className="tag">Предпросмотр владельца</span><p className="small quiet mt8">Материал не выпущен для учеников. Ваши ответы здесь не влияют на прогресс.</p></div> : null}
           </aside>
         </div>

@@ -10,6 +10,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Local development is served on 127.0.0.1 (Supabase local URLs use it too).
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
   productionBrowserSourceMaps: false,
   typedRoutes: false,
   async headers() {

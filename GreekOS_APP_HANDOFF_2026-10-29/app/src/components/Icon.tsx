@@ -35,6 +35,20 @@ const PATHS: Record<string, string> = {
   flag: '<path d="M4 22V4m0 0h13l-2 4 2 4H4"/>',
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
   logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4m7 14 5-5-5-5m5 5H9"/>',
+  alpha: '<path d="M15.5 7.5c-.8 5.5-3.3 10-6.4 10C6.9 17.5 5 15.6 5 12.6 5 9.5 7.2 7 9.9 7c3.3 0 4.6 3.6 5.6 7.4.4 1.6 1.1 3.1 2.5 3.1"/>',
+  flame: '<path d="M12 22c4 0 7-2.8 7-7 0-3.2-1.8-5.4-3.4-7.3-.5 1.8-1.5 3-2.9 3.4.5-3.4-.7-6.5-3.7-9.1.2 3.8-1.7 6-3.4 8C4.3 11.6 5 13.5 5 15c0 4.2 3 7 7 7z"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  wave: '<path d="M3 12h2m3-5v10m4-13v16m4-11v6m4-3h1"/>',
+  cup: '<path d="M4 8h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6zM17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 2v3m4-3v3"/>',
+  map: '<path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2zM9 4v14m6-12v14"/>',
+  stop: '<rect x="6" y="6" width="12" height="12" rx="2"/>',
+  slow: '<path d="M12 20a8 8 0 1 1 8-8M12 8v4l2 2"/><path d="M17 17l4 4"/>',
+  question: '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4.5M12 17.5h.01"/>',
+  replay: '<path d="M4 4v6h6M4.5 15a8 8 0 1 0 1.9-8.3L4 10"/>',
+  edit: '<path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/>',
+  eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  download: '<path d="M12 3v12m-5-5 5 5 5-5M4 21h16"/>',
+  upload: '<path d="M12 21V9m-5 5 5-5 5 5M4 3h16"/>',
 };
 
 export function Icon({ name, size, label }: { name: string; size?: number; label?: string }) {

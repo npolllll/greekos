@@ -12,9 +12,9 @@ export const metadata = { title: 'Живой греческий — выраже
 export default async function RgExpressionPage({ params }: { params: Promise<{ expressionId: string }> }) {
   const u = await requireLearner();
   const { expressionId } = await params;
-  const x = (await rgExpressions()).find((e) => e.expression_id === expressionId);
+  const x = (await rgExpressions(u)).find((e) => e.expression_id === expressionId);
   if (!x || (!x.released && !u.isOwner)) notFound();
-  const items = await rgItems(x.expression_id);
+  const items = await rgItems(x.expression_id, u);
   const usable = items.filter((d) => d.access.learnerUsable || u.isOwner);
   const locked = items.filter((d) => !d.access.learnerUsable && !u.isOwner);
   return (

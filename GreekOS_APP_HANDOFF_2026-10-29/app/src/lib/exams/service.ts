@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { adminClient, selectAll } from '../supabase/admin.ts';
 import { HttpError, type SessionUser } from '../auth.ts';
 import { deliverItems, type DeliveredItem } from '../content/delivery.ts';
-import { loadTextObjects, playableAudio, signedAudioUrl, type ItemRow } from '../content/repo.ts';
+import { loadTextObjects, playableAudio, signedAudioUrl, PUBLIC_VIEWER, type ItemRow, type Viewer } from '../content/repo.ts';
 import { publicTextObject, type StimulusDTO } from '../content/dto.ts';
 import { assessOpenResponse } from '../ai/assessor.ts';
 import { llmConfigured } from '../providers/llm.ts';
@@ -69,9 +69,9 @@ export async function loadExamItems(itemIds: string[]): Promise<ItemRow[]> {
 }
 
 /** Candidate view of one component: DTOs (exam mode, no criteria), shared texts, availability. */
-export async function candidateComponent(c: ComponentRow) {
+export async function candidateComponent(c: ComponentRow, viewer: Viewer = PUBLIC_VIEWER) {
   const rows = await loadExamItems(c.item_ids);
-  const delivered = await deliverItems(rows, { examMode: true });
+  const delivered = await deliverItems(rows, { examMode: true, viewer });
   const textObjs = await loadTextObjects(c.text_ids ?? []);
   const texts: Array<StimulusDTO & { text_id: string }> = [];
   for (const id of c.text_ids ?? []) {
@@ -169,7 +169,7 @@ export async function startAttempt(user: SessionUser, input: { component_id: str
 
   const c = await loadComponent(input.component_id);
   if (!c) throw new HttpError(404, 'NOT_FOUND', 'Компонент не найден');
-  const view = await candidateComponent(c);
+  const view = await candidateComponent(c, user);
   if (!view.availability.startable) throw new HttpError(403, view.availability.reason, view.availability.reason === 'AUDIO_PENDING' ? 'Нет проверенного аудио — аудирование не проводится.' : view.availability.reason === 'SPEAKING' ? 'Говорение проходит в разделе «Разговоры».' : 'Задания компонента ещё проходят проверку.');
 
   const { data: open } = await db.from('exam_attempts').select(ATTEMPT_COLUMNS).eq('user_id', user.userId).eq('component_id', c.component_id).eq('status', 'IN_PROGRESS').order('server_started_at', { ascending: false }).limit(1).maybeSingle();
@@ -360,7 +360,7 @@ export interface OverviewComponent {
 }
 
 /** All three forms with their five components and the learner's own attempt status. */
-export async function examOverview(userId: string) {
+export async function examOverview(userId: string, viewer: Viewer = PUBLIC_VIEWER) {
   const db = adminClient();
   const [components, { data: forms }, rows, { data: attempts }] = await Promise.all([
     loadComponents(),
@@ -368,7 +368,7 @@ export async function examOverview(userId: string) {
     selectAll<ItemRow>((f, t) => db.from('items').select(ITEM_COLUMNS).eq('module', 'keg_b2').order('item_id').range(f, t)),
     db.from('exam_attempts').select('id, component_id, status, mode, submitted_at, server_started_at, results').eq('user_id', userId).order('server_started_at', { ascending: false }).limit(200),
   ]);
-  const delivered = await deliverItems(rows, { examMode: true });
+  const delivered = await deliverItems(rows, { examMode: true, viewer });
   const byId = new Map(delivered.map((d) => [d.dto.item_id, d]));
   const out = (forms ?? []).map((f) => {
     const assembly = ((f.payload as { assembly?: Record<string, unknown> }).assembly ?? {}) as Record<string, unknown>;
@@ -412,7 +412,7 @@ export async function examAudioPlay(user: SessionUser, attemptId: string, assetI
     if (a.status !== 'IN_PROGRESS') throw new HttpError(409, 'ATTEMPT_CLOSED', 'Попытка уже завершена.');
     const c = await loadComponent(a.component_id);
     const rows = await loadExamItems(c?.item_ids ?? []);
-    const playable = await playableAudio([...new Set(rows.flatMap((r) => r.audio_job_ids))]);
+    const playable = await playableAudio([...new Set(rows.flatMap((r) => r.audio_job_ids))], user);
     const asset = [...playable.values()].find((p) => p.asset_id === assetId);
     if (!asset) throw new HttpError(403, 'AUDIO_PENDING', 'Аудио этого задания пока недоступно.');
     const plays = a.audio_plays ?? {};

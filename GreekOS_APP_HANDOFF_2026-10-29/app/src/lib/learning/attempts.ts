@@ -34,6 +34,8 @@ export interface AttemptResult {
   error_kind: string | null;
   ai: { used: boolean; confidence: string | null; dimensions: unknown[]; improved_el: string | null; errors: unknown[] } | null;
   reveal: { key: string[]; model_response: string | null } | null;
+  /** Author's rationale from the canonical item (shown after answering, never in diagnostics/exams). */
+  explanation_ru: string | null;
   feedback_event_id: string | null;
   review: { outcome: string; interval_days: number } | null;
   scheduled_reviews: string[];
@@ -66,9 +68,10 @@ export async function submitAttempt(user: SessionUser, req: AttemptRequest): Pro
 
   const preview = req.context === 'preview';
   if (preview && !user.isOwner) throw new HttpError(403, 'FORBIDDEN', 'Предпросмотр доступен только владельцу');
+  // DEV-PREVIEW accounts may answer gated items; the attempt records released_snapshot=false.
   const [releases, audio] = await Promise.all([
-    releaseMap('item', [{ id: item.item_id, hash: item.current_hash }]),
-    playableAudio(item.audio_job_ids),
+    releaseMap('item', [{ id: item.item_id, hash: item.current_hash }], user),
+    playableAudio(item.audio_job_ids, user),
   ]);
   const access = itemAccess(item, releases, audio);
   if (!preview && !access.learnerUsable) throw new HttpError(403, access.reason, access.reason === 'AUDIO_PENDING' ? 'Аудио пока недоступно — задание не оценивается.' : 'Материал проходит проверку и пока закрыт.');
@@ -173,7 +176,8 @@ export async function submitAttempt(user: SessionUser, req: AttemptRequest): Pro
     attempt_id: attemptId, verdict, reliable, scorer: ai && ai.verdict !== 'ABSTAIN' && ai.verdict !== 'PENDING_REVIEW' ? 'ai_assessor' : det.scorer,
     feedback_ru: `${ai ? ai.feedbackRu : det.feedbackRu}${spokenTyped ? ' Устное задание выполнено письменно: это сохраняется как письменная практика и не засчитывается как говорение.' : ''}`, error_kind: det.errorKind,
     ai: ai ? { used: true, confidence: ai.confidence, dimensions: ai.dimensions, improved_el: ai.improvedEl, errors: ai.errors } : null,
-    reveal, feedback_event_id: (feedbackEvent?.id as string) ?? null, review: reviewOutcome,
+    reveal, explanation_ru: req.context === 'diagnostic' ? null : typeof item.envelope.original_payload?.rationale === 'string' ? (item.envelope.original_payload.rationale as string) : null,
+    feedback_event_id: (feedbackEvent?.id as string) ?? null, review: reviewOutcome,
     scheduled_reviews: newReviews.filter((r) => [7, 28].includes(r.interval_days as number)).map((r) => `D${r.interval_days}: ${r.due_local_date}`),
     mastery_counted: masteryCounted, preview,
   };
@@ -191,7 +195,7 @@ export async function submitAttempt(user: SessionUser, req: AttemptRequest): Pro
     attempt: {
       attempt_id: attemptId, user_id: user.userId, item_id: item.item_id, content_hash: item.current_hash, context: req.context,
       context_ref: req.context_ref ?? null, response_private: { ...req.response, source: req.response_source }, assistance: req.assistance,
-      released_snapshot: access.learnerUsable, preview, idempotency_key: req.idempotency_key, local_date: localDate,
+      released_snapshot: access.learnerUsable && !access.devPreview, preview, idempotency_key: req.idempotency_key, local_date: localDate,
       timezone: user.profile.timezone, active_ms: req.active_ms ?? null, created_at: now.toISOString(),
     },
     assessment: {

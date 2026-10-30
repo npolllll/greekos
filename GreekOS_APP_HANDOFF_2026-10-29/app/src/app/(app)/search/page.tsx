@@ -21,8 +21,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     db.from('rg_expressions').select('expression_id, expression, current_hash'),
   ]);
   const [uRel, rRel] = await Promise.all([
-    releaseMap('unit', (units ?? []).map((x) => ({ id: x.unit_id, hash: x.current_hash }))),
-    releaseMap('rg_expression', (rg ?? []).map((x) => ({ id: x.expression_id, hash: x.current_hash }))),
+    releaseMap('unit', (units ?? []).map((x) => ({ id: x.unit_id, hash: x.current_hash })), u),
+    releaseMap('rg_expression', (rg ?? []).map((x) => ({ id: x.expression_id, hash: x.current_hash })), u),
   ]);
   const unitHits = needle ? (units ?? []).filter((x) => x.title_ru.toLocaleLowerCase('ru').includes(needle) || x.unit_id.toLowerCase().includes(needle)) : [];
   const rgHits = needle ? (rg ?? []).filter((x) => (rRel.has(x.expression_id) || u.isOwner) && x.expression.toLocaleLowerCase('el').includes(needle)) : [];

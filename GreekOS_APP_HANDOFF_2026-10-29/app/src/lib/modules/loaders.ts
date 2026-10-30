@@ -1,5 +1,5 @@
 import { adminClient, selectAll } from '../supabase/admin.ts';
-import { releaseMap, type ItemRow } from '../content/repo.ts';
+import { releaseMap, PUBLIC_VIEWER, type ItemRow, type Viewer } from '../content/repo.ts';
 import { deliverItems, type DeliveredItem } from '../content/delivery.ts';
 import { groupCatalog, pegpSourceRefs, pegpTopicOfItem, PEGP_TOPICS, type PegpSourceRef, type PegpTopic, type RgPayload } from './display.ts';
 
@@ -48,7 +48,7 @@ async function singleton<T>(id: string): Promise<T | null> {
   return ((data?.payload as { payload?: T } | undefined)?.payload ?? null) as T | null;
 }
 
-export async function pegpOverview() {
+export async function pegpOverview(viewer: Viewer = PUBLIC_VIEWER) {
   const db = adminClient();
   const [moduleInfo, coverage, { data: packets }, rows] = await Promise.all([
     singleton<Record<string, unknown>>('pegp_module'),
@@ -56,7 +56,7 @@ export async function pegpOverview() {
     db.from('pegp_packets').select('packet_id, topic_code, packet_kind, payload, current_hash').order('packet_id'),
     moduleItems('pegp'),
   ]);
-  const delivered = await deliverItems(rows);
+  const delivered = await deliverItems(rows, { viewer });
   const windows = await releaseWindows('item', rows.map((r) => ({ id: r.item_id, hash: r.current_hash })));
   const topics: PegpTopicSummary[] = PEGP_TOPICS.map((t) => {
     const ds = delivered.filter((d) => pegpTopicOfItem(d.dto.item_id) === t);
@@ -96,16 +96,16 @@ export interface PegpItemView {
   window: ReleaseWindow | null;
 }
 
-export async function pegpTopic(topic: PegpTopic) {
+export async function pegpTopic(topic: PegpTopic, viewer: Viewer = PUBLIC_VIEWER) {
   const db = adminClient();
   const [{ data: packets }, rows] = await Promise.all([
     db.from('pegp_packets').select('packet_id, topic_code, packet_kind, payload, current_hash').eq('topic_code', topic).order('packet_kind'),
     moduleItems('pegp'),
   ]);
   const topicRows = rows.filter((r) => pegpTopicOfItem(r.item_id) === topic);
-  const delivered = await deliverItems(topicRows);
+  const delivered = await deliverItems(topicRows, { viewer });
   const windows = await releaseWindows('item', topicRows.map((r) => ({ id: r.item_id, hash: r.current_hash })));
-  const packetRel = await releaseMap('pegp_packet', (packets ?? []).map((p) => ({ id: p.packet_id, hash: p.current_hash })));
+  const packetRel = await releaseMap('pegp_packet', (packets ?? []).map((p) => ({ id: p.packet_id, hash: p.current_hash })), viewer);
   const items: PegpItemView[] = delivered.map((d) => ({
     delivered: d,
     sources: pegpSourceRefs(topicRows.find((r) => r.item_id === d.dto.item_id)?.envelope.original_payload),
@@ -123,16 +123,17 @@ export interface RgExpressionView {
   expression: string;
   payload: RgPayload;
   released: boolean;
+  dev_preview?: boolean;
 }
 
-export async function rgExpressions(): Promise<RgExpressionView[]> {
+export async function rgExpressions(viewer: Viewer = PUBLIC_VIEWER): Promise<RgExpressionView[]> {
   const { data, error } = await adminClient().from('rg_expressions').select('expression_id, expression, payload, current_hash').order('expression_id');
   if (error) throw new Error(error.message);
-  const rel = await releaseMap('rg_expression', (data ?? []).map((r) => ({ id: r.expression_id, hash: r.current_hash })));
-  return (data ?? []).map((r) => ({ expression_id: r.expression_id, expression: r.expression, payload: r.payload as RgPayload, released: rel.has(r.expression_id) }));
+  const rel = await releaseMap('rg_expression', (data ?? []).map((r) => ({ id: r.expression_id, hash: r.current_hash })), viewer);
+  return (data ?? []).map((r) => ({ expression_id: r.expression_id, expression: r.expression, payload: r.payload as RgPayload, released: rel.has(r.expression_id), dev_preview: rel.get(r.expression_id)?.review_type === 'DEV_PREVIEW_LOCAL' }));
 }
 
-export async function rgItems(expressionId: string): Promise<DeliveredItem[]> {
+export async function rgItems(expressionId: string, viewer: Viewer = PUBLIC_VIEWER): Promise<DeliveredItem[]> {
   const rows = (await moduleItems('real_greek')).filter((r) => r.item_id.startsWith(`${expressionId}-`));
-  return deliverItems(rows);
+  return deliverItems(rows, { viewer });
 }

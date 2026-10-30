@@ -3,22 +3,22 @@
 .admin-tabs .chip{white-space:nowrap;text-decoration:none}
 .admin-section{display:grid;gap:13px}
 .admin-split{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.9fr);gap:15px}
-.attention-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #f3f0ed;font-size:11.5px}
+.attention-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:11.5px}
 .attention-row:last-child{border:0}
 .attention-row b{font-weight:700}
-.attention-row span{color:#b4653f;text-align:right}
-.attention-row span.ok{color:#43836b}
+.attention-row span{color:var(--accent-strong);text-align:right}
+.attention-row span.ok{color:#35603a}
 .modal-wide{width:min(640px,calc(100vw - 32px));max-height:calc(100vh - 40px);overflow:auto}
 .radio-list{display:grid;gap:8px;margin:8px 0}
 .check-list{display:grid;gap:8px;margin:10px 0}
-.check-list label{display:flex;gap:9px;align-items:flex-start;font-size:11.5px;line-height:1.55;color:#4d4741}
-.check-list input{margin-top:3px;accent-color:#d96d43}
+.check-list label{display:flex;gap:9px;align-items:flex-start;font-size:11.5px;line-height:1.55;color:var(--ink-2)}
+.check-list input{margin-top:3px;accent-color:var(--accent)}
 .copy-box{display:flex;gap:8px;align-items:stretch;margin-top:10px}
-.copy-box input{flex:1;min-width:0;font-size:11px;border:1px solid #e8e2dc;border-radius:10px;padding:10px;background:#fbfaf8}
-.pre-block{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.6;background:#f8f6f3;border-radius:12px;padding:16px;max-height:70vh;overflow:auto;overflow-wrap:anywhere}
+.copy-box input{flex:1;min-width:0;font-size:11px;border:1px solid var(--line-strong);border-radius:10px;padding:10px;background:rgba(255,255,255,.85)}
+.pre-block{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.6;background:rgba(250,244,236,.95);border-radius:12px;padding:16px;max-height:70vh;overflow:auto;overflow-wrap:anywhere}
 .inline-form{display:grid;gap:8px}
 .inline-form .field{margin:4px 0}
 .status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
-.msg-ok{color:#3f765f;font-size:11.5px;margin-top:8px}
+.msg-ok{color:#2c552b;font-size:11.5px;margin-top:8px}
 @media(max-width:1000px){.admin-split{grid-template-columns:1fr}}
 @media(max-width:650px){.admin-top{grid-template-columns:1fr 1fr}.copy-box{flex-direction:column}}

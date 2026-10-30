@@ -11,7 +11,7 @@ export const metadata = { title: 'Живой греческий' };
 export default async function RealGreekPage({ searchParams }: { searchParams: Promise<{ e?: string }> }) {
   const u = await requireLearner();
   const sp = await searchParams;
-  const all = await rgExpressions();
+  const all = await rgExpressions(u);
   const visible = all.filter((x) => x.released || u.isOwner);
   const selected = visible.find((x) => x.expression_id === sp.e) ?? visible[0] ?? null;
   return (

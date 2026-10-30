@@ -8,7 +8,7 @@ export const metadata = { title: 'Письмо' };
 
 export default async function WritingPage() {
   const u = await requireLearner();
-  const items = await sectionItems('writing');
+  const items = await sectionItems('writing', u);
   const usable = items.filter((i) => i.access.learnerUsable);
   return (
     <section className="screen active">

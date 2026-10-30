@@ -14,3 +14,4 @@ next-env.d.ts
 supabase/.temp/
 supabase/.branches/
 artifacts/tmp/
+.scratch/
