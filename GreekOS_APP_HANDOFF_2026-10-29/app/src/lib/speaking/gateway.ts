@@ -190,9 +190,7 @@ class StreamSession {
     console.error('[voice-gateway]', (e as Error)?.message ?? e);
     this.fail('INTERNAL', 'Внутренняя ошибка голосового шлюза. Реплика не сохранена — можно повторить.');
     this.busy = false;
-    this.inFlight = null;
     this.setState('listening');
-    this.next();
   }
 
   private async authenticate(m: Extract<ClientMessage, { type: 'auth' }>) {
@@ -382,7 +380,8 @@ class StreamSession {
 
   private async runConfirmed(c: NonNullable<StreamSession['confirmed']>) {
     this.busy = true;
-    try { await this.commit(c.utteranceId, c.text, c.source, c.confidence, c.timing); } finally { this.busy = false; this.next(); }
+    // Errors are handled here, before the lock is released, so they never clear a lock taken by next().
+    try { await this.commit(c.utteranceId, c.text, c.source, c.confidence, c.timing); } catch (e) { this.handleError(e); } finally { this.busy = false; this.next(); }
   }
 
   private async onConfirm(utteranceId: string, text: string, edited: boolean) {

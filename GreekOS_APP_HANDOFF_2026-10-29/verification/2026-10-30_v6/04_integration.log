@@ -1,0 +1,39 @@
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > rejects bad, reused and cross-origin credentials 371ms
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > learner speech → VAD → Whisper → dialogue → streamed persona voice, with barge-in, metrics and idempotent recovery 32890ms
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > a confirmation sent while later speech is still transcribing wins: committed, not BUSY 18037ms
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > pause drops audio, exam simulation refuses slow replay 3609ms
+ ✓ |integration| tests/integration/audio.test.ts > digital audio pipeline > renders a narrator job with a real local Greek voice, measured and stored, never distributable 22554ms
+ ✓ |integration| tests/integration/audio.test.ts > digital audio pipeline > dialogue with uncast personal names is blocked with a reason, not rendered with a guessed voice 35ms
+ ✓ |integration| tests/integration/audio.test.ts > digital audio pipeline > mock transport can never become publishable audio (DB guard) 7ms
+ ✓ |integration| tests/integration/exam-audio.test.ts > exam listening play limit (server-enforced) > simulation: exactly two plays, then refused; counters persist on the attempt 234ms
+ ✓ |integration| tests/integration/exam-audio.test.ts > exam listening play limit (server-enforced) > parallel requests cannot exceed the limit 327ms
+ ✓ |integration| tests/integration/exam-audio.test.ts > exam listening play limit (server-enforced) > practice is unlimited; other users and unknown assets are refused 261ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > learner A cannot read learner B attempts, events or profile even by forged id 42ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > learner B sees own rows 35ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > learners cannot write learner state directly (scores, mastery, attempts) 20ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > learner cannot grant itself owner_admin or release content 18ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > canonical content, keys and releases are not readable through the public API 47ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > trusted RPCs are not callable by learners 9ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > commit function rejects bundles mixing ownership 8ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > owner_admin has no direct REST access to raw speaking turns of a learner 22ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > private storage: other users cannot download voice recordings; no public URLs 21ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > append-only audit log and immutable content revisions 27ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > deactivated learner loses access immediately (RLS) and cannot commit 267ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > public sign-up is disabled (invite-only) 5ms
+ ✓ |integration| tests/integration/learning.test.ts > content gating > a gated item is refused for learners (no fabricated access) 22ms
+ ✓ |integration| tests/integration/learning.test.ts > content gating > a holdout diagnostic item cannot be used as a routine drill 17ms
+ ✓ |integration| tests/integration/learning.test.ts > content gating > a stale content hash is rejected (content changed) 11ms
+ ✓ |integration| tests/integration/learning.test.ts > content gating > changing an item hash invalidates its release 38ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > network retry with the same key records one attempt 127ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > unlisted plausible answer goes to review without penalty and without mastery 47ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > a confirmed wrong choice creates evidence in the Error Notebook 72ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > assisted attempts never advance independent mastery 50ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > independent correct answers schedule D1…D28 on the learner-local date 69ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > owner preview of gated content writes no mastery, reviews or errors 30ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > learners cannot use preview context 13ms
+ ✓ |integration| tests/integration/audio-release.test.ts > audio release (v6) > refuses a file the owner has not listened to, and a development-only voice 158ms
+ ✓ |integration| tests/integration/audio-release.test.ts > audio release (v6) > a problem heard by the owner blocks release; OK + signed policy releases with batch and decision 186ms
+ Test Files  6 passed (6)
+      Tests  35 passed (35)
+   Duration  88.26s (transform 1.15s, setup 0ms, import 3.09s, tests 84.04s, environment 1ms)
+exit 0

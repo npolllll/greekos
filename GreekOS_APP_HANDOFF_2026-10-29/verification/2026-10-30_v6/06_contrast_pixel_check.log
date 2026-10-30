@@ -1,0 +1,12 @@
+== contrast (/, /lesson/U-A1-007)
+/home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app/scripts/contrast_eval.py:27: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = list(im.crop((x0, y0, x1, y1)).getdata())  # 10th-percentile contrast over the box (ignores anti-aliased edges)
+text runs checked: 253 below AA: 0
+== contrast_admin (/admin, /admin/learners)
+/home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app/scripts/contrast_eval.py:27: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = list(im.crop((x0, y0, x1, y1)).getdata())  # 10th-percentile contrast over the box (ignores anti-aliased edges)
+text runs checked: 312 below AA: 0
+== contrast_m (/, /alphabet, /course, /lesson/U-A1-007, /speaking)
+/home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app/scripts/contrast_eval.py:27: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = list(im.crop((x0, y0, x1, y1)).getdata())  # 10th-percentile contrast over the box (ignores anti-aliased edges)
+text runs checked: 269 below AA: 0

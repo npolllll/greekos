@@ -1,106 +1,10 @@
 
  RUN  v4.1.12 /home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app
 
- ✓ |unit| tests/unit/v6.test.ts > ASR round-trip comparison (v6) > ignores the ASR spelling of monosyllables (πού/που, ή/η) but keeps polysyllabic stress errors 8ms
- ✓ |unit| tests/unit/v6.test.ts > ASR round-trip comparison (v6) > reads ASR symbols and digits as the words of the script 1ms
- ✓ |unit| tests/unit/v6.test.ts > ASR round-trip comparison (v6) > a dropped tail is a real failure 1ms
- ✓ |unit| tests/unit/v6.test.ts > Greek orthography QA (v6) > blocks a medial sigma at the end of a word and mixed scripts 6ms
- ✓ |unit| tests/unit/v6.test.ts > Greek orthography QA (v6) > does not flag elisions, notation fragments or the enclitic double accent 1ms
- ✓ |unit| tests/unit/v6.test.ts > Greek orthography QA (v6) > counts syllables with digraphs and synizesis 0ms
- ✓ |unit| tests/unit/v6.test.ts > alphabet reference is derived from the lesson theory only > parses 24 letters with names, the final sigma and only stated sounds 4ms
- ✓ |unit| tests/unit/v6.test.ts > alphabet reference is derived from the lesson theory only > example words come from the lesson, never letter names or bare digraphs 3ms
- ✓ |unit| tests/unit/v6.test.ts > course glossary help (no generation) > glosses Greek words of a line, accent- and inflection-tolerant 1ms
- ✓ |unit| tests/unit/v6.test.ts > course glossary help (no generation) > answers «как сказать» only from authored meanings 1ms
- ✓ |unit| tests/unit/audio-plan.test.ts > casting proposals use textual evidence only > role nouns with gendered morphology are proposals; names and common-gender nouns need the owner 3ms
- ✓ |unit| tests/unit/audio-plan.test.ts > all 142 queued jobs are accounted for (no silent omission) > every job yields a deterministic plan or an explicit block with a reason 59ms
- ✓ |unit| tests/unit/audio-plan.test.ts > all 142 queued jobs are accounted for (no silent omission) > dialogues with personal names stay blocked until the owner casts them 1ms
- ✓ |unit| tests/unit/audio-plan.test.ts > all 142 queued jobs are accounted for (no silent omission) > owner casting enables a dialogue with distinct voices per character 2ms
- ✓ |unit| tests/unit/audio-plan.test.ts > all 142 queued jobs are accounted for (no silent omission) > a male role is never voiced by a female voice (no pitch tricks): blocked instead 1ms
- ✓ |unit| tests/unit/audio-plan.test.ts > all 142 queued jobs are accounted for (no silent omission) > two characters may not share one voice 1ms
- ✓ |unit| tests/unit/audio-plan.test.ts > all 142 queued jobs are accounted for (no silent omission) > U-B1-021 AUD01 and AUD02 (same words, different focus) are never merged 1ms
- ✓ |unit| tests/unit/audio-plan.test.ts > all 142 queued jobs are accounted for (no silent omission) > exam cue segments (cue_id/speaker/text) are normalised 0ms
- ✓ |unit| tests/unit/audio-plan.test.ts > round-trip screening signals > reports missing, inserted and stuttered words without claiming a definitive error 4ms
- ✓ |unit| tests/unit/audio-plan.test.ts > round-trip screening signals > estimates syllables and flags an abrupt (cut-off) ending from real samples 5ms
- ✓ |unit| tests/unit/audio-plan.test.ts > round-trip numeral normalisation > number words and digits compare equal; articles stay words 2ms
-stderr | tests/unit/adaptive.test.ts
-[adaptive.test] SPEC fixtures not found in /home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app/.corpus-snapshot: fixture-based blocks are skipped (set CORPUS_ROOT to the original corpus).
-
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD01/AD02 budget split with largest remainder and 80/20 correction
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD03 ASR uncertainty never produces a negative update
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD04 correct but hinted production does not advance independent state
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD05 listening item without audio is ineligible
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD06/HOLDOUT-01 exam holdout excluded from tutoring
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD07 unknown prerequisite evidence assigns a probe, not a skip
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD08 repeating the same item never confirms transfer
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD10 empty correction buckets move to retention
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD11/AD17 nine calendar months with clamping; exam date never re-anchors
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD13/RET-01..03 retention requires unassisted D7 and D28
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD14 appeal freezes negative updates
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD15 stable tie-break: never seen, oldest, then item_id
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD16 all content blocked returns NO_ELIGIBLE_CONTENT
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD18 half-open 14 day UTC window
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > AD19 prerequisite outdegree counts direct dependents
- ↓ |unit| tests/unit/adaptive.test.ts > ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json) > weak ranking and 4:1 slot pattern are deterministic
- ✓ |unit| tests/unit/adaptive.test.ts > local calendar and D7/D28 anchoring > local date follows the learner timezone, not UTC 27ms
- ✓ |unit| tests/unit/adaptive.test.ts > local calendar and D7/D28 anchoring > ladder anchors on the attempt local date and crosses month ends 2ms
- ✓ |unit| tests/unit/adaptive.test.ts > local calendar and D7/D28 anchoring > review probe: early, same-item, assisted or unreliable attempts do not pass 1ms
- ✓ |unit| tests/unit/safety.test.ts > candidate DTO never leaks keys, models or editor payloads > holds for all 1843 imported items 148ms
- ✓ |unit| tests/unit/safety.test.ts > candidate DTO never leaks keys, models or editor payloads > text objects are whitelisted (no reviewer-only completed text) 2ms
- ✓ |unit| tests/unit/safety.test.ts > candidate DTO never leaks keys, models or editor payloads > listening cues never carry the transcript 0ms
- ✓ |unit| tests/unit/safety.test.ts > AI assessment validation → ABSTAIN on hallucination > accepts literal evidence spans 0ms
- ✓ |unit| tests/unit/safety.test.ts > AI assessment validation → ABSTAIN on hallucination > rejects invented quotes 0ms
- ✓ |unit| tests/unit/safety.test.ts > AI assessment validation → ABSTAIN on hallucination > rejects unknown criteria 0ms
- ✓ |unit| tests/unit/safety.test.ts > AI assessment validation → ABSTAIN on hallucination > rejects negative verdicts without evidence 0ms
- ✓ |unit| tests/unit/safety.test.ts > AI assessment validation → ABSTAIN on hallucination > speaking summary must cite real confirmed turns 0ms
- ✓ |unit| tests/unit/safety.test.ts > speaking state machine and fallback > rejects illegal transitions and has no dead ends except ended 1ms
- ✓ |unit| tests/unit/safety.test.ts > speaking state machine and fallback > barge-in cancels agent playback and marks it incomplete 0ms
- ✓ |unit| tests/unit/safety.test.ts > speaking state machine and fallback > without an LLM the dialogue follows the authored graph and repair loops end in RETRY 1ms
- ✓ |unit| tests/unit/safety.test.ts > diagnostic engine (ENTRY_PROTOCOL) > climbs per axis, stops on failure, never averages axes, missing audio is NOT_OBSERVED 2ms
- ✓ |unit| tests/unit/safety.test.ts > diagnostic engine (ENTRY_PROTOCOL) > failed A1 reading routes to the alphabet foundations 0ms
- ✓ |unit| tests/unit/safety.test.ts > diagnostic engine (ENTRY_PROTOCOL) > assisted answers never advance a level 2ms
- ✓ |unit| tests/unit/safety.test.ts > audio technical QA uses real bytes > parses, measures and passes a clean signal 10ms
- ✓ |unit| tests/unit/safety.test.ts > audio technical QA uses real bytes > flags silence, clipping and garbage 7ms
- ✓ |unit| tests/unit/safety.test.ts > audio technical QA uses real bytes > concatenation produces measured, non-overlapping cues 1ms
- ✓ |unit| tests/unit/safety.test.ts > audio technical QA uses real bytes > round-trip separates accent errors from character errors 13ms
- ✓ |unit| tests/unit/exams.test.ts > exam timing and autosave rules > derives declared minutes without inventing zero 2ms
- ✓ |unit| tests/unit/exams.test.ts > exam timing and autosave rules > accepts only strictly increasing autosaves on live attempts 10ms
- ✓ |unit| tests/unit/exams.test.ts > exam timing and autosave rules > sanitises answers to this component only 1ms
- ✓ |unit| tests/unit/exams.test.ts > exam timing and autosave rules > keeps canonical KEG-B2-P01 while displaying logical W01 0ms
- ✓ |unit| tests/unit/exams.test.ts > exam scoring > U01 C1–C7 judged as one vector: canonical provisional, unlisted held, never per-gap 1ms
- ✓ |unit| tests/unit/exams.test.ts > exam scoring > keyed reading items are reliable; writing needs rubric review; blanks are not assessed 4ms
- ✓ |unit| tests/unit/exams.test.ts > exam scoring > candidate DTOs for all 213 exam items leak no keys and hide criteria 14ms
- ✓ |unit| tests/unit/exams.test.ts > ΠΕΓΠ and Real Greek helpers > maps all 103 ΠΕΓΠ items to P01–P06 1ms
- ✓ |unit| tests/unit/exams.test.ts > ΠΕΓΠ and Real Greek helpers > exposes only whitelisted ΠΕΓΠ source metadata 2ms
- ✓ |unit| tests/unit/exams.test.ts > ΠΕΓΠ and Real Greek helpers > Real Greek: unknown attestation stays unknown, missing audio blocks prosody claims, risks shown 1ms
- ✓ |unit| tests/unit/exam-audio.test.ts > exam listening play limit (A06) > simulation allows exactly the form limit per recording 2ms
- ✓ |unit| tests/unit/exam-audio.test.ts > exam listening play limit (A06) > practice is not limited; malformed counters cannot go negative 0ms
- ✓ |unit| tests/unit/scoring.test.ts > every imported item type has an explicit adapter > no item falls through to an implicit renderer 3ms
- ✓ |unit| tests/unit/scoring.test.ts > every imported item type has an explicit adapter > unknown types fail closed with UNSUPPORTED_CONTENT_TYPE 1ms
- ✓ |unit| tests/unit/scoring.test.ts > short answers keep Greek accents and item normalisation > exact key with case/space normalisation is correct 1ms
- ✓ |unit| tests/unit/scoring.test.ts > short answers keep Greek accents and item normalisation > accent-only difference is a non-meaning orthography error, not "correct" 1ms
- ✓ |unit| tests/unit/scoring.test.ts > short answers keep Greek accents and item normalisation > unlisted plausible answer goes to review without penalty 0ms
- ✓ |unit| tests/unit/scoring.test.ts > short answers keep Greek accents and item normalisation > NFC is normalised; final sigma stays an orthographic fact (v6) 1ms
- ✓ |unit| tests/unit/scoring.test.ts > short answers keep Greek accents and item normalisation > empty answers are rejected rather than scored 0ms
- ✓ |unit| tests/unit/scoring.test.ts > choice items score only the approved key with stable option keys > correct key 0ms
- ✓ |unit| tests/unit/scoring.test.ts > choice items score only the approved key with stable option keys > wrong option is reliable incorrect 1ms
- ✓ |unit| tests/unit/scoring.test.ts > choice items score only the approved key with stable option keys > forged option key is invalid 0ms
- ✓ |unit| tests/unit/scoring.test.ts > structured items validate the full submitted vector > matching accepts any separator formatting 5ms
- ✓ |unit| tests/unit/scoring.test.ts > structured items validate the full submitted vector > ordering accepts documented alternatives 1ms
- ✓ |unit| tests/unit/scoring.test.ts > open responses are never compared to one model answer > writing goes to rubric review 0ms
- ✓ |unit| tests/unit/scoring.test.ts > open responses are never compared to one model answer > REVIEW_REQUIRED keyed answers are provisional (unreliable) 0ms
- ✓ |unit| tests/unit/scoring.test.ts > U01 joint adjudication > canonical and documented alternative are provisional candidates, others held 0ms
- ✓ |unit| tests/unit/voice-stream.test.ts > adaptive VAD (learner-friendly end of turn) > beginners get a longer hangover; short hesitant utterances get extra time 10ms
- ✓ |unit| tests/unit/voice-stream.test.ts > adaptive VAD (learner-friendly end of turn) > a mid-sentence pause shorter than the hangover does not end the turn 11ms
- ✓ |unit| tests/unit/voice-stream.test.ts > adaptive VAD (learner-friendly end of turn) > quiet speech above an adapted noise floor is detected; steady noise is not speech 10ms
- ✓ |unit| tests/unit/voice-stream.test.ts > adaptive VAD (learner-friendly end of turn) > «Готово» ends the turn immediately; max length is enforced 40ms
- ✓ |unit| tests/unit/voice-stream.test.ts > gateway credentials and protocol > tokens are bound to user+session, signed and short-lived 3ms
- ✓ |unit| tests/unit/voice-stream.test.ts > gateway credentials and protocol > replies are split into sentences for incremental speech 3ms
- ✓ |unit| tests/unit/voice-stream.test.ts > gateway credentials and protocol > audio chunks round-trip with their header 1ms
- ✓ |unit| tests/unit/voice-stream.test.ts > gateway credentials and protocol > heard text after barge-in = finished sentences + leading words of the current one 1ms
- ✓ |unit| tests/unit/voice-stream.test.ts > uncertain recognition is confirmed, never penalised > asks «Это вы сказали?» for low confidence, missing confidence, probable silence, non-Greek, synthetic 3ms
 
  Test Files  8 passed (8)
       Tests  78 passed | 16 skipped (94)
-   Start at  05:38:33
-   Duration  2.36s (transform 1.78s, setup 0ms, import 3.94s, tests 491ms, environment 1ms)
+   Start at  07:29:32
+   Duration  1.70s (transform 1.01s, setup 0ms, import 2.78s, tests 512ms, environment 2ms)
 
+exit 0

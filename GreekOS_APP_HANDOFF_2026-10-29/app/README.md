@@ -51,7 +51,7 @@ npm run audio -- cast    # каталог голосов + предложени�
 | `npm run typecheck` / `lint` | TypeScript и ESLint |
 | `npm test` | unit-тесты (фикстуры спецификации ADAPTIVE/FINALIZATION, оценивание, DTO по всем 1843 заданиям, аудио-QA) |
 | `npm run test:integration` | RLS/Storage/RPC/идемпотентность на реальном локальном Postgres |
-| `npm run test:e2e` | Playwright: путь ученика, Realtime в двух вкладках, 1440/768/390/320 px, axe, клавиатура, живой разговор с поддельным микрофоном (нужны шлюз и local:asr) |
+| `npm run test:e2e` | Playwright: путь ученика, Realtime в двух вкладках, 1440/768/390/320 px, axe, клавиатура, живой разговор с поддельным микрофоном (нужны шлюз и сервис речи; на машине без GPU ход ученика занимает до ~1 мин — бюджет `E2E_VOICE_TURN_MS`, по умолчанию 120000; свой Chromium — `PW_CHROMIUM_PATH`) |
 | `npm run security:bundle` | после `build`: в браузерном бандле нет ключей, ответов и редакторских материалов |
 | `npm run import:validate` / `import` | проверка и импорт канонического корпуса |
 | `npm run owner:create` | создать/пригласить единственного владельца |
