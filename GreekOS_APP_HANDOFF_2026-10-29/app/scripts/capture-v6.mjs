@@ -2,8 +2,9 @@
 //   PW_CHROMIUM_PATH=/opt/pw-browsers/chromium node scripts/capture-v6.mjs <learner.txt> <owner.txt> [outDir]
 // Credential files hold "email password". Nothing here is a mock-up: every frame is the live app.
 import { chromium } from 'playwright';
-import { mkdirSync, readFileSync, renameSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { spawn } from 'node:child_process';
 
 const [learnerFile, ownerFile, outArg] = process.argv.slice(2);
 const out = outArg ?? 'reports/v6/captures';
@@ -14,9 +15,40 @@ mkdirSync(join(out, 'videos'), { recursive: true });
 const browser = await chromium.launch(process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {});
 const pause = (p, ms = 900) => p.waitForTimeout(ms);
 
+// Video: frames from the DevTools screencast (what the page really painted), encoded to VP8/WebM at a
+// constant 25 fps by ffmpeg (FFMPEG_PATH, or Playwright's bundled build). Without ffmpeg: screenshots only.
+const FFMPEG = process.env.FFMPEG_PATH ?? ['/opt/pw-browsers/ffmpeg-1011/ffmpeg-linux', '/opt/homebrew/bin/ffmpeg', '/usr/local/bin/ffmpeg', '/usr/bin/ffmpeg'].find((p) => existsSync(p));
+
+async function startRecording(ctx, page, viewport) {
+  const cdp = await ctx.newCDPSession(page);
+  const frames = [];
+  cdp.on('Page.screencastFrame', async ({ data, metadata, sessionId }) => {
+    frames.push({ buf: Buffer.from(data, 'base64'), t: metadata.timestamp });
+    await cdp.send('Page.screencastFrameAck', { sessionId }).catch(() => {});
+  });
+  await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 82, maxWidth: viewport.width * (viewport.width <= 430 ? 2 : 1), maxHeight: viewport.height * (viewport.width <= 430 ? 2 : 1) });
+  return async (file) => {
+    await cdp.send('Page.stopScreencast').catch(() => {});
+    if (!FFMPEG || frames.length < 2) return false;
+    const ff = spawn(FFMPEG, ['-loglevel', 'error', '-f', 'image2pipe', '-c:v', 'mjpeg', '-framerate', '25', '-i', 'pipe:0', '-y', '-an', '-c:v', 'vp8', '-b:v', '2M', '-deadline', 'good', '-pix_fmt', 'yuv420p', file]);
+    const done = new Promise((res) => ff.on('close', (code) => res(code === 0)));
+    const t0 = frames[0].t;
+    let emitted = 0;
+    for (let i = 0; i < frames.length; i++) {
+      const until = i + 1 < frames.length ? frames[i + 1].t - t0 : frames[i].t - t0 + 1;
+      while (emitted / 25 < until) { if (!ff.stdin.write(frames[i].buf)) await new Promise((r) => ff.stdin.once('drain', r)); emitted++; }
+    }
+    ff.stdin.end();
+    return done;
+  };
+}
+
+const ONLY = process.env.FLOWS ? process.env.FLOWS.split(',') : null;
 async function flow(name, [email, password], viewport, run) {
-  const ctx = await browser.newContext({ viewport, deviceScaleFactor: viewport.width <= 430 ? 2 : 1, recordVideo: { dir: join(out, 'videos'), size: viewport } });
+  if (ONLY && !ONLY.includes(name)) return;
+  const ctx = await browser.newContext({ viewport, deviceScaleFactor: viewport.width <= 430 ? 2 : 1 });
   const page = await ctx.newPage();
+  const stop = await startRecording(ctx, page, viewport);
   const shot = async (n) => { await pause(page, 600); await page.screenshot({ path: join(out, 'screens', `${name}_${n}.png`) }); };
   await page.goto(`${base}/login`);
   await page.fill('input[type=email]', email);
@@ -24,10 +56,9 @@ async function flow(name, [email, password], viewport, run) {
   await Promise.all([page.waitForURL((u) => !u.pathname.startsWith('/login'), { timeout: 90000 }), page.click('button[type=submit]')]);
   await page.waitForLoadState('networkidle');
   try { await run(page, shot); } catch (e) { console.error(`${name}: ${e.message.split('\n')[0]}`); await shot('error'); }
-  const video = page.video();
+  const ok = await stop(join(out, 'videos', `${name}.webm`));
   await ctx.close();
-  if (video) renameSync(await video.path(), join(out, 'videos', `${name}.webm`));
-  console.log('captured', name);
+  console.log('captured', name, ok ? '(video)' : '(screenshots only)');
 }
 
 // 1. Learner from zero: home → alphabet → canonical lesson (DEV-PREVIEW) → error → «Почему так?» → transfer → retry.
@@ -67,7 +98,8 @@ await flow('s1_learner_journey', creds(learnerFile), { width: 1440, height: 900 
   await shot('09_transfer');
   await player.getByRole('button', { name: 'Ещё раз' }).click();
   await player.getByRole('radio', { name: 'ς', exact: true }).click();
-  await player.getByRole('button', { name: 'Проверить' }).click();
+  // the transfer task inside the context card has its own «Проверить»: take the main one (first in the player)
+  await player.getByRole('button', { name: 'Проверить' }).first().click();
   await player.locator('.verdict').waitFor({ timeout: 30000 });
   await shot('10_retry_correct');
   await page.goto(`${base}/progress`, { waitUntil: 'networkidle' });
