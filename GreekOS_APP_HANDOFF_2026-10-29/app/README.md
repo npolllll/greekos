@@ -26,16 +26,22 @@ npm run dev                   # http://127.0.0.1:3210
 
 Письма (приглашения, восстановление пароля) локально попадают в Mailpit: http://127.0.0.1:55324.
 
-Голос локально (v5.4, только разработка; на macOS с греческим голосом системы):
+Локальные голос, распознавание и AI-собеседник (v6, без ключей и оплаты) — подробно в
+[docs/LOCAL_AI_SETUP.md](docs/LOCAL_AI_SETUP.md):
 
 ```bash
-npm run local:asr        # Whisper small/medium на 127.0.0.1:3312 (Python 3.9+, openai-whisper, faster-whisper)
+npm run models:fetch     # модели в ~/greekos-models с проверкой SHA-256 (манифест local-services/models.manifest.json)
+npm run local:speech     # синтез (Coqui VITS, MBROLA) + Whisper (sherpa-onnx) на 127.0.0.1:3312
+npm run local:llm        # OpenAI-совместимый сервер Qwen3-4B (node-llama-cpp) на 127.0.0.1:3313
 npm run voice:gateway    # потоковый голосовой шлюз на 127.0.0.1:3311
 npm run audio -- cast    # каталог голосов + предложения кастинга (подтверждает владелец в админке)
 ```
-В `.env.local`: `ASR_PROVIDER=local`, `TTS_PROVIDER=local`, `VOICE_GATEWAY_SECRET` (≥32 случайных символа),
-`NEXT_PUBLIC_VOICE_GATEWAY_URL=ws://127.0.0.1:3311`. Локальные движки не переносятся в облако и не
-дают права распространять звук ученикам (`DEV_LOCAL_ONLY`).
+
+Аудио курса без повторного синтеза: `npm run audio -- import-bundle --dir ../audio_bundle` загружает
+сгенерированные файлы из комплекта (каждый сверяется с SHA-256 манифеста). Реальные уроки до выпуска —
+через DEV-PREVIEW тестового аккаунта (только `APP_ENV=local`): Админ → DEV-PREVIEW или
+`scripts/dev-preview.ts create-tester`. Локальные движки не дают права распространять звук ученикам
+(`DEV_LOCAL_ONLY`), а локальная модель считается невалидированной для греческого.
 
 ## Команды
 
@@ -49,7 +55,11 @@ npm run audio -- cast    # каталог голосов + предложени�
 | `npm run security:bundle` | после `build`: в браузерном бандле нет ключей, ответов и редакторских материалов |
 | `npm run import:validate` / `import` | проверка и импорт канонического корпуса |
 | `npm run owner:create` | создать/пригласить единственного владельца |
-| `npm run audio -- validate\|cast\|plan\|render\|render-batch\|inspect\|report\|benchmark` | кастинг голосов и цифровое производство аудио по очереди из 142 заданий, отчёты |
+| `npm run audio -- validate\|cast\|plan\|render\|render-batch\|rescore\|export-bundle\|import-bundle\|inspect\|report\|benchmark` | кастинг голосов, цифровое производство 142 аудиозаданий, пересчёт вердиктов, перенос файлов между машинами, отчёты |
+| `npm run models:fetch` / `local:speech` / `local:llm` | локальные модели (с проверкой хешей), сервис речи и языковая модель (разработка) |
+| `npx tsx scripts/qa-batch.ts` | цифровой QA всего корпуса (отчёт JSON+MD с SHA-256 в `reports/v6/qa`) |
+| `npx tsx scripts/export-corpus-snapshot.ts` | снимок корпуса из БД для unit-тестов, если исходной папки корпуса нет |
+| `node scripts/capture-v6.mjs <learner> <owner>` | скриншоты и capture-видео ключевых сценариев с работающего приложения |
 | `npm run local:asr` / `voice:gateway` | локальный Whisper и потоковый голосовой шлюз (разработка) |
 | `npm run voice:bench` | замер задержек и ASR живого разговора через настоящий шлюз (синтетические клипы) |
 | `npx tsx scripts/voice-reports.ts` | Markdown-отчёты v5.4 из измеренных JSON в `reports/v5.4` |
