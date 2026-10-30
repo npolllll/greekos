@@ -15,7 +15,7 @@ import { analyzeWav, concatWav, normalizeLoudness, parseWav, pcmSamples, type Te
 import { alignmentDiff, chunkText, roundTrip, roundTripPass, segmentSignals, type RoundTripMetrics } from './roundtrip.ts';
 import type { CatalogVoice, CastRole } from '../voice/catalog.ts';
 
-export const SYNTHESIS_VERSION = 'greekos-audio/2.0';
+export const SYNTHESIS_VERSION = 'greekos-audio/2.1'; // 2.1: word boundaries around the target inside the Coqui carrier
 
 export interface AudioJobRow {
   audio_id: string;

@@ -60,8 +60,11 @@ class CoquiGreek:
             # Duration sanity check: a stretched utterance is re-synthesised inside the carrier.
             if frames.mean() / max(length_scale, 1e-3) <= self.MAX_FRAMES_PER_TOKEN:
                 return audio
-        pre = self.tokenizer.text_to_ids(self.CARRIER_PRE, language="el")[:-1]
-        post = self.tokenizer.text_to_ids(self.CARRIER_POST, language="el")[1:]
+        # Word boundaries around the target: without a space token the model glued «…ακούμε:» and «Αυτό…»
+        # to it, and the onset of the next carrier word bled into the slice (ASR heard «… σου αφ'»).
+        blank, space = self.tokenizer.characters.char_to_id("<BLNK>"), self.tokenizer.characters.char_to_id(" ")
+        pre = self.tokenizer.text_to_ids(self.CARRIER_PRE, language="el")[:-1] + [blank, space]
+        post = [space] + self.tokenizer.text_to_ids(self.CARRIER_POST, language="el")
         audio, frames = self._infer(pre + ids + post, length_scale, noise_scale, noise_w)
         start = int(frames[: len(pre)].sum()) * self.HOP
         end = int(frames[: len(pre) + len(ids)].sum()) * self.HOP

@@ -15,5 +15,5 @@ const args = process.argv.slice(2);
 const arg = (k: string) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : undefined; };
 const unit = arg('--unit');
 const t0 = Date.now();
-const r = await runQaBatch({ actorId: null, label: arg('--label') ?? `CLI ${new Date().toISOString()}`, scope: unit ? { kind: 'unit', ids: [unit] } : { kind: 'all' } });
+const r = await runQaBatch({ actorId: null, label: arg('--label') ?? `CLI ${new Date().toISOString()}`, scope: unit ? { kind: 'unit', ids: [unit] } : { kind: 'all' }, reportDir: arg('--out') });
 console.log(JSON.stringify({ ...r, ms: Date.now() - t0 }, null, 2));

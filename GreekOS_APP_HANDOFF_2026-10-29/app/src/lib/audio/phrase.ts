@@ -6,13 +6,13 @@ import { releaseMap } from '../content/repo.ts';
 import { loadCastingContext } from './pipeline.ts';
 import { synthesizeWithVoice } from '../providers/speech.ts';
 import { localAsrHealth, localTranscribe } from '../providers/local-engines.ts';
-import { analyzeWav } from './wav.ts';
+import { analyzeWav, normalizeLoudness } from './wav.ts';
 import { roundTrip, roundTripPass } from './roundtrip.ts';
 import { env } from '../env.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
 import { lessonWords } from '../alphabet/reference.ts';
 
-export const PHRASE_SYNTHESIS_VERSION = 'greekos-phrase/1.0';
+export const PHRASE_SYNTHESIS_VERSION = 'greekos-phrase/1.1'; // 1.1: carrier word boundaries + loudness normalisation
 
 const norm = (s: string) => s.normalize('NFC').replace(/\s+/g, ' ').trim();
 
@@ -56,7 +56,9 @@ export async function phraseAudio(viewer: SessionUser, input: { unit_id: string;
     const model = asr?.available.includes('turbo') ? 'turbo' : asr?.available.includes('small') ? 'small' : null;
     let best: { bytes: Uint8Array; metrics: ReturnType<typeof roundTrip>; hyp: string } | null = null;
     for (let attempt = 0; attempt < 3; attempt++) {
-      const out = await synthesizeWithVoice(text, voice, { speed: input.speed, userId: viewer.userId, operation: 'tts_phrase' });
+      const raw = await synthesizeWithVoice(text, voice, { speed: input.speed, userId: viewer.userId, operation: 'tts_phrase' });
+      // Same single-gain loudness normalisation as course audio: a quiet short word is not a broken one.
+      const out = { ...raw, bytes: normalizeLoudness(raw.bytes).wav };
       const tech = analyzeWav(out.bytes);
       if (!tech?.pass) continue;
       if (!model) { best = { bytes: out.bytes, metrics: roundTrip(text, ''), hyp: '' }; break; }
