@@ -109,6 +109,11 @@ class StreamSession {
   private busy = false;
   private queued: { ev: Extract<VadEvent, { type: 'end_of_turn' }>; pcm: Int16Array; id: string; partialFirstMs: number | null; at: number } | null = null;
   private pendingConfirm = new Map<string, { tr: UtteranceTranscript; timing: TurnTiming }>();
+  // An explicit «Да, отправить» outranks speech still being transcribed: it waits here for the lock,
+  // and the utterance in flight at that moment (usually the learner repeating the line) is dropped.
+  private confirmed: { utteranceId: string; text: string; source: LearnerSource; confidence: number | null; timing: TurnTiming | null } | null = null;
+  private inFlight: string | null = null;
+  private dropUtter: string | null = null;
   private helpUsed = new Set<string>();
   private playback: Playback | null = null;
   private gen = 0;
@@ -185,7 +190,9 @@ class StreamSession {
     console.error('[voice-gateway]', (e as Error)?.message ?? e);
     this.fail('INTERNAL', 'Внутренняя ошибка голосового шлюза. Реплика не сохранена — можно повторить.');
     this.busy = false;
+    this.inFlight = null;
     this.setState('listening');
+    this.next();
   }
 
   private async authenticate(m: Extract<ClientMessage, { type: 'auth' }>) {
@@ -324,12 +331,14 @@ class StreamSession {
 
   private async processUtterance(item: { ev: Extract<VadEvent, { type: 'end_of_turn' }>; pcm: Int16Array; id: string; partialFirstMs: number | null; at: number }) {
     this.busy = true;
+    this.inFlight = item.id;
     try {
       this.setState('transcribing');
       // Wall-clock end of speech: frames arrive in real time, so the hangover is how long ago it was.
       const endOfSpeechAt = item.at - Math.max(0, item.ev.atMs - item.ev.lastVoicedMs);
       const t0 = Date.now();
       const tr = await this.asr.final(item.pcm, INPUT_SAMPLE_RATE, this.user.userId);
+      if (this.dropUtter === item.id) { this.dropUtter = null; return; }
       const timing: TurnTiming = {
         turnSeq: -1, endOfTurnAt: item.at, endOfSpeechAt, speechMs: item.ev.speechMs, hangoverMs: item.ev.hangoverMs, partialFirstMs: item.partialFirstMs,
         asrFinalMs: Date.now() - t0, asrEngine: `${tr.provider}:${tr.model}`, dialogueMs: null, dialogueEngine: null, ttsFirstAudioMs: null,
@@ -354,10 +363,26 @@ class StreamSession {
       this.handleError(e);
     } finally {
       this.busy = false;
-      const q = this.queued;
-      this.queued = null;
-      if (q && !this.closed) void this.processUtterance(q);
+      this.inFlight = null;
+      if (this.dropUtter === item.id) this.dropUtter = null;
+      this.next();
     }
+  }
+
+  /** Starts the next piece of work once the lock is free: a waiting confirmation first, then queued speech. */
+  private next() {
+    if (this.busy || this.closed) return;
+    const c = this.confirmed;
+    this.confirmed = null;
+    if (c) { this.spawn(() => this.runConfirmed(c)); return; }
+    const q = this.queued;
+    this.queued = null;
+    if (q) void this.processUtterance(q);
+  }
+
+  private async runConfirmed(c: NonNullable<StreamSession['confirmed']>) {
+    this.busy = true;
+    try { await this.commit(c.utteranceId, c.text, c.source, c.confidence, c.timing); } finally { this.busy = false; this.next(); }
   }
 
   private async onConfirm(utteranceId: string, text: string, edited: boolean) {
@@ -368,10 +393,17 @@ class StreamSession {
     // A transcript counts as recognised-and-confirmed only if it is exactly what this gateway heard;
     // anything else (edited, or confirmed after a reconnect) is the learner's own correction.
     const source: LearnerSource = p && !edited && clean === p.tr.text ? 'asr_confirmed' : 'learner_corrected';
-    const timing = p?.timing ?? null;
-    if (this.busy) return this.fail('BUSY', 'Подождите окончания текущей реплики.');
-    this.busy = true;
-    try { await this.commit(utteranceId, clean, source, p?.tr.confidence ?? null, timing); } finally { this.busy = false; }
+    const job = { utteranceId, text: clean, source, confidence: p?.tr.confidence ?? null, timing: p?.timing ?? null };
+    if (this.busy) {
+      // Later speech is being transcribed (or a turn is still committing): the confirmed line goes next,
+      // and speech that ended before the click is superseded by it rather than answered first.
+      if (this.inFlight) this.dropUtter = this.inFlight;
+      this.queued = null;
+      this.confirmed = job;
+      this.setState('thinking');
+      return;
+    }
+    await this.runConfirmed(job);
   }
 
   private async commit(utteranceId: string, text: string, source: LearnerSource, confidence: number | null, timing: TurnTiming | null) {

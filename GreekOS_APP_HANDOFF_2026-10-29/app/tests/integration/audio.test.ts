@@ -3,19 +3,22 @@ import { admin } from './helpers';
 import { renderJob, planJob, loadCastingContext } from '@/lib/audio/pipeline';
 import { syncLocalVoices, proposeCastVoices, proposeJobCasting } from '@/lib/voice/catalog';
 import { normalizeAudioJob } from '@/lib/admin/audio';
+import { localAsrHealth } from '@/lib/providers/local-engines';
 
 /**
- * Audio pipeline against the real local database and storage. On macOS the local System Voice
- * renders REAL Greek speech (development rights only); the mock transport is checked separately.
+ * Audio pipeline against the real local database and storage. Real Greek speech comes from the macOS
+ * System Voice (development rights only) or, on Linux, from the GreekOS speech service (Coqui VITS,
+ * rights pending the owner's record); the mock transport is checked separately.
  */
 const created: string[] = [];
 // Rendering supersedes the job's current local asset; the test restores it so local data is unchanged.
 const restore: { assets: string[]; status: Record<string, unknown> | null } = { assets: [], status: null };
 const isMac = process.platform === 'darwin';
+const canRender = isMac || (process.platform === 'linux' && !!(await localAsrHealth())?.voices?.length);
 
 beforeAll(async () => {
   process.env.APP_ENV = 'local';
-  if (isMac) {
+  if (canRender) {
     await syncLocalVoices();
     await proposeCastVoices();
     await proposeJobCasting();
@@ -40,7 +43,7 @@ const loadJob = async (id: string) => {
 };
 
 describe('digital audio pipeline', () => {
-  it.skipIf(!isMac)('renders a narrator job with a real local Greek voice, measured and stored, never distributable', async () => {
+  it.skipIf(!canRender)('renders a narrator job with a real local Greek voice, measured and stored, never distributable', async () => {
     const job = await loadJob('U-A1-019-AUD01');
     restore.assets = ((await admin.from('audio_assets').select('id').eq('audio_id', job.audio_id).is('invalidated_at', null)).data ?? []).map((a) => a.id);
     restore.status = (await admin.from('audio_job_render_status').select('*').eq('audio_id', job.audio_id).maybeSingle()).data;
@@ -51,10 +54,11 @@ describe('digital audio pipeline', () => {
     expect(r.status).toBe('RENDERED');
     created.push(r.asset_id!);
     const { data: a } = await admin.from('audio_assets').select('*').eq('id', r.asset_id!).single();
-    expect(a.provider).toBe('local_macos');
+    expect(a.provider).toBe(isMac ? 'local_macos' : 'local_coqui');
     expect(a.technical_status).toBe('TECHNICAL_PASS');
     expect(a.duration_ms).toBeGreaterThan(300);
-    expect(a.rights_status).toBe('DEV_LOCAL_ONLY');
+    // Neither is distributable: the macOS voice is personal-use only; Coqui waits for the owner's rights record.
+    expect(a.rights_status).toBe(isMac ? 'DEV_LOCAL_ONLY' : 'RIGHTS_PENDING');
     expect(a.cast_approved).toBe(false);
     expect(a.master_sha256).toMatch(/^[0-9a-f]{64}$/);
     expect(['DIGITAL_REVIEWED', 'LINGUISTIC_QA_PENDING']).toContain(a.render_status);
@@ -64,7 +68,7 @@ describe('digital audio pipeline', () => {
     expect(forced.error?.message).toMatch(/release_eligible_requirements/);
   }, 600_000);
 
-  it.skipIf(!isMac)('dialogue with uncast personal names is blocked with a reason, not rendered with a guessed voice', async () => {
+  it.skipIf(!canRender)('dialogue with uncast personal names is blocked with a reason, not rendered with a guessed voice', async () => {
     const r = await renderJob(await loadJob('U-A1-001-AUD01'), { actorId: null, budgetCapUsd: 0 });
     expect(r.status).toBe('BLOCKED');
     expect(r.job_status).toBe('BLOCKED_MISSING_VOICE_METADATA');

@@ -220,6 +220,33 @@ describe('streaming voice gateway', () => {
     c2.ws.close();
   }, 180_000);
 
+  it.skipIf(!canTry)('a confirmation sent while later speech is still transcribing wins: committed, not BUSY', async () => {
+    if (!ready) return;
+    const sid = await newSession();
+    const c = await connect(sid);
+    await c.waitFor('ready');
+    c.send({ type: 'listen' });
+    await c.waitFor('state', (m) => m.state === 'listening');
+    await c.speak(await clip('Θέλω ένα κιλό μήλα.'));
+    const fin = await c.waitFor('final');
+    if (!fin.needs_confirmation) return c.ws.close(); // an engine with confidence auto-commits: nothing to race
+    // The learner says something else, and taps «Да, отправить» while that is being transcribed.
+    const seen = c.msgs.length;
+    await c.speak(await clip('Πόσο κάνουν;'), { tailMs: 100 });
+    c.send({ type: 'done' });
+    await c.waitFor('state', (m) => m.state === 'transcribing' && c.msgs.indexOf(m) >= seen);
+    c.send({ type: 'confirm', utterance_id: fin.utterance_id, text: fin.text, edited: false });
+    const turn = await c.waitFor('turn', () => true, 120_000);
+    const learner = (turn.view as { turns: Array<{ speaker: string; text: string; source: string }> }).turns.filter((t) => t.speaker === 'learner');
+    expect(learner).toHaveLength(1);
+    expect(learner[0]).toMatchObject({ text: fin.text, source: 'asr_confirmed' });
+    // The superseded utterance produced no card of its own.
+    await new Promise((r) => setTimeout(r, 1500));
+    expect(c.msgs.filter((m) => m.type === 'final' && m.utterance_id !== fin.utterance_id)).toHaveLength(0);
+    expect(c.msgs.some((m) => m.type === 'error')).toBe(false);
+    c.ws.close();
+  }, 180_000);
+
   it.skipIf(!canTry)('pause drops audio, exam simulation refuses slow replay', async () => {
     if (!ready) return;
     const sid = await newSession();

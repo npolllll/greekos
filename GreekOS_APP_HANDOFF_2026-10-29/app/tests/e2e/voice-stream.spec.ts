@@ -14,7 +14,12 @@ async function gatewayUp() {
   try { return (await fetch('http://127.0.0.1:3311/health')).ok; } catch { return false; }
 }
 
+// On a CPU-only machine one learner turn is Whisper (≈7–25 s) plus the local model (≈11–35 s): the
+// budgets below cover that; on a Mac with Metal the same steps take seconds.
+const TURN_MS = Number(process.env.E2E_VOICE_TURN_MS ?? 120_000);
+
 test('live streaming conversation in the browser', async ({ page }) => {
+  test.setTimeout(TURN_MS * 3);
   test.skip(!existsSync(VOICE_CLIP), 'нет синтетического клипа (нужен macOS say или локальный сервис речи)');
   test.skip(!(await gatewayUp()), 'голосовой шлюз не запущен');
   const { owner } = readState();
@@ -34,10 +39,10 @@ test('live streaming conversation in the browser', async ({ page }) => {
   // The looping clip answers the opening line; a recognised learner turn and a new reply appear.
   const learnerBubble = page.locator('.bubble.my:not(.draft)').first();
   const confirm = page.getByRole('button', { name: 'Да, отправить' });
-  await expect(learnerBubble.or(confirm)).toBeVisible({ timeout: 45_000 });
+  await expect(learnerBubble.or(confirm)).toBeVisible({ timeout: TURN_MS });
   if (await confirm.isVisible()) await confirm.click();
-  await expect(learnerBubble).toBeVisible({ timeout: 30_000 });
-  await expect.poll(() => page.locator('.bubble.greek').count(), { timeout: 30_000 }).toBeGreaterThanOrEqual(2);
+  await expect(learnerBubble).toBeVisible({ timeout: TURN_MS });
+  await expect.poll(() => page.locator('.bubble.greek').count(), { timeout: TURN_MS }).toBeGreaterThanOrEqual(2);
 
   // Indicator follows the measured level (style variable set from real audio, not a CSS loop).
   await expect.poll(async () => Number(await page.locator('.voice-orb.live').evaluate((e) => getComputedStyle(e).getPropertyValue('--lvl') || '0')), { timeout: 20_000 }).toBeGreaterThan(0);
@@ -46,7 +51,7 @@ test('live streaming conversation in the browser', async ({ page }) => {
   await expect.poll(async () => {
     const { data } = await admin().from('speaking_turn_metrics').select('turn_seq, playback_start_ms, input_source, asr_final_ms').eq('session_id', sessionId).gt('turn_seq', 0);
     return (data ?? []).filter((r) => r.playback_start_ms != null && r.input_source === 'synthetic_test_clip').length;
-  }, { timeout: 30_000 }).toBeGreaterThan(0);
+  }, { timeout: TURN_MS }).toBeGreaterThan(0);
 
   await page.getByRole('button', { name: 'Остановить' }).click();
   await expect(status).toHaveText('Готово к началу');
