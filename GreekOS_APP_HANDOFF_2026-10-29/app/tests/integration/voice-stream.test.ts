@@ -6,16 +6,19 @@ import { startVoiceGateway, type RunningGateway } from '@/lib/speaking/gateway';
 import { mintStreamToken } from '@/lib/speaking/stream-token';
 import { decodeAudioChunk, GATEWAY_PATH, FRAME_SAMPLES, type ServerMessage } from '@/lib/speaking/stream-protocol';
 import { startSession } from '@/lib/speaking/service';
-import { sayToWav, localAsrHealth, listLocalGreekVoices } from '@/lib/providers/local-engines';
+import { sayToWav, localAsrHealth, listLocalGreekVoices, listServiceVoices, serviceTts } from '@/lib/providers/local-engines';
 import { parseWav, pcmSamples } from '@/lib/audio/wav';
 import { syncLocalVoices, proposeCastVoices } from '@/lib/voice/catalog';
 
 /**
- * End-to-end streaming duplex against the real gateway, local database, local Whisper ASR and the
- * local macOS Greek voice. Learner "speech" is a synthetic TTS clip streamed in real time and is
- * labelled synthetic_test_clip in the metrics — it is not a substitute for live learner recordings.
+ * End-to-end streaming duplex against the real gateway, local database, local Whisper ASR and a local
+ * Greek voice (macOS `say`, or the GreekOS speech service on Linux). Learner "speech" is a synthetic
+ * TTS clip streamed in real time and is labelled synthetic_test_clip in the metrics — it is not a
+ * substitute for live learner recordings.
  */
 const isMac = process.platform === 'darwin';
+const canTry = isMac || process.platform === 'linux';
+let engine: 'mac' | 'service' | null = null;
 let gw: RunningGateway;
 let owner: TestUser;
 let ready = false;
@@ -24,10 +27,12 @@ const SECRET = () => process.env.VOICE_GATEWAY_SECRET!;
 
 beforeAll(async () => {
   process.env.APP_ENV = 'local';
-  if (!isMac || !(await localAsrHealth())) return;
-  const v = (await listLocalGreekVoices())[0];
-  if (!v) return;
-  melina = v.id;
+  if (!(await localAsrHealth())) return;
+  const v = isMac ? (await listLocalGreekVoices())[0] : undefined;
+  const sv = (await listServiceVoices()).filter((x) => x.available);
+  if (v) { engine = 'mac'; melina = v.id; }
+  else if (sv.length) { engine = 'service'; melina = (sv.find((x) => x.id === 'coqui-el-css10') ?? sv[0]).id; }
+  else return;
   await syncLocalVoices();
   await proposeCastVoices();
   gw = await startVoiceGateway({ port: 0 });
@@ -86,9 +91,19 @@ class Client {
 }
 
 async function clip(text: string): Promise<Int16Array> {
-  const wav = await sayToWav(text, melina, 1, 16000);
+  const wav = engine === 'mac' ? await sayToWav(text, melina, 1, 16000) : (await serviceTts(melina, text, 'normal')).wav;
   const info = parseWav(wav)!;
-  return pcmSamples(wav, info);
+  const pcm = pcmSamples(wav, info);
+  if (info.sampleRate === 16000) return pcm;
+  // The gateway takes 16 kHz frames: linear resampling is enough for a test clip.
+  const out = new Int16Array(Math.floor((pcm.length * 16000) / info.sampleRate));
+  for (let i = 0; i < out.length; i++) {
+    const x = (i * info.sampleRate) / 16000;
+    const k = Math.floor(x);
+    const f = x - k;
+    out[i] = Math.round((pcm[k] ?? 0) * (1 - f) + (pcm[k + 1] ?? pcm[k] ?? 0) * f);
+  }
+  return out;
 }
 
 async function connect(sessionId: string, opts: { origin?: string; token?: string } = {}) {
@@ -104,7 +119,7 @@ async function newSession(scenario = 'SC01', mode: 'roleplay' | 'b2_mock' = 'rol
 }
 
 describe('streaming voice gateway', () => {
-  it.skipIf(!isMac)('rejects bad, reused and cross-origin credentials', async () => {
+  it.skipIf(!canTry)('rejects bad, reused and cross-origin credentials', async () => {
     if (!ready) return;
     const sid = await newSession();
     const bad = await connect(sid, { token: 'x.y' });
@@ -126,13 +141,13 @@ describe('streaming voice gateway', () => {
     for (const c of [first]) c.ws.close();
   });
 
-  it.skipIf(!isMac)('learner speech → VAD → Whisper → dialogue → streamed persona voice, with barge-in, metrics and idempotent recovery', async () => {
+  it.skipIf(!canTry)('learner speech → VAD → Whisper → dialogue → streamed persona voice, with barge-in, metrics and idempotent recovery', async () => {
     if (!ready) return;
     const sid = await newSession();
     const c = await connect(sid);
     const r = await c.waitFor('ready');
     expect(r.persona.presentation).toBe('female');
-    expect(r.persona.provider).toBe('local_macos');
+    expect(['local_macos', 'local_coqui']).toContain(r.persona.provider);
     expect(r.asr).toMatchObject({ provider: 'local', partials: true, native_streaming: false });
     c.send({ type: 'listen', mic_ready_ms: 120 });
     await c.waitFor('state', (m) => m.state === 'listening');
@@ -205,7 +220,7 @@ describe('streaming voice gateway', () => {
     c2.ws.close();
   }, 180_000);
 
-  it.skipIf(!isMac)('pause drops audio, exam simulation refuses slow replay', async () => {
+  it.skipIf(!canTry)('pause drops audio, exam simulation refuses slow replay', async () => {
     if (!ready) return;
     const sid = await newSession();
     const c = await connect(sid);

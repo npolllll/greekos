@@ -3,7 +3,7 @@ import { stripAccents } from '../scoring/normalize.ts';
 /** Tokenise Greek text for round-trip comparison: NFC, lowercase, punctuation removed, accents KEPT. */
 export function tokens(s: string): string[] {
   // ASR writes symbols/units where the script has words («3 €/kg» for «τρία ευρώ το κιλό»).
-  const expanded = s.normalize('NFC').replace(/€/g, ' ευρώ ').replace(/%/g, ' τοις εκατό ').replace(/\bkg\b/gi, ' κιλό ').replace(/\bkm\b/gi, ' χιλιόμετρα ');
+  const expanded = s.normalize('NFC').replace(/\/\s*kg\b/gi, ' το κιλό ').replace(/€/g, ' ευρώ ').replace(/%/g, ' τοις εκατό ').replace(/\bkg\b/gi, ' κιλό ').replace(/\bkm\b/gi, ' χιλιόμετρα ');
   return expanded.toLowerCase().replace(/ς/g, 'σ').replace(/[^\p{L}\p{N}\s]/gu, ' ').split(/\s+/).filter(Boolean);
 }
 
@@ -83,6 +83,10 @@ export function phonemicKey(s: string): string {
   return out.replace(/([bcdfgGjklmnprstvxzDT])\1+/g, '$1').replace(/\s+/g, ' ').trim();
 }
 
+function vowelNuclei(bare: string): number {
+  return (bare.replace(/αι|ει|οι|υι|ου|αυ|ευ/g, 'V').match(/[αεηιουωV]/g) ?? []).length;
+}
+
 /**
  * ASR round-trip of synthesized audio. Greek ASR errs too, so this is a screening signal and
  * never proof of correct pronunciation.
@@ -96,7 +100,9 @@ export function roundTrip(reference: string, hypothesis: string): RoundTripMetri
   const cer = refChars.length ? editDistance(refChars, hypChars) / refChars.length : 0;
   const hypSet = new Set(hyp);
   const hypBare = new Map(hyp.map((h) => [stripAccents(h), h]));
-  const accent = ref.filter((w) => !hypSet.has(w) && hypBare.has(stripAccents(w)) && hypBare.get(stripAccents(w)) !== w);
+  // Monosyllables (πού/που, πώς/πως, ή/η) carry a distinguishing accent, not a stress position: the ASR's
+  // spelling of them says nothing about the audio, so only polysyllables count as stress mismatches.
+  const accent = ref.filter((w) => !hypSet.has(w) && hypBare.has(stripAccents(w)) && hypBare.get(stripAccents(w)) !== w && vowelNuclei(stripAccents(w)) > 1);
   const pRef = [...phonemicKey(ref.join(' '))];
   const pHyp = [...phonemicKey(hyp.join(' '))];
   const pcer = pRef.length ? editDistance(pRef, pHyp) / pRef.length : 0;

@@ -6,8 +6,9 @@ import { buildItemDTO, assertNoLeak } from '@/lib/content/dto';
 import { autosaveDecision, componentDurationMinutes, displayComponentId, formatClock, isExpired, sanitizeAnswers } from '@/lib/exams/core';
 import { scoreExamDeterministic, summarize } from '@/lib/exams/score';
 import { attestationLabel, groupCatalog, pegpSourceRefs, pegpTopicOfItem, prosodyLabel, riskWarnings, type RgPayload } from '@/lib/modules/display';
+import { CORPUS, hasCorpusFile } from '../corpus';
 
-const corpus = resolve(process.env.CORPUS_ROOT ?? '../spec/GreekOS_CLAUDE_UPLOAD_READY');
+const corpus = CORPUS;
 const items: ItemEnvelope[] = JSON.parse(readFileSync(resolve(corpus, 'HANDOFF_IMPORT/items.json'), 'utf8'));
 const byId = new Map(items.map((i) => [i.item_id, i]));
 const adj = JSON.parse(readFileSync(resolve(corpus, 'GreekOS_B2_Exam_Bank/U01_JOINT_ADJUDICATION.json'), 'utf8'));

@@ -5,6 +5,7 @@
  *   npx tsx scripts/audio-cli.ts cast                                   # sync voice catalog + casting proposals
  *   npx tsx scripts/audio-cli.ts plan --ids KEG-B2-L01-AUD1,KEG-B2-L01-AUD2
  *   npx tsx scripts/audio-cli.ts render --ids KEG-B2-L01-AUD1 --approved-plan-hash <sha256> --budget-cap 2
+ *   npx tsx scripts/audio-cli.ts rescore            (re-evaluate stored ASR hypotheses with current rules; no new audio)
  *   npx tsx scripts/audio-cli.ts render-batch [--limit 200] [--budget-cap 0] [--ids a,b] [--only-status TECH_QA_PASS] [--force]
  *   npx tsx scripts/audio-cli.ts inspect --audio-id KEG-B2-L01-AUD1
  *   npx tsx scripts/audio-cli.ts report --out ../reports
@@ -29,7 +30,7 @@ function loadEnvFile(path: string) {
 loadEnvFile(resolve('.env.local'));
 
 const { adminClient, selectAll } = await import('../src/lib/supabase/admin.ts');
-const { planJob, renderJob, loadCastingContext } = await import('../src/lib/audio/pipeline.ts');
+const { planJob, renderJob, loadCastingContext, rescoreAsset } = await import('../src/lib/audio/pipeline.ts');
 const { syncLocalVoices, syncCloudVoices, proposeCastVoices, proposeJobCasting } = await import('../src/lib/voice/catalog.ts');
 const { analyzeWav } = await import('../src/lib/audio/wav.ts');
 const { contentHash } = await import('../src/lib/content/stable-json.ts');
@@ -128,6 +129,14 @@ async function renderBatch() {
   console.log(JSON.stringify({ command: 'render-batch', total: jobs.length, rendered, counts, jobs: out }, null, 2));
 }
 
+async function rescore() {
+  const { data: assets } = await db.from('audio_assets').select('id').is('invalidated_at', null).eq('technical_status', 'TECHNICAL_PASS');
+  const out = [];
+  for (const a of assets ?? []) { const r = await rescoreAsset(a.id); if (r) out.push(r); }
+  const changed = out.filter((r) => r.changed);
+  console.log(JSON.stringify({ command: 'rescore', checked: out.length, changed: changed.length, verified: out.filter((r) => r.after === 'AUDIO_VERIFIED_DIGITAL').length, detail: changed }, null, 2));
+}
+
 async function report() {
   const outDir = resolve(arg('--out') ?? '../reports');
   const { mkdirSync, writeFileSync } = await import('node:fs');
@@ -215,7 +224,7 @@ async function benchmark() {
   console.log(JSON.stringify({ command: 'benchmark', out: outDir, summary: r.summary, cloud_providers: out.cloud_providers }, null, 2));
 }
 
-const commands: Record<string, () => Promise<void>> = { validate, cast, plan, render, 'render-batch': renderBatch, inspect, report, benchmark };
+const commands: Record<string, () => Promise<void>> = { validate, cast, plan, render, 'render-batch': renderBatch, rescore, inspect, report, benchmark };
 if (!cmd || !commands[cmd]) {
   console.error('usage: audio-cli.ts validate | cast | plan --ids a,b | render --ids a --approved-plan-hash H --budget-cap N | render-batch [--limit N] [--budget-cap N] | inspect --audio-id a | report --out DIR | benchmark [--out DIR] [--speeds normal,slow,fast]');
   process.exit(2);

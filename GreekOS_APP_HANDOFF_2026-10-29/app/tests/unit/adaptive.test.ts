@@ -5,10 +5,14 @@ import { splitBudget, redistribute, prerequisiteOutdegree, orderItems, itemEligi
 import { planEndDate, inUtcWindow, addMonthsClamped, localDateOf, addDays } from '@/lib/learning/calendar';
 import { deriveCompetencyState, isRetained, negativeUpdateAllowed, type MasteryEventLite } from '@/lib/learning/mastery';
 import { resolveReview, scheduleLadder } from '@/lib/learning/reviews';
+import { CORPUS, hasCorpusFile } from '../corpus';
 
-const corpus = resolve(process.env.CORPUS_ROOT ?? '../spec/GreekOS_CLAUDE_UPLOAD_READY');
-const adaptive = JSON.parse(readFileSync(resolve(corpus, 'SPEC/ADAPTIVE_FIXTURES.json'), 'utf8'));
-const finalization = JSON.parse(readFileSync(resolve(corpus, 'SPEC/FINALIZATION_ACCEPTANCE_FIXTURES.json'), 'utf8'));
+const corpus = CORPUS;
+// SPEC fixtures are not part of the database dump: without the original corpus these blocks are skipped, not faked.
+const FIXTURES = hasCorpusFile('SPEC/ADAPTIVE_FIXTURES.json') && hasCorpusFile('SPEC/FINALIZATION_ACCEPTANCE_FIXTURES.json');
+if (!FIXTURES) console.warn(`[adaptive.test] SPEC fixtures not found in ${corpus}: fixture-based blocks are skipped (set CORPUS_ROOT to the original corpus).`);
+const adaptive = FIXTURES ? JSON.parse(readFileSync(resolve(corpus, 'SPEC/ADAPTIVE_FIXTURES.json'), 'utf8')) : { fixtures: [] };
+const finalization = FIXTURES ? JSON.parse(readFileSync(resolve(corpus, 'SPEC/FINALIZATION_ACCEPTANCE_FIXTURES.json'), 'utf8')) : { fixtures: [] };
 const fx = (id: string) => adaptive.fixtures.find((f: { id: string }) => f.id === id);
 
 let n = 0;
@@ -18,7 +22,7 @@ const ev = (p: Partial<MasteryEventLite>): MasteryEventLite => ({
   supersedes_id: null, ...p,
 });
 
-describe('ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json)', () => {
+describe.skipIf(!FIXTURES)('ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json)', () => {
   it('AD01/AD02 budget split with largest remainder and 80/20 correction', () => {
     for (const id of ['AD01', 'AD02']) {
       const f = fx(id);
@@ -117,7 +121,7 @@ describe('ADAPTIVE_FIXTURES (SPEC/ADAPTIVE_FIXTURES.json)', () => {
   });
 });
 
-describe('FINALIZATION_ACCEPTANCE_FIXTURES', () => {
+describe.skipIf(!FIXTURES)('FINALIZATION_ACCEPTANCE_FIXTURES', () => {
   for (const f of finalization.fixtures) {
     it(`${f.id} ${f.operation}`, () => {
       if (f.operation === 'publication') expect(publicationAllowed(f.input)).toBe(f.expected);

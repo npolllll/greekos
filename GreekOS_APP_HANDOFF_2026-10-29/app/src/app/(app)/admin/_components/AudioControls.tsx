@@ -1,4 +1,5 @@
 'use client';
+import { Icon } from '@/components/Icon';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -65,5 +66,5 @@ export function AssetPlayer({ assetId }: { assetId: string }) {
     if (!r.ok) return setErr(j.message ?? 'Недоступно');
     setUrl(j.url);
   }
-  return url ? <audio controls src={url} style={{ width: '100%' }}><track kind="captions" /></audio> : <span><button type="button" className="text-link" onClick={load}>Прослушать (подписанная ссылка, 5 мин)</button>{err ? <span className="error-text"> {err}</span> : null}</span>;
+  return url ? <audio controls src={url} style={{ width: '100%' }}><track kind="captions" /></audio> : <span><button type="button" className="text-link" onClick={load} title="Подписанная ссылка действует 5 минут"><Icon name="play" size={13} /> Прослушать</button>{err ? <span className="error-text"> {err}</span> : null}</span>;
 }

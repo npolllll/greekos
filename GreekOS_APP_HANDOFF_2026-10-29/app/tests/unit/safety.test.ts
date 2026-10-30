@@ -10,8 +10,9 @@ import { canTransition, bargeIn, TRANSITIONS } from '@/lib/speaking/state-machin
 import { initialState, nextProbe, recordOutcome, routeStart, axisResult, type ProbeItem } from '@/lib/diagnostic/engine';
 import { analyzeWav, buildWav, concatWav, parseWav } from '@/lib/audio/wav';
 import { roundTrip, roundTripPass, chunkText } from '@/lib/audio/roundtrip';
+import { CORPUS, hasCorpusFile } from '../corpus';
 
-const corpus = resolve(process.env.CORPUS_ROOT ?? '../spec/GreekOS_CLAUDE_UPLOAD_READY');
+const corpus = CORPUS;
 const items: ItemEnvelope[] = JSON.parse(readFileSync(resolve(corpus, 'HANDOFF_IMPORT/items.json'), 'utf8'));
 
 describe('candidate DTO never leaks keys, models or editor payloads', () => {

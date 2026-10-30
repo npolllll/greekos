@@ -16,3 +16,4 @@ supabase/.branches/
 artifacts/tmp/
 .scratch/
 __pycache__/
+.corpus-snapshot/

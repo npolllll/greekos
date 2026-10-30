@@ -12,6 +12,8 @@ let learner: TestUser;
 let other: TestUser;
 let owner: TestUser;
 let policyId = '';
+let batchId = '';
+let decisionId = '';
 let assetId = '';
 let objectPath = '';
 const attempts: string[] = [];
@@ -37,13 +39,22 @@ beforeAll(async () => {
   const { data: pol, error: pe } = await admin.from('publication_policies').insert({ kind: 'DIGITAL_ONLY_RISK_ACCEPTED', version: 'TEST-ONLY', statement_ru: 'Синтетическая тестовая политика (автотест)', risks_acknowledged: ['test'], signed_by: owner.id, revoked_at: new Date().toISOString(), revoked_by: owner.id }).select('id').single();
   if (pe) throw pe;
   policyId = pol.id;
-  const rel = await admin.from('content_releases').insert({ content_kind: 'audio_asset', content_id: assetId, content_hash: sha, review_type: 'OWNER_DIGITAL_POLICY', policy_id: policyId, reviewer_identity: 'automated test', reviewer_user_id: owner.id, method: 'synthetic fixture', scope: 'audio_playback', decision: 'APPROVED', rights_scope: 'test only' });
+  // v6: a policy release must cite the QA batch and the owner's release decision it came from.
+  const { data: batch, error: be } = await admin.from('qa_batches').insert({ label: 'SYN-TEST exam audio', scope: { kind: 'test' }, tool_version: 'test', status: 'COMPLETED', finished_at: new Date().toISOString() }).select('id').single();
+  if (be) throw be;
+  batchId = batch.id;
+  const { data: dec, error: de } = await admin.from('release_decisions').insert({ batch_id: batchId, policy_id: policyId, scope: { kind: 'test', audio_asset: assetId }, risk_acceptance: 'PASS_ONLY', sample_size: 0, sample_ok: 0, decided_by: owner.id }).select('id').single();
+  if (de) throw de;
+  decisionId = dec.id;
+  const rel = await admin.from('content_releases').insert({ content_kind: 'audio_asset', content_id: assetId, content_hash: sha, review_type: 'OWNER_DIGITAL_POLICY', policy_id: policyId, qa_batch_id: batchId, decision_id: decisionId, reviewer_identity: 'automated test', reviewer_user_id: owner.id, method: 'synthetic fixture', scope: 'audio_playback', decision: 'APPROVED', rights_scope: 'test only' });
   if (rel.error) throw rel.error;
 });
 
 afterAll(async () => {
   for (const id of attempts) await admin.from('exam_attempts').delete().eq('id', id);
   await admin.from('content_releases').delete().eq('content_id', assetId);
+  if (decisionId) await admin.from('release_decisions').delete().eq('id', decisionId);
+  if (batchId) await admin.from('qa_batches').delete().eq('id', batchId);
   if (policyId) await admin.from('publication_policies').delete().eq('id', policyId);
   await admin.from('audio_assets').delete().eq('id', assetId);
   await admin.storage.from('course-audio').remove([objectPath]);

@@ -1,0 +1,88 @@
+{
+  "comment": "Local AI models for GreekOS development. Paths are relative to GREEKOS_MODELS (default ~/greekos-models). SHA-256 values were measured on the files used for the 30.10.2026 verification. None of these voices may be distributed to learners without the owner's release decision; MBROLA and the local LLM are development-only.",
+  "models": [
+    {
+      "id": "coqui-el-vits",
+      "purpose": "TTS female voice «Ελένη» (neural VITS, 22.05 kHz)",
+      "license": "BSD-3-Clause (Coqui model zoo entry tts_models/el/cv/vits, author @NeonGeckoCom); training data CSS10 Greek (public-domain LibriVox reading)",
+      "distribution": "allowed by licence; release to learners still needs the owner's decision",
+      "source": { "type": "zip", "url": "https://github.com/coqui-ai/TTS/releases/download/v0.8.0_models/tts_models--el--cv--vits.zip", "into": "coqui-el" },
+      "files": [
+        { "path": "coqui-el/tts_models--el--cv--vits/model_file.pth.tar", "bytes": 108565327, "sha256": "32424e7ec50c8d0020638aa2d360faa9e21c77b28b523ca2c8461eb85af2338c" },
+        { "path": "coqui-el/tts_models--el--cv--vits/config.json", "bytes": 8559, "sha256": "999db1b97810166ce9ef92f8c93681b1e96011fc1448125f49c31fe94e1ff8d9" },
+        { "path": "coqui-el/tts_models--el--cv--vits/speaker_ids.json", "bytes": 19, "sha256": "53fabaf6d3be6fd2e9640da089ff39556eb100a6b392a4f49900ca29d7cd434f" },
+        { "path": "coqui-el/tts_models--el--cv--vits/language_ids.json", "bytes": 15, "sha256": "a653693d726b6b51f097a7186cbd9a650ee1eca36797a015daad4e6af587de9d" }
+      ]
+    },
+    {
+      "id": "whisper-small",
+      "purpose": "ASR for live conversation (final transcript) — sherpa-onnx int8",
+      "license": "MIT (OpenAI Whisper weights; sherpa-onnx export, Apache-2.0)",
+      "source": { "type": "tar.bz2", "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-small.tar.bz2" },
+      "files": [
+        { "path": "sherpa-onnx-whisper-small/small-encoder.int8.onnx", "bytes": 112442483, "sha256": "4cbe7b22fa9026b843b60a68640c747de05bafb1a11b57edc0e66c232d9f33a9" },
+        { "path": "sherpa-onnx-whisper-small/small-decoder.int8.onnx", "bytes": 262226114, "sha256": "acad50b5c782696e91b55914cc5ab4f756f1532f76e22aa6fc615f39fb69a8ee" },
+        { "path": "sherpa-onnx-whisper-small/small-tokens.txt", "bytes": 816730, "sha256": "b34b360dbb493e781e479794586d661700670d65564001f23024971d1f2fa126" }
+      ]
+    },
+    {
+      "id": "whisper-turbo",
+      "purpose": "ASR round-trip screening of rendered course audio and phrase audio",
+      "license": "MIT (OpenAI Whisper large-v3-turbo weights; sherpa-onnx export, Apache-2.0)",
+      "source": { "type": "tar.bz2", "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-turbo.tar.bz2" },
+      "files": [
+        { "path": "sherpa-onnx-whisper-turbo/turbo-encoder.int8.onnx", "bytes": 674716297, "sha256": "b02dcdf54f348741e93fe732b67d933c8dcb6735655f710640143081db38878b" },
+        { "path": "sherpa-onnx-whisper-turbo/turbo-decoder.int8.onnx", "bytes": 361080764, "sha256": "20accd02388482eb3a46bd615631adfdc85e1eb2c7db9ea3f02a40ffe6b81547" },
+        { "path": "sherpa-onnx-whisper-turbo/turbo-tokens.txt", "bytes": 816730, "sha256": "b34b360dbb493e781e479794586d661700670d65564001f23024971d1f2fa126" }
+      ]
+    },
+    {
+      "id": "whisper-base",
+      "optional": true,
+      "purpose": "fast partial transcripts (optional)",
+      "license": "MIT (OpenAI Whisper weights; sherpa-onnx export, Apache-2.0)",
+      "source": { "type": "tar.bz2", "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-base.tar.bz2" },
+      "files": [
+        { "path": "sherpa-onnx-whisper-base/base-encoder.int8.onnx", "bytes": 29120534, "sha256": "0b8fb1304b6109976038efff5ace81720e00386f3ff6b54ee8c75291ca0a1e11" },
+        { "path": "sherpa-onnx-whisper-base/base-decoder.int8.onnx", "bytes": 130672026, "sha256": "9759d217388a01b3a4c7c15533201067b48ae819c4daafc8624e64b9409dc02d" },
+        { "path": "sherpa-onnx-whisper-base/base-tokens.txt", "bytes": 816730, "sha256": "b34b360dbb493e781e479794586d661700670d65564001f23024971d1f2fa126" }
+      ]
+    },
+    {
+      "id": "silero-vad",
+      "purpose": "voice activity detection model (gateway)",
+      "license": "MIT (snakers4/silero-vad)",
+      "source": { "type": "file", "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx" },
+      "files": [
+        { "path": "silero_vad.onnx", "bytes": 643854, "sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6" }
+      ]
+    },
+    {
+      "id": "qwen3-4b-instruct-2507-q4km",
+      "purpose": "local dialogue LLM for development (transition classification; Greek quality NOT validated)",
+      "license": "Apache-2.0 (Qwen3-4B-Instruct-2507)",
+      "distribution": "development only",
+      "source": { "type": "oci", "registry": "registry-1.docker.io", "mirror": "mirror.gcr.io", "repository": "ai/qwen3", "reference": "4b-instruct-2507-q4_K_M", "layer_media_type": "application/vnd.docker.ai.gguf.v3" },
+      "files": [
+        { "path": "llm/Qwen3-4B-Instruct-2507-Q4_K_M.gguf", "bytes": 2497281120, "sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597" }
+      ]
+    }
+  ],
+  "system_packages": [
+    {
+      "id": "mbrola-gr2",
+      "purpose": "TTS male voice «Γιώργος» (diphone, low naturalness) — DEV_LOCAL_ONLY",
+      "license": "MBROLA voice licence: non-commercial use only; not for distribution to learners",
+      "install": { "debian": "apt-get install espeak-ng mbrola mbrola-gr2", "macos": "brew install espeak-ng; build MBROLA from github.com/numediart/MBROLA and copy the gr2 database from github.com/numediart/MBROLA-voices (data/gr2) to /usr/local/share/mbrola/gr2/gr2" },
+      "files": [{ "path": "/usr/share/mbrola/gr2/gr2", "bytes": 6624608, "sha256": "d010de77c61d548582349a17f353a1c9f05015b60a028479601c46d9dbfc02a9" }]
+    },
+    {
+      "id": "mbrola-gr1",
+      "optional": true,
+      "purpose": "second male diphone voice «Νίκος» — DEV_LOCAL_ONLY",
+      "license": "MBROLA voice licence: non-commercial use only",
+      "install": { "debian": "apt-get install mbrola-gr1", "macos": "as gr2, data/gr1" },
+      "files": [{ "path": "/usr/share/mbrola/gr1/gr1", "bytes": 3209091, "sha256": "b9f2d8b16b12629f981aed3d2f6ba885ab6752da6521ad40522d2c0086f5fee9" }]
+    }
+  ]
+}

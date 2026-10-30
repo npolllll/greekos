@@ -293,3 +293,37 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
   await setJobStatus(job.audio_id, jobStatus, renderStatus === 'LINGUISTIC_QA_PENDING' ? (truncated.length ? `возможный обрыв в конце сегментов ${truncated.join(', ')}` : rt ? 'ASR round-trip выше порогов — нужен разбор' : 'ASR round-trip не выполнен') : null, { attempted: true, asset_id: inserted.id, cost: plan.estimated_cost_usd });
   return { status: 'RENDERED', job_status: jobStatus, asset_id: inserted.id, render_status: renderStatus, technical: tech, roundtrip: rt };
 }
+
+/** Version of the comparison rules applied to stored ASR hypotheses (bumped when roundtrip.ts changes). */
+export const ROUNDTRIP_METRIC_VERSION = 'rt/2026-10-30b';
+
+/**
+ * Re-evaluates a current asset with the current comparison rules, using the ASR hypotheses already
+ * stored for each segment. No audio is synthesized or transcribed again, and the bytes are unchanged;
+ * a possible cut-off at a segment end (from the render's signal check) still sends it to a reviewer.
+ */
+export async function rescoreAsset(assetId: string): Promise<{ asset_id: string; audio_id: string; before: string; after: string; changed: boolean } | null> {
+  const db = adminClient();
+  const { data: a } = await db.from('audio_assets').select('id, audio_id, sha256, technical_status, digital_status, render_status, asr_roundtrip, history, invalidated_at').eq('id', assetId).maybeSingle();
+  if (!a || a.invalidated_at || a.technical_status !== 'TECHNICAL_PASS') return null;
+  const old = a.asr_roundtrip as JobRoundTrip | null;
+  if (!old?.segments?.length) return null;
+  const { data: run } = await db.from('digital_qa_runs').select('report').eq('content_kind', 'audio_asset').eq('content_id', a.id).eq('check_kind', 'DIGITAL_AUDIO_QA').order('created_at', { ascending: false }).limit(1).maybeSingle();
+  const signals = ((run?.report as { signals?: Array<{ segment: string; truncated_end?: boolean }> } | null)?.signals ?? []);
+  const truncated = signals.filter((x) => x.truncated_end).map((x) => x.segment);
+  const segs: SegmentRoundTrip[] = old.segments.map((s) => { const m = roundTrip(s.reference, s.hypothesis); return { ...m, segment_id: s.segment_id, voice_id: s.voice_id, reference: s.reference, hypothesis: s.hypothesis, pass: roundTripPass(m) }; });
+  const rt = jobRoundTrip(old.engine, segs);
+  const rtPass = segs.every((x) => x.pass) && !truncated.length;
+  const renderStatus = rtPass ? 'DIGITAL_REVIEWED' : 'LINGUISTIC_QA_PENDING';
+  const digital = rtPass ? 'AUDIO_VERIFIED_DIGITAL' : 'NEEDS_REVIEW';
+  const changed = digital !== a.digital_status || JSON.stringify(segs.map((s) => s.pass)) !== JSON.stringify(old.segments.map((s) => s.pass));
+  if (!changed) return { asset_id: a.id, audio_id: a.audio_id, before: a.digital_status, after: digital, changed };
+  const history = [...((a.history as unknown[]) ?? []), { at: new Date().toISOString(), event: 'rescored', metric_version: ROUNDTRIP_METRIC_VERSION, from: a.digital_status, to: digital }];
+  await db.from('audio_assets').update({ asr_roundtrip: rt, digital_status: digital, render_status: renderStatus, history }).eq('id', a.id);
+  await db.from('digital_qa_runs').insert({
+    content_kind: 'audio_asset', content_id: a.id, content_hash: a.sha256, check_kind: 'DIGITAL_AUDIO_QA', tool_id: `rescore:${ROUNDTRIP_METRIC_VERSION}+${old.engine}`,
+    verdict: rtPass ? 'PASS' : 'NEEDS_REVIEW', report: { roundtrip: rt, signals, rescored_from: a.digital_status, metric_version: ROUNDTRIP_METRIC_VERSION }, run_by: null,
+  });
+  await setJobStatus(a.audio_id, rtPass ? 'DIGITAL_REVIEWED' : 'TECH_QA_PASS', rtPass ? null : truncated.length ? `возможный обрыв в конце сегментов ${truncated.join(', ')}` : 'ASR round-trip выше порогов — нужен разбор', { asset_id: a.id });
+  return { asset_id: a.id, audio_id: a.audio_id, before: a.digital_status, after: digital, changed };
+}

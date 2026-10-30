@@ -1,0 +1,10 @@
+# GreekOS local speech service (speech_server.py) — Python 3.11. Pinned to the versions verified on 30.10.2026.
+# Coqui weights are loaded with torch.load(weights_only=True); no pickle code is executed.
+coqui-tts==0.26.0
+torch==2.15.0
+transformers==4.46.3
+numpy==1.26.4
+scipy==1.17.1
+soundfile==0.14.0
+sherpa_onnx==2.0.1
+onnxruntime==1.31.1

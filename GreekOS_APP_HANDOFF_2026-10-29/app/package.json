@@ -24,6 +24,9 @@
     "audio": "tsx scripts/audio-cli.ts",
     "security:bundle": "tsx scripts/check-bundle.ts",
     "local:asr": "PYENV_VERSION=${PYENV_VERSION:-3.9.6} HF_HUB_OFFLINE=1 LOCAL_ASR_PRELOAD=small,medium python local-services/asr_server.py",
+    "models:fetch": "node local-services/fetch-models.mjs",
+    "local:speech": "${GREEKOS_PY:-$HOME/greekos-models/venv-coqui/bin/python} local-services/speech_server.py",
+    "local:llm": "node local-services/llm/server.mjs",
     "voice:gateway": "tsx --conditions=react-server voice-gateway/server.ts",
     "voice:bench": "tsx --conditions=react-server scripts/voice-bench.ts --out reports/v5.4",
     "audio:benchmark": "tsx scripts/audio-cli.ts benchmark --out reports/v5.4"

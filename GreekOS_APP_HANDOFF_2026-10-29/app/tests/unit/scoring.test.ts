@@ -2,10 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { scoreDeterministic, scoreJointVector, UnsupportedContentError, InvalidResponseError, parsePairs } from '@/lib/scoring/score';
-import { normalizeByPolicy } from '@/lib/scoring/normalize';
+import { normalizeByPolicy, foldSigma } from '@/lib/scoring/normalize';
 import { adapterFor, type ItemEnvelope } from '@/lib/content/types';
+import { CORPUS, hasCorpusFile } from '../corpus';
 
-const corpus = resolve(process.env.CORPUS_ROOT ?? '../spec/GreekOS_CLAUDE_UPLOAD_READY');
+const corpus = CORPUS;
 const items: ItemEnvelope[] = JSON.parse(readFileSync(resolve(corpus, 'HANDOFF_IMPORT/items.json'), 'utf8'));
 const byId = new Map(items.map((i) => [i.item_id, i]));
 const item = (id: string) => byId.get(id)!;
@@ -38,8 +39,12 @@ describe('short answers keep Greek accents and item normalisation', () => {
     expect(r.reliable).toBe(false);
     expect(r.needsReview).toBe(true);
   });
-  it('final sigma and NFC are normalised', () => {
-    expect(normalizeByPolicy('ΚΑΦΕΣ')).toBe(normalizeByPolicy('καφεσ'));
+  it('NFC is normalised; final sigma stays an orthographic fact (v6)', () => {
+    // Case folding writes the final form: ΚΑΦΕΣ → καφες. A medial σ at the end is a spelling error,
+    // so it is not folded away here; the scorer reports a sigma-only difference separately.
+    expect(normalizeByPolicy('ΚΑΦΕΣ')).toBe('καφες');
+    expect(normalizeByPolicy('καφεσ')).not.toBe(normalizeByPolicy('καφες'));
+    expect(foldSigma(normalizeByPolicy('καφεσ'))).toBe(foldSigma(normalizeByPolicy('ΚΑΦΕΣ')));
     expect(normalizeByPolicy('έ'.normalize('NFD'))).toBe('έ');
   });
   it('empty answers are rejected rather than scored', () => {

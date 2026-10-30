@@ -3,8 +3,9 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { planJob, normalizeSegments, type AudioJobRow, type CastingContext, type CastingRow } from '@/lib/audio/pipeline';
 import { proposeRoleCasting, proposeNarratorCasting, castRolesForJob, type CatalogVoice, type CastRole } from '@/lib/voice/catalog';
+import { CORPUS, hasCorpusFile } from '../corpus';
 
-const corpus = resolve(process.env.CORPUS_ROOT ?? '../spec/GreekOS_CLAUDE_UPLOAD_READY');
+const corpus = CORPUS;
 const jobs: Array<AudioJobRow & { script_version_hash: string }> = JSON.parse(readFileSync(resolve(corpus, 'HANDOFF_IMPORT/audio_jobs.json'), 'utf8'));
 
 const voice = (id: string, presentation: 'female' | 'male'): CatalogVoice => ({
@@ -43,7 +44,8 @@ describe('casting proposals use textual evidence only', () => {
     expect(proposeRoleCasting('Πελάτης')).toMatchObject({ required_presentation: 'male', source: 'grammatical_gender_proposal' });
     expect(proposeRoleCasting('Άννα')).toMatchObject({ required_presentation: null, source: 'needs_casting' });
     expect(proposeRoleCasting('Υπάλληλος')).toMatchObject({ required_presentation: null, source: 'needs_casting' });
-    expect(proposeRoleCasting('Α')).toMatchObject({ source: 'needs_casting' });
+    // Letter labels carry no gender: v6 proposes «any voice, but distinct speakers»; the owner still approves.
+    expect(proposeRoleCasting('Α')).toMatchObject({ required_presentation: 'any', source: 'distinct_voice_proposal' });
     expect(proposeNarratorCasting('Καλησπέρα σας. Είμαι η συντονίστρια του προγράμματος.')).toMatchObject({ required_presentation: 'female', source: 'self_reference_proposal' });
     expect(proposeNarratorCasting('Λίγα λόγια για την πόλη.')).toMatchObject({ required_presentation: 'any', source: 'narrator_default_proposal' });
   });

@@ -5,6 +5,9 @@ import { contentHash } from '@/lib/content/stable-json';
 import type { ItemEnvelope } from '@/lib/content/types';
 import type { SessionUser } from '@/lib/auth';
 
+// Integration tests assert deterministic behaviour (abstain/review without an AI model): a local dev
+// LLM from .env.local would make them slow and model-dependent. INTEGRATION_USE_LLM=1 keeps it.
+if (!process.env.INTEGRATION_USE_LLM) process.env.LLM_PROVIDER = 'none';
 // Load local env (.env.local) for the disposable local Supabase stack.
 for (const line of readFileSync(new URL('../../.env.local', import.meta.url), 'utf8').split('\n')) {
   const m = /^([A-Z0-9_]+)=(.*)$/.exec(line.trim());
