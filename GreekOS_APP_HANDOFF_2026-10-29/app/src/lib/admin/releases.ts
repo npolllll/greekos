@@ -111,10 +111,10 @@ export async function createReleases(actor: SessionUser, req: ReleaseRequest): P
   let policyId: string | null = null;
   let identity = req.reviewer_identity?.trim() ?? '';
   if (req.review_type === 'OWNER_DIGITAL_POLICY') {
-    const policy = await activePolicy();
-    if (!policy) throw new HttpError(409, 'NO_POLICY', 'Нет действующей цифровой политики выпуска. Подпишите её в разделе «Политика выпуска».');
-    policyId = policy.id;
-    identity = `${actor.profile.display_name} (владелец, цифровая политика)`;
+    // v6: a signed policy alone is not QA. Digital releases go through the QA batch decision
+    // (Админ → Цифровой QA → Выпуск), which records the batch, the sample review and the decision.
+    void policyId;
+    throw new HttpError(409, 'USE_QA_DECISION', 'Цифровой выпуск выполняется только пакетным решением по результатам цифрового QA: Админ → «Цифровой QA и выпуск».');
   } else {
     if (!identity || !req.evidence_path?.trim() || !req.evidence_hash?.trim()) throw new HttpError(400, 'EVIDENCE_REQUIRED', 'Для внешней проверки нужны: имя проверяющего, путь к доказательству и его хеш.');
   }

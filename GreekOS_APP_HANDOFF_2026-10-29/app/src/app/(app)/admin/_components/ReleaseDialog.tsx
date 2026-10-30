@@ -21,7 +21,8 @@ export function ReleaseDialog(props: {
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [type, setType] = useState<'OWNER_DIGITAL_POLICY' | 'HUMAN_TEACHER_REVIEW' | 'HUMAN_EXAMINER_REVIEW'>(props.policyActive ? 'OWNER_DIGITAL_POLICY' : 'HUMAN_TEACHER_REVIEW');
+  // v6: digital-policy releases are made only by the QA batch decision (Админ → Цифровой QA и выпуск).
+  const [type, setType] = useState<'HUMAN_TEACHER_REVIEW' | 'HUMAN_EXAMINER_REVIEW'>('HUMAN_TEACHER_REVIEW');
   const [method, setMethod] = useState('Структурный импорт (схема, хеши, FK) + просмотр владельцем в редакторском режиме');
   const [rights, setRights] = useState('Оригинальный контент проекта GreekOS; показ приглашённым ученикам платформы');
   const [reviewer, setReviewer] = useState('');
@@ -42,7 +43,7 @@ export function ReleaseDialog(props: {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         expand: props.expand, id: props.id, review_type: type, method, rights_scope: rights,
-        ...(type !== 'OWNER_DIGITAL_POLICY' ? { reviewer_identity: reviewer, evidence_path: evidencePath, evidence_hash: evidenceHash } : {}),
+        reviewer_identity: reviewer, evidence_path: evidencePath, evidence_hash: evidenceHash,
         ...(expires ? { expires_at: new Date(`${expires}T23:59:59Z`).toISOString() } : {}),
       }),
     });
@@ -73,14 +74,12 @@ export function ReleaseDialog(props: {
                 <div className="field">
                   <label htmlFor="rel-type">Основание выпуска</label>
                   <select id="rel-type" value={type} onChange={(e) => setType(e.target.value as typeof type)}>
-                    <option value="OWNER_DIGITAL_POLICY" disabled={!props.policyActive}>Цифровая политика владельца{props.policyActive ? '' : ' (не подписана)'}</option>
                     <option value="HUMAN_TEACHER_REVIEW">Внешняя проверка преподавателем (есть доказательство)</option>
                     <option value="HUMAN_EXAMINER_REVIEW">Внешняя проверка экзаменатором (есть доказательство)</option>
                   </select>
                 </div>
-                {type === 'OWNER_DIGITAL_POLICY' ? (
-                  <div className="warning-note"><b>Принятый риск:</b> {props.policyStatement ?? '—'} Ученики увидят маркировку «Цифровая проверка, без независимой экспертизы».</div>
-                ) : (
+                <div className="warning-note">Цифровой выпуск (без внешней экспертизы) выполняется пакетным решением по результатам цифрового QA и выборочной проверки: <a className="text-link" href="/admin/qa/release">Цифровой QA и выпуск</a>. Здесь — только выпуск с доказательством внешней проверки.</div>
+                {(
                   <div className="grid-2">
                     <div className="field"><label htmlFor="rel-rev">Кто проверял (имя, роль)</label><input id="rel-rev" value={reviewer} onChange={(e) => setReviewer(e.target.value)} /></div>
                     <div className="field"><label htmlFor="rel-path">Путь/ссылка на заключение</label><input id="rel-path" value={evidencePath} onChange={(e) => setEvidencePath(e.target.value)} /></div>

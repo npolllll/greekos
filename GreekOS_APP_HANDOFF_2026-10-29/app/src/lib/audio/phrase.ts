@@ -10,20 +10,22 @@ import { analyzeWav } from './wav.ts';
 import { roundTrip, roundTripPass } from './roundtrip.ts';
 import { env } from '../env.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
+import { lessonWords } from '../alphabet/reference.ts';
 
 export const PHRASE_SYNTHESIS_VERSION = 'greekos-phrase/1.0';
 
 const norm = (s: string) => s.normalize('NFC').replace(/\s+/g, ' ').trim();
 
-/** Texts the learner may have voiced for one unit: its examples, vocabulary lemmas and examples. */
+/** Texts the learner may have voiced for one unit: its examples, vocabulary lemmas and examples, and the Greek words its theory uses (letter names, sample words). */
 async function unitPhrases(unitId: string, viewer: SessionUser): Promise<Set<string>> {
   const db = adminClient();
   const { data: unit } = await db.from('units').select('unit_id, current_hash, teaching').eq('unit_id', unitId).maybeSingle();
   if (!unit) throw new HttpError(404, 'NOT_FOUND', 'Урок не найден');
   const released = (await releaseMap('unit', [{ id: unit.unit_id, hash: unit.current_hash }], viewer)).has(unit.unit_id);
   if (!released && !viewer.isOwner) throw new HttpError(403, 'CONTENT_GATED', 'Урок на проверке');
-  const t = unit.teaching as { examples_el?: string[]; vocabulary_items?: Array<{ lemma?: string; example?: string }> };
-  return new Set([...(t.examples_el ?? []), ...(t.vocabulary_items ?? []).flatMap((v) => [v.lemma ?? '', v.example ?? ''])].map(norm).filter(Boolean));
+  const t = unit.teaching as { theory_ru?: string; examples_el?: string[]; vocabulary_items?: Array<{ lemma?: string; example?: string }> };
+  const theoryWords = t.theory_ru ? lessonWords(t.theory_ru, []) : [];
+  return new Set([...(t.examples_el ?? []), ...theoryWords, ...(t.vocabulary_items ?? []).flatMap((v) => [v.lemma ?? '', v.example ?? ''])].map(norm).filter(Boolean));
 }
 
 /** Narrator voice for phrases: the voice cast for NARRATOR_F (or NARRATOR_M), as the owner set it. */

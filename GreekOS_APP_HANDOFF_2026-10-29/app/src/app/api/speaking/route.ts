@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { route, jsonBody } from '@/lib/api';
 import { apiUser } from '@/lib/auth';
-import { startSession, learnerTurn, help, speak, endSession, sessionView } from '@/lib/speaking/service';
+import { startSession, learnerTurn, help, speak, endSession, sessionView, sayExample } from '@/lib/speaking/service';
 import { BudgetExceededError } from '@/lib/providers/budget';
 import { ProviderUnavailableError } from '@/lib/providers/speech';
 
@@ -12,8 +12,9 @@ const MODES = ['a0_guided', 'course', 'roleplay', 'free_talk', 'tutor_help', 'b2
 const Body = z.discriminatedUnion('action', [
   z.object({ action: z.literal('start'), scenario_id: z.string().max(20), mode: z.enum(MODES), input_mode: z.enum(['voice', 'text_fallback']), idempotency_key: z.string().min(8).max(120), voice_persona: z.enum(['TUTOR_F', 'TUTOR_M']).nullable().optional(), transport: z.enum(['batch', 'stream_local_gateway']).optional() }),
   z.object({ action: z.literal('turn'), session_id: z.string().uuid(), text: z.string().max(1200), source: z.enum(['asr_confirmed', 'learner_corrected', 'typed']), asr_confidence: z.number().min(0).max(1).nullable(), help_used: z.array(z.string().max(40)).max(10), repair: z.boolean(), interrupted_previous: z.boolean(), idempotency_key: z.string().min(8).max(120) }),
-  z.object({ action: z.literal('help'), session_id: z.string().uuid(), kind: z.enum(['hint', 'translate', 'explain', 'how_to_say']), question: z.string().max(300).optional() }),
+  z.object({ action: z.literal('help'), session_id: z.string().uuid(), kind: z.enum(['hint', 'translate', 'explain', 'how_to_say', 'why']), question: z.string().max(300).optional() }),
   z.object({ action: z.literal('speak'), session_id: z.string().uuid(), turn_id: z.string().uuid(), rate: z.enum(['slow', 'normal', 'fast']) }),
+  z.object({ action: z.literal('say_example'), session_id: z.string().uuid(), text: z.string().min(1).max(400), rate: z.enum(['slow', 'normal']) }),
   z.object({ action: z.literal('end'), session_id: z.string().uuid() }),
   z.object({ action: z.literal('state'), session_id: z.string().uuid() }),
 ]);
@@ -26,6 +27,7 @@ export const POST = route(async (req) => {
     if (b.action === 'turn') return await learnerTurn(u, b);
     if (b.action === 'help') return await help(u, b);
     if (b.action === 'speak') return await speak(u, b);
+    if (b.action === 'say_example') return await sayExample(u, b);
     if (b.action === 'end') return await endSession(u, b.session_id);
     return await sessionView(u, b.session_id);
   } catch (e) {

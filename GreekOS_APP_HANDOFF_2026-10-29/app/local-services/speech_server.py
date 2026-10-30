@@ -189,6 +189,25 @@ def get_asr(name):
         return _asr[name], _asr_locks[name]
 
 
+def split_long(audio, rate, max_s=27.0, search_s=5.0):
+    """Cuts audio longer than Whisper's 30 s window at the quietest 20 ms frame near each boundary."""
+    if audio.size <= int(rate * max_s):
+        return [audio]
+    win = int(rate * 0.02)
+    n = audio.size // win
+    energy = np.sqrt((audio[: n * win].reshape(n, win) ** 2).mean(axis=1))
+    cuts, start = [], 0
+    while (audio.size - start) > int(rate * max_s):
+        target = start + int(rate * (max_s - search_s / 2))
+        lo, hi = max(start + win, target - int(rate * search_s / 2)), min(audio.size - win, target + int(rate * search_s / 2))
+        fl, fh = lo // win, max(lo // win + 1, hi // win)
+        cut = (fl + int(np.argmin(energy[fl:fh]))) * win
+        cuts.append((start, cut))
+        start = cut
+    cuts.append((start, audio.size))
+    return [audio[a:b] for a, b in cuts]
+
+
 def transcribe(data, name):
     audio, rate = sf.read(io.BytesIO(data), dtype="float32")
     if audio.ndim > 1:
@@ -196,22 +215,28 @@ def transcribe(data, name):
     duration = audio.size / rate
     rms = float(np.sqrt((audio ** 2).mean())) if audio.size else 0.0
     rec, lock = get_asr(name)
-    # Whisper drops the last syllables without trailing context: pad with 0.8 s of silence.
-    padded = np.concatenate([np.zeros(int(rate * 0.3), dtype=np.float32), audio, np.zeros(int(rate * 0.8), dtype=np.float32)])
+    texts, lps, segs = [], [], []
     t0 = time.time()
-    with lock:
-        s = rec.create_stream()
-        s.accept_waveform(rate, padded)
-        rec.decode_stream(s)
-    r = s.result
-    lps = list(getattr(r, "ys_log_probs", []) or [])
+    offset = 0.0
+    for part in split_long(audio, rate):
+        # Whisper drops the last syllables without trailing context: pad with silence on both sides.
+        padded = np.concatenate([np.zeros(int(rate * 0.3), dtype=np.float32), part, np.zeros(int(rate * 0.8), dtype=np.float32)])
+        with lock:
+            s = rec.create_stream()
+            s.accept_waveform(rate, padded)
+            rec.decode_stream(s)
+        r = s.result
+        part_lps = list(getattr(r, "ys_log_probs", []) or [])
+        lps += part_lps
+        texts.append(r.text.strip())
+        segs.append({"start": round(offset, 3), "end": round(offset + part.size / rate, 3), "text": r.text.strip(), "avg_logprob": (sum(part_lps) / len(part_lps)) if part_lps else 0.0, "no_speech_prob": 0.0})
+        offset += part.size / rate
     confidence = float(math.exp(sum(lps) / len(lps))) if lps else None
     # No VAD-based probability is available from this decoder: report a signal-energy heuristic only.
     no_speech = 1.0 if rms < 1e-4 else 0.0
     return {
-        "text": r.text.strip(), "confidence": confidence, "no_speech_prob": no_speech, "duration_s": round(duration, 3),
-        "elapsed_ms": int((time.time() - t0) * 1000), "model": f"whisper-{name}-int8", "engine": "sherpa-onnx",
-        "segments": [{"start": 0.0, "end": round(duration, 3), "text": r.text.strip(), "avg_logprob": (sum(lps) / len(lps)) if lps else 0.0, "no_speech_prob": no_speech}],
+        "text": " ".join(t for t in texts if t), "confidence": confidence, "no_speech_prob": no_speech, "duration_s": round(duration, 3),
+        "elapsed_ms": int((time.time() - t0) * 1000), "model": f"whisper-{name}-int8", "engine": "sherpa-onnx", "chunks": len(segs), "segments": segs,
     }
 
 

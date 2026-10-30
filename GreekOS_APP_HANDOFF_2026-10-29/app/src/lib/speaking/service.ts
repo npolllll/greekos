@@ -5,7 +5,7 @@ import { adminClient } from '../supabase/admin.ts';
 import { HttpError, type SessionUser } from '../session-user.ts';
 import { releaseMap } from '../content/repo.ts';
 import { env } from '../env.ts';
-import { llmConfigured, structuredCall } from '../providers/llm.ts';
+import { llmConfigured, llmInfo, structuredCall } from '../providers/llm.ts';
 import { asrStatus, synthesizeWithVoice, type SpeedProfile } from '../providers/speech.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
 import { localDateOf } from '../learning/calendar.ts';
@@ -45,6 +45,21 @@ export interface SessionView {
   unscored: boolean;
   persona: { cast_role_id: string | null; voice_id: string | null; voice_name: string | null; presentation: string | null; engine: string | null; dev_only: boolean };
   transport: 'batch' | 'stream_local_gateway' | 'stream_cloud_gateway';
+  /** Authored example answers for the current step (one possible wording each — never a key). */
+  examples_el: string[];
+  /** Steps of the authored scene reached so far (REPAIR/RETRY excluded). */
+  progress: { reached: number; total: number; steps: Array<{ node_id: string; goal_ru: string | null; reached: boolean; current: boolean }> };
+  objective_ru: string | null;
+  domain: string | null;
+  engine_label: string;
+}
+
+/** Main-path steps of the scene (authored order), excluding repair loops. */
+function sceneProgress(payload: ScenarioPayload, visited: string[], current: string | null): SessionView['progress'] {
+  const main = payload.nodes.filter((n) => !['REPAIR', 'RETRY'].includes(n.node_id));
+  const seen = new Set(visited);
+  const steps = main.map((n) => ({ node_id: n.node_id, goal_ru: n.learner_goal_ru ?? null, reached: seen.has(n.node_id), current: n.node_id === current }));
+  return { reached: steps.filter((x) => x.reached).length, total: steps.length, steps };
 }
 
 /** Voice for a session persona: the cast role's assigned, available voice (declared presentation). */
@@ -108,6 +123,11 @@ export async function sessionView(user: SessionUser, sessionId: string): Promise
     unscored: !!payload.unscored,
     persona: { cast_role_id: s.voice_persona, voice_id: voice?.voice_id ?? null, voice_name: voice?.display_name ?? null, presentation: voice?.presentation ?? null, engine: voice?.engine_kind ?? null, dev_only: voice ? !voice.distribution_allowed : false },
     transport: s.transport,
+    examples_el: HINTS_ALLOWED(s.mode) ? (node?.acceptable_examples_el ?? []).slice(0, 3) : [],
+    progress: sceneProgress(payload, (turns ?? []).map((t) => t.node_id).filter((x): x is string => !!x), s.current_node),
+    objective_ru: sc!.objective_ru ?? null,
+    domain: sc!.domain ?? null,
+    engine_label: llmInfo().label_ru,
   };
 }
 
@@ -177,7 +197,7 @@ export async function learnerTurn(user: SessionUser, b: { session_id: string; te
 const HelpOut = z.object({ answer_ru: z.string(), example_el: z.string().nullable() });
 
 /** On-demand tutor help; the dialogue state is not touched, so the learner returns to the same scene. */
-export async function help(user: SessionUser, b: { session_id: string; kind: 'hint' | 'translate' | 'explain' | 'how_to_say'; question?: string }) {
+export async function help(user: SessionUser, b: { session_id: string; kind: 'hint' | 'translate' | 'explain' | 'how_to_say' | 'why'; question?: string }) {
   const db = adminClient();
   const { data: s } = await db.from('speaking_sessions').select('session_id, user_id, scenario_id, current_node, mode').eq('session_id', b.session_id).maybeSingle();
   if (!s || s.user_id !== user.userId) throw new HttpError(404, 'NOT_FOUND', 'Разговор не найден');
@@ -192,6 +212,7 @@ export async function help(user: SessionUser, b: { session_id: string; kind: 'hi
   const prompts: Record<string, string> = {
     translate: `Переведи на русский реплику персонажа: «${lastA?.text_el ?? ''}». Коротко, без пересказа ответа ученика.`,
     explain: `Объясни по-русски кратко (2–3 предложения) фразу или слово: «${(b.question ?? lastA?.text_el ?? '').slice(0, 300)}». Дай один короткий пример на греческом.`,
+    why: `Ученик спрашивает «Почему так?» о реплике или исправлении: «${(b.question ?? lastA?.text_el ?? '').slice(0, 300)}». Объясни по-русски правило в 2–3 предложениях (грамматика, порядок слов или регистр) и дай один короткий греческий пример.`,
     how_to_say: `Ученик спрашивает, как сказать по-гречески: «${(b.question ?? '').slice(0, 300)}». Дай одну естественную нейтральную фразу уровня ${(sc!.payload as ScenarioPayload).cefr_level ?? 'A2'} и короткое пояснение по-русски.`,
   };
   const r = await structuredCall({ userId: user.userId, operation: `speaking_help_${b.kind}`, model: env.llmModelDialogue, system: 'Ты помощник-репетитор новогреческого для русскоязычного ученика. Отвечай кратко и точно; не выдумывай фактов о реальном мире.', user: prompts[b.kind], schema: HelpOut, effort: 'low', maxTokens: 1500, timeoutMs: 20_000 });
@@ -216,6 +237,27 @@ export async function speak(user: SessionUser, b: { session_id: string; turn_id:
   await db.storage.from('tts-cache').upload(path, audio.bytes, { contentType: 'audio/wav', upsert: true });
   const signed = await db.storage.from('tts-cache').createSignedUrl(path, 600);
   return { url: signed.data?.signedUrl ?? null, synthetic: true, provider: voice.provider, voice: voice.display_name, cached: false };
+}
+
+/** Voices one authored example of the CURRENT step («Полезные фразы») with the persona voice (cached). */
+export async function sayExample(user: SessionUser, b: { session_id: string; text: string; rate: SpeedProfile }) {
+  const db = adminClient();
+  const { data: s } = await db.from('speaking_sessions').select('user_id, scenario_id, current_node, voice_persona, mode').eq('session_id', b.session_id).maybeSingle();
+  if (!s || s.user_id !== user.userId) throw new HttpError(404, 'NOT_FOUND', 'Разговор не найден');
+  if (!HINTS_ALLOWED(s.mode)) throw new HttpError(403, 'NO_HINTS', 'В экзаменационной симуляции подсказки отключены.');
+  const { data: sc } = await db.from('speaking_scenarios').select('payload').eq('scenario_id', s.scenario_id).single();
+  const node = nodeById(sc!.payload as ScenarioPayload, s.current_node ?? '');
+  if (!(node?.acceptable_examples_el ?? []).includes(b.text)) throw new HttpError(403, 'NOT_IN_STEP', 'Озвучиваются только фразы текущего шага.');
+  const voice = await personaVoice(s.voice_persona ?? 'TUTOR_F');
+  if (!voice) throw new HttpError(503, 'TTS_UNAVAILABLE', 'Голос недоступен.');
+  const key = createHash('sha256').update(`${voice.voice_id}|${b.rate}|${b.text}`).digest('hex');
+  const path = `${voice.provider}/${key}.wav`;
+  const existing = await db.storage.from('tts-cache').createSignedUrl(path, 600);
+  if (existing.data?.signedUrl) return { url: existing.data.signedUrl, synthetic: true, voice: voice.display_name, cached: true };
+  const audio = await synthesizeWithVoice(b.text, voice, { speed: b.rate, userId: user.userId, operation: 'tts_example' });
+  await db.storage.from('tts-cache').upload(path, audio.bytes, { contentType: 'audio/wav', upsert: true });
+  const signed = await db.storage.from('tts-cache').createSignedUrl(path, 600);
+  return { url: signed.data?.signedUrl ?? null, synthetic: true, voice: voice.display_name, cached: false };
 }
 
 /** Records what part of an interrupted AI turn was actually heard (barge-in). */

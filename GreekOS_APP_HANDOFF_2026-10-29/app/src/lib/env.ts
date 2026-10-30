@@ -23,6 +23,19 @@ export const env = {
   get allowSyntheticProviders() { return opt('ALLOW_SYNTHETIC_PROVIDERS') === '1' && this.appEnv !== 'production'; },
 
   get anthropicKey() { return opt('ANTHROPIC_API_KEY'); },
+  /**
+   * LLM provider: anthropic (Claude, needs a key) | openai_compatible (any /v1/chat/completions
+   * endpoint: the GreekOS local server, llama.cpp, LM Studio, Ollama, vLLM, cloud) | none.
+   * Default: anthropic when a key is set, otherwise openai_compatible when LLM_BASE_URL is set.
+   */
+  get llmProvider(): 'anthropic' | 'openai_compatible' | 'none' {
+    const v = opt('LLM_PROVIDER');
+    if (v === 'anthropic' || v === 'openai_compatible' || v === 'none') return v;
+    return this.anthropicKey ? 'anthropic' : opt('LLM_BASE_URL') ? 'openai_compatible' : 'none';
+  },
+  get llmBaseUrl() { return opt('LLM_BASE_URL'); },
+  get llmApiKey() { return opt('LLM_API_KEY'); },
+  get llmCompatModel() { return opt('LLM_MODEL') ?? 'local-model'; },
   get llmModelDialogue() { return opt('LLM_MODEL_DIALOGUE') ?? 'claude-opus-5-5'; },
   get llmModelAssessor() { return opt('LLM_MODEL_ASSESSOR') ?? 'claude-opus-5-5'; },
 

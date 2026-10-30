@@ -15,3 +15,4 @@ supabase/.temp/
 supabase/.branches/
 artifacts/tmp/
 .scratch/
+__pycache__/

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { env } from '../env.ts';
-import { structuredCall } from '../providers/llm.ts';
+import { structuredCall, llmInfo } from '../providers/llm.ts';
 import type { ItemEnvelope, Verdict } from '../content/types.ts';
 
 export const ASSESSOR_VERSION = 'greekos-assessor/1.0';
@@ -131,7 +131,9 @@ export async function assessOpenResponse(params: {
   if (out.decision === 'ABSTAIN') return { ...abstain('MODEL_ABSTAINED'), uncertainty: out.abstain_reason ?? 'MODEL_ABSTAINED', feedbackRu: out.feedback_ru || abstain('').feedbackRu };
   const v = validateAssessment(out, params.learnerText, criteria);
   if (!v.ok) return abstain(v.reason);
-  const reliable = out.confidence === 'high' && out.verdict !== 'AMBIGUOUS';
+  // A local, unvalidated development model may give feedback but never moves mastery on its own.
+  const unvalidatedEngine = llmInfo().local;
+  const reliable = out.confidence === 'high' && out.verdict !== 'AMBIGUOUS' && !unvalidatedEngine;
   return {
     verdict: out.verdict,
     reliable,
@@ -142,7 +144,7 @@ export async function assessOpenResponse(params: {
     errors: out.errors,
     feedbackRu: out.feedback_ru,
     improvedEl: out.improved_version_el,
-    uncertainty: reliable ? null : `CONFIDENCE_${out.confidence.toUpperCase()}`,
+    uncertainty: reliable ? null : unvalidatedEngine ? 'LOCAL_UNVALIDATED_MODEL' : `CONFIDENCE_${out.confidence.toUpperCase()}`,
     assessorVersion: `${ASSESSOR_VERSION}:${r.model}`,
   };
 }

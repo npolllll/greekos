@@ -1,0 +1,343 @@
+{
+ "batch_id": "104b2d6e-757b-454a-b228-ecf81421d899",
+ "label": "Полный прогон v6 (финальные правила)",
+ "tool_version": "greekos-digital-qa/2.0",
+ "generated_at": "2026-10-30T01:29:50.926Z",
+ "scope": {
+  "kind": "all"
+ },
+ "dictionary": {
+  "engine": "hunspell",
+  "path": "/usr/share/hunspell/el_GR",
+  "unique_greek_words": 5492,
+  "unknown_words": 298
+ },
+ "totals": {
+  "objects": 1978,
+  "items": 1843,
+  "units": 87,
+  "scenarios": 48,
+  "issues_stored": 321,
+  "PASS": 1858,
+  "NEEDS_REVIEW": 94,
+  "FAIL": 26,
+  "ABSTAIN": 0
+ },
+ "by_check": [
+  {
+   "id": "hash.envelope",
+   "group": "Неизменность",
+   "title_ru": "SHA-256 канонизированного задания совпадает с текущим хешем",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "hash.revision",
+   "group": "Неизменность",
+   "title_ru": "Текущая ревизия хранит тот же payload и хеш",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "schema.adapter",
+   "group": "Схема",
+   "title_ru": "Тип задания поддерживается интерфейсом (иначе не рендерится)",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "schema.required",
+   "group": "Схема",
+   "title_ru": "Обязательные поля: формулировка, уровень, тип",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "refs.unit",
+   "group": "Ссылки",
+   "title_ru": "Урок существует",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "refs.competencies",
+   "group": "Ссылки",
+   "title_ru": "Все компетенции существуют",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "refs.audio_jobs",
+   "group": "Ссылки",
+   "title_ru": "Все аудиозадания существуют",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "refs.rubric",
+   "group": "Ссылки",
+   "title_ru": "Рубрика существует",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "refs.text_object",
+   "group": "Ссылки",
+   "title_ru": "Текст-стимул существует",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "keys.present",
+   "group": "Ключи",
+   "title_ru": "У задания с автоматическим ключом есть ключ",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "keys.choice_resolves",
+   "group": "Ключи",
+   "title_ru": "Ключ выбора указывает ровно на заданные варианты",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "keys.options_duplicate",
+   "group": "Ключи",
+   "title_ru": "Нет повторяющихся вариантов ответа",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "keys.alternatives_duplicate",
+   "group": "Ключи",
+   "title_ru": "Допустимые варианты не дублируют друг друга",
+   "severity": "info",
+   "blocking": 0,
+   "warning": 0,
+   "info": 6,
+   "objects": 6
+  },
+  {
+   "id": "keys.key_in_prompt",
+   "group": "Ключи",
+   "title_ru": "Ответ не подсказан дословно в формулировке",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 41,
+   "info": 0,
+   "objects": 41
+  },
+  {
+   "id": "scoring.review_basis",
+   "group": "Оценивание",
+   "title_ru": "Для ручной/AI-оценки есть критерии, рубрика или образец",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 17,
+   "info": 0,
+   "objects": 17
+  },
+  {
+   "id": "ortho.final_sigma",
+   "group": "Орфография",
+   "title_ru": "Конечная сигма: ς в конце слова, σ внутри",
+   "severity": "blocking",
+   "blocking": 0,
+   "warning": 0,
+   "info": 2,
+   "objects": 2
+  },
+  {
+   "id": "ortho.mixed_script",
+   "group": "Орфография",
+   "title_ru": "В греческих словах нет латинских/кириллических двойников букв",
+   "severity": "blocking",
+   "blocking": 2,
+   "warning": 0,
+   "info": 0,
+   "objects": 2
+  },
+  {
+   "id": "ortho.missing_accent",
+   "group": "Орфография",
+   "title_ru": "Многосложные слова имеют знак ударения",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 1,
+   "info": 6,
+   "objects": 6
+  },
+  {
+   "id": "ortho.monosyllable_accent",
+   "group": "Орфография",
+   "title_ru": "Нет лишнего ударения в односложных словах",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 8,
+   "info": 0,
+   "objects": 8
+  },
+  {
+   "id": "ortho.double_accent",
+   "group": "Орфография",
+   "title_ru": "Два ударения только перед энклитикой",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 5,
+   "info": 0,
+   "objects": 4
+  },
+  {
+   "id": "ortho.spelling",
+   "group": "Орфография",
+   "title_ru": "Слова есть в словаре hunspell el_GR (имена — информационно)",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 46,
+   "info": 1456,
+   "objects": 557
+  },
+  {
+   "id": "ortho.question_mark",
+   "group": "Орфография",
+   "title_ru": "Греческий вопрос оформлен «;», а не «?»",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "ortho.unicode",
+   "group": "Орфография",
+   "title_ru": "Текст в NFC, без политонических/оксийных вариантов",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "ortho.spacing",
+   "group": "Орфография",
+   "title_ru": "Нет двойных пробелов и пробела перед знаком",
+   "severity": "info",
+   "blocking": 0,
+   "warning": 0,
+   "info": 4,
+   "objects": 3
+  },
+  {
+   "id": "level.consistency",
+   "group": "Уровень",
+   "title_ru": "Уровень задания согласован с уроком и компетенциями",
+   "severity": "warning",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "level.text_length",
+   "group": "Уровень",
+   "title_ru": "Длина греческого текста соответствует уровню",
+   "severity": "info",
+   "blocking": 0,
+   "warning": 0,
+   "info": 0,
+   "objects": 0
+  },
+  {
+   "id": "modality.audio",
+   "group": "Модальность",
+   "title_ru": "Задание на аудирование имеет проверенное аудио",
+   "severity": "info",
+   "blocking": 0,
+   "warning": 0,
+   "info": 177,
+   "objects": 177
+  },
+  {
+   "id": "modality.spoken",
+   "group": "Модальность",
+   "title_ru": "Устное задание помечено как требующее речи",
+   "severity": "info",
+   "blocking": 0,
+   "warning": 0,
+   "info": 107,
+   "objects": 107
+  },
+  {
+   "id": "sources.claims",
+   "group": "Источники",
+   "title_ru": "Ссылки на источники существуют и их статус известен",
+   "severity": "info",
+   "blocking": 0,
+   "warning": 0,
+   "info": 1286,
+   "objects": 1286
+  },
+  {
+   "id": "rights.license",
+   "group": "Права",
+   "title_ru": "Права на материал задокументированы и допускают распространение",
+   "severity": "blocking",
+   "blocking": 24,
+   "warning": 0,
+   "info": 0,
+   "objects": 24
+  },
+  {
+   "id": "human.review",
+   "group": "Экспертиза",
+   "title_ru": "Независимая экспертиза человеком (не выполняется автоматически)",
+   "severity": "info",
+   "blocking": 0,
+   "warning": 0,
+   "info": 1978,
+   "objects": 1978
+  }
+ ],
+ "not_performed": [
+  "Независимая экспертиза преподавателем, экзаменатором или носителем языка",
+  "Проверка смысла и прагматики свободным текстом (нужен LLM-провайдер или человек)",
+  "Акустическая оценка аудио слушателем"
+ ]
+}

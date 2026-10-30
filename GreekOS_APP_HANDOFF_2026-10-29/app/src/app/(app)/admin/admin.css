@@ -22,3 +22,5 @@
 .msg-ok{color:#2c552b;font-size:11.5px;margin-top:8px}
 @media(max-width:1000px){.admin-split{grid-template-columns:1fr}}
 @media(max-width:650px){.admin-top{grid-template-columns:1fr 1fr}.copy-box{flex-direction:column}}
+.sample-ok{border-color:rgba(95,138,90,.45)}
+.sample-issue{border-color:rgba(176,65,47,.45)}
