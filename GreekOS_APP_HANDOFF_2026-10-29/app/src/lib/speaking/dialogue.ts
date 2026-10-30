@@ -166,6 +166,8 @@ export function validateSummary(out: SessionSummaryOutput, learnerTurns: Array<{
 export async function summarizeSession(params: { userId: string; scenario: ScenarioPayload; mode: SpeakingMode; turns: Array<{ turn_id: string; speaker: string; text: string; confirmed: boolean }> }) {
   const learnerTurns = params.turns.filter((t) => t.speaker === 'learner' && t.confirmed).map((t) => ({ turn_id: t.turn_id, text: t.text }));
   if (learnerTurns.length < 2) return { ok: false as const, reason: 'INSUFFICIENT_TURNS' };
+  // Same rule as open answers: an unvalidated local model does not assess (LOCAL_LLM_ASSESS=1 to experiment).
+  if (llmInfo().local && process.env.LOCAL_LLM_ASSESS !== '1') return { ok: false as const, reason: 'LOCAL_MODEL_NOT_VALIDATED' };
   const r = await structuredCall({
     userId: params.userId, operation: 'speaking_summary', model: env.llmModelAssessor,
     system: `Ты подводишь итог учебного диалога на греческом. Оценивай только подтверждённые реплики ученика по рубрике сценария. Произношение не оценивай (not_assessable). Ссылайся на turn_id реальных реплик, цитаты — дословные подстроки. Максимум 3 исправления, сначала смысл. Это учебная автоматическая оценка, не официальный экзамен. При сомнении — ABSTAIN.`,

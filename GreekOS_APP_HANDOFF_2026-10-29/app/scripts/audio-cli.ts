@@ -8,6 +8,8 @@
  *   npx tsx scripts/audio-cli.ts rescore            (re-evaluate stored ASR hypotheses with current rules; no new audio)
  *   npx tsx scripts/audio-cli.ts render-batch [--limit 200] [--budget-cap 0] [--ids a,b] [--only-status TECH_QA_PASS] [--force]
  *   npx tsx scripts/audio-cli.ts inspect --audio-id KEG-B2-L01-AUD1
+ *   npx tsx scripts/audio-cli.ts export-bundle --out ../audio_bundle     (current files + manifest with SHA-256)
+ *   npx tsx scripts/audio-cli.ts import-bundle --dir ../audio_bundle     (fresh machine: verify bytes, upload, register)
  *   npx tsx scripts/audio-cli.ts report --out ../reports
  *   npx tsx scripts/audio-cli.ts benchmark --out reports/v5.4 [--speeds normal,slow,fast]   # every available voice
  *
@@ -137,6 +139,71 @@ async function rescore() {
   console.log(JSON.stringify({ command: 'rescore', checked: out.length, changed: changed.length, verified: out.filter((r) => r.after === 'AUDIO_VERIFIED_DIGITAL').length, detail: changed }, null, 2));
 }
 
+/** Columns that describe an asset independently of this database (ids and actors are not exported). */
+const BUNDLE_COLUMNS = 'id, audio_id, script_hash, provider, model, voice_map, locale, mime_type, sha256, byte_length, duration_ms, sample_rate, channels, segment_cues, technical_status, technical_report, asr_roundtrip, digital_status, rights_status, rights_evidence, synthetic_disclosure, render_status, synthesis_version, voice_ids, cast_snapshot, generation_params, normalization, cast_approved, object_path, created_at';
+
+async function exportBundle() {
+  const { mkdirSync, writeFileSync } = await import('node:fs');
+  const out = resolve(arg('--out') ?? '../audio_bundle');
+  const jobs = (await loadJobs()).map(normalizeAudioJob);
+  const [{ data: assets }, { data: statuses }] = await Promise.all([
+    db.from('audio_assets').select(BUNDLE_COLUMNS).is('invalidated_at', null),
+    db.from('audio_job_render_status').select('audio_id, status, reason'),
+  ]);
+  const entries: Array<Record<string, unknown>> = [];
+  let bytes = 0;
+  for (const j of jobs) {
+    const a = (assets ?? []).find((x) => x.audio_id === j.audio_id && x.script_hash === j.script_hash);
+    const st = (statuses ?? []).find((x) => x.audio_id === j.audio_id);
+    if (!a) { entries.push({ audio_id: j.audio_id, script_hash: j.script_hash, file: null, status: st?.status ?? 'AUDIO_PENDING', reason: st?.reason ?? 'not rendered' }); continue; }
+    const { data: blob, error } = await db.storage.from('course-audio').download(a.object_path as string);
+    if (error || !blob) throw new Error(`${j.audio_id}: ${error?.message ?? 'download failed'}`);
+    const buf = Buffer.from(await blob.arrayBuffer());
+    if (createHash('sha256').update(buf).digest('hex') !== a.sha256) throw new Error(`${j.audio_id}: stored bytes do not match sha256`);
+    const file = `files/${j.audio_id}/${a.sha256}.wav`;
+    mkdirSync(join(out, 'files', j.audio_id), { recursive: true });
+    writeFileSync(join(out, file), buf);
+    bytes += buf.byteLength;
+    const { id: _id, object_path: _p, ...meta } = a as Record<string, unknown>;
+    entries.push({ audio_id: j.audio_id, file, status: st?.status ?? null, ...meta });
+  }
+  const manifest = {
+    format: 'greekos-audio-bundle/1', exported_at: new Date().toISOString(), jobs: jobs.length, files: entries.filter((e) => e.file).length, bytes,
+    note: 'Synthesized el-GR speech for local development. HUMAN_* statuses are never set. DEV_LOCAL_ONLY files must not be distributed to learners.',
+    counts: entries.reduce<Record<string, number>>((c, e) => { const k = e.file ? String(e.digital_status) : `NO_FILE:${e.status}`; c[k] = (c[k] ?? 0) + 1; return c; }, {}),
+    entries,
+  };
+  writeFileSync(join(out, 'AUDIO_BUNDLE_MANIFEST.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+  console.log(JSON.stringify({ command: 'export-bundle', out, jobs: jobs.length, files: manifest.files, bytes, counts: manifest.counts }, null, 2));
+}
+
+async function importBundle() {
+  const dir = resolve(arg('--dir') ?? '../audio_bundle');
+  const manifest = JSON.parse(readFileSync(join(dir, 'AUDIO_BUNDLE_MANIFEST.json'), 'utf8')) as { entries: Array<Record<string, unknown> & { audio_id: string; file: string | null; sha256?: string; script_hash: string }> };
+  const jobs = new Map((await loadJobs()).map((j) => [j.audio_id, j]));
+  const res = { imported: 0, present: 0, skipped_stale_script: [] as string[], no_file: 0 };
+  for (const e of manifest.entries) {
+    if (!e.file) { res.no_file++; continue; }
+    const job = jobs.get(e.audio_id);
+    if (!job || job.script_hash !== e.script_hash) { res.skipped_stale_script.push(e.audio_id); continue; }
+    const buf = readFileSync(join(dir, e.file));
+    if (createHash('sha256').update(buf).digest('hex') !== e.sha256) throw new Error(`${e.audio_id}: file bytes do not match the manifest sha256`);
+    const key = `bundle:${e.sha256}`;
+    const { data: existing } = await db.from('audio_assets').select('id').eq('idempotency_key', key).maybeSingle();
+    if (existing) { res.present++; continue; }
+    const path = `${e.audio_id}/${e.sha256}.wav`;
+    const up = await db.storage.from('course-audio').upload(path, buf, { contentType: 'audio/wav', upsert: true });
+    if (up.error) throw new Error(`${e.audio_id}: ${up.error.message}`);
+    const { file: _f, status: _s, created_at: _c, ...row } = e;
+    await db.from('audio_assets').update({ invalidated_at: new Date().toISOString(), invalidated_reason: 'SUPERSEDED_BY_BUNDLE_IMPORT' }).eq('audio_id', e.audio_id).is('invalidated_at', null);
+    const { error } = await db.from('audio_assets').insert({ ...row, idempotency_key: key, object_path: path, history: [{ at: new Date().toISOString(), event: 'imported_from_bundle', manifest_created_at: _c }] });
+    if (error) throw new Error(`${e.audio_id}: ${error.message}`);
+    await db.from('audio_job_render_status').upsert({ audio_id: e.audio_id, status: e.digital_status === 'AUDIO_VERIFIED_DIGITAL' ? 'DIGITAL_REVIEWED' : 'TECH_QA_PASS', reason: 'imported from audio bundle', updated_at: new Date().toISOString() });
+    res.imported++;
+  }
+  console.log(JSON.stringify({ command: 'import-bundle', dir, ...res }, null, 2));
+}
+
 async function report() {
   const outDir = resolve(arg('--out') ?? '../reports');
   const { mkdirSync, writeFileSync } = await import('node:fs');
@@ -224,7 +291,7 @@ async function benchmark() {
   console.log(JSON.stringify({ command: 'benchmark', out: outDir, summary: r.summary, cloud_providers: out.cloud_providers }, null, 2));
 }
 
-const commands: Record<string, () => Promise<void>> = { validate, cast, plan, render, 'render-batch': renderBatch, rescore, inspect, report, benchmark };
+const commands: Record<string, () => Promise<void>> = { validate, cast, plan, render, 'render-batch': renderBatch, rescore, 'export-bundle': exportBundle, 'import-bundle': importBundle, inspect, report, benchmark };
 if (!cmd || !commands[cmd]) {
   console.error('usage: audio-cli.ts validate | cast | plan --ids a,b | render --ids a --approved-plan-hash H --budget-cap N | render-batch [--limit N] [--budget-cap N] | inspect --audio-id a | report --out DIR | benchmark [--out DIR] [--speeds normal,slow,fast]');
   process.exit(2);

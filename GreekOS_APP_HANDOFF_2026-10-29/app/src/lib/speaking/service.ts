@@ -313,7 +313,7 @@ export async function endSession(user: SessionUser, sessionId: string) {
       summary.mastery_counted = eligible;
       summary.mastery_reason = eligible ? 'Самостоятельная устная задача с доказательствами' : unvalidated ? 'оценивала невалидированная локальная модель' : s.input_mode !== 'voice' ? 'Текстовый режим не засчитывается как говорение' : helpUsed ? 'Использовались подсказки' : 'Недостаточно надёжного доказательства';
     } else {
-      summary = { status: 'ABSTAIN', reason: r.reason, label: r.reason === 'INSUFFICIENT_TURNS' ? (s.input_mode === 'voice' ? 'Итог не сформирован: нужно хотя бы две подтверждённые голосовые реплики. Без штрафа.' : 'Итог не сформирован: текстовый режим не оценивается как говорение. Без штрафа.') : 'Итог не сформирован — оценка воздержалась, без штрафа' };
+      summary = { status: 'ABSTAIN', reason: r.reason, label: r.reason === 'LOCAL_MODEL_NOT_VALIDATED' ? 'Итог не формируется: подключена только локальная модель, не проверенная для греческого. Реплики сохранены, без штрафа.' : r.reason === 'INSUFFICIENT_TURNS' ? (s.input_mode === 'voice' ? 'Итог не сформирован: нужно хотя бы две подтверждённые голосовые реплики. Без штрафа.' : 'Итог не сформирован: текстовый режим не оценивается как говорение. Без штрафа.') : 'Итог не сформирован — оценка воздержалась, без штрафа' };
     }
   }
   const idem = `speaking-end-${sessionId}`;

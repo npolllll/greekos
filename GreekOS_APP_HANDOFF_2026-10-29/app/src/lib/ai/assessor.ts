@@ -110,8 +110,13 @@ export async function assessOpenResponse(params: {
     dimensions: [], evidence: [], errors: [], improvedEl: null, uncertainty: reason, assessorVersion: ASSESSOR_VERSION,
     feedbackRu: reason === 'NOT_CONFIGURED'
       ? 'Автоматическая проверка по критериям не подключена. Ответ сохранён и ждёт проверки — без штрафа.'
-      : 'Автоматическая проверка воздержалась от оценки. Ответ сохранён для проверки — без штрафа.',
+      : reason === 'LOCAL_MODEL_NOT_VALIDATED'
+        ? 'Подключена только локальная модель, не проверенная для греческого: ответ не оценивается автоматически, сохранён и ждёт проверки — без штрафа.'
+        : 'Автоматическая проверка воздержалась от оценки. Ответ сохранён для проверки — без штрафа.',
   });
+  // An unvalidated local model would only produce an unreliable draft after a long wait on CPU: the
+  // answer goes to review at once. LOCAL_LLM_ASSESS=1 enables the draft for model experiments.
+  if (llmInfo().local && process.env.LOCAL_LLM_ASSESS !== '1') return { ...abstain('LOCAL_MODEL_NOT_VALIDATED'), verdict: 'PENDING_REVIEW' };
   const model = params.item.model_response;
   const user = [
     `Задание (${params.item.type}, уровень ${params.item.level ?? 'не указан'}):\n${params.item.prompt}`,

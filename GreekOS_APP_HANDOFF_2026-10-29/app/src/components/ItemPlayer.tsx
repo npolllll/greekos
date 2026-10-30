@@ -7,6 +7,15 @@ import { ContextCoach } from './ContextCoach';
 import { AudioPlayer } from './AudioPlayer';
 import { AnimatePresence, motion } from 'motion/react';
 
+/** Learner-facing names of corpus item types (raw type codes are never shown). */
+const ITEM_TYPE_RU: Record<string, string> = {
+  short_answer: 'краткий ответ', open_response: 'развёрнутый ответ', mcq: 'выбор ответа', multiple_choice: 'выбор ответа', multiple_assignment: 'соответствие',
+  matching: 'соответствие', extra_word: 'лишнее слово', response: 'ответ', retention: 'повторение', meaning_in_context: 'значение в контексте',
+  register_switch: 'смена регистра', production: 'своими словами', error_correction: 'исправление ошибки', reading_reference: 'чтение: к чему относится',
+  reading_inference: 'чтение: вывод', reading_detail: 'чтение: деталь', D28_transfer: 'перенос (D28)', D7_recall: 'вспомнить (D7)',
+  spoken_interaction: 'устный диалог', ordering: 'порядок', writing_transfer: 'письмо: перенос',
+};
+
 export interface AttemptResultClient {
   attempt_id: string;
   verdict: string;
@@ -137,7 +146,7 @@ export function ItemPlayer(props: {
   return (
     <div className={`card player ${props.preview ? 'watermark' : ''}`}>
       <div className="row between">
-        <span className="tag gray">{item.level ?? '—'} · {item.type}</span>
+        <span className="tag gray">{[item.level, ITEM_TYPE_RU[item.type] ?? 'задание'].filter(Boolean).join(' · ')}</span>
         {props.preview ? null : <span className="tiny muted">{item.item_id}</span>}
       </div>
       <div className={`player-prompt ${isGreek(item.prompt) ? 'greek' : ''}`} lang={isGreek(item.prompt) ? 'el' : 'ru'}>{item.prompt}</div>

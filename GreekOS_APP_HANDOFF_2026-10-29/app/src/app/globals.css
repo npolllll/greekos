@@ -745,3 +745,5 @@ p>.ic,small>.ic,.tiny>.ic,.small>.ic,li>.ic,h2>.ic{display:inline-block;vertical
 .card-top>.row,.card-top>span.row{flex-wrap:wrap;max-width:100%}
 .card-top .btn{max-width:100%;white-space:normal;text-align:center}
 .code{overflow-wrap:anywhere}
+.plan-row .plan-text{flex:1 0 9em}
+.plan-row .tag{white-space:normal;text-align:right;max-width:65%;line-height:1.35}

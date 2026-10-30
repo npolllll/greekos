@@ -65,7 +65,8 @@ export async function phraseAudio(viewer: SessionUser, input: { unit_id: string;
       if (!best || metrics.cer_phonetic < best.metrics.cer_phonetic) best = { bytes: out.bytes, metrics, hyp };
       if (roundTripPass(metrics)) break;
     }
-    if (!best || !model) throw new HttpError(503, 'TTS_QA_UNAVAILABLE', 'Озвучка не прошла проверку распознаванием — фраза не показывается без проверки.');
+    if (!model) throw new HttpError(503, 'TTS_QA_UNAVAILABLE', 'Проверка распознаванием недоступна — непроверенный звук не показывается.');
+    if (!best) throw new HttpError(422, 'TTS_TECH_FAILED', 'Синтез этого короткого слова технически не прошёл проверку (слишком короткий или тихий звук). Звук не показывается — нужен диктор или другой голос.');
     const pass = roundTripPass(best.metrics);
     if (!pass && !viewer.isOwner && !viewer.devPreview) throw new HttpError(422, 'TTS_QA_FAILED', 'Синтез этой фразы не прошёл автоматическую проверку. Мы не показываем непроверенный звук.');
     const sha = createHash('sha256').update(best.bytes).digest('hex');
