@@ -13,7 +13,7 @@
 import { z } from 'zod';
 import { env } from '../env.ts';
 import { streamJson } from '../providers/llm-stream.ts';
-import { llmInfo } from '../providers/llm.ts';
+import { isLocalLlm, llmInfo } from '../providers/llm.ts';
 import { HINTS_ALLOWED, type SpeakingMode } from './state-machine.ts';
 import { nodeById, isTerminal, type ScenarioNode, type ScenarioPayload, type TurnContext } from './dialogue.ts';
 import { JsonFieldStream, SentenceCutter } from './stream-json.ts';
@@ -275,7 +275,8 @@ export async function conversationTurn(input: ConversationTurnInput): Promise<Co
  * learner thinks; it never produces anything the learner sees.
  */
 export async function prefillConversation(p: { userId: string | null; sessionId: string; scenario: ConversationTurnInput['scenario']; mode: SpeakingMode; level: string | null; history: TurnContext[]; persona: Persona }): Promise<number | null> {
-  if (!generationAllowed()) return null;
+  // Only a local server that keeps the conversation's KV cache benefits; cloud APIs cache prompts themselves.
+  if (!generationAllowed() || !isLocalLlm() || !(await localKvReuse())) return null;
   const started = Date.now();
   const lv = levelKey(p.level ?? p.scenario.cefr_level);
   const r = await streamJson({
@@ -284,6 +285,20 @@ export async function prefillConversation(p: { userId: string | null; sessionId:
     maxTokens: 1, timeoutMs: 60_000, temperature: 0, cacheKey: p.sessionId,
   });
   return r.ok || r.reason === 'TRUNCATED' ? Date.now() - started : null;
+}
+
+let kvReuse: { at: number; value: boolean } | null = null;
+/** Whether the local LLM server reuses a conversation's KV cache (it does not for Gemma; see server.mjs). */
+async function localKvReuse(): Promise<boolean> {
+  if (kvReuse && Date.now() - kvReuse.at < 60_000) return kvReuse.value;
+  try {
+    const r = await fetch(`${env.llmBaseUrl!.replace(/\/$/, '')}/health`, { signal: AbortSignal.timeout(1500) });
+    const j = (await r.json()) as { kv_reuse?: boolean };
+    kvReuse = { at: Date.now(), value: j.kv_reuse !== false };
+  } catch {
+    kvReuse = { at: Date.now(), value: false };
+  }
+  return kvReuse.value;
 }
 
 /** Merge new facts into the session memory (dedupe, newest last, bounded). */

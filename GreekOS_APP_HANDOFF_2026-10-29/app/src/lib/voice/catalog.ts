@@ -176,7 +176,7 @@ export const COMMON_GENDER_NOUNS = new Set(['Υπάλληλος', 'Γραμμα�
 export interface CastingProposal {
   speaker_role: string;
   required_presentation: 'female' | 'male' | 'any' | null;
-  source: 'grammatical_gender_proposal' | 'self_reference_proposal' | 'narrator_default_proposal' | 'article_reference_proposal' | 'distinct_voice_proposal' | 'needs_casting';
+  source: 'grammatical_gender_proposal' | 'self_reference_proposal' | 'narrator_default_proposal' | 'article_reference_proposal' | 'distinct_voice_proposal' | 'name_morphology_proposal' | 'common_gender_neutral_proposal' | 'needs_casting';
   evidence: string;
 }
 
@@ -218,11 +218,28 @@ export function proposeRoleCasting(role: string, corpusText = ''): CastingPropos
   if (COMMON_GENDER_NOUNS.has(role)) {
     const art = articleEvidence(role, corpusText);
     if (art) return { speaker_role: role, required_presentation: art.presentation, source: 'article_reference_proposal', evidence: `в сценариях курса «${art.sample}» (${art.count}×): артикль задаёт ${art.presentation === 'female' ? 'женский' : 'мужской'} род` };
-    return { speaker_role: role, required_presentation: null, source: 'needs_casting', evidence: `«${role}» — существительное общего рода (ο/η): нужен выбор владельца` };
+    // No article or agreement in the texts fixes the gender: either voice is grammatically correct, and a
+    // voice contrasting with the other speaker keeps the dialogue easy to follow.
+    return { speaker_role: role, required_presentation: 'any', source: 'common_gender_neutral_proposal', evidence: `«${role}» — существительное общего рода (ο/η), в текстах курса род не задан: подходит любой голос; выбран контрастный собеседнику (предложение, владелец может сменить)` };
   }
   const art = articleEvidence(role, corpusText);
   if (art) return { speaker_role: role, required_presentation: art.presentation, source: 'article_reference_proposal', evidence: `в текстах курса имя пишется с артиклем «${art.sample}» (${art.count}×) — ${art.presentation === 'female' ? 'женский' : 'мужской'} род; это предложение, решение за владельцем` };
-  return { speaker_role: role, required_presentation: null, source: 'needs_casting', evidence: `роль «${role}» (имя или обозначение) не задаёт голос: нужен выбор владельца, пол по имени не угадывается` };
+  const morph = greekNameGender(role);
+  if (morph) return { speaker_role: role, required_presentation: morph.presentation, source: 'name_morphology_proposal', evidence: `имя «${role}»: окончание ${morph.ending} — ${morph.presentation === 'female' ? 'женское' : 'мужское'} греческое имя (предложение, владелец может сменить)` };
+  return { speaker_role: role, required_presentation: null, source: 'needs_casting', evidence: `роль «${role}» не задаёт голос и не похожа на греческое имя: нужен выбор владельца` };
+}
+
+/**
+ * Gender of a Greek given name by its ending (nominative): masculine -ος/-ας/-ης/-ων/-ής, feminine
+ * -α/-η/-ώ/-ού/-ία. Only single capitalised Greek words qualify (not role nouns or descriptions).
+ */
+export function greekNameGender(name: string): { presentation: 'female' | 'male'; ending: string } | null {
+  const n = name.normalize('NFC').trim();
+  if (!/^\p{Lu}\p{Ll}+$/u.test(n) || !/^\p{Script=Greek}+$/u.test(n)) return null;
+  const bare = n.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
+  for (const e of ['ος', 'ας', 'ης', 'ων', 'ης']) if (bare.endsWith(e)) return { presentation: 'male', ending: `-${e}` };
+  for (const e of ['ια', 'α', 'η', 'ω', 'ου']) if (bare.endsWith(e)) return { presentation: 'female', ending: `-${e}` };
+  return null;
 }
 
 /** Narration without speaker segments: first-person agreement in the text is evidence; else any voice. */

@@ -39,11 +39,15 @@ const FULL = ctxFor(
 const job = (id: string) => { const j = jobs.find((x) => x.audio_id === id)!; return { ...j, script_hash: j.script_version_hash }; };
 
 describe('casting proposals use textual evidence only', () => {
-  it('role nouns with gendered morphology are proposals; names and common-gender nouns need the owner', () => {
+  it('role nouns, Greek names and common-gender nouns become proposals; anything else needs the owner', () => {
     expect(proposeRoleCasting('Συντονίστρια')).toMatchObject({ required_presentation: 'female', source: 'grammatical_gender_proposal' });
     expect(proposeRoleCasting('Πελάτης')).toMatchObject({ required_presentation: 'male', source: 'grammatical_gender_proposal' });
-    expect(proposeRoleCasting('Άννα')).toMatchObject({ required_presentation: null, source: 'needs_casting' });
-    expect(proposeRoleCasting('Υπάλληλος')).toMatchObject({ required_presentation: null, source: 'needs_casting' });
+    // Greek given names: the ending decides (Νικόλας, Τάσος, Λέων / Άννα, Έλλη, Ιώ).
+    for (const n of ['Νικόλας', 'Τάσος', 'Λέων']) expect(proposeRoleCasting(n)).toMatchObject({ required_presentation: 'male', source: 'name_morphology_proposal' });
+    for (const n of ['Άννα', 'Έλλη', 'Ιώ', 'Ρένα']) expect(proposeRoleCasting(n)).toMatchObject({ required_presentation: 'female', source: 'name_morphology_proposal' });
+    // Common gender (ο/η) with no article in the texts: either voice is correct.
+    expect(proposeRoleCasting('Υπάλληλος')).toMatchObject({ required_presentation: 'any', source: 'common_gender_neutral_proposal' });
+    expect(proposeRoleCasting('Speaker 2')).toMatchObject({ required_presentation: null, source: 'needs_casting' });
     // Letter labels carry no gender: v6 proposes «any voice, but distinct speakers»; the owner still approves.
     expect(proposeRoleCasting('Α')).toMatchObject({ required_presentation: 'any', source: 'distinct_voice_proposal' });
     expect(proposeNarratorCasting('Καλησπέρα σας. Είμαι η συντονίστρια του προγράμματος.')).toMatchObject({ required_presentation: 'female', source: 'self_reference_proposal' });
@@ -72,10 +76,10 @@ describe('all 142 queued jobs are accounted for (no silent omission)', () => {
     expect(ok).toBeGreaterThan(0);
   });
 
-  it('dialogues with personal names stay blocked until the owner casts them', () => {
+  it('a common-gender role is planned with a voice contrasting with the other speaker', () => {
     const r = planJob(job('U-A1-001-AUD01'), FULL);
-    expect(r.ok).toBe(false);
-    if (!r.ok) expect(r.status).toBe('BLOCKED_MISSING_VOICE_METADATA');
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(new Set(Object.values(r.plan.voice_map)).size).toBe(2);
   });
 
   it('owner casting enables a dialogue with distinct voices per character', () => {

@@ -32,6 +32,18 @@ class CoquiGreek:
         self.model.eval()
         self.sample_rate = cfg.audio.sample_rate
         torch.set_num_threads(max(1, (os.cpu_count() or 2)))
+        # Apple Silicon: run on the GPU (MPS) when it works for this model; LOCAL_TTS_DEVICE=cpu|mps|cuda overrides.
+        self.device = "cpu"
+        want = os.environ.get("LOCAL_TTS_DEVICE") or ("mps" if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+        if want != "cpu":
+            try:
+                self.model.to(want)
+                self.device = want
+                self._infer(self.tokenizer.text_to_ids("Καλημέρα σας.", language="el"), 1.0, 0.667, 0.8)
+            except Exception as e:  # an unsupported operator → stay on CPU
+                print(f"TTS device {want} failed ({e}); using cpu", flush=True)
+                self.model.to("cpu")
+                self.device = "cpu"
 
     HOP = 256
     # Carrier context for short inputs: the duration predictor (trained on audiobook sentences)
@@ -43,12 +55,12 @@ class CoquiGreek:
     MAX_FRAMES_PER_TOKEN = 5.5  # normal reading ≈ 2–4 frames per token (blanks included)
 
     def _infer(self, ids, length_scale, noise_scale, noise_w):
-        x = torch.LongTensor([ids])
+        x = torch.LongTensor([ids]).to(self.device)
         self.model.length_scale = length_scale
         self.model.inference_noise_scale = noise_scale
         self.model.inference_noise_scale_dp = noise_w
         with torch.no_grad():
-            out = self.model.inference(x, aux_input={"x_lengths": torch.LongTensor([len(ids)]), "speaker_ids": torch.LongTensor([0]), "language_ids": torch.LongTensor([0])})
+            out = self.model.inference(x, aux_input={"x_lengths": torch.LongTensor([len(ids)]).to(self.device), "speaker_ids": torch.LongTensor([0]).to(self.device), "language_ids": torch.LongTensor([0]).to(self.device)})
         audio = out["model_outputs"].squeeze().cpu().numpy().astype(np.float32)
         frames = out["alignments"][0].sum(dim=-1).cpu().numpy()  # [T_enc, T_dec] → frames per input token
         return audio, frames
@@ -64,14 +76,18 @@ class CoquiGreek:
         # to it, and the onset of the next carrier word bled into the slice (ASR heard «… σου αφ'»).
         blank, space = self.tokenizer.characters.char_to_id("<BLNK>"), self.tokenizer.characters.char_to_id(" ")
         pre = self.tokenizer.text_to_ids(self.CARRIER_PRE, language="el")[:-1] + [blank, space]
-        post = [space] + self.tokenizer.text_to_ids(self.CARRIER_POST, language="el")
+        # A pause («…») after the target lets the model finish the phrase with its natural release; without
+        # it a question ran straight into the carrier and the slice ended mid-vowel (tail ≈ −25 dBFS).
+        post = [space] + self.tokenizer.text_to_ids("... " + self.CARRIER_POST, language="el")
         audio, frames = self._infer(pre + ids + post, length_scale, noise_scale, noise_w)
         start = int(frames[: len(pre)].sum()) * self.HOP
-        end = int(frames[: len(pre) + len(ids)].sum()) * self.HOP
+        end_word = int(frames[: len(pre) + len(ids)].sum()) * self.HOP
+        end = int(frames[: len(pre) + len(ids) + 1].sum()) * self.HOP  # include the boundary token (the release)
         seg = audio[start:end].copy()
-        fade = min(len(seg) // 4, int(self.sample_rate * 0.012))
-        if fade > 0:
-            ramp = np.linspace(0.0, 1.0, fade, dtype=np.float32)
-            seg[:fade] *= ramp
-            seg[-fade:] *= ramp[::-1]
+        fade_in = min(len(seg) // 4, int(self.sample_rate * 0.012))
+        if fade_in > 0:
+            seg[:fade_in] *= np.linspace(0.0, 1.0, fade_in, dtype=np.float32)
+        fade_out = min(len(seg) // 3, max(end - end_word, int(self.sample_rate * 0.012)))
+        if fade_out > 0:
+            seg[-fade_out:] *= np.linspace(1.0, 0.0, fade_out, dtype=np.float32) ** 2
         return seg

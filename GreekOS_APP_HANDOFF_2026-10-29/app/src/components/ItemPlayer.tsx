@@ -202,6 +202,15 @@ export function ItemPlayer(props: {
               <textarea id={`ans-${item.item_id}`} className="greek-input" lang="el" value={text} disabled={locked} onChange={(e) => setText(e.target.value)} spellCheck={false} />
               <span className="hint">{words} слов</span>
             </div>
+          ) : item.speaker_choices?.length ? (
+            <div role="radiogroup" aria-label="Кто это говорит">
+              {item.speaker_choices.map((name) => {
+                const chosen = text === name;
+                const cls = result && chosen ? (result.verdict === 'CORRECT' ? 'good' : result.verdict === 'INCORRECT_CONFIRMED' ? 'bad' : 'selected') : chosen ? 'selected' : '';
+                return <button key={name} type="button" role="radio" aria-checked={chosen} className={`answer ${cls}`} disabled={locked} onClick={() => setText(name)} lang="el"><span>{name}</span>{chosen ? <Icon name="check" size={16} /> : null}</button>;
+              })}
+              {item.format_hint_ru ? <span className="hint">{item.format_hint_ru}</span> : null}
+            </div>
           ) : (
             <div className="field">
               <label htmlFor={`ans-${item.item_id}`}>Ваш ответ</label>

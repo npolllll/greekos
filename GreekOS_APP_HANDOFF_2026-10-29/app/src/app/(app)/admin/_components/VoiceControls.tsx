@@ -13,6 +13,8 @@ const PRES_RU: Record<string, string> = { female: 'женский', male: 'му�
 const SOURCE_RU: Record<string, string> = {
   owner: 'назначено владельцем', grammatical_gender_proposal: 'предложение: грамматический род', self_reference_proposal: 'предложение: самоназвание в тексте',
   narrator_default_proposal: 'предложение: голос диктора', needs_casting: 'нужен выбор владельца',
+  article_reference_proposal: 'предложение: артикль в текстах курса', distinct_voice_proposal: 'предложение: разные голоса собеседников',
+  name_morphology_proposal: 'предложение: окончание греческого имени', common_gender_neutral_proposal: 'предложение: общий род, голос контрастный собеседнику',
 };
 
 export function SyncVoices() {

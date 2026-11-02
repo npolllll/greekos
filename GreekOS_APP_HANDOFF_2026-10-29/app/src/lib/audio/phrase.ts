@@ -12,7 +12,7 @@ import { env } from '../env.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
 import { lessonWords } from '../alphabet/reference.ts';
 
-export const PHRASE_SYNTHESIS_VERSION = 'greekos-phrase/1.1'; // 1.1: carrier word boundaries + loudness normalisation
+export const PHRASE_SYNTHESIS_VERSION = 'greekos-phrase/1.2'; // 1.1: carrier word boundaries + loudness normalisation
 
 const norm = (s: string) => s.normalize('NFC').replace(/\s+/g, ' ').trim();
 

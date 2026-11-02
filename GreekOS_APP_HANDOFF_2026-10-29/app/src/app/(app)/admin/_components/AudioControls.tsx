@@ -118,3 +118,51 @@ export function AudioReleaseButton({ assetIds, blockers, label, policyActive }: 
     </span>
   );
 }
+
+/**
+ * Import of a finished recording (studio, voice actor, external TTS) for this job. The owner states
+ * who speaks each role; the file then goes through the same digital QA as a local render.
+ */
+export function ImportAudioForm({ audioId, roles }: { audioId: string; roles: string[] }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [provider, setProvider] = useState('');
+  const [voices, setVoices] = useState<Record<string, string>>({});
+  const [pres, setPres] = useState<Record<string, 'female' | 'male'>>({});
+  const [note, setNote] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  async function send() {
+    if (!file) return setMsg('Выберите WAV-файл.');
+    setBusy(true); setMsg(null);
+    const fd = new FormData();
+    fd.set('file', file);
+    fd.set('meta', JSON.stringify({ audio_id: audioId, provider, voices, presentations: Object.keys(pres).length ? pres : undefined, note: note || null }));
+    const res = await fetch('/api/admin/audio/import', { method: 'POST', body: fd });
+    const j = await res.json().catch(() => ({}));
+    setBusy(false);
+    if (!res.ok) return setMsg(j.message ?? 'Импорт не удался');
+    setMsg(`Импортировано: ${j.digital_status === 'AUDIO_VERIFIED_DIGITAL' ? 'цифровая проверка пройдена' : j.digital_status === 'BLOCKED' ? 'технический брак' : 'нужен разбор'}${j.roundtrip ? ` (CER фонет. ${j.roundtrip.cer_phonetic})` : ''}.`);
+    setOpen(false);
+    router.refresh();
+  }
+  if (!open) return <button type="button" className="btn flat" onClick={() => setOpen(true)}>Импорт готового файла</button>;
+  const speakers = roles.length ? roles : ['__narrator__'];
+  return (
+    <div className="inline-form" style={{ width: '100%' }}>
+      <p className="tiny quiet" style={{ margin: 0 }}>WAV от студии, актёра или внешнего синтеза. Файл пройдёт технический QA и сверку распознаванием с текстом задания. Права остаются «ожидают условий», пока вы их не запишете.</p>
+      <div className="field"><label htmlFor={`imp-file-${audioId}`}>Файл (WAV, PCM)</label><input id={`imp-file-${audioId}`} type="file" accept="audio/wav,audio/x-wav,.wav" onChange={(e) => setFile(e.target.files?.[0] ?? null)} /></div>
+      <div className="field"><label htmlFor={`imp-prov-${audioId}`}>Кто сделал запись</label><input id={`imp-prov-${audioId}`} value={provider} onChange={(e) => setProvider(e.target.value)} placeholder="Студия / провайдер / актёр" /></div>
+      {speakers.map((r) => (
+        <div className="row" key={r} style={{ gap: 8, flexWrap: 'wrap' }}>
+          <div className="field" style={{ flex: 1, minWidth: 160 }}><label htmlFor={`imp-v-${r}`}>{r === '__narrator__' ? 'Диктор' : r}: голос</label><input id={`imp-v-${r}`} value={voices[r] ?? ''} onChange={(e) => setVoices({ ...voices, [r]: e.target.value })} /></div>
+          <div className="field"><label htmlFor={`imp-p-${r}`}>Голос</label><select id={`imp-p-${r}`} value={pres[r] ?? ''} onChange={(e) => setPres({ ...pres, [r]: e.target.value as 'female' | 'male' })}><option value="">—</option><option value="female">женский</option><option value="male">мужской</option></select></div>
+        </div>
+      ))}
+      <div className="field"><label htmlFor={`imp-note-${audioId}`}>Примечание</label><input id={`imp-note-${audioId}`} value={note} onChange={(e) => setNote(e.target.value)} /></div>
+      <div className="row"><button type="button" className="btn" disabled={busy || provider.trim().length < 2} onClick={send}>{busy ? 'Проверяю файл…' : 'Импортировать и проверить'}</button><button type="button" className="btn outline" onClick={() => setOpen(false)}>Отмена</button></div>
+      {msg ? <span className="small" role="status">{msg}</span> : null}
+    </div>
+  );
+}

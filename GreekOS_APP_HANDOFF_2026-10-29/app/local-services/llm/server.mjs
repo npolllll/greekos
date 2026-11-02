@@ -31,9 +31,16 @@ const model = await llama.loadModel({ modelPath: MODEL });
 // llama.cpp slows down sharply when oversubscribed; the speech service (TTS + Whisper) shares the CPU,
 // so by default the model takes half of the cores. On Apple Silicon the GPU (Metal) does the work.
 const THREADS = Number(process.env.LOCAL_LLM_THREADS || Math.max(2, Math.floor(os.cpus().length / 2)));
-const context = await model.createContext({ contextSize: CTX, threads: THREADS, sequences: SLOTS });
+const ARCH = String(model.fileInfo?.metadata?.general?.architecture ?? '');
+// Measured (scripts/speaking-eval.ts): with Gemma 3/4 GGUFs, reusing a cached prefix and erasing the rest
+// corrupted the context even with a full-size SWA cache — the model repeated its own opening and swapped
+// roles. For these architectures every request is evaluated from a clean sequence (correct, slower on CPU;
+// fast with Metal). LOCAL_LLM_NO_REUSE=0|1 overrides; other architectures keep prefix reuse.
+const SWA_FULL = process.env.LOCAL_LLM_SWA_FULL !== '0';
+const context = await model.createContext({ contextSize: CTX, threads: THREADS, sequences: SLOTS, swaFullCache: SWA_FULL });
 // One sequence per live conversation (LRU): its evaluated tokens stay in the KV cache between turns.
-const slots = Array.from({ length: SLOTS }, () => ({ key: null, chat: new LlamaChat({ contextSequence: context.getSequence() }), last: null, used: 0 }));
+const NO_REUSE = process.env.LOCAL_LLM_NO_REUSE ? process.env.LOCAL_LLM_NO_REUSE === '1' : /gemma/i.test(ARCH);
+const slots = Array.from({ length: SLOTS }, () => { const seq = context.getSequence(); return { key: null, seq, chat: new LlamaChat({ contextSequence: seq }), last: null, used: 0 }; });
 function slotFor(key) {
   let slot = key ? slots.find((x) => x.key === key) : null;
   if (!slot) {
@@ -85,6 +92,7 @@ async function complete(req, res, body, queuedAt) {
   res.on('close', () => { if (!res.writableEnded) ac.abort(); });
   const id = `chatcmpl-${Date.now().toString(36)}`;
   const slot = slotFor(typeof body.user === 'string' ? body.user : null);
+  if (NO_REUSE) { await slot.seq.clearHistory(); slot.last = null; }
   const last = slot.last;
   const result = await slot.chat.generateResponse(history, {
     grammar,
@@ -113,7 +121,7 @@ async function complete(req, res, body, queuedAt) {
 
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
-  if (req.method === 'GET' && url.pathname === '/health') return send(res, 200, { ok: true, model: NAME, context: CTX, gpu: llama.gpu || 'cpu', threads: THREADS, slots: SLOTS });
+  if (req.method === 'GET' && url.pathname === '/health') return send(res, 200, { ok: true, model: NAME, context: CTX, gpu: llama.gpu || 'cpu', threads: THREADS, slots: SLOTS, kv_reuse: !NO_REUSE, swa_full_cache: SWA_FULL, arch: ARCH });
   if (req.method === 'GET' && url.pathname === '/v1/models') return send(res, 200, { object: 'list', data: [{ id: NAME, object: 'model', owned_by: 'local' }] });
   if (req.method === 'POST' && url.pathname === '/v1/chat/completions') {
     let raw = '';
@@ -128,4 +136,4 @@ http.createServer((req, res) => {
     return;
   }
   send(res, 404, { error: { message: 'not found' } });
-}).listen(PORT, '127.0.0.1', () => console.log(`greekos-local-llm on 127.0.0.1:${PORT} model=${NAME} gpu=${llama.gpu || 'cpu'}`));
+}).listen(PORT, '127.0.0.1', () => console.log(`greekos-local-llm on 127.0.0.1:${PORT} model=${NAME} arch=${ARCH} gpu=${llama.gpu || 'cpu'} kv_reuse=${!NO_REUSE}`));

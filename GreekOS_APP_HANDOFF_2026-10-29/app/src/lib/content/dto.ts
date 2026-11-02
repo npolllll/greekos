@@ -19,6 +19,8 @@ export interface ItemDTO {
   audio: { status: 'available'; asset_id: string; synthetic: true; dev_only?: true; qa?: 'verified' | 'needs_review' } | { status: 'unavailable'; reason: string } | null;
   format_hint_ru: string | null;
   spoken_task: boolean;
+  /** «Who said it?» items: every speaker of the referenced recording (not the key). */
+  speaker_choices?: string[];
 }
 
 export interface StimulusDTO {
@@ -59,6 +61,7 @@ function formatHint(type: string): string | null {
   if (type === 'matching') return 'Запишите пары через запятую, например: 1-Α, 2-Β';
   if (type === 'ordering') return 'Запишите буквы по порядку через запятую, например: Β, Α';
   if (type === 'extra_word') return 'Впишите одно лишнее слово';
+  if (type === 'multiple_assignment') return 'Кто это говорит? Выберите говорящего из записи';
   return null;
 }
 
@@ -70,6 +73,7 @@ export function buildItemDTO(params: {
   textObject?: Record<string, unknown> | null;
   audio?: ItemDTO['audio'];
   examMode?: boolean;
+  speakers?: string[];
 }): ItemDTO {
   const { item } = params;
   const kind = adapterFor(item.type, item.options);
@@ -111,6 +115,7 @@ export function buildItemDTO(params: {
     audio: item.requires_audio ? params.audio ?? { status: 'unavailable', reason: 'AUDIO_PENDING' } : null,
     format_hint_ru: formatHint(item.type),
     spoken_task: SPOKEN.has(item.type),
+    ...(item.type === 'multiple_assignment' && params.speakers?.length ? { speaker_choices: params.speakers } : {}),
   };
 }
 

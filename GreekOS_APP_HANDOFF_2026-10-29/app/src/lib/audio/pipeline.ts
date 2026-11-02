@@ -15,7 +15,7 @@ import { analyzeWav, concatWav, normalizeLoudness, parseWav, pcmSamples, type Te
 import { alignmentDiff, chunkText, roundTrip, roundTripPass, segmentSignals, type RoundTripMetrics } from './roundtrip.ts';
 import type { CatalogVoice, CastRole } from '../voice/catalog.ts';
 
-export const SYNTHESIS_VERSION = 'greekos-audio/2.1'; // 2.1: word boundaries around the target inside the Coqui carrier
+export const SYNTHESIS_VERSION = 'greekos-audio/2.2'; // 2.2: pause after the target in the Coqui carrier, natural phrase release kept
 
 export interface AudioJobRow {
   audio_id: string;
@@ -143,7 +143,7 @@ export interface RenderResult {
   error?: string;
 }
 
-async function setJobStatus(audioId: string, status: string, reason: string | null, extra: { attempted?: boolean; asset_id?: string; cost?: number } = {}) {
+export async function setJobStatus(audioId: string, status: string, reason: string | null, extra: { attempted?: boolean; asset_id?: string; cost?: number } = {}) {
   const db = adminClient();
   const { data: prev } = await db.from('audio_job_render_status').select('attempts').eq('audio_id', audioId).maybeSingle();
   await db.from('audio_job_render_status').upsert({
@@ -156,7 +156,7 @@ type SegmentRoundTrip = RoundTripMetrics & { segment_id: string; voice_id: strin
 type JobRoundTrip = RoundTripMetrics & { engine: string; diff: ReturnType<typeof alignmentDiff>; segments: SegmentRoundTrip[] };
 
 /** Best ASR for screening: local Whisper turbo/medium when the local service is up, else configured cloud ASR. */
-async function asrEngine(): Promise<{ engine: string; run: (b: Uint8Array, actorId: string | null) => Promise<string> } | null> {
+export async function asrEngine(): Promise<{ engine: string; run: (b: Uint8Array, actorId: string | null) => Promise<string> } | null> {
   const local = env.localEnginesAllowed ? await localAsrHealth() : null;
   const best = local?.available.includes('turbo') ? 'turbo' : local?.available.includes('medium') ? 'medium' : null;
   if (best) return { engine: `local:sherpa-onnx:whisper-${best}-int8`, run: async (b) => (await localTranscribe(b, best, 300_000)).text };

@@ -47,6 +47,7 @@ beforeAll(async () => {
     let raw = '';
     req.on('data', (c) => { raw += c; });
     req.on('end', () => {
+      if (req.method === 'GET' && req.url === '/health') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ ok: true, kv_reuse: true })); return; }
       const body = raw ? JSON.parse(raw) : {};
       requests.push({ path: req.url ?? '', headers: req.headers, body });
       if (req.url === '/v1/messages') {

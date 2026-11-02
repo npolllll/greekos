@@ -1,4 +1,5 @@
 import { buildItemDTO, assertNoLeak, type ItemDTO } from './dto.ts';
+import { adminClient } from '../supabase/admin.ts';
 import { loadTextObjects, playableAudio, devPreviewAudio, releaseMap, itemAccess, PUBLIC_VIEWER, type ItemRow, type ItemAccess, type Viewer } from './repo.ts';
 
 export interface DeliveredItem {
@@ -19,6 +20,16 @@ export async function deliverItems(rows: ItemRow[], opts: { examMode?: boolean; 
     loadTextObjects([...new Set(rows.map((r) => (r.envelope.stimulus as { text_id?: string } | null)?.text_id).filter((x): x is string => typeof x === 'string'))]),
     opts.ownerPreview && !opts.examMode ? devPreviewAudio(audioIds) : Promise.resolve(new Map()),
   ]);
+  // «Who said it?» items list every speaker of their recording (from the job's segments; not the key).
+  const assignJobs = [...new Set(rows.filter((r) => r.envelope.type === 'multiple_assignment').flatMap((r) => r.audio_job_ids))];
+  const speakersByJob = new Map<string, string[]>();
+  if (assignJobs.length) {
+    const { data } = await adminClient().from('audio_jobs').select('audio_id, segments').in('audio_id', assignJobs);
+    for (const j of data ?? []) {
+      const segs = (Array.isArray(j.segments) ? j.segments : []) as Array<{ speaker?: string; speaker_role?: string }>;
+      speakersByJob.set(j.audio_id, [...new Set(segs.map((x) => x.speaker ?? x.speaker_role).filter((x): x is string => !!x))]);
+    }
+  }
   const out: DeliveredItem[] = [];
   for (const r of rows) {
     const access = itemAccess(r, rel, audio);
@@ -35,6 +46,7 @@ export async function deliverItems(rows: ItemRow[], opts: { examMode?: boolean; 
         textObject: textId ? texts.get(textId) ?? null : null,
         audio: r.requires_audio ? (access.audioReady && firstAudio ? { status: 'available', asset_id: firstAudio.asset_id, synthetic: true, ...(firstAudio.dev_only ? { dev_only: true as const, qa: firstAudio.qa } : {}) } : devFirst ? { status: 'available', asset_id: devFirst.asset_id, synthetic: true, dev_only: true, qa: devFirst.qa } : { status: 'unavailable', reason: 'AUDIO_PENDING' }) : null,
         examMode: opts.examMode,
+        speakers: r.envelope.type === 'multiple_assignment' ? [...new Set(r.audio_job_ids.flatMap((a) => speakersByJob.get(a) ?? []))] : undefined,
       });
       if (learnerSpeech) dto = { ...dto, requires_audio: false, audio: null, spoken_task: true };
     } catch {

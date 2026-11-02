@@ -9,7 +9,7 @@ import { releaseMap } from '@/lib/content/repo';
 import { activePolicy } from '@/lib/admin/releases';
 import { DIGITAL_STATUS_LABEL, dateTimeRu } from '@/lib/admin/labels';
 import { env } from '@/lib/env';
-import { AudioRender, RightsForm, AssetPlayer, ListenVerdict, AudioReleaseButton } from '../../_components/AudioControls';
+import { AudioRender, RightsForm, AssetPlayer, ListenVerdict, AudioReleaseButton, ImportAudioForm } from '../../_components/AudioControls';
 import { audioReleaseBlockers, ownerListening } from '@/lib/qa/audio-release';
 import { ActionButton } from '../../_components/ActionButton';
 
@@ -47,7 +47,7 @@ export default async function AudioJobPage({ params }: { params: Promise<{ audio
       </div>
       <div className="card cardpad">
         <div className="card-title">Кастинг ролей</div>
-        <p className="small quiet">Голос роли берётся только из утверждённого кастинга. Пол по имени персонажа не угадывается; предложения основаны на грамматическом роде ролевых существительных или самоназвании в тексте и требуют вашего утверждения.</p>
+        <p className="small quiet">Голос роли берётся из кастинга. Предложения основаны на тексте: грамматический род ролевого существительного, артикль или самоназвание, окончание греческого имени; для существительных общего рода без указания в тексте — голос, контрастный собеседнику. Для выпуска кастинг утверждаете вы.</p>
         <CastingEditor audioId={job.audio_id} rows={roles.map((r) => ({ speaker_role: r.speaker_role, cast_role_id: r.cast_role_id, required_presentation: r.required_presentation, source: r.source, approved: r.approved }))} castRoles={[...ctx.castRoles.values()].map((c) => ({ id: c.cast_role_id, presentation: c.requested_presentation, voice: c.voice_id ? voiceName(c.voice_id) : null }))} />
       </div>
       <div className="card cardpad">
@@ -69,6 +69,7 @@ export default async function AudioJobPage({ params }: { params: Promise<{ audio
           </>
         ) : <div className="banner warn"><span><strong>{!planned.ok ? planned.status : ''}</strong> {!planned.ok ? planned.reason : ''}</span></div>}
         <AudioRender audioId={job.audio_id} planHash={plan?.plan_hash ?? ''} configured={!!plan} defaultCap={env.audioRunBudgetUsd} />
+        <div className="mt8"><ImportAudioForm audioId={job.audio_id} roles={[...new Set(roles.map((r) => r.speaker_role).filter((r) => r !== '__narrator__'))]} /></div>
       </div>
       <div className="card cardpad">
         <div className="card-title">Файлы ({assets?.length ?? 0})</div>

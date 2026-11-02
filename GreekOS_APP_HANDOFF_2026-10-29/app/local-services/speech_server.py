@@ -23,6 +23,7 @@ import io
 import json
 import math
 import os
+import platform
 import shutil
 import subprocess
 import tempfile
@@ -94,6 +95,10 @@ def voice_available(vid):
         db = vid.split("-", 1)[1]
         return bool(shutil.which("espeak-ng")) and any(Path(p, db, db).exists() for p in ("/usr/share/mbrola", "/opt/homebrew/share/mbrola", "/usr/local/share/mbrola"))
     return False
+
+
+def tts_device():
+    return getattr(_coqui, "device", None) if _coqui is not None else None
 
 
 def get_coqui():
@@ -177,14 +182,29 @@ def asr_available():
     return [n for n in ("tiny", "base", "small", "medium", "turbo") if (asr_dir(n) / f"{n}-encoder.int8.onnx").exists()]
 
 
+APPLE_SILICON = platform.system() == "Darwin" and platform.machine() == "arm64"
+# ONNX Runtime execution provider for Whisper: CoreML (Neural Engine/GPU) on Apple Silicon, CPU elsewhere.
+# LOCAL_ASR_PROVIDER=cpu|coreml|cuda overrides; if the accelerated provider fails to load, CPU is used.
+ASR_PROVIDER = os.environ.get("LOCAL_ASR_PROVIDER") or ("coreml" if APPLE_SILICON else "cpu")
+_asr_provider_used = {}
+
+
 def get_asr(name):
     with _asr_load_lock:
         if name not in _asr:
             import sherpa_onnx
             d = asr_dir(name)
-            _asr[name] = sherpa_onnx.OfflineRecognizer.from_whisper(
-                encoder=str(d / f"{name}-encoder.int8.onnx"), decoder=str(d / f"{name}-decoder.int8.onnx"), tokens=str(d / f"{name}-tokens.txt"),
-                language="el", task="transcribe", num_threads=max(1, os.cpu_count() or 2), tail_paddings=-1)
+            kw = dict(encoder=str(d / f"{name}-encoder.int8.onnx"), decoder=str(d / f"{name}-decoder.int8.onnx"), tokens=str(d / f"{name}-tokens.txt"),
+                      language="el", task="transcribe", num_threads=max(1, os.cpu_count() or 2), tail_paddings=-1)
+            try:
+                _asr[name] = sherpa_onnx.OfflineRecognizer.from_whisper(provider=ASR_PROVIDER, **kw)
+                _asr_provider_used[name] = ASR_PROVIDER
+            except Exception as e:  # accelerated provider unavailable in this build → CPU
+                if ASR_PROVIDER == "cpu":
+                    raise
+                print(f"ASR provider {ASR_PROVIDER} failed for {name} ({e}); using cpu", flush=True)
+                _asr[name] = sherpa_onnx.OfflineRecognizer.from_whisper(provider="cpu", **kw)
+                _asr_provider_used[name] = "cpu"
             _asr_locks[name] = threading.Lock()
         return _asr[name], _asr_locks[name]
 
@@ -278,7 +298,7 @@ class Handler(BaseHTTPRequestHandler):
         u = urlparse(self.path)
         if u.path == "/health":
             voices = [v for v in VOICES if voice_available(v)]
-            return self._json(200, {"ok": True, "voices": voices, "available": asr_available(), "loaded": sorted(_asr.keys()), "asr": {"available": asr_available(), "loaded": sorted(_asr.keys())}})
+            return self._json(200, {"ok": True, "voices": voices, "available": asr_available(), "loaded": sorted(_asr.keys()), "asr": {"available": asr_available(), "loaded": sorted(_asr.keys()), "provider": ASR_PROVIDER, "providers_used": _asr_provider_used}, "tts_device": tts_device()})
         if u.path == "/voices":
             return self._json(200, [{**v, "available": voice_available(v["id"]), "sample_rate": OUT_RATE, "speed_profile": {"normal": 1.0, "slow": 0.85, "fast": 1.1}} for v in VOICES.values()])
         self._json(404, {"error": "not found"})
