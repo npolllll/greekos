@@ -11,6 +11,11 @@ function isLocalUrl(u: string | undefined): boolean {
   return !!u && /^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(:\d+)?/i.test(u);
 }
 
+/** The configured LLM is a development engine on this machine (OpenAI-compatible on localhost). */
+export function isLocalLlm(): boolean {
+  return env.llmProvider === 'openai_compatible' && isLocalUrl(env.llmBaseUrl);
+}
+
 export function llmConfigured(): boolean {
   if (env.llmProvider === 'anthropic') return !!env.anthropicKey;
   if (env.llmProvider === 'openai_compatible') return !!env.llmBaseUrl && (!isLocalUrl(env.llmBaseUrl) || env.localEnginesAllowed);

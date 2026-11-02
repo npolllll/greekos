@@ -37,8 +37,9 @@ export type ServerMessage =
   | { type: 'vad'; event: 'speech_start' | 'end_of_turn' | 'ignored_during_playback'; hangover_ms?: number; speech_ms?: number }
   | { type: 'partial'; utterance_id: string; text: string }
   | { type: 'final'; utterance_id: string; text: string; confidence: number | null; needs_confirmation: boolean; reason: ConfirmReasonWire | null; empty: boolean }
-  | { type: 'turn'; view: unknown; engine: string | null; hint_ru: string | null }
-  | { type: 'assistant_start'; turn_id: string; text: string; sentences: string[]; speed: Speed; replay: boolean }
+  | { type: 'turn'; view: unknown; engine: string | null; hint_ru: string | null; engine_reason?: string | null; refresh?: boolean }
+  | { type: 'assistant_start'; turn_id: string; text: string; sentences: string[]; speed: Speed; replay: boolean; streaming?: boolean }
+  | { type: 'assistant_sentence'; turn_id: string; index: number; text: string }
   | { type: 'assistant_end'; turn_id: string; total_ms: number }
   | { type: 'assistant_text_only'; turn_id: string; text: string; reason: string }
   | { type: 'interrupted'; turn_id: string; heard_ms: number; heard_text: string }

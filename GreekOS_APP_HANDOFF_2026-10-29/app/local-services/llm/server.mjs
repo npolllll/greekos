@@ -4,11 +4,16 @@
  *   GET  /health, GET /v1/models
  *   POST /v1/chat/completions  {messages, max_tokens, temperature, stream?, response_format?}
  *        response_format {type:"json_schema", json_schema:{schema}} → grammar-constrained JSON.
- * Engine: node-llama-cpp (llama.cpp) with a local GGUF model, CPU or Metal; no network, no keys.
- * The default model is Qwen3-4B-Instruct-2507 (Apache-2.0), obtained as an OCI artifact
- * (docker.io/ai/qwen3:4b-instruct-2507-q4_K_M). Quality for Greek dialogue is NOT validated here.
+ * Engine: node-llama-cpp (llama.cpp) with a local GGUF model; Metal on Apple Silicon, CPU elsewhere;
+ * no network, no keys. Default model: Gemma 4 E2B instruct (Q4_K_M, OCI artifact docker.io/ai/gemma4),
+ * chosen by the GreekOS speaking evaluation (scripts/speaking-eval.ts); on a Mac with ≥16 GB the
+ * larger E4B can be selected with GREEKOS_LLM_MODEL.
  *
- * Env: GREEKOS_LLM_MODEL (gguf path), LOCAL_LLM_PORT (3313), LOCAL_LLM_THREADS (half the cores), LOCAL_LLM_CTX (4096).
+ * Conversation slots: each request's `user` field (the speaking session id) keeps its own sequence,
+ * so the next turn of the same conversation evaluates only the new tokens (KV-cache reuse).
+ *
+ * Env: GREEKOS_LLM_MODEL (gguf path), LOCAL_LLM_PORT (3313), LOCAL_LLM_THREADS (half the cores on CPU),
+ * LOCAL_LLM_CTX (4096 per slot), LOCAL_LLM_SLOTS (3).
  */
 import http from 'node:http';
 import os from 'node:os';
@@ -16,8 +21,9 @@ import path from 'node:path';
 import { getLlama, LlamaChat } from 'node-llama-cpp';
 
 const PORT = Number(process.env.LOCAL_LLM_PORT ?? 3313);
-const MODEL = process.env.GREEKOS_LLM_MODEL ?? path.join(process.env.GREEKOS_MODELS ?? path.join(os.homedir(), 'greekos-models'), 'llm/Qwen3-4B-Instruct-2507-Q4_K_M.gguf');
+const MODEL = process.env.GREEKOS_LLM_MODEL ?? path.join(process.env.GREEKOS_MODELS ?? path.join(os.homedir(), 'greekos-models'), 'llm/gemma-4-E2B-it-Q4_K_M.gguf');
 const CTX = Number(process.env.LOCAL_LLM_CTX ?? 4096);
+const SLOTS = Math.max(1, Number(process.env.LOCAL_LLM_SLOTS ?? 3));
 const NAME = path.basename(MODEL).replace(/\.gguf$/i, '');
 
 const llama = await getLlama();
@@ -25,12 +31,21 @@ const model = await llama.loadModel({ modelPath: MODEL });
 // llama.cpp slows down sharply when oversubscribed; the speech service (TTS + Whisper) shares the CPU,
 // so by default the model takes half of the cores. On Apple Silicon the GPU (Metal) does the work.
 const THREADS = Number(process.env.LOCAL_LLM_THREADS || Math.max(2, Math.floor(os.cpus().length / 2)));
-const context = await model.createContext({ contextSize: CTX, threads: THREADS });
-const sequence = context.getSequence();
-const chat = new LlamaChat({ contextSequence: sequence });
+const context = await model.createContext({ contextSize: CTX, threads: THREADS, sequences: SLOTS });
+// One sequence per live conversation (LRU): its evaluated tokens stay in the KV cache between turns.
+const slots = Array.from({ length: SLOTS }, () => ({ key: null, chat: new LlamaChat({ contextSequence: context.getSequence() }), last: null, used: 0 }));
+function slotFor(key) {
+  let slot = key ? slots.find((x) => x.key === key) : null;
+  if (!slot) {
+    slot = slots.reduce((a, b) => (a.used <= b.used ? a : b));
+    slot.key = key ?? null;
+    slot.last = null;
+  }
+  slot.used = Date.now();
+  return slot;
+}
 const grammars = new Map();
 let busy = Promise.resolve();
-let last = null; // previous evaluation window: lets llama.cpp reuse the shared prompt prefix
 
 function toHistory(messages) {
   const sys = messages.filter((m) => m.role === 'system').map((m) => m.content).join('\n\n');
@@ -69,7 +84,9 @@ async function complete(req, res, body, queuedAt) {
   // IncomingMessage 'close' fires once the body is consumed; the response's 'close' means the client left.
   res.on('close', () => { if (!res.writableEnded) ac.abort(); });
   const id = `chatcmpl-${Date.now().toString(36)}`;
-  const result = await chat.generateResponse(history, {
+  const slot = slotFor(typeof body.user === 'string' ? body.user : null);
+  const last = slot.last;
+  const result = await slot.chat.generateResponse(history, {
     grammar,
     maxTokens: Math.min(Number(body.max_tokens ?? 512), 2048),
     temperature: Number(body.temperature ?? 0.6),
@@ -81,11 +98,11 @@ async function complete(req, res, body, queuedAt) {
       if (stream) res.write(`data: ${JSON.stringify({ id, object: 'chat.completion.chunk', model: NAME, choices: [{ index: 0, delta: { content: chunk }, finish_reason: null }] })}\n\n`);
     },
   });
-  last = result.lastEvaluation?.contextWindow ? { history: result.lastEvaluation.contextWindow } : null;
+  slot.last = result.lastEvaluation?.contextWindow ? { history: result.lastEvaluation.contextWindow } : null;
   const text = result.response;
   const finish = result.metadata?.stopReason === 'maxTokens' ? 'length' : 'stop';
   const timing = { total_ms: Date.now() - started, first_token_ms: firstTokenMs, queued_ms: started - queuedAt };
-  console.log(`completion ${JSON.stringify({ ...timing, prompt_chars: JSON.stringify(body.messages ?? []).length, out_chars: result.response.length, finish: result.metadata?.stopReason ?? null, aborted: ac.signal.aborted })}`);
+  console.log(`completion ${JSON.stringify({ ...timing, slot: slots.indexOf(slot), reused: !!last, prompt_chars: JSON.stringify(body.messages ?? []).length, out_chars: result.response.length, finish: result.metadata?.stopReason ?? null, aborted: ac.signal.aborted })}`);
   if (stream) {
     res.write(`data: ${JSON.stringify({ id, object: 'chat.completion.chunk', model: NAME, choices: [{ index: 0, delta: {}, finish_reason: finish }], greekos_timing: timing })}\n\n`);
     res.end('data: [DONE]\n\n');
@@ -96,7 +113,7 @@ async function complete(req, res, body, queuedAt) {
 
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
-  if (req.method === 'GET' && url.pathname === '/health') return send(res, 200, { ok: true, model: NAME, context: CTX, gpu: llama.gpu || 'cpu', threads: THREADS });
+  if (req.method === 'GET' && url.pathname === '/health') return send(res, 200, { ok: true, model: NAME, context: CTX, gpu: llama.gpu || 'cpu', threads: THREADS, slots: SLOTS });
   if (req.method === 'GET' && url.pathname === '/v1/models') return send(res, 200, { object: 'list', data: [{ id: NAME, object: 'model', owned_by: 'local' }] });
   if (req.method === 'POST' && url.pathname === '/v1/chat/completions') {
     let raw = '';

@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { route, jsonBody } from '@/lib/api';
 import { apiUser } from '@/lib/auth';
-import { startSession, learnerTurn, help, speak, endSession, sessionView, sayExample } from '@/lib/speaking/service';
+import { startSession, learnerTurn, help, speak, endSession, sessionView, sayExample, warmSession } from '@/lib/speaking/service';
 import { BudgetExceededError } from '@/lib/providers/budget';
 import { ProviderUnavailableError } from '@/lib/providers/speech';
 
@@ -17,14 +17,26 @@ const Body = z.discriminatedUnion('action', [
   z.object({ action: z.literal('say_example'), session_id: z.string().uuid(), text: z.string().min(1).max(400), rate: z.enum(['slow', 'normal']) }),
   z.object({ action: z.literal('end'), session_id: z.string().uuid() }),
   z.object({ action: z.literal('state'), session_id: z.string().uuid() }),
+  z.object({ action: z.literal('warm'), session_id: z.string().uuid() }),
 ]);
 
 export const POST = route(async (req) => {
   const u = await apiUser();
   const b = Body.parse(await jsonBody(req));
   try {
-    if (b.action === 'start') return await startSession(u, b);
-    if (b.action === 'turn') return await learnerTurn(u, b);
+    if (b.action === 'start') {
+      const v = await startSession(u, b);
+      // Pre-evaluate the opening scene for the model while the learner reads/listens to it.
+      after(() => warmSession(u, v.session_id).catch(() => null));
+      return v;
+    }
+    if (b.action === 'turn') {
+      const { background, ...view } = await learnerTurn(u, b);
+      // Feedback on the learner's phrase and warming of the next turn continue after the response.
+      after(() => background.catch(() => null));
+      return view;
+    }
+    if (b.action === 'warm') return { warmed_ms: await warmSession(u, b.session_id) };
     if (b.action === 'help') return await help(u, b);
     if (b.action === 'speak') return await speak(u, b);
     if (b.action === 'say_example') return await sayExample(u, b);

@@ -749,3 +749,19 @@ p>.ic,small>.ic,.tiny>.ic,.small>.ic,li>.ic,h2>.ic{display:inline-block;vertical
 .plan-row .tag{white-space:normal;text-align:right;max-width:65%;line-height:1.35}
 /* the owner's rail is longer: on short screens the decorative scene card would be cut by the frame */
 @media (max-height:1000px){.rail:has(a[href="/admin"]) .rail-art{display:none}}
+
+/* ---- AI interlocutor v2: engine labels, streaming line, per-phrase feedback ---- */
+.pill.warn{background:rgba(255,241,226,.78);color:#7a3d14;border-color:rgba(223,106,46,.28)}
+.bubble.greek.streaming{position:relative;box-shadow:var(--glass-hi),0 0 0 1px rgba(223,106,46,.18)}
+.bubble.greek.streaming::after{content:"";display:inline-block;width:.42em;height:.42em;margin-left:.35em;border-radius:50%;background:var(--accent);vertical-align:middle;animation:typingPulse 1s ease-in-out infinite}
+@keyframes typingPulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.phrase-fb{display:flex;flex-direction:column;gap:3px;margin-top:8px;padding:8px 10px;border-radius:12px;background:rgba(255,252,247,.72);border:1px solid rgba(160,120,80,.18);font-family:var(--font-body,inherit);font-size:13px;color:var(--ink-2);animation:fbIn .32s cubic-bezier(.2,.8,.2,1)}
+.phrase-fb.err{border-left:3px solid var(--accent)}
+.phrase-fb.style{border-left:3px solid var(--olive)}
+.phrase-fb.pending{flex-direction:row;color:var(--muted);font-size:12px;background:transparent;border-style:dashed}
+.phrase-fb s{color:#8f3424;text-decoration-thickness:1.5px}
+.phrase-fb b{color:var(--ink);font-family:var(--font-display);font-weight:600}
+.phrase-fb .why{color:var(--ink-2)}
+.fb-point s{color:#8f3424}
+@keyframes fbIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.bubble.greek.streaming::after,.phrase-fb{animation:none}}

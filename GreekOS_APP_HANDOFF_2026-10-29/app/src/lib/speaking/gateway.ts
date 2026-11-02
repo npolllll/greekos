@@ -7,7 +7,7 @@ import { adminClient } from '../supabase/admin.ts';
 import { loadSessionUser, HttpError, type SessionUser } from '../session-user.ts';
 import { verifyStreamToken, splitSentences } from './stream-token.ts';
 import { Vad, vadConfigForLevel, speechLevelDbfs, type VadEvent } from './vad.ts';
-import { learnerTurn, personaVoice, markInterrupted, sessionView, type LearnerSource, type SessionView } from './service.ts';
+import { learnerTurn, type TurnResult, personaVoice, markInterrupted, sessionView, type LearnerSource, type SessionView } from './service.ts';
 import { synthesizeWithVoice } from '../providers/speech.ts';
 import { BudgetExceededError } from '../providers/budget.ts';
 import { utteranceAsr, confirmationReason, type UtteranceAsr, type UtteranceTranscript } from '../providers/streaming-asr.ts';
@@ -48,12 +48,28 @@ interface TurnTiming {
   asrEngine: string | null;
   dialogueMs: number | null;
   dialogueEngine: string | null;
+  llmFirstSentenceMs: number | null;
   ttsFirstAudioMs: number | null;
   playbackStartMs: number | null;
   endOfSpeechToAudioMs: number | null;
   interrupted: boolean;
   heardMs: number | null;
   written: boolean;
+}
+
+/** A persona line voiced while it is being generated. */
+interface StreamedReply {
+  turnId: string;
+  gen: number;
+  started: boolean;
+  chain: Promise<void>;
+  offset: number;
+  seq: number;
+  sentences: string[];
+  pb: Playback | null;
+  abort: AbortController;
+  stored: boolean;
+  pendingInterrupt: { heardMs: number; heardText: string } | null;
 }
 
 interface Playback {
@@ -113,6 +129,7 @@ class StreamSession {
   // and the utterance in flight at that moment (usually the learner repeating the line) is dropped.
   private confirmed: { utteranceId: string; text: string; source: LearnerSource; confidence: number | null; timing: TurnTiming | null } | null = null;
   private inFlight: string | null = null;
+  private reply: StreamedReply | null = null;
   private dropUtter: string | null = null;
   private helpUsed = new Set<string>();
   private playback: Playback | null = null;
@@ -339,7 +356,7 @@ class StreamSession {
       if (this.dropUtter === item.id) { this.dropUtter = null; return; }
       const timing: TurnTiming = {
         turnSeq: -1, endOfTurnAt: item.at, endOfSpeechAt, speechMs: item.ev.speechMs, hangoverMs: item.ev.hangoverMs, partialFirstMs: item.partialFirstMs,
-        asrFinalMs: Date.now() - t0, asrEngine: `${tr.provider}:${tr.model}`, dialogueMs: null, dialogueEngine: null, ttsFirstAudioMs: null,
+        asrFinalMs: Date.now() - t0, asrEngine: `${tr.provider}:${tr.model}`, dialogueMs: null, dialogueEngine: null, llmFirstSentenceMs: null, ttsFirstAudioMs: null,
         playbackStartMs: null, endOfSpeechToAudioMs: null, interrupted: false, heardMs: null, written: false,
       };
       if (!tr.text) {
@@ -408,20 +425,30 @@ class StreamSession {
   private async commit(utteranceId: string, text: string, source: LearnerSource, confidence: number | null, timing: TurnTiming | null) {
     this.setState('thinking');
     const t0 = Date.now();
-    const res = await learnerTurn(this.user, {
-      session_id: this.sessionId, text, source, asr_confidence: confidence, help_used: [...this.helpUsed], repair: false,
-      interrupted_previous: false, idempotency_key: `stream:${utteranceId}`,
-    }) as SessionView & { engine?: string; hint_ru?: string | null };
+    const r = this.newReply();
+    let res: TurnResult;
+    try {
+      res = await learnerTurn(this.user, {
+        session_id: this.sessionId, text, source, asr_confidence: confidence, help_used: [...this.helpUsed], repair: false,
+        interrupted_previous: false, idempotency_key: `stream:${utteranceId}`,
+      }, { assistantTurnId: r.turnId, signal: r.abort.signal, onSentence: (x) => this.onReplySentence(r, x, timing) });
+    } finally {
+      r.stored = true;
+    }
     this.helpUsed.clear();
     const learner = [...res.turns].reverse().find((t) => t.speaker === 'learner');
     if (timing) {
       timing.dialogueMs = Date.now() - t0;
-      timing.dialogueEngine = res.engine ?? null;
+      timing.llmFirstSentenceMs = res.gen_first_ms;
+      timing.dialogueEngine = res.engine_kind === 'llm' ? `llm:${res.engine.model ?? ''}` : res.engine_kind;
       timing.turnSeq = learner?.seq ?? -1;
     }
-    this.send({ type: 'turn', view: res, engine: res.engine ?? null, hint_ru: res.hint_ru ?? null });
+    this.send({ type: 'turn', view: res, engine: res.engine_kind, hint_ru: res.hint_ru ?? null, engine_reason: res.engine_reason });
+    await this.afterStored(r);
+    // Feedback on the learner phrase arrives later, without blocking the conversation.
+    void res.background.then((v) => { if (v && !this.closed) this.send({ type: 'turn', view: v, engine: null, hint_ru: null, engine_reason: null, refresh: true }); });
     // Speech streams beside the dialogue lock: the learner may barge in or speak again meanwhile.
-    this.spawn(() => this.speakLatest(res, timing));
+    this.spawn(() => this.finishReply(r, res, timing));
   }
 
   private async onRepair() {
@@ -430,12 +457,83 @@ class StreamSession {
     try {
       await this.cancelPlayback();
       this.setState('thinking');
-      const res = await learnerTurn(this.user, { session_id: this.sessionId, text: '', source: 'typed', asr_confidence: null, help_used: [...this.helpUsed], repair: true, interrupted_previous: false, idempotency_key: `stream-repair:${randomUUID()}` }) as SessionView & { engine?: string; hint_ru?: string | null };
-      this.send({ type: 'turn', view: res, engine: res.engine ?? null, hint_ru: res.hint_ru ?? null });
-      this.spawn(() => this.speakLatest(res, null));
+      const r = this.newReply();
+      let res: TurnResult;
+      try {
+        res = await learnerTurn(this.user, { session_id: this.sessionId, text: '', source: 'typed', asr_confidence: null, help_used: [...this.helpUsed], repair: true, interrupted_previous: false, idempotency_key: `stream-repair:${randomUUID()}` }, { assistantTurnId: r.turnId, signal: r.abort.signal, onSentence: (x) => this.onReplySentence(r, x, null) });
+      } finally {
+        r.stored = true;
+      }
+      this.send({ type: 'turn', view: res, engine: res.engine_kind, hint_ru: res.hint_ru ?? null, engine_reason: res.engine_reason });
+      await this.afterStored(r);
+      this.spawn(() => this.finishReply(r, res, null));
     } finally {
       this.busy = false;
     }
+  }
+
+  private newReply(): StreamedReply {
+    const r: StreamedReply = { turnId: randomUUID(), gen: -1, started: false, chain: Promise.resolve(), offset: 0, seq: 0, sentences: [], pb: null, abort: new AbortController(), stored: false, pendingInterrupt: null };
+    this.reply = r;
+    return r;
+  }
+
+  /** A barge-in that happened before the line was stored is recorded once the row exists. */
+  private async afterStored(r: StreamedReply) {
+    if (r.pendingInterrupt) await markInterrupted(this.user.userId, this.sessionId, r.turnId, r.pendingInterrupt.heardMs, r.pendingInterrupt.heardText);
+  }
+
+  /** Voices one validated sentence of a reply that is still being generated (in order, one synthesis at a time). */
+  private onReplySentence(r: StreamedReply, sentence: string, timing: TurnTiming | null) {
+    if (this.closed || r.abort.signal.aborted) return;
+    if (!this.voice) { r.sentences.push(sentence); return; }
+    const i = r.sentences.length;
+    r.sentences.push(sentence);
+    if (!r.started) {
+      r.started = true;
+      if (this.playback) { this.gen++; this.finishPlayback(this.playback, false); }
+      r.gen = ++this.gen;
+      r.pb = { turnId: r.turnId, gen: r.gen, timeline: [], replay: false, timing, sentAll: false };
+      this.playback = r.pb;
+      this.send({ type: 'assistant_start', turn_id: r.turnId, text: sentence, sentences: [sentence], speed: this.speed, replay: false, streaming: true });
+      this.setState('speaking');
+    } else {
+      this.send({ type: 'assistant_sentence', turn_id: r.turnId, index: i, text: sentence });
+    }
+    r.chain = r.chain.then(async () => {
+      if (r.gen !== this.gen || this.closed) return;
+      let wav: Uint8Array;
+      try { wav = await this.synth(sentence, this.speed); } catch (e) {
+        if (r.gen === this.gen) this.fail(e instanceof BudgetExceededError ? 'BUDGET_EXCEEDED' : 'TTS_FAILED', 'Синтез речи не удался — реплика показана текстом.');
+        return;
+      }
+      if (r.gen !== this.gen || this.closed) return;
+      const info = parseWav(wav);
+      if (!info) return;
+      const pcm = pcmSamples(wav, info);
+      if (i === 0 && timing) timing.ttsFirstAudioMs = Date.now() - timing.endOfTurnAt;
+      const step = Math.round((info.sampleRate * CHUNK_MS) / 1000);
+      for (let o = 0; o < pcm.length; o += step) {
+        if (this.ws.readyState !== WebSocket.OPEN) break;
+        this.ws.send(encodeAudioChunk({ turn_id: r.turnId, seq: r.seq++, sentence: i, sample_rate: info.sampleRate, start_ms: r.offset + Math.round((o / info.sampleRate) * 1000), last: false }, pcm.subarray(o, Math.min(pcm.length, o + step))), { binary: true });
+      }
+      r.pb!.timeline.push({ text: sentence, start_ms: r.offset, end_ms: r.offset + info.durationMs });
+      r.offset += info.durationMs;
+    });
+  }
+
+  /** After generation: close a streamed line, or voice a line that was not streamed (authored / fallback). */
+  private async finishReply(r: StreamedReply, res: TurnResult, timing: TurnTiming | null) {
+    if (!r.started) {
+      if (r.abort.signal.aborted) { this.setState('listening'); if (timing) await this.writeMetrics(timing); return; }
+      return this.speakLatest(res, timing);
+    }
+    await r.chain;
+    if (r.gen !== this.gen || !r.pb) return;
+    r.pb.sentAll = true;
+    this.send({ type: 'assistant_end', turn_id: r.turnId, total_ms: r.offset });
+    const pb = r.pb;
+    setTimeout(() => { if (this.playback === pb && r.gen === this.gen) this.finishPlayback(pb, true); }, r.offset + 3000).unref?.();
   }
 
   private async speakLatest(view: SessionView, timing: TurnTiming | null) {
@@ -540,8 +638,11 @@ class StreamSession {
     const total = pb.timeline.at(-1)?.end_ms ?? 0;
     const heardMs = Math.max(0, Math.min(Number.isFinite(heardMsRaw) ? heardMsRaw : 0, pb.sentAll ? total : Number.MAX_SAFE_INTEGER));
     const heardText = heardTextAt(pb.timeline, heardMs);
+    const r = this.reply && this.reply.turnId === turnId ? this.reply : null;
+    r?.abort.abort(); // stop generating what nobody will hear
     // A replay of a line the learner already heard in full does not truncate the dialogue context.
-    if (!this.heardComplete.has(turnId)) await markInterrupted(this.user.userId, this.sessionId, turnId, heardMs, heardText);
+    if (r && !r.stored) r.pendingInterrupt = { heardMs, heardText };
+    else if (!this.heardComplete.has(turnId)) await markInterrupted(this.user.userId, this.sessionId, turnId, heardMs, heardText);
     if (pb.timing) { pb.timing.interrupted = true; pb.timing.heardMs = heardMs; await this.writeMetrics(pb.timing); }
     this.utterDuringPlayback = false; // the learner is talking on purpose: keep the utterance
     this.send({ type: 'interrupted', turn_id: turnId, heard_ms: heardMs, heard_text: heardText });
@@ -583,13 +684,13 @@ class StreamSession {
       session_id: this.sessionId, user_id: this.user.userId, turn_seq: t.turnSeq, transport: 'stream_local_gateway',
       asr_engine: t.asrEngine, tts_engine: this.voice ? `${this.voice.provider}:${this.voice.provider_voice_name}` : null, dialogue_engine: t.dialogueEngine,
       speech_ms: t.speechMs, vad_hangover_ms: t.hangoverMs, asr_partial_first_ms: t.partialFirstMs, asr_final_ms: t.asrFinalMs,
-      llm_first_token_ms: t.dialogueMs, tts_first_audio_ms: t.ttsFirstAudioMs, playback_start_ms: t.playbackStartMs,
+      llm_first_token_ms: t.llmFirstSentenceMs, llm_first_sentence_ms: t.llmFirstSentenceMs, llm_total_ms: t.dialogueMs, tts_first_audio_ms: t.ttsFirstAudioMs, playback_start_ms: t.playbackStartMs,
       end_of_speech_to_audio_ms: t.endOfSpeechToAudioMs, interrupted: t.interrupted, heard_ms: t.heardMs, input_source: this.inputSource,
     }, { onConflict: 'session_id,turn_seq' });
     if (error) console.error('[voice-gateway] metrics', error.message);
     this.send({
       type: 'metrics', turn_seq: t.turnSeq, metrics: {
-        speech_ms: t.speechMs, vad_hangover_ms: t.hangoverMs, asr_partial_first_ms: t.partialFirstMs, asr_final_ms: t.asrFinalMs, dialogue_ms: t.dialogueMs,
+        speech_ms: t.speechMs, vad_hangover_ms: t.hangoverMs, asr_partial_first_ms: t.partialFirstMs, asr_final_ms: t.asrFinalMs, dialogue_ms: t.dialogueMs, llm_first_sentence_ms: t.llmFirstSentenceMs,
         tts_first_audio_ms: t.ttsFirstAudioMs, playback_start_ms: t.playbackStartMs, end_of_speech_to_audio_ms: t.endOfSpeechToAudioMs, interrupted: t.interrupted,
       },
     });

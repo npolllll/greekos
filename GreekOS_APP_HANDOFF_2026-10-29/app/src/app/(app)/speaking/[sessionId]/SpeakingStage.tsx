@@ -17,6 +17,13 @@ const LVL_RU: Record<string, string> = { independent: 'самостоятель�
 
 const LIVE = new Set(['connecting', 'listening', 'speech', 'transcribing', 'confirming', 'thinking', 'speaking', 'paused', 'network_lost']);
 const SPEED_RU: Record<Speed, string> = { normal: 'обычно', slow: 'медленнее', fast: 'чуть быстрее' };
+const FALLBACK_NOTE = 'AI-собеседник не ответил вовремя или его реплика не прошла проверку греческого — прозвучала авторская реплика сценария (она помечена). Разговор продолжается.';
+
+function engineMeta(engine: string | null, generated: boolean): string {
+  if (engine?.startsWith('llm:') || (!engine && generated)) return 'AI-собеседник';
+  if (engine === 'scripted_fallback') return 'Запасная реплика сценария (AI не ответил)';
+  return 'Реплика сценария';
+}
 
 export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; defaultRate: 'slow' | 'normal' }) {
   const [view, setView] = useState<SessionView>(initial);
@@ -36,6 +43,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
   const [idle, setIdle] = useState(false);
   const [engineNote, setEngineNote] = useState<string | null>(null);
   const [pending, setPending] = useState<Record<string, unknown> | null>(null);
+  const [live, setLive] = useState<{ turnId: string; text: string } | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playingTurn = useRef<string | null>(null);
   const spokenTurns = useRef<Set<string>>(new Set());
@@ -45,7 +53,8 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
     sessionId: initial.session_id,
     initialSpeed: initial.mode === 'b2_mock' ? 'normal' : defaultRate,
     onView: (v) => setView(v as SessionView),
-    onTurnMeta: (m) => { setHint(m.hint_ru); setEngineNote(m.engine === 'scripted_fallback' ? 'AI-диалог не подключён: собеседник идёт по авторскому сценарию, свободные ответы не оцениваются.' : null); },
+    onTurnMeta: (m) => { setHint(m.hint_ru); setEngineNote(m.engine === 'scripted_fallback' ? FALLBACK_NOTE : null); },
+    onAssistantText: (turnId, text) => setLive({ turnId, text }),
   });
   const fallback = streamFallback ?? (wantsStream && stream.status === 'unsupported' ? stream.error ?? 'браузер не поддерживает потоковый звук' : null);
   const streamUi = wantsStream && !fallback;
@@ -131,7 +140,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
       setPending(null);
       setTyped('');
       if (j.hint_ru) setHint(j.hint_ru);
-      setEngineNote(j.engine === 'scripted_fallback' ? 'AI-диалог недоступен: собеседник идёт по сценарию, ответ не оценивается.' : null);
+      setEngineNote(j.engine_kind === 'scripted_fallback' ? FALLBACK_NOTE : null);
       setState('ready');
     } catch (e) {
       const ex = e as Error & { status?: number };
@@ -164,7 +173,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
   }
 
   const lastAssistant = [...view.turns].reverse().find((t) => t.speaker === 'assistant');
-  const summary = view.summary as null | { status: string; reason?: string; label?: string; communicative_goal?: string; dimensions?: Array<{ dimension: string; level: string; note_ru: string }>; corrections?: Array<{ quote: string; better_el: string; why_ru: string; kind: string }>; next_step_ru?: string; mastery_counted?: boolean; mastery_reason?: string; confidence?: string };
+  const summary = view.summary as null | { status: string; reason?: string; label?: string; communicative_goal?: string; progress?: { reached: number; total: number; closed: boolean }; learner_turns?: number; ai_turns?: number; fallback_turns?: number; help_used?: boolean; dimensions?: Array<{ dimension: string; level: string; note_ru: string }>; corrections?: Array<{ quote: string; better_el: string; why_ru: string; kind: string }>; next_step_ru?: string; mastery_counted?: boolean; mastery_reason?: string; confidence?: string };
 
   const initial0 = (view.persona.voice_name ?? 'Α').replace(/[^\p{L}]/gu, '').slice(0, 1) || 'Α';
   const statusLabel = streamUi ? STREAM_LABEL_RU[stream.status] : STATE_LABEL_RU[state];
@@ -178,7 +187,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
           <ViewTransition name={`scenario-${view.scenario_id}`} share="morph" default="none"><h1 className="screen-title">{view.domain ?? view.title}</h1></ViewTransition>
           <p className="screen-sub">{view.level} · {MODE_LABEL_RU[view.mode]} · {view.input_mode === 'voice' ? 'голос' : 'текстовый режим (не говорение)'}{view.preview ? ' · предпросмотр' : ''}</p>
         </div>
-        <span className="pill" title="Кто ведёт диалог"><Icon name="spark" size={14} /> {view.providers.llm ? view.engine_label : 'Сценарный режим: без AI, без оценки'}</span>
+        <span className={`pill ${view.engine.kind === 'ai' ? '' : 'warn'}`} title={view.engine.qualification ? `Проверка диалога: ${view.engine.qualification.cases} случаев, ${Math.round(view.engine.qualification.reply_ok * 100)}% реплик без запасного сценария` : 'Кто ведёт диалог'}><Icon name="spark" size={14} /> {view.engine.label_ru}</span>
       </div>
       <div className="voice-layout">
         <div className={`voice-stage ${view.preview ? 'watermark' : ''}`}>
@@ -201,12 +210,19 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
                 <div className={`bubble ${t.speaker === 'learner' ? 'my' : 'greek'}`} lang={t.speaker === 'assistant' ? 'el' : undefined}>
                   {t.speaker === 'assistant' && !showText && t.turn_id === lastAssistant?.turn_id ? <span className="muted">(текст скрыт — нажмите «Текст»)</span> : t.text}
                   <span className="meta">
-                    {t.speaker === 'assistant' ? (t.generated ? 'AI-реплика (черновик)' : 'Реплика сценария') : t.source === 'asr_confirmed' ? 'Распознано и подтверждено' : t.source === 'asr_auto' ? 'Распознано (уверенно), без правки' : t.source === 'learner_corrected' ? 'Распознавание исправлено вами' : 'Набрано текстом'}
+                    {t.speaker === 'assistant' ? engineMeta(t.engine, t.generated) : t.source === 'asr_confirmed' ? 'Распознано и подтверждено' : t.source === 'asr_auto' ? 'Распознано (уверенно), без правки' : t.source === 'learner_corrected' ? 'Распознавание исправлено вами' : 'Набрано текстом'}
                     {t.interrupted ? ' · прервано' : ''}{t.help.some((h) => !h.startsWith('hint:')) ? ' · с подсказкой' : ''}
                   </span>
+                  {t.speaker === 'learner' && (view.mode !== 'b2_mock' || view.status === 'ENDED') ? <PhraseFeedback fb={t.feedback} /> : null}
                 </div>
               </div>
             ))}
+            {live && !view.turns.some((t) => t.turn_id === live.turnId) && view.status === 'ACTIVE' ? (
+              <div className="msg">
+                <span className="avatar persona" aria-hidden="true">{initial0}</span>
+                <div className="bubble greek streaming" lang="el">{showText ? live.text : <span className="muted">(текст скрыт — нажмите «Текст»)</span>}<span className="meta">AI-собеседник · говорит…</span></div>
+              </div>
+            ) : null}
             {streamOn && stream.partial ? <div className="msg mine"><div className="bubble my draft" lang="el">{stream.partial}<span className="meta">Черновик распознавания — ещё не отправлено</span></div></div> : null}
           </div>
           {streamOn && stream.pending ? <ConfirmTranscript key={stream.pending.utterance_id} pending={stream.pending} onConfirm={stream.confirm} onDiscard={stream.discard} /> : null}
@@ -278,6 +294,22 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
                   {summary.corrections?.map((c, i) => <div className="context-insight" key={i}><span lang="el">«{c.quote}» → <b>{c.better_el}</b></span> — {c.why_ru}{c.kind === 'style_suggestion' ? ' (стилистика, не ошибка)' : ''}</div>)}
                   <p className="small mt8">{summary.next_step_ru}</p>
                   <p className="tiny muted">{summary.mastery_counted ? 'Засчитано как самостоятельная устная задача.' : `На освоение не влияет: ${summary.mastery_reason ?? 'нет надёжного доказательства'}.`}</p>
+                </>
+              ) : summary.status === 'AI_FEEDBACK' ? (
+                <>
+                  <div className="context-head">
+                    <div><h4>{summary.progress?.closed ? 'Сцена пройдена до конца' : `Этапов пройдено: ${summary.progress?.reached ?? 0} из ${summary.progress?.total ?? 0}`}</h4><p>{summary.learner_turns ?? 0} ваших реплик · {summary.ai_turns ?? 0} ответов AI{summary.fallback_turns ? ` · ${summary.fallback_turns} запасных реплик сценария` : ''}{summary.help_used ? ' · с подсказками' : ''}</p></div>
+                    <span className="ai-label">AI · подсказки</span>
+                  </div>
+                  {summary.corrections?.length ? <div className="card-title mt16" style={{ fontSize: 13.5 }}>Главное ({summary.corrections.length})</div> : null}
+                  {summary.corrections?.map((c, i) => (
+                    <div className="context-insight fb-point" key={i}>
+                      <span lang="el"><s>{c.quote}</s> → <b>{c.better_el}</b></span> — {c.why_ru}{c.kind === 'more_natural' ? ' (естественнее, не ошибка)' : ''}
+                      <ExamplePhrase sessionId={view.session_id} text={c.better_el} canPlay={!!view.providers.tts} />
+                    </div>
+                  ))}
+                  <p className="small mt8">{summary.next_step_ru}</p>
+                  <p className="tiny muted">{summary.label}</p>
                 </>
               ) : <p className="small">{summary.label ?? (summary.reason === 'UNSCORED_SCENARIO' ? 'Этот сценарий тренировочный и не оценивается.' : 'Итог не сформирован: слишком мало подтверждённых реплик или оценка воздержалась. Без штрафа.')}</p>}
               <div className="row mt8"><Link className="btn small" href="/speaking">Новый разговор</Link><Link className="btn small outline" href="/errors">Мои ошибки</Link></div>
@@ -367,3 +399,18 @@ function ExamplePhrase({ sessionId, text, canPlay }: { sessionId: string; text: 
     </div>
   );
 }
+
+/** Validated suggestion on one learner phrase (model-proposed; shown as a hint, never a grade). */
+function PhraseFeedback({ fb }: { fb: SessionView['turns'][number]['feedback'] }) {
+  if (!fb) return null;
+  if (fb.status === 'pending') return <span className="phrase-fb pending" role="status">Проверяю фразу…</span>;
+  if (fb.status !== 'ready') return null;
+  return (
+    <span className={`phrase-fb ${fb.kind === 'error' ? 'err' : 'style'}`}>
+      <span lang="el"><s>{fb.quote}</s> → <b>{fb.better_el}</b></span>
+      <span className="why">{fb.why_ru}</span>
+      <span className="tiny quiet">{fb.kind === 'error' ? 'Подсказка AI' : 'Можно естественнее (не ошибка)'} — может ошибаться, на оценку не влияет</span>
+    </span>
+  );
+}
+

@@ -36,7 +36,7 @@ export function useVoiceStream(opts: {
   sessionId: string;
   initialSpeed: Speed;
   onView: (view: unknown) => void;
-  onTurnMeta?: (m: { engine: string | null; hint_ru: string | null }) => void;
+  onTurnMeta?: (m: { engine: string | null; hint_ru: string | null; engine_reason?: string | null }) => void;
   onAssistantText?: (turnId: string, text: string) => void;
 }) {
   const [status, setStatus] = useState<StreamStatus>('idle');
@@ -70,6 +70,7 @@ export function useVoiceStream(opts: {
   const reconnect = useRef<() => void>(() => undefined);
   const heardTurns = useRef<Set<string>>(new Set());
   const cancelled = useRef<Set<string>>(new Set());
+  const liveText = useRef<{ turnId: string | null; text: string }>({ turnId: null, text: '' });
   const play = useRef<{ turnId: string | null; nextTime: number; items: Scheduled[]; startedSent: boolean; ended: boolean; endTimer: ReturnType<typeof setTimeout> | null }>({ turnId: null, nextTime: 0, items: [], startedSent: false, ended: false, endTimer: null });
   const optsRef = useRef(opts);
   useEffect(() => { optsRef.current = opts; });
@@ -187,13 +188,22 @@ export function useVoiceStream(opts: {
         else if (m.needs_confirmation) setPending({ utterance_id: m.utterance_id, text: m.text, reason: m.reason, confidence: m.confidence });
         return;
       case 'turn':
+        // A refresh (feedback on the learner phrase arrived) only updates the transcript.
+        if (m.refresh) { optsRef.current.onView(m.view); return; }
         setPending(null);
         optsRef.current.onView(m.view);
-        optsRef.current.onTurnMeta?.({ engine: m.engine, hint_ru: m.hint_ru });
+        optsRef.current.onTurnMeta?.({ engine: m.engine, hint_ru: m.hint_ru, engine_reason: m.engine_reason ?? null });
         return;
       case 'assistant_start':
         cancelled.current.delete(m.turn_id);
+        liveText.current = { turnId: m.turn_id, text: m.text };
         optsRef.current.onAssistantText?.(m.turn_id, m.text);
+        return;
+      case 'assistant_sentence':
+        // Streaming generation: the line grows sentence by sentence while it is being voiced.
+        if (liveText.current.turnId !== m.turn_id) liveText.current = { turnId: m.turn_id, text: '' };
+        liveText.current.text = `${liveText.current.text} ${m.text}`.trim();
+        optsRef.current.onAssistantText?.(m.turn_id, liveText.current.text);
         return;
       case 'assistant_end': onAssistantEnd(m.turn_id); return;
       case 'assistant_text_only': setNotice(m.reason); return;
