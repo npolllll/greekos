@@ -61,7 +61,7 @@ export interface SessionView {
   domain: string | null;
   engine_label: string;
   /** Who produces the persona's lines in this session. */
-  engine: { kind: 'ai' | 'authored'; label_ru: string; model: string | null; local: boolean; qualification: { cases: number; evaluated_at: string; reply_ok: number; stage_ok: number } | null };
+  engine: { kind: 'ai' | 'authored'; label_ru: string; short_ru: string; model: string | null; local: boolean; qualification: { cases: number; evaluated_at: string; reply_ok: number; stage_ok: number } | null };
 }
 
 /** Main-path steps of the scene (authored order), excluding repair loops. */
@@ -118,11 +118,12 @@ export function engineInfo(): SessionView['engine'] {
     return {
       kind: 'ai', model: info.model, local: info.local,
       label_ru: info.local ? `AI-собеседник · локальная модель ${info.model} (прошла автоматическую проверку диалога GreekOS; не экспертная оценка)` : `AI-собеседник · ${info.label_ru}`,
+      short_ru: info.local ? 'AI-собеседник · локальная модель' : 'AI-собеседник',
       qualification: q ? { cases: q.cases, evaluated_at: q.evaluated_at, reply_ok: q.metrics.reply_ok, stage_ok: q.metrics.stage_ok } : null,
     };
   }
   const why = !llmConfigured() ? 'AI-модель не подключена' : 'локальная модель не прошла проверку диалога GreekOS';
-  return { kind: 'authored', model: info.model, local: info.local, label_ru: `Сценарный режим: ${why} — собеседник говорит авторскими репликами сценария`, qualification: null };
+  return { kind: 'authored', model: info.model, local: info.local, label_ru: `Сценарный режим: ${why} — собеседник говорит авторскими репликами сценария`, short_ru: 'Сценарный режим (без AI)', qualification: null };
 }
 
 /** The persona the model plays: voice name (or the scenario's own name if the voice matches) and gender. */

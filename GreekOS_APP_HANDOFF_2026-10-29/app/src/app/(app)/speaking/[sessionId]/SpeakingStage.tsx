@@ -200,7 +200,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
           <ViewTransition name={`scenario-${view.scenario_id}`} share="morph" default="none"><h1 className="screen-title">{view.domain ?? view.title}</h1></ViewTransition>
           <p className="screen-sub">{view.level} · {MODE_LABEL_RU[view.mode]} · {view.input_mode === 'voice' ? 'голос' : 'текстовый режим (не говорение)'}{view.preview ? ' · предпросмотр' : ''}</p>
         </div>
-        <span className={`pill ${view.engine.kind === 'ai' ? '' : 'warn'}`} title={view.engine.qualification ? `Проверка диалога: ${view.engine.qualification.cases} случаев, ${Math.round(view.engine.qualification.reply_ok * 100)}% реплик без запасного сценария` : 'Кто ведёт диалог'}><Icon name="spark" size={14} /> {view.engine.label_ru}</span>
+        <span className={`pill ${view.engine.kind === 'ai' ? '' : 'warn'}`} title={`${view.engine.label_ru}${view.engine.qualification ? ` · проверка диалога: ${view.engine.qualification.cases} случаев, ${Math.round(view.engine.qualification.reply_ok * 100)}% реплик без запасного сценария` : ''}`}><Icon name="spark" size={14} /> {view.engine.short_ru}</span>
       </div>
       <div className="voice-layout">
         <div className={`voice-stage ${view.preview ? 'watermark' : ''}`}>

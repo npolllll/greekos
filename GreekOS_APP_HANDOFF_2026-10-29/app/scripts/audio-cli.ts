@@ -174,7 +174,17 @@ async function exportBundle() {
     entries,
   };
   writeFileSync(join(out, 'AUDIO_BUNDLE_MANIFEST.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(JSON.stringify({ command: 'export-bundle', out, jobs: jobs.length, files: manifest.files, bytes, counts: manifest.counts }, null, 2));
+  // Files of superseded renders are not part of the bundle: remove what the manifest does not reference.
+  const { readdirSync, rmSync } = await import('node:fs');
+  const keep = new Set(entries.map((e) => e.file).filter(Boolean) as string[]);
+  let pruned = 0;
+  for (const dir of readdirSync(join(out, 'files'), { withFileTypes: true }).filter((d) => d.isDirectory())) {
+    for (const f of readdirSync(join(out, 'files', dir.name))) {
+      if (!keep.has(`files/${dir.name}/${f}`)) { rmSync(join(out, 'files', dir.name, f)); pruned++; }
+    }
+    if (!readdirSync(join(out, 'files', dir.name)).length) rmSync(join(out, 'files', dir.name), { recursive: true });
+  }
+  console.log(JSON.stringify({ command: 'export-bundle', out, jobs: jobs.length, files: manifest.files, bytes, pruned, counts: manifest.counts }, null, 2));
 }
 
 async function importBundle() {
