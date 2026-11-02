@@ -6,7 +6,7 @@ import { planEndDate } from '@/lib/learning/calendar';
 import { MASTERY_LABEL_RU, type MasteryState } from '@/lib/learning/mastery';
 import { LIFECYCLE_LABEL, ENTRY_LABEL, AXIS_LABEL, ERROR_KIND_LABEL, ERROR_STATUS_LABEL, ROUTE_KIND_LABEL, SESSION_STATUS_LABEL, minutesLabel, dateTimeRu } from '@/lib/admin/labels';
 import { MODE_LABEL_RU } from '@/lib/speaking/state-machine';
-import { LearnerActions } from '../../_components/LearnerActions';
+import { LearnerActions, RoleControl } from '../../_components/LearnerActions';
 import { RouteForm } from '../../_components/RouteForm';
 import { nowMs } from '@/lib/admin/time';
 
@@ -59,6 +59,7 @@ export default async function LearnerCard({ params }: { params: Promise<{ id: st
           <dt>Активное время</dt><dd>{minutesLabel(totalSeconds)} за 60 дней · ответов всего: {attempts.count ?? 0} · на проверке: {pendingCount.count ?? 0}</dd>
         </dl>
         {isOwnerTarget || id === owner.userId ? <p className="small quiet mt16">Это аккаунт владельца: деактивация и удаление недоступны.</p> : <LearnerActions userId={id} active={p.active} name={p.display_name} />}
+        {id !== owner.userId ? <RoleControl userId={id} isOwner={isOwnerTarget} email={p.email ?? null} /> : null}
       </div>
 
       <div className="admin-split">

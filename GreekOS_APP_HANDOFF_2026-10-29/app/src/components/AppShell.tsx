@@ -113,7 +113,7 @@ export function AppShell(props: {
             {props.devPreview ? <span className="mode-badge preview" title="Непроверенные материалы открыты только этому тестовому аккаунту и только в локальной среде">DEV-PREVIEW · материалы не выпущены</span> : null}
           </span>
           <span className="studio-right">
-            <button className="studio-btn" type="button" onClick={toggleMotion} aria-pressed={motionOff}>{motionOff ? 'Включить анимации' : 'Отключить анимации'}</button>
+            <button className="studio-btn" type="button" onClick={toggleMotion} aria-pressed={motionOff} aria-label={motionOff ? 'Включить анимации' : 'Отключить анимации'}><span className="studio-btn-long">{motionOff ? 'Включить анимации' : 'Отключить анимации'}</span><span className="studio-btn-short" aria-hidden="true">{motionOff ? 'Анимации: выкл' : 'Анимации'}</span></button>
           </span>
         </div>
         <div className="shell">

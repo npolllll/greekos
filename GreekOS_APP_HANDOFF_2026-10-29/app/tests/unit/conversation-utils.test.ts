@@ -38,3 +38,14 @@ describe('Greek guard helpers', () => {
     expect(greekWords('Ναι, OK — 3 κιλά «μήλα»!')).toEqual(['ναι', 'κιλά', 'μήλα']);
   });
 });
+
+describe('mixed-alphabet autofix', async () => {
+  const { fixMixedWord, fixMixedText } = await import('@/lib/qa/autofix');
+  it('rewrites a word in its majority alphabet when every foreign letter has a look-alike', () => {
+    expect(fixMixedWord('Κороткое')).toBe('Короткое');
+    expect(fixMixedWord('кλεισμένες')).toBe('κλεισμένες');
+    expect(fixMixedWord('Короткое')).toBeNull();
+    expect(fixMixedWord('Βж')).toBeNull(); // ж has no Greek look-alike → a person decides
+    expect(fixMixedText('Κороткое объяснение: кλεισμένες πόρτες.').fixes).toHaveLength(2);
+  });
+});

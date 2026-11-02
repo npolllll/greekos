@@ -6,6 +6,7 @@
  *
  *   node local-services/fetch-models.mjs            # required models
  *   node local-services/fetch-models.mjs --all      # also optional ones
+ *   node local-services/fetch-models.mjs --with=gemma-4-e4b-it-q4km   # one optional model (e.g. on a Mac)
  *   node local-services/fetch-models.mjs --verify   # only check what is installed
  *
  * Needs: curl, tar (bzip2), unzip. The LLM comes from an OCI registry (Docker Hub, or the mirror).
@@ -52,8 +53,9 @@ async function ociFetch(src, file) {
       }
       const accept = 'Accept: application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json';
       const man = JSON.parse(execFileSync('curl', ['-fsSL', '-H', accept, ...auth.flatMap((h) => ['-H', h]), `https://${host}/v2/${src.repository}/manifests/${src.reference}`]).toString());
-      const layer = (man.layers ?? []).find((l) => l.mediaType === src.layer_media_type);
-      if (!layer) throw new Error('no GGUF layer in manifest');
+      // The pinned digest selects the model layer (Docker AI artifacts also carry e.g. a vision projector).
+      const layer = (man.layers ?? []).find((l) => (src.layer_digest ? l.digest === src.layer_digest : l.mediaType === src.layer_media_type));
+      if (!layer) throw new Error('pinned GGUF layer not in the registry manifest');
       if (layer.digest !== `sha256:${file.sha256}`) throw new Error(`registry layer ${layer.digest} differs from the manifest pin`);
       const tmp = path.join(ROOT, `${file.path}.part`);
       mkdirSync(path.dirname(tmp), { recursive: true });
@@ -84,7 +86,7 @@ async function install(m) {
 
 let failed = 0;
 for (const m of manifest.models) {
-  if (m.optional && !args.has('--all') && !args.has('--verify')) continue;
+  if (m.optional && !args.has('--all') && !args.has('--verify') && !args.has(`--with=${m.id}`)) continue;
   let states = await Promise.all(m.files.map(check));
   if (!states.every((s) => s.ok) && !args.has('--verify')) {
     console.log(`↓ ${m.id} — ${m.purpose}`);

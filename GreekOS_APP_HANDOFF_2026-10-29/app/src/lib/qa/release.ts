@@ -41,6 +41,11 @@ export async function resolveIssue(actor: SessionUser, input: z.infer<typeof Iss
 
 // ---------------- Editorial corrections (new revision) ----------------
 
+/** Who makes a correction: the owner (a session) or a named system tool (recorded as such, never as a person). */
+export type PatchActor = SessionUser | { system: string };
+const actorId = (a: PatchActor) => ('system' in a ? null : a.userId);
+const authorCols = (a: PatchActor) => ('system' in a ? { created_by: null, system_actor: a.system } : { created_by: a.userId, system_actor: null });
+
 export const ItemPatch = z.object({
   item_id: z.string().min(1).max(80),
   base_hash: z.string().regex(/^[0-9a-f]{64}$/),
@@ -56,7 +61,7 @@ export const ItemPatch = z.object({
 }).strict();
 
 /** Applies an owner correction as a NEW immutable revision; active releases of the old hash are revoked. */
-export async function patchItem(actor: SessionUser, input: z.infer<typeof ItemPatch>) {
+export async function patchItem(actor: PatchActor, input: z.infer<typeof ItemPatch>) {
   const db = adminClient();
   const { data: row } = await db.from('items').select('item_id, module, envelope, current_hash').eq('item_id', input.item_id).maybeSingle();
   if (!row) throw new HttpError(404, 'NOT_FOUND', 'Задание не найдено');
@@ -78,11 +83,11 @@ export async function patchItem(actor: SessionUser, input: z.infer<typeof ItemPa
   const { error: ue } = await db.from('items').update({ envelope: next, current_hash: hash, revision_id: rev.id }).eq('item_id', row.item_id).eq('current_hash', row.current_hash);
   if (ue) throw new Error(ue.message);
   const changed = Object.fromEntries(Object.entries(input.changes).map(([k, v]) => [k, { before: (env as unknown as Record<string, unknown>)[k] ?? null, after: v }]));
-  await db.from('content_patches').insert({ content_kind: 'item', content_id: row.item_id, base_hash: row.current_hash, new_hash: hash, changes: changed, reason: input.reason, issue_id: input.issue_id ?? null, revision_id: rev.id, created_by: actor.userId });
+  await db.from('content_patches').insert({ content_kind: 'item', content_id: row.item_id, base_hash: row.current_hash, new_hash: hash, changes: changed, reason: input.reason, issue_id: input.issue_id ?? null, revision_id: rev.id, ...authorCols(actor) });
   const { count } = await db.from('content_releases').update({ revoked_at: new Date().toISOString(), revoked_reason: 'CONTENT_PATCHED: допуск относился к прежней ревизии' }, { count: 'exact' }).eq('content_kind', 'item').eq('content_id', row.item_id).is('revoked_at', null);
-  if (input.issue_id) await db.from('qa_issues').update({ status: 'fixed', resolved_by: actor.userId, resolved_at: new Date().toISOString(), resolution_note: `Исправлено ревизией ${hash.slice(0, 12)}: ${input.reason}` }).eq('id', input.issue_id);
-  await audit(actor.userId, 'content.patch', { id: row.item_id }, { base_hash: row.current_hash, new_hash: hash, revoked_releases: count ?? 0 });
-  const qa = await runQaBatch({ actorId: actor.userId, label: `Повторная проверка после правки ${row.item_id}`, scope: { kind: 'items', ids: [row.item_id] } });
+  if (input.issue_id) await db.from('qa_issues').update({ status: 'fixed', resolved_by: actorId(actor), resolved_at: new Date().toISOString(), resolution_note: `Исправлено ревизией ${hash.slice(0, 12)}${'system' in actor ? ` (${actor.system})` : ''}: ${input.reason}` }).eq('id', input.issue_id);
+  await audit(actorId(actor), 'content.patch', { id: row.item_id }, { base_hash: row.current_hash, new_hash: hash, revoked_releases: count ?? 0, ...('system' in actor ? { system_actor: actor.system } : {}) });
+  const qa = await runQaBatch({ actorId: actorId(actor), label: `Повторная проверка после правки ${row.item_id}`, scope: { kind: 'items', ids: [row.item_id] } });
   return { ok: true, new_hash: hash, revoked_releases: count ?? 0, qa };
 }
 
@@ -95,7 +100,7 @@ export const UnitPatch = z.object({
   issue_id: z.string().uuid().optional(),
 }).strict();
 
-export async function patchUnit(actor: SessionUser, input: z.infer<typeof UnitPatch>) {
+export async function patchUnit(actor: PatchActor, input: z.infer<typeof UnitPatch>) {
   const db = adminClient();
   const { data: u } = await db.from('units').select('unit_id, teaching, current_hash').eq('unit_id', input.unit_id).maybeSingle();
   if (!u) throw new HttpError(404, 'NOT_FOUND', 'Урок не найден');
@@ -105,11 +110,11 @@ export async function patchUnit(actor: SessionUser, input: z.infer<typeof UnitPa
   const { data: rev, error: re } = await db.from('content_revisions').insert({ content_kind: 'unit', content_id: u.unit_id, content_hash: hash, module: 'core', payload_private: { unit_id: u.unit_id, content_hash: hash, teaching_material: teaching, patched_from: u.current_hash } }).select('id').single();
   if (re) throw new Error(re.message);
   await db.from('units').update({ teaching, current_hash: hash, revision_id: rev.id }).eq('unit_id', u.unit_id).eq('current_hash', u.current_hash);
-  await db.from('content_patches').insert({ content_kind: 'unit', content_id: u.unit_id, base_hash: u.current_hash, new_hash: hash, changes: { [input.field]: { before: (u.teaching as Record<string, unknown>)[input.field] ?? null, after: input.text } }, reason: input.reason, issue_id: input.issue_id ?? null, revision_id: rev.id, created_by: actor.userId });
+  await db.from('content_patches').insert({ content_kind: 'unit', content_id: u.unit_id, base_hash: u.current_hash, new_hash: hash, changes: { [input.field]: { before: (u.teaching as Record<string, unknown>)[input.field] ?? null, after: input.text } }, reason: input.reason, issue_id: input.issue_id ?? null, revision_id: rev.id, ...authorCols(actor) });
   const { count } = await db.from('content_releases').update({ revoked_at: new Date().toISOString(), revoked_reason: 'CONTENT_PATCHED: допуск относился к прежней ревизии' }, { count: 'exact' }).eq('content_kind', 'unit').eq('content_id', u.unit_id).is('revoked_at', null);
-  if (input.issue_id) await db.from('qa_issues').update({ status: 'fixed', resolved_by: actor.userId, resolved_at: new Date().toISOString(), resolution_note: `Исправлено ревизией ${hash.slice(0, 12)}: ${input.reason}` }).eq('id', input.issue_id);
-  await audit(actor.userId, 'content.patch', { id: u.unit_id }, { base_hash: u.current_hash, new_hash: hash, revoked_releases: count ?? 0 });
-  const qa = await runQaBatch({ actorId: actor.userId, label: `Повторная проверка после правки ${u.unit_id}`, scope: { kind: 'unit', ids: [u.unit_id] } });
+  if (input.issue_id) await db.from('qa_issues').update({ status: 'fixed', resolved_by: actorId(actor), resolved_at: new Date().toISOString(), resolution_note: `Исправлено ревизией ${hash.slice(0, 12)}${'system' in actor ? ` (${actor.system})` : ''}: ${input.reason}` }).eq('id', input.issue_id);
+  await audit(actorId(actor), 'content.patch', { id: u.unit_id }, { base_hash: u.current_hash, new_hash: hash, revoked_releases: count ?? 0, ...('system' in actor ? { system_actor: actor.system } : {}) });
+  const qa = await runQaBatch({ actorId: actorId(actor), label: `Повторная проверка после правки ${u.unit_id}`, scope: { kind: 'unit', ids: [u.unit_id] } });
   return { ok: true, new_hash: hash, revoked_releases: count ?? 0, qa };
 }
 

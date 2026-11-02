@@ -52,3 +52,36 @@ export function LearnerActions({ userId, active, name }: { userId: string; activ
     </div>
   );
 }
+
+/** Co-owner role: granting needs the account's e-mail typed back; removing never leaves the app without an owner. */
+export function RoleControl({ userId, isOwner, email }: { userId: string; isOwner: boolean; email: string | null }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [confirmEmail, setConfirmEmail] = useState('');
+  const [reason, setReason] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  async function save() {
+    setBusy(true); setError(null);
+    const res = await fetch(`/api/admin/learners/${userId}/role`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ grant: !isOwner, confirm_email: isOwner ? undefined : confirmEmail, reason }) });
+    const j = await res.json().catch(() => ({}));
+    setBusy(false);
+    if (!res.ok) return setError(j.message ?? 'Не сохранено');
+    setOpen(false);
+    router.refresh();
+  }
+  return (
+    <div className="box mt16">
+      <div className="row between"><span className="small">Роль: <b>{isOwner ? 'владелец (совладелец)' : 'ученик'}</b></span>{!open ? <button type="button" className="btn small outline" onClick={() => setOpen(true)}>{isOwner ? 'Снять роль владельца' : 'Сделать совладельцем'}</button> : null}</div>
+      {open ? (
+        <div className="inline-form mt8">
+          {!isOwner ? <p className="tiny quiet" style={{ margin: 0 }}>Совладелец видит всех учеников, корпус, аудио и может принимать решения о выпуске. Сессии аккаунта будут сброшены.</p> : null}
+          {!isOwner ? <div className="field"><label htmlFor={`role-email-${userId}`}>Введите e-mail аккаунта{email ? ` (${email})` : ''}</label><input id={`role-email-${userId}`} value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} autoComplete="off" /></div> : null}
+          <div className="field"><label htmlFor={`role-reason-${userId}`}>Причина</label><input id={`role-reason-${userId}`} value={reason} onChange={(e) => setReason(e.target.value)} /></div>
+          <div className="row"><button type="button" className="btn" disabled={busy || reason.trim().length < 3} onClick={save}>{busy ? 'Сохраняю…' : 'Подтвердить'}</button><button type="button" className="btn outline" onClick={() => setOpen(false)}>Отмена</button></div>
+        </div>
+      ) : null}
+      {error ? <p className="error-text" role="alert">{error}</p> : null}
+    </div>
+  );
+}

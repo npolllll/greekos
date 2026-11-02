@@ -124,3 +124,34 @@ export async function changeRoute(actor: SessionUser, userId: string, req: z.inf
   await audit(actor.userId, 'learner.route_changed', { id: userId, userId }, { from: prev?.start_unit_id ?? null, to: req.start_unit_id, route_kind: req.route_kind });
   return { ok: true };
 }
+
+/**
+ * Grants or removes the owner role (co-owner). Guard rails: never on yourself, never removing the
+ * last owner, the target must be an active account; granting needs the target's e-mail typed back.
+ * Every change revokes the target's sessions (new rights apply at the next sign-in) and is audited.
+ */
+export async function setOwnerRole(actor: SessionUser, userId: string, input: { grant: boolean; confirm_email?: string; reason: string }) {
+  if (userId === actor.userId) throw new HttpError(409, 'SELF_TARGET', 'Свою роль менять нельзя.');
+  const db = adminClient();
+  const { data: p } = await db.from('profiles').select('user_id, email, active, display_name').eq('user_id', userId).maybeSingle();
+  if (!p) throw new HttpError(404, 'NOT_FOUND', 'Аккаунт не найден');
+  const { data: roles } = await db.from('role_assignments').select('role').eq('user_id', userId);
+  const isOwner = (roles ?? []).some((r) => r.role === 'owner_admin');
+  if (input.grant) {
+    if (isOwner) return { ok: true, unchanged: true };
+    if (!p.active) throw new HttpError(409, 'INACTIVE', 'Сначала восстановите доступ к аккаунту.');
+    if ((input.confirm_email ?? '').trim().toLowerCase() !== String(p.email ?? '').toLowerCase()) throw new HttpError(422, 'CONFIRM', 'Для выдачи роли владельца введите e-mail этого аккаунта.');
+    const { error } = await db.from('role_assignments').insert({ user_id: userId, role: 'owner_admin' });
+    if (error) throw new Error(error.message);
+  } else {
+    if (!isOwner) return { ok: true, unchanged: true };
+    const { count } = await db.from('role_assignments').select('user_id', { count: 'exact', head: true }).eq('role', 'owner_admin');
+    if ((count ?? 0) <= 1) throw new HttpError(409, 'LAST_OWNER', 'Нельзя снять роль с последнего владельца.');
+    await db.from('role_assignments').delete().eq('user_id', userId).eq('role', 'owner_admin');
+    // A learner record must remain so the account keeps working as a learner.
+    await db.from('role_assignments').upsert({ user_id: userId, role: 'learner' });
+  }
+  const { data: revoked } = await db.rpc('admin_revoke_user_sessions', { target: userId });
+  await audit(actor.userId, input.grant ? 'role.owner_granted' : 'role.owner_removed', { id: userId, userId }, { reason: input.reason, sessions_revoked: revoked ?? 0 });
+  return { ok: true };
+}

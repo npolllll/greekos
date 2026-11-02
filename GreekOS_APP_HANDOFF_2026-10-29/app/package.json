@@ -29,7 +29,10 @@
     "local:llm": "node local-services/llm/server.mjs",
     "voice:gateway": "tsx --conditions=react-server voice-gateway/server.ts",
     "voice:bench": "tsx --conditions=react-server scripts/voice-bench.ts --out reports/v5.4",
-    "audio:benchmark": "tsx scripts/audio-cli.ts benchmark --out reports/v5.4"
+    "audio:benchmark": "tsx scripts/audio-cli.ts benchmark --out reports/v5.4",
+    "speaking:eval": "tsx scripts/speaking-eval.ts",
+    "qa:autofix": "tsx --conditions=react-server scripts/qa-autofix.ts",
+    "admission:plan": "tsx --conditions=react-server scripts/admission-plan.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.3.0",

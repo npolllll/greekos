@@ -100,6 +100,19 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
 
 
 
+  // Feedback on a learner phrase is produced after the reply (server background): poll until it settles.
+  const feedbackPending = view.turns.some((t) => t.speaker === 'learner' && t.feedback?.status === 'pending');
+  useEffect(() => {
+    if (!feedbackPending || (wantsStream && !fallback)) return;
+    let n = 0;
+    const id = setInterval(async () => {
+      n += 1;
+      try { setView(await post({ action: 'state', session_id: view.session_id })); } catch { /* next tick */ }
+      if (n >= 30) clearInterval(id);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [feedbackPending, wantsStream, fallback, post, view.session_id]);
+
   // Silence: one neutral invitation, no penalty.
   useEffect(() => {
     if (state !== 'ready') return;

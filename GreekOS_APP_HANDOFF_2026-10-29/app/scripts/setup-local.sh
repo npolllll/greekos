@@ -55,8 +55,9 @@ step "7/9 voices, casting proposals, course audio from the bundle"
 npm run audio -- cast
 if [ -f "$BUNDLE/AUDIO_BUNDLE_MANIFEST.json" ]; then npm run audio -- import-bundle --dir "$BUNDLE"; else echo "нет $BUNDLE — аудио можно сгенерировать: npm run audio -- render-batch"; fi
 
-step "8/9 digital QA of the corpus"
+step "8/9 digital QA of the corpus (+ deterministic fixes as recorded revisions)"
 npx tsx scripts/qa-batch.ts
+npx tsx --conditions=react-server scripts/qa-autofix.ts
 
 step "9/9 DEV-PREVIEW tester (local only)"
 if [ ! -f .local-credentials/tester.json ]; then

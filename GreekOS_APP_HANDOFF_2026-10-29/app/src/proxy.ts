@@ -27,5 +27,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.svg|robots.txt|voice-capture-worklet.js).*)'],
+  // Public static art (scene/) and the audio worklet are served without a session check.
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.svg|robots.txt|voice-capture-worklet.js|scene/).*)'],
 };

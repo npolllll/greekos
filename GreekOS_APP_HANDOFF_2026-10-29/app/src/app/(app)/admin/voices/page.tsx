@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { requireOwnerPage } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { env } from '@/lib/env';
+import { engineInfo } from '@/lib/speaking/service';
 import { localAsrHealth } from '@/lib/providers/local-engines';
 import { asrStatus, ttsStatus } from '@/lib/providers/speech';
 import { AUDITION_TEXT } from '@/lib/voice/samples';
@@ -28,6 +29,22 @@ export default async function VoicesPage() {
     localAsrHealth(),
     db.from('speaking_turn_metrics').select('input_source, asr_final_ms, llm_first_token_ms, tts_first_audio_ms, playback_start_ms, end_of_speech_to_audio_ms, interrupted').gt('turn_seq', 0).order('created_at', { ascending: false }).limit(500),
   ]);
+  // AI interlocutor: who produced the persona's lines, generation time, feedback on learner phrases.
+  const [{ data: aTurns }, { data: lTurns }, { data: sess }] = await Promise.all([
+    db.from('speaking_turns').select('engine, gen_first_ms, gen_total_ms').eq('speaker', 'assistant').gt('seq', 0).order('created_at', { ascending: false }).limit(1000),
+    db.from('speaking_turns').select('feedback').eq('speaker', 'learner').not('feedback', 'is', null).order('created_at', { ascending: false }).limit(1000),
+    db.from('speaking_sessions').select('mode, status').order('started_at', { ascending: false }).limit(1000),
+  ]);
+  const engineCount = { llm: 0, authored: 0, scripted_fallback: 0 };
+  for (const t of aTurns ?? []) { const e = String(t.engine ?? 'authored'); if (e.startsWith('llm:')) engineCount.llm++; else if (e === 'scripted_fallback') engineCount.scripted_fallback++; else engineCount.authored++; }
+  const pct = (v: number[], p: number) => { const x = [...v].sort((a, b) => a - b); return x.length ? x[Math.min(x.length - 1, Math.ceil(p * x.length) - 1)] : null; };
+  const genFirst = (aTurns ?? []).map((t) => t.gen_first_ms).filter((x): x is number => typeof x === 'number');
+  const genTotal = (aTurns ?? []).map((t) => t.gen_total_ms).filter((x): x is number => typeof x === 'number');
+  const fb = { ready: 0, none: 0, failed: 0, pending: 0, error: 0 };
+  for (const t of lTurns ?? []) { const f = t.feedback as { status?: string; kind?: string }; if (f.status === 'ready') { fb.ready++; if (f.kind === 'error') fb.error++; } else if (f.status === 'none') fb.none++; else if (f.status === 'failed') fb.failed++; else fb.pending++; }
+  const byMode = new Map<string, number>();
+  for (const s of sess ?? []) byMode.set(s.mode, (byMode.get(s.mode) ?? 0) + 1);
+  const engine = engineInfo();
   const latency = (['microphone', 'synthetic_test_clip'] as const).map((src) => {
     const rows = (lat ?? []).filter((r) => r.input_source === src);
     const col = (k: 'asr_final_ms' | 'llm_first_token_ms' | 'tts_first_audio_ms' | 'end_of_speech_to_audio_ms') => {
@@ -84,6 +101,17 @@ export default async function VoicesPage() {
               <td><strong>{sec(l.total.p50)} / {sec(l.total.p95)}</strong>{l.total.n ? ` (n=${l.total.n})` : ' — нет данных'}</td><td>{l.interrupted}</td>
             </tr>
           ))}
+        </tbody></table></div>
+      </div>
+
+      <div className="card cardpad">
+        <div className="card-title">AI-собеседник (фактические данные разговоров)</div>
+        <p className="small quiet">{engine.label_ru}{engine.qualification ? ` · проверка ${new Date(engine.qualification.evaluated_at).toLocaleDateString('ru-RU')}: ${engine.qualification.cases} случаев, реплик без запасного сценария ${Math.round(engine.qualification.reply_ok * 100)}%, верный этап ${Math.round(engine.qualification.stage_ok * 100)}%` : ''}</p>
+        <div className="table-wrap"><table className="data-table"><tbody>
+          <tr><th>Реплики собеседника</th><td>AI: <strong>{engineCount.llm}</strong> · авторские (сценарный режим): {engineCount.authored} · запасные (AI не ответил / не прошёл проверку): <strong>{engineCount.scripted_fallback}</strong></td></tr>
+          <tr><th>Генерация (сервер)</th><td>первое предложение p50/p95: {sec(pct(genFirst, 0.5))} / {sec(pct(genFirst, 0.95))} · ход целиком p50/p95: {sec(pct(genTotal, 0.5))} / {sec(pct(genTotal, 0.95))}{genFirst.length ? ` (n=${genFirst.length})` : ' — нет данных'}</td></tr>
+          <tr><th>Разбор фраз ученика</th><td>подсказок: {fb.ready} (из них ошибок {fb.error}) · без замечаний: {fb.none} · не удалось: {fb.failed} · в работе: {fb.pending}</td></tr>
+          <tr><th>Разговоры по режимам</th><td>{[...byMode.entries()].map(([m, n]) => `${m}: ${n}`).join(' · ') || '—'}</td></tr>
         </tbody></table></div>
       </div>
 
