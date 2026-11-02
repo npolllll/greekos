@@ -32,7 +32,8 @@ npm run dev                   # http://127.0.0.1:3210
 ```bash
 npm run models:fetch     # модели в ~/greekos-models с проверкой SHA-256 (манифест local-services/models.manifest.json)
 npm run local:speech     # синтез (Coqui VITS, MBROLA) + Whisper (sherpa-onnx) на 127.0.0.1:3312
-npm run local:llm        # OpenAI-совместимый сервер Qwen3-4B (node-llama-cpp) на 127.0.0.1:3313
+npm run local:llm        # OpenAI-совместимый сервер Gemma 4 E2B (node-llama-cpp, Metal на Mac) на 127.0.0.1:3313
+npm run speaking:eval    # проверка модели как собеседника: без passed=true она не говорит с учеником
 npm run voice:gateway    # потоковый голосовой шлюз на 127.0.0.1:3311
 npm run audio -- cast    # каталог голосов + предложения кастинга (подтверждает владелец в админке)
 ```
@@ -57,6 +58,8 @@ npm run audio -- cast    # каталог голосов + предложени�
 | `npm run owner:create` | создать/пригласить единственного владельца |
 | `npm run audio -- validate\|cast\|plan\|render\|render-batch\|rescore\|export-bundle\|import-bundle\|inspect\|report\|benchmark` | кастинг голосов, цифровое производство 142 аудиозаданий, пересчёт вердиктов, перенос файлов между машинами, отчёты |
 | `npm run models:fetch` / `local:speech` / `local:llm` | локальные модели (с проверкой хешей), сервис речи и языковая модель (разработка) |
+| `npm run speaking:eval` | 25 диалоговых случаев по корпусу → `local-services/llm/qualification.json` и отчёт в `reports/v6/speaking-eval/` |
+| `npm run qa:autofix` / `admission:plan` | однозначные исправления цифрового QA новыми ревизиями; план допуска корпуса (ничего не выпускает) |
 | `npx tsx scripts/qa-batch.ts` | цифровой QA всего корпуса (отчёт JSON+MD с SHA-256 в `reports/v6/qa`) |
 | `npx tsx scripts/export-corpus-snapshot.ts` | снимок корпуса из БД для unit-тестов, если исходной папки корпуса нет |
 | `node scripts/capture-v6.mjs <learner> <owner>` | скриншоты и capture-видео ключевых сценариев с работающего приложения |

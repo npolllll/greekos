@@ -116,10 +116,20 @@ await flow('s4_speaking', creds(learnerFile), { width: 1440, height: 900 }, asyn
   await page.waitForURL(/\/speaking\/[0-9a-f-]{36}/, { timeout: 60000 });
   await page.waitForSelector('#typed', { timeout: 60000 });
   await shot('03_session');
-  await page.fill('#typed', 'Έναν καφέ, μικρό, παρακαλώ.');
+  // A phrase with a real error («ένα καφέ»): the AI answers in the scene, then a validated hint appears.
+  await page.fill('#typed', 'Θέλω ένα καφέ και ένα νερό, παρακαλώ.');
   await page.getByRole('button', { name: 'Отправить', exact: true }).click();
-  await page.waitForFunction(() => document.querySelectorAll('.msg:not(.mine)').length >= 2, null, { timeout: 120000 });
+  await page.waitForFunction(() => document.querySelectorAll('.msg:not(.mine)').length >= 2, null, { timeout: 180000 });
   await shot('04_reply');
+  await page.waitForSelector('.phrase-fb:not(.pending)', { timeout: 180000 }).catch(() => {});
+  await shot('05_feedback');
+  await page.fill('#typed', 'Ναι, μεγάλο, ευχαριστώ.');
+  await page.getByRole('button', { name: 'Отправить', exact: true }).click();
+  await page.waitForFunction(() => document.querySelectorAll('.msg:not(.mine)').length >= 3, null, { timeout: 180000 });
+  await page.getByRole('button', { name: 'Завершить разговор' }).click();
+  await page.locator('.context-coach').waitFor({ timeout: 120000 }).catch(() => {});
+  await page.locator('.context-coach').scrollIntoViewIfNeeded().catch(() => {});
+  await shot('06_summary');
 });
 
 // 3. Owner: overview → digital QA → audio queue with listening → learner card.
@@ -135,10 +145,15 @@ await flow('s7_owner', creds(ownerFile), { width: 1440, height: 900 }, async (pa
   await page.locator('audio').first().evaluate((a) => a.play().catch(() => {}));
   await pause(page, 4000);
   await shot('04_audio_playing');
+  await page.goto(`${base}/admin/voices`, { waitUntil: 'networkidle' });
+  await page.getByText('AI-собеседник (фактические данные разговоров)').scrollIntoViewIfNeeded();
+  await shot('05_ai_analytics');
   await page.goto(`${base}/admin/learners`, { waitUntil: 'networkidle' });
   await page.locator('table a, .data-table a').first().click();
   await page.waitForLoadState('networkidle');
-  await shot('05_learner_card');
+  await shot('06_learner_card');
+  await page.getByText(/^Роль:/).scrollIntoViewIfNeeded().catch(() => {});
+  await shot('07_roles');
 });
 
 // 4. Mobile 390: home → bottom navigation → route → alphabet.

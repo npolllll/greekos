@@ -268,4 +268,84 @@ describe('streaming voice gateway', () => {
     await e.waitFor('error', (m) => m.code === 'NO_SLOW_IN_EXAM');
     e.ws.close();
   }, 60_000);
+
+  it.skipIf(!canTry)('generated reply: sentences are voiced while the model is still writing; barge-in stops generation', async () => {
+    if (!ready) return;
+    // A local server speaking the OpenAI-compatible SSE protocol stands in for the model (contract, not quality).
+    const http = await import('node:http');
+    const { mkdtempSync, writeFileSync } = await import('node:fs');
+    const { tmpdir } = await import('node:os');
+    const { join } = await import('node:path');
+    let delay = 40;
+    const reply = JSON.stringify({ stage: 'TWIST', reply_el: 'Δυστυχώς τα μήλα τελείωσαν σήμερα. Έχουμε όμως φρέσκα αχλάδια με δύο ευρώ το κιλό. Θέλετε να δοκιμάσετε;', intent: 'on_task', hint_ru: null, facts: ['Яблок нет'] });
+    const llm = http.createServer((req, res) => {
+      let raw = '';
+      req.on('data', (c) => { raw += c; });
+      req.on('end', () => {
+        if (req.method === 'GET') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ ok: true, kv_reuse: false })); return; }
+        const body = JSON.parse(raw || '{}');
+        const props = body.response_format?.json_schema?.schema?.properties ?? {};
+        const text = 'stage' in props ? reply : JSON.stringify({ has_issue: false, quote: '', better_el: '', why_ru: '', kind: 'error' });
+        res.writeHead(200, { 'content-type': 'text/event-stream' });
+        const parts = text.match(/[\s\S]{1,8}/g) ?? [];
+        let i = 0;
+        const tick = () => {
+          if (res.destroyed) return;
+          if (i < parts.length) { res.write(`data: ${JSON.stringify({ choices: [{ delta: { content: parts[i++] }, finish_reason: null }] })}\n\n`); setTimeout(tick, delay); }
+          else { res.write(`data: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: 'stop' }] })}\n\n`); res.end('data: [DONE]\n\n'); }
+        };
+        tick();
+      });
+    });
+    await new Promise<void>((r) => llm.listen(0, '127.0.0.1', () => r()));
+    const saved = { p: process.env.LLM_PROVIDER, u: process.env.LLM_BASE_URL, m: process.env.LLM_MODEL, q: process.env.LLM_QUALIFICATION_FILE };
+    const dir = mkdtempSync(join(tmpdir(), 'greekos-q-'));
+    writeFileSync(join(dir, 'q.json'), JSON.stringify({ 'mock-greek': { passed: true, cases: 1, evaluated_at: new Date().toISOString(), metrics: { reply_ok: 1, stage_ok: 1 } } }));
+    Object.assign(process.env, { LLM_PROVIDER: 'openai_compatible', LLM_BASE_URL: `http://127.0.0.1:${(llm.address() as { port: number }).port}`, LLM_MODEL: 'mock-greek', LLM_QUALIFICATION_FILE: join(dir, 'q.json') });
+    try {
+      const sid = await newSession();
+      const c = await connect(sid);
+      await c.waitFor('ready');
+      c.send({ type: 'listen' });
+      await c.speak(await clip('Θέλω ένα κιλό μήλα.'));
+      const fin = await c.waitFor('final');
+      if (fin.needs_confirmation) c.send({ type: 'confirm', utterance_id: fin.utterance_id, text: fin.text, edited: false });
+      const start = await c.waitFor('assistant_start', (m) => !!m.streaming, 60_000);
+      // The first sentence is voiced before the stored turn (the reply is still being generated).
+      const turnIndex = () => c.msgs.findIndex((m) => m.type === 'turn');
+      const startIndex = c.msgs.indexOf(start);
+      expect(turnIndex() === -1 || turnIndex() > startIndex).toBe(true);
+      await c.waitFor('assistant_sentence', (m) => m.turn_id === start.turn_id, 30_000);
+      await c.waitFor('assistant_end', (m) => m.turn_id === start.turn_id, 60_000);
+      const turn = await c.waitFor('turn', (m) => m.engine === 'llm', 30_000);
+      const a = (turn.view as { turns: Array<{ turn_id: string; speaker: string; engine: string | null; text: string }> }).turns.at(-1)!;
+      expect(a.turn_id).toBe(start.turn_id);
+      expect(a.engine).toBe('llm:mock-greek');
+      expect(c.chunks.filter((k) => k.turn_id === start.turn_id).length).toBeGreaterThan(3);
+      // The browser reports playback (otherwise the next utterance counts as echo of the persona).
+      c.send({ type: 'playback', turn_id: start.turn_id, event: 'started' });
+      c.send({ type: 'playback', turn_id: start.turn_id, event: 'ended' });
+      await c.waitFor('state', (m) => m.state === 'listening' && c.msgs.indexOf(m) > c.msgs.indexOf(turn));
+
+      // Barge-in while a long reply is still being generated: generation stops; only what was produced is stored.
+      delay = 300;
+      await c.speak(await clip('Ναι, μισό κιλό αχλάδια, παρακαλώ.'));
+      const fin2 = await c.waitFor('final', (m) => m.utterance_id !== fin.utterance_id);
+      if (fin2.needs_confirmation) c.send({ type: 'confirm', utterance_id: fin2.utterance_id, text: fin2.text, edited: false });
+      const start2 = await c.waitFor('assistant_start', (m) => !!m.streaming && m.turn_id !== start.turn_id, 60_000);
+      c.send({ type: 'playback', turn_id: start2.turn_id, event: 'started' });
+      c.send({ type: 'interrupt', turn_id: start2.turn_id, heard_ms: 400 });
+      await c.waitFor('interrupted', (m) => m.turn_id === start2.turn_id);
+      await new Promise((r) => setTimeout(r, 2500));
+      const { data: row } = await admin.from('speaking_turns').select('text_el, interrupted, heard_ms').eq('turn_id', start2.turn_id).single();
+      expect(row!.interrupted).toBe(true);
+      expect(row!.heard_ms).toBe(400);
+      expect(row!.text_el.length).toBeLessThan(JSON.parse(reply).reply_el.length);
+      c.ws.close();
+    } finally {
+      Object.assign(process.env, { LLM_PROVIDER: saved.p ?? 'none', LLM_BASE_URL: saved.u ?? '', LLM_MODEL: saved.m ?? '', LLM_QUALIFICATION_FILE: saved.q ?? '' });
+      if (!saved.q) delete process.env.LLM_QUALIFICATION_FILE;
+      llm.close();
+    }
+  }, 240_000);
 });

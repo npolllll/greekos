@@ -2,6 +2,7 @@ import 'server-only';
 import { adminClient, selectAll } from '../supabase/admin.ts';
 import { itemAccess, playableAudio, releaseMap, type ItemRow } from '../content/repo.ts';
 import { addDays, localDateOf, weekdayShortRu } from '../learning/calendar.ts';
+import { AXIS_LABEL } from './labels.ts';
 
 export interface CohortRow {
   user_id: string;
@@ -56,7 +57,7 @@ export async function loadCohort(): Promise<CohortRow[]> {
       lessons_completed: count(lessons.data, p.user_id),
       attempts: count(attempts, p.user_id),
       active_seconds: days.reduce((a, d) => a + (d.active_seconds ?? 0), 0),
-      weakest: weakComp ? names.get(weakComp.competency_id) ?? weakComp.competency_id : weakestAxis ? `${weakestAxis.axis} (диагностика: ${weakestAxis.candidate_start})` : null,
+      weakest: weakComp ? names.get(weakComp.competency_id) ?? weakComp.competency_id : weakestAxis ? `${AXIS_LABEL[weakestAxis.axis] ?? weakestAxis.axis} (диагностика: ${weakestAxis.candidate_start})` : null,
       last_activity: lastEvent ?? lastDay,
       pending_reviews: count(pending.data, p.user_id),
     };

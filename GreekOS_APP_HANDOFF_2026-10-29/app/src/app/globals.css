@@ -131,8 +131,8 @@ a.card:active,.card.interactive:active{transform:translateY(-1px) scale(.995)}
 .studio-bar{max-width:1560px;margin:0 auto 12px;display:flex;align-items:center;justify-content:space-between;gap:14px;color:var(--ink-2);font-size:12px}
 .studio-bar span{display:inline-flex;align-items:center;gap:7px}
 .studio-bar b{color:var(--ink);font-weight:700}
-.studio-btn-short{display:none}
-@media(max-width:700px){.studio-btn-long{display:none}.studio-btn-short{display:inline}.studio-btn{flex:none}}
+.studio-bar .studio-btn-short{display:none}
+@media(max-width:700px){.studio-bar .studio-btn-long{display:none}.studio-bar .studio-btn-short{display:inline}.studio-btn{flex:none}}
 .studio-right{display:flex;gap:15px;align-items:center}
 .studio-btn{border:0;background:var(--glass);border-radius:99px;padding:5px 11px;font-size:11.5px;color:var(--ink-2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
 .studio-btn:hover{color:var(--accent-strong)}
