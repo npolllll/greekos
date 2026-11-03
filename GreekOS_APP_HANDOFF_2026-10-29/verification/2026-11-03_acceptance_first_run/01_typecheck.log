@@ -1,0 +1,5 @@
+
+> greekos@1.0.0 typecheck
+> tsc --noEmit
+
+01_typecheck exit 0

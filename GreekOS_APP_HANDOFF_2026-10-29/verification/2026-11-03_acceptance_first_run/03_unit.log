@@ -1,0 +1,32 @@
+
+> greekos@1.0.0 test
+> vitest run --project unit
+
+
+ RUN  v4.1.12 /home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app
+
+ ❯ |unit| tests/unit/safety.test.ts (18 tests | 1 failed) 5193ms
+     × without an LLM the dialogue follows the authored graph and repair loops end in RETRY 5014ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| tests/unit/safety.test.ts > speaking state machine and fallback > without an LLM the dialogue follows the authored graph and repair loops end in RETRY
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/unit/safety.test.ts:83:3
+     81|     expect(bargeIn('listening')).toBeNull();
+     82|   });
+     83|   it('without an LLM the dialogue follows the authored graph and repai…
+       |   ^
+     84|     const sc: ScenarioPayload = { scenario_id: 'T', entry_node: 'OPEN'…
+     85|       { node_id: 'OPEN', assistant_el: 'Καλημέρα!', transitions: [{ co…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 10 passed (11)
+      Tests  1 failed | 95 passed | 16 skipped (112)
+   Start at  10:25:28
+   Duration  19.39s (transform 2.65s, setup 0ms, import 6.14s, tests 25.67s, environment 1ms)
+
+03_unit exit 1

@@ -1,0 +1,11 @@
+00_local_doctor 0
+01_typecheck 0
+02_lint 0
+03_unit 0
+04_integration 0
+05_e2e 0
+06_rules_on_corpus 0
+07_speaking_latency 0
+08_admission_plan 0
+09_build 0
+10_contrast_pixel_check 0

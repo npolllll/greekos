@@ -1,0 +1,10 @@
+
+> greekos@1.0.0 rules:corpus
+> tsx --conditions=react-server scripts/rules-on-corpus.ts --out ../verification/2026-11-03_acceptance/rules
+
+{
+  "sentences": 6624,
+  "hits": 0,
+  "by_rule": {}
+}
+06_rules_on_corpus exit 0
