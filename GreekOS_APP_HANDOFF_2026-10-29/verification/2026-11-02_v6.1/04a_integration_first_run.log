@@ -1,0 +1,55 @@
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > rejects bad, reused and cross-origin credentials 238ms
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > learner speech → VAD → Whisper → dialogue → streamed persona voice, with barge-in, metrics and idempotent recovery 16064ms
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > a confirmation sent while later speech is still transcribing wins: committed, not BUSY 11478ms
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > pause drops audio, exam simulation refuses slow replay 3404ms
+ ✓ |integration| tests/integration/voice-stream.test.ts > streaming voice gateway > generated reply: sentences are voiced while the model is still writing; barge-in stops generation 21616ms
+ ✓ |integration| tests/integration/audio.test.ts > digital audio pipeline > renders a narrator job with a real local Greek voice, measured and stored, never distributable 3837ms
+ × |integration| tests/integration/audio.test.ts > digital audio pipeline > dialogue with uncast personal names is blocked with a reason, not rendered with a guessed voice 28266ms
+ ✓ |integration| tests/integration/audio.test.ts > digital audio pipeline > mock transport can never become publishable audio (DB guard) 4ms
+ ✓ |integration| tests/integration/conversation.test.ts > conversation engine v2 (wire-protocol mocks) > streams a generated reply sentence by sentence, stores engine, memory and validated feedback 2348ms
+ ✓ |integration| tests/integration/conversation.test.ts > conversation engine v2 (wire-protocol mocks) > rejects a reply that fails the Greek guard and says so: authored line, labelled fallback 189ms
+ ✓ |integration| tests/integration/conversation.test.ts > conversation engine v2 (wire-protocol mocks) > a hallucinated correction (quote not in the learner phrase) is dropped 684ms
+ ✓ |integration| tests/integration/conversation.test.ts > conversation engine v2 (wire-protocol mocks) > barge-in stops generation: only what was produced before the stop is stored 909ms
+ ✓ |integration| tests/integration/conversation.test.ts > conversation engine v2 (wire-protocol mocks) > an unqualified local model never generates the persona's Greek (authored engine) 84ms
+ ✓ |integration| tests/integration/conversation.test.ts > conversation engine v2 (wire-protocol mocks) > session end: the summary lists the validated points, no mastery change 2405ms
+ ✓ |integration| tests/integration/conversation.test.ts > conversation engine v2 (wire-protocol mocks) > free talk opens with a neutral line, not a scene's first line 34ms
+ ✓ |integration| tests/integration/conversation.test.ts > conversation engine v2 (wire-protocol mocks) > Anthropic Messages streaming contract: structured output requested, text deltas assembled 19ms
+ ✓ |integration| tests/integration/exam-audio.test.ts > exam listening play limit (server-enforced) > simulation: exactly two plays, then refused; counters persist on the attempt 180ms
+ ✓ |integration| tests/integration/exam-audio.test.ts > exam listening play limit (server-enforced) > parallel requests cannot exceed the limit 229ms
+ ✓ |integration| tests/integration/exam-audio.test.ts > exam listening play limit (server-enforced) > practice is unlimited; other users and unknown assets are refused 211ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > learner A cannot read learner B attempts, events or profile even by forged id 28ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > learner B sees own rows 18ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > learners cannot write learner state directly (scores, mastery, attempts) 11ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > learner cannot grant itself owner_admin or release content 11ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > canonical content, keys and releases are not readable through the public API 31ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > trusted RPCs are not callable by learners 9ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > commit function rejects bundles mixing ownership 5ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > owner_admin has no direct REST access to raw speaking turns of a learner 27ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > private storage: other users cannot download voice recordings; no public URLs 25ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > append-only audit log and immutable content revisions 31ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > deactivated learner loses access immediately (RLS) and cannot commit 227ms
+ ✓ |integration| tests/integration/security.test.ts > cross-learner isolation (RLS) > public sign-up is disabled (invite-only) 5ms
+ ✓ |integration| tests/integration/learning.test.ts > content gating > a gated item is refused for learners (no fabricated access) 16ms
+ ✓ |integration| tests/integration/learning.test.ts > content gating > a holdout diagnostic item cannot be used as a routine drill 10ms
+ ✓ |integration| tests/integration/learning.test.ts > content gating > a stale content hash is rejected (content changed) 7ms
+ ✓ |integration| tests/integration/learning.test.ts > content gating > changing an item hash invalidates its release 26ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > network retry with the same key records one attempt 73ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > unlisted plausible answer goes to review without penalty and without mastery 34ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > a confirmed wrong choice creates evidence in the Error Notebook 40ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > assisted attempts never advance independent mastery 34ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > independent correct answers schedule D1…D28 on the learner-local date 51ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > owner preview of gated content writes no mastery, reviews or errors 29ms
+ ✓ |integration| tests/integration/learning.test.ts > attempts are idempotent and server-scored > learners cannot use preview context 8ms
+ ✓ |integration| tests/integration/audio-release.test.ts > audio release (v6) > refuses a file the owner has not listened to, and a development-only voice 108ms
+ ✓ |integration| tests/integration/audio-release.test.ts > audio release (v6) > a problem heard by the owner blocks release; OK + signed policy releases with batch and decision 151ms
+ ✓ |integration| tests/integration/audio-import.test.ts > import of a finished recording > the job's own recording passes digital QA and supersedes the previous file; rights stay pending 6197ms
+ ✓ |integration| tests/integration/audio-import.test.ts > import of a finished recording > a recording of another script does not pass the round-trip: it goes to review 3796ms
+ ✓ |integration| tests/integration/audio-import.test.ts > import of a finished recording > a file that is not a PCM WAV is refused before anything is stored 4ms
+ ✓ |integration| tests/integration/roles.test.ts > owner role management > granting needs the account e-mail typed back; then the account is a co-owner 39ms
+ ✓ |integration| tests/integration/roles.test.ts > owner role management > nobody changes their own role, and removal keeps the learner role 32ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected 'RENDERED' to be 'BLOCKED' // Object.is equality
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 48 passed (49)
+   Duration  111.08s (transform 965ms, setup 0ms, import 2.75s, tests 107.11s, environment 1ms)
+exit 1
