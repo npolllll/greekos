@@ -7,7 +7,8 @@ Next.js 16 (App Router, TypeScript) · Supabase (Auth, Postgres + RLS, Storage, 
 
 > Академический статус корпуса: **NOT_READY_FOR_ACADEMIC_PUBLICATION**. Все 1843 задания и 87 уроков
 > импортируются закрытыми (`CONTENT_GATED`). Ученик видит материал только после отдельного решения
-> владельца о выпуске конкретного хеша. См. [docs/STATUS.md](docs/STATUS.md).
+> владельца о выпуске конкретного хеша. Текущий статус — [docs/STATUS_V8.md](docs/STATUS_V8.md),
+> приёмка на своей машине — [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md).
 
 ## Быстрый старт (локально)
 
@@ -34,6 +35,8 @@ npm run models:fetch     # модели в ~/greekos-models с проверко�
 npm run local:speech     # синтез (Coqui VITS, MBROLA) + Whisper (sherpa-onnx) на 127.0.0.1:3312
 npm run local:llm        # OpenAI-совместимый сервер Gemma 4 E2B (node-llama-cpp, Metal на Mac) на 127.0.0.1:3313
 npm run speaking:eval    # проверка модели как собеседника: без passed=true она не говорит с учеником
+npm run local:doctor     # что реально работает: Metal/CoreML/MPS, KV-кэш, квалификация, сервисы
+npm run speaking:latency # задержка AI-собеседника на этой машине (сцена «Кафе»)
 npm run voice:gateway    # потоковый голосовой шлюз на 127.0.0.1:3311
 npm run audio -- cast    # каталог голосов + предложения кастинга (подтверждает владелец в админке)
 ```
@@ -58,9 +61,13 @@ npm run audio -- cast    # каталог голосов + предложени�
 | `npm run owner:create` | создать/пригласить единственного владельца |
 | `npm run audio -- validate\|cast\|plan\|render\|render-batch\|rescore\|export-bundle\|import-bundle\|inspect\|report\|benchmark` | кастинг голосов, цифровое производство 142 аудиозаданий, пересчёт вердиктов, перенос файлов между машинами, отчёты |
 | `npm run models:fetch` / `local:speech` / `local:llm` | локальные модели (с проверкой хешей), сервис речи и языковая модель (разработка) |
-| `npm run speaking:eval` | 25 диалоговых случаев по корпусу → `local-services/llm/qualification.json` и отчёт в `reports/v6/speaking-eval/` |
-| `npm run qa:autofix` / `admission:plan` | однозначные исправления цифрового QA новыми ревизиями; план допуска корпуса (ничего не выпускает) |
-| `npx tsx scripts/qa-batch.ts` | цифровой QA всего корпуса (отчёт JSON+MD с SHA-256 в `reports/v6/qa`) |
+| `npm run speaking:eval` | 34 диалоговых случая по корпусу → `local-services/llm/qualification.json` и отчёт в `reports/v7/speaking-eval/` (модель отдельно, «показано ученику» — правила + модель) |
+| `npm run speaking:latency` | живая задержка AI-собеседника на этой машине через код сервиса (отчёт в `reports/v7/speaking-latency/`) |
+| `npm run local:doctor` | что реально запущено и ускорено: бэкенд модели (Metal), KV-кэш, flash attention, ASR (CoreML), TTS (MPS), квалификация |
+| `npm run rules:corpus` | правила курса для разбора фраз на всём выверенном греческом корпуса (ложные срабатывания: 0) |
+| `npm run qa:autofix` / `qa:engineering-fixes` / `admission:plan` | однозначные исправления цифрового QA новыми ревизиями (системные исполнители, история сохраняется); план допуска корпуса (ничего не выпускает) |
+| `npx tsx scripts/qa-batch.ts` | цифровой QA 2.1 всего корпуса (отчёт JSON+MD с SHA-256 в `reports/v7/qa`) |
+| `bash scripts/acceptance.sh` | полный прогон приёмки на этой машине → `../verification/<дата>_acceptance/` |
 | `npx tsx scripts/export-corpus-snapshot.ts` | снимок корпуса из БД для unit-тестов, если исходной папки корпуса нет |
 | `node scripts/capture-v6.mjs <learner> <owner>` | скриншоты и capture-видео ключевых сценариев с работающего приложения |
 | `npm run local:asr` / `voice:gateway` | локальный Whisper и потоковый голосовой шлюз (разработка) |
