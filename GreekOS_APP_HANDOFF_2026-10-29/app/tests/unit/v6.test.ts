@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { roundTrip, roundTripPass } from '@/lib/audio/roundtrip';
-import { orthography, syllables } from '@/lib/qa/checks';
+import { keyLeaks, orthography, syllables } from '@/lib/qa/checks';
 import { parseAlphabet, lessonWords } from '@/lib/alphabet/reference';
 import { glossGreek, glossRussian, type GlossEntry } from '@/lib/speaking/glossary';
 
@@ -34,6 +34,22 @@ describe('Greek orthography QA (v6)', () => {
     expect(ids('Γράψτε τις καταλήξεις -ος, -ης.')).not.toContain('ortho.final_sigma');
     expect(ids('Το όνομά μου είναι Άννα.')).not.toContain('ortho.double_accent');
     expect(ids('Το όνομά είναι Άννα.')).toContain('ortho.double_accent');
+  });
+  it('QA 2.1: a gap before an enclitic, diacritic clitics and ordinal suffixes are not errors', () => {
+    expect(ids('Περιμένω την απάντησή ___.')).not.toContain('ortho.double_accent');
+    expect(orthography('answer[0]', 'ενημέρωσή', { unknownWords: null }).map((f) => f.check_id)).not.toContain('ortho.double_accent');
+    const clitic = orthography('f', 'Ο γιατρός σάς είπε να περιμένετε.', { unknownWords: null }).find((f) => f.check_id === 'ortho.monosyllable_accent');
+    expect(clitic?.severity).toBe('info');
+    expect(ids('Στις αρχές του 20ού αιώνα.')).not.toContain('ortho.monosyllable_accent');
+  });
+  it('QA 2.1: a key leak is the instruction naming the answer, not a text to analyse or a lemma hint', () => {
+    expect(keyLeaks('Заполните только форму είμαι: Εγώ ___ φοιτητής.', 'είμαι')).toBe(true);
+    expect(keyLeaks('Назовите причину, используя γιατί: Μένω σπίτι ___ είμαι άρρωστος.', 'γιατί')).toBe(true);
+    expect(keyLeaks('Βλέπω τον ___ (φίλος).', 'φίλο')).toBe(false);
+    expect(keyLeaks('Исправьте εδιαβάζαμε.', 'διαβάζαμε')).toBe(false);
+    expect(keyLeaks('Найдите начало урока в строке: «Μάθημα: 18:00. Βιβλιοθήκη: 09:00–20:00».', '18:00')).toBe(false);
+    expect(keyLeaks('Диагностика: «Αν είχα χρόνο τώρα, θα ερχόμουν». Условие относится к τώρα или χτες?', 'τώρα')).toBe(false);
+    expect(keyLeaks('Ударный слог в θάλασσα: первый/второй/третий от начала?', 'первый')).toBe(false);
   });
   it('counts syllables with digraphs and synizesis', () => {
     expect(syllables('παιδί')).toBe(2);

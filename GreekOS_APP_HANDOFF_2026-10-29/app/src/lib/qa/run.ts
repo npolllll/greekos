@@ -11,6 +11,7 @@ import { promisify } from 'node:util';
 import { adminClient, selectAll } from '../supabase/admin.ts';
 import { stableStringify } from '../content/stable-json.ts';
 import { CHECKS, QA_TOOL_VERSION, checkItem, collectGreekWords, greekFields, orthography, verdictOf, type Finding, type ItemForQa, type QaContext } from './checks.ts';
+import { LEXICON_ADDITIONS } from './lexicon-el.ts';
 
 const run = promisify(execFile);
 
@@ -33,7 +34,8 @@ export async function unknownGreekWords(words: Set<string>): Promise<{ unknown: 
     child.stdout?.on('data', (c) => { out += c; });
     child.stdin?.end([...words].join('\n'));
     await new Promise<void>((res, rej) => { child.on('error', rej); child.on('close', () => res()); });
-    return { unknown: new Set(out.split('\n').map((s) => s.trim().toLowerCase()).filter(Boolean)), dictionary: dict };
+    // Dictionary gaps checked by the developer (lexicon-el.ts) are not spelling errors.
+    return { unknown: new Set(out.split('\n').map((s) => s.trim().toLowerCase()).filter((w) => w && !(w in LEXICON_ADDITIONS))), dictionary: dict };
   } catch {
     return { unknown: null, dictionary: null };
   }

@@ -243,7 +243,7 @@ export async function learnerTurn(user: SessionUser, b: { session_id: string; te
   // model, only the deterministic grammar rules (labelled as rules) are applied, synchronously.
   const feedbackTurn = !b.repair && /\p{Script=Greek}/u.test(text) && s.mode !== 'b2_mock';
   const wantsFeedback = ai && feedbackTurn;
-  const ruleOnly = !ai && feedbackTurn ? ruleFeedback(text) : null;
+  const ruleOnly = !ai && feedbackTurn ? await ruleFeedback(text) : null;
   let learnerTurnId: string | null = null;
   if (!b.repair) {
     if (!text) throw new HttpError(422, 'EMPTY_TURN', 'Пустая реплика не отправляется.');

@@ -120,7 +120,7 @@ async function runCase(c: EvalCase, sc: { level: string; payload: ScenarioPayloa
     feedback_ok: e.feedback === 'skip' ? null : e.feedback === 'none' ? !fb : !!fb && (!e.better_any || e.better_any.some((x) => fold(fb.better_el).includes(fold(x)))),
     feedback_ms: feedbackMs,
     // What the learner actually sees: the course rules first, then the model (measured separately).
-    rule_feedback: c.expect.feedback === 'skip' ? null : ruleFeedback(c.learner),
+    rule_feedback: c.expect.feedback === 'skip' ? null : await ruleFeedback(c.learner),
   };
   const shown = row.rule_feedback ?? fb;
   Object.assign(row, { shown_ok: e.feedback === 'skip' ? null : e.feedback === 'none' ? !shown : !!shown && (!e.better_any || e.better_any.some((x) => fold(shown.better_el).includes(fold(x)))) });

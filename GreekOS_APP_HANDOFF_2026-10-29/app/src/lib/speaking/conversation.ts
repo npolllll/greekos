@@ -17,7 +17,9 @@ import { isLocalLlm, llmInfo } from '../providers/llm.ts';
 import { HINTS_ALLOWED, type SpeakingMode } from './state-machine.ts';
 import { nodeById, isTerminal, type ScenarioNode, type ScenarioPayload, type TurnContext } from './dialogue.ts';
 import { JsonFieldStream, SentenceCutter } from './stream-json.ts';
-import { fixNumeralAgreement, guardGreek, greekWords } from './greek-guard.ts';
+import { guardGreek, greekWords } from './greek-guard.ts';
+import { applyCourseRules, courseRuleFindings } from './grammar-rules.ts';
+import { attested, vettedIndex } from './vetted-greek.ts';
 import { generationAllowed } from './qualification.ts';
 import { sceneRole } from './personas.ts';
 
@@ -233,7 +235,10 @@ export async function conversationTurn(input: ConversationTurnInput): Promise<Co
     chain = chain.then(async () => {
       // After a barge-in nothing more is voiced or stored: the line is what was actually said.
       if (rejected || input.signal?.aborted) return;
-      const g = await guardGreek(sentence, { level: lv, allowed: allowedWords, maxWords: 40 });
+      // The persona never voices an error the course teaches against (σε το, ένα καφέ, πρέπει πάω…).
+      const ruled = await applyCourseRules(sentence);
+      fixes.push(...ruled.fixes);
+      const g = await guardGreek(ruled.text, { level: lv, allowed: allowedWords, maxWords: 40 });
       fixes.push(...g.fixes);
       if (input.signal?.aborted) return;
       if (!g.ok) { rejected = true; problems.push(...g.problems); ac.abort(); return; }
@@ -342,11 +347,14 @@ const FEEDBACK_SYSTEM = `Ты — внимательный преподават�
 - why_ru — одно короткое пояснение по-русски.
 - kind — "error" для ошибки; "more_natural", если ошибки нет, но есть заметно более естественный вариант.
 Если реплика верна и естественна — has_issue=false. Не придирайся к пунктуации, заглавным буквам и выбору синонима, если смысл и форма верны.
+Исправляй только то, в чём уверен: ложное исправление верной фразы хуже, чем пропущенная ошибка. Исправленный фрагмент сам должен быть грамматически верным (согласуй число глагола с подлежащим).
 
 Примеры:
 Реплика: «Θέλω δύο κιλό πορτοκάλι.» → {"has_issue":true,"quote":"δύο κιλό πορτοκάλι","better_el":"δύο κιλά πορτοκάλια","why_ru":"После числа больше одного нужно множественное число: κιλά, πορτοκάλια.","kind":"error"}
 Реплика: «Καλημέρα, θέλω ένα καφέ.» → {"has_issue":true,"quote":"ένα καφέ","better_el":"έναν καφέ","why_ru":"Ο καφές — мужской род, в винительном падеже: έναν καφέ.","kind":"error"}
-Реплика: «Ένα κιλό μήλα, παρακαλώ.» → {"has_issue":false,"quote":"","better_el":"","why_ru":"","kind":"error"}`;
+Реплика: «Ένα κιλό μήλα, παρακαλώ.» → {"has_issue":false,"quote":"","better_el":"","why_ru":"","kind":"error"}
+Реплика: «Πόσο κάνει το εισιτήριο για τη Θεσσαλονίκη;» → {"has_issue":false,"quote":"","better_el":"","why_ru":"","kind":"error"}
+Реплика: «Πρέπει πάω στο γραφείο.» → {"has_issue":true,"quote":"Πρέπει πάω","better_el":"Πρέπει να πάω","why_ru":"После «πρέπει» глагол присоединяется через «να».","kind":"error"}`;
 
 const FeedbackOut = z.object({ has_issue: z.boolean(), quote: z.string(), better_el: z.string(), why_ru: z.string(), kind: z.enum(['error', 'more_natural']) });
 const FEEDBACK_SCHEMA = {
@@ -368,27 +376,20 @@ const variantKey = (t: string) => fold(t).normalize('NFD').replace(/\p{M}/gu, ''
  * what the learner said, the better form must differ and pass the Greek guard. Returns null when the
  * model finds nothing, fails, or proposes something that does not survive validation.
  */
-/** Numeral agreement the course teaches (έναν καφέ, τρία ευρώ, τρεις καφέδες, ένα ευρώ). */
-export function ruleFeedback(text: string): TurnFeedback | null {
-  const { fixes } = fixNumeralAgreement(text.normalize('NFC'));
-  if (!fixes.length) return null;
-  const [quote, better] = fixes[0].split(' → ');
-  const to = better.split(' ')[0].toLowerCase();
-  const why_ru = to === 'έναν'
-    ? 'Существительное мужского рода в винительном падеже: «έναν» (перед гласной и κ, π, τ буква -ν обязательна).'
-    : to === 'ένα'
-      ? '«ευρώ» — среднего рода: «ένα ευρώ».'
-      : to === 'τρία' || to === 'τέσσερα'
-        ? 'Числительное согласуется с родом: «τρία», «τέσσερα» — со словами среднего рода.'
-        : 'Числительное согласуется с родом: «τρεις», «τέσσερις» — со словами мужского и женского рода.';
-  return { quote, better_el: better, why_ru, kind: 'error', source: 'rule:numeral-agreement' };
+/**
+ * The course's deterministic grammar rules on the learner's phrase (grammar-rules.ts): the first
+ * certain error, labelled as a rule (source "rule:<id>"), never as AI.
+ */
+export async function ruleFeedback(text: string): Promise<TurnFeedback | null> {
+  const f = (await courseRuleFindings(text))[0];
+  return f ? { quote: f.quote, better_el: f.better_el, why_ru: f.why_ru, kind: 'error', source: `rule:${f.rule}` } : null;
 }
 
 export async function feedbackOnLearnerTurn(p: { userId: string | null; sessionId: string; learnerText: string; context: string | null; level: string | null; signal?: AbortSignal; /** false: the model alone (qualification measures the model, not the rules). */ rules?: boolean }): Promise<TurnFeedback | null> {
   const text = p.learnerText.trim();
   if (!text || !/\p{Script=Greek}/u.test(text)) return null;
   // Deterministic grammar rules first: certain, instant, and labelled as a rule, not as AI.
-  const rule = p.rules === false ? null : ruleFeedback(text);
+  const rule = p.rules === false ? null : await ruleFeedback(text);
   if (rule) return rule;
   if (!generationAllowed()) return null;
   const r = await streamJson({
@@ -405,5 +406,10 @@ export async function feedbackOnLearnerTurn(p: { userId: string | null; sessionI
   if (!quote || !better || !fold(text).includes(fold(quote)) || variantKey(quote) === variantKey(better)) return null;
   const g = await guardGreek(better, { level: 'B2', maxWords: 12 });
   if (!g.ok || !out.why_ru.trim()) return null;
+  // The course itself says it this way: a "correction" of vetted Greek contradicts the course.
+  const idx = await vettedIndex().catch(() => null);
+  if (idx && (attested(text, idx) || attested(quote, idx))) return null;
+  // A correction that itself breaks a course rule is wrong.
+  if ((await courseRuleFindings(g.text)).length) return null;
   return { quote, better_el: g.text, why_ru: out.why_ru.trim().slice(0, 220), kind: out.kind, source: llmInfo().model ?? 'llm' };
 }

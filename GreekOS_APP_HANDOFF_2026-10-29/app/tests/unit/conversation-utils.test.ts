@@ -37,10 +37,10 @@ describe('Greek guard helpers', () => {
     expect(fixNumeralAgreement('Εντάξει. Ένα καφέ και ένα νερό.').text).toBe('Εντάξει. Έναν καφέ και ένα νερό.');
   });
 
-  it('turns a numeral-agreement error of the learner into a rule-labelled correction', () => {
-    expect(ruleFeedback('Θέλω ένα καφέ και ένα νερό, παρακαλώ.')).toMatchObject({ quote: 'ένα καφέ', better_el: 'έναν καφέ', kind: 'error', source: 'rule:numeral-agreement' });
-    expect(ruleFeedback('Είναι τρεις ευρώ;')).toMatchObject({ quote: 'τρεις ευρώ', better_el: 'τρία ευρώ' });
-    expect(ruleFeedback('Θέλω ένα χυμό και έναν καφέ.')).toBeNull();
+  it('turns a numeral-agreement error of the learner into a rule-labelled correction', async () => {
+    expect(await ruleFeedback('Θέλω ένα καφέ και ένα νερό, παρακαλώ.')).toMatchObject({ quote: 'ένα καφέ', better_el: 'έναν καφέ', kind: 'error', source: 'rule:numeral' });
+    expect(await ruleFeedback('Είναι τρεις ευρώ;')).toMatchObject({ quote: 'τρεις ευρώ', better_el: 'τρία ευρώ' });
+    expect(await ruleFeedback('Θέλω ένα χυμό και έναν καφέ.')).toBeNull();
   });
 
   it('lists Greek word forms only', () => {

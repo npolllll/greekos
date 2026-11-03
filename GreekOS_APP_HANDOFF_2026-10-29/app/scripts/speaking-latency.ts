@@ -66,7 +66,7 @@ async function main() {
       await pause(listenMs);
       await after;
     }
-    await endSession(user, { session_id: v.session_id, idempotency_key: randomUUID() }).catch(() => null);
+    await endSession(user, v.session_id).catch(() => null);
   } finally {
     await db.auth.admin.deleteUser(id);
   }

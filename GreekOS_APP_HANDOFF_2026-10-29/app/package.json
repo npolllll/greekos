@@ -32,6 +32,9 @@
     "audio:benchmark": "tsx scripts/audio-cli.ts benchmark --out reports/v5.4",
     "speaking:eval": "tsx scripts/speaking-eval.ts",
     "qa:autofix": "tsx --conditions=react-server scripts/qa-autofix.ts",
+    "qa:engineering-fixes": "tsx --conditions=react-server scripts/qa-engineering-fixes.ts",
+    "speaking:latency": "tsx --conditions=react-server scripts/speaking-latency.ts",
+    "rules:corpus": "tsx --conditions=react-server scripts/rules-on-corpus.ts",
     "admission:plan": "tsx --conditions=react-server scripts/admission-plan.ts"
   },
   "dependencies": {

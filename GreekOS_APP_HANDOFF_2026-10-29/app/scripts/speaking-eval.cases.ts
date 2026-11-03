@@ -1,5 +1,5 @@
 /**
- * GreekOS speaking evaluation suite (v1). Each case is one learner turn in a real corpus scenario,
+ * GreekOS speaking evaluation suite (v2: + 9 correction cases — 5 errors, 4 correct phrases). Each case is one learner turn in a real corpus scenario,
  * with what a competent interlocutor must do. Labels were written by the developer from Greek
  * grammar (not by a native reviewer); they test the engine, they do not certify the language.
  */
@@ -27,7 +27,7 @@ export interface EvalCase {
 
 const TWIST_SC01: Array<['a' | 'l', string]> = [['l', 'Θέλω ένα κιλό μήλα.'], ['a', 'Τα μήλα τελείωσαν. Έχουμε αχλάδια με δύο ευρώ το κιλό. Θέλετε;']];
 
-export const SUITE = 'greekos-speaking-eval/1';
+export const SUITE = 'greekos-speaking-eval/2';
 
 export const CASES: EvalCase[] = [
   { id: 'sc01-request', scenario: 'SC01', mode: 'roleplay', learner: 'Καλημέρα. Θέλω ένα κιλό μήλα, παρακαλώ.', expect: { stages: ['TWIST'], feedback: 'none' } },
@@ -59,5 +59,15 @@ export const CASES: EvalCase[] = [
   { id: 'b2mock-no-hints', scenario: 'SC14', mode: 'b2_mock', learner: 'Το πρόβλημα είναι ότι το παράθυρο δεν κλείνει σωστά.', expect: { stages: ['TWIST', 'OPEN'], feedback: 'skip', no_hint: true } },
   { id: 'a0-short', scenario: 'SC01', mode: 'a0_guided', level: 'A0', learner: 'Μήλα, παρακαλώ.', expect: { stages: ['TWIST', 'OPEN'], feedback: 'none', max_words: 14 } },
   { id: 'a0-russian', scenario: 'SC05', mode: 'a0_guided', level: 'A0', learner: 'Кофе, пожалуйста.', expect: { stages: ['OPEN', 'REPAIR', 'TWIST'], feedback: 'skip', max_words: 14 } },
+  // v2: corrections — errors the rules catch and errors only the model can, and correct phrases that must stay untouched.
+  { id: 'sc12-se-article', scenario: 'SC12', mode: 'roleplay', learner: 'Πρέπει να πάω σε το νοσοκομείο. Ποιο λεωφορείο πάει εκεί;', expect: { feedback: 'issue', better_any: ['στο νοσοκομείο', 'στο'] } },
+  { id: 'sc05-pronoun-verb', scenario: 'SC05', mode: 'roleplay', learner: 'Εγώ πίνει καφέ χωρίς ζάχαρη.', expect: { feedback: 'issue', better_any: ['πίνω'] } },
+  { id: 'sc01-number-plural', scenario: 'SC01', mode: 'roleplay', learner: 'Θέλω τρία μήλο και δύο αχλάδι.', expect: { feedback: 'issue', better_any: ['τρία μήλα', 'μήλα', 'δύο αχλάδια'] } },
+  { id: 'sc07-masc-article', scenario: 'SC07', mode: 'roleplay', learner: 'Θέλω να μιλήσω με το διευθυντή, παρακαλώ.', expect: { feedback: 'issue', better_any: ['τον διευθυντή'] } },
+  { id: 'free-subject-verb', scenario: 'SC24', mode: 'free_talk', learner: 'Οι φίλοι μου μένει στην Αθήνα και εγώ μένω εδώ.', expect: { feedback: 'issue', better_any: ['μένουν'], question: true } },
+  { id: 'sc05-correct-2', scenario: 'SC05', mode: 'roleplay', learner: 'Έναν φρέντο εσπρέσο χωρίς ζάχαρη, παρακαλώ.', expect: { feedback: 'none' } },
+  { id: 'sc12-correct', scenario: 'SC12', mode: 'roleplay', learner: 'Πώς μπορώ να πάω στον σταθμό;', expect: { feedback: 'none' } },
+  { id: 'free-correct-2', scenario: 'SC24', mode: 'free_talk', learner: 'Χθες πήγαμε στη θάλασσα και φάγαμε ψάρι.', expect: { feedback: 'none', question: true } },
+  { id: 'sc07-correct-2', scenario: 'SC07', mode: 'roleplay', learner: 'Χρειάζομαι το διαβατήριο και μια φωτογραφία;', expect: { feedback: 'none' } },
   { id: 'sc05-gender-error', scenario: 'SC05', mode: 'roleplay', node: 'NEGOTIATE', history: [['l', 'Έναν καφέ, παρακαλώ.'], ['a', 'Μικρό ποτήρι δεν έχουμε. Θέλετε μεγάλο στην ίδια τιμή;'], ['l', 'Ναι, μεγάλο.'], ['a', 'Θα μείνετε εδώ ή θα τα πάρετε μαζί σας;']], learner: 'Θα μείνω εδώ. Περιμένω μια φίλος στις πέντε.', expect: { stages: ['CLOSE', 'NEGOTIATE'], feedback: 'issue', better_any: ['μια φίλη', 'έναν φίλο', 'ένα φίλο', 'μία φίλη'] } },
 ];

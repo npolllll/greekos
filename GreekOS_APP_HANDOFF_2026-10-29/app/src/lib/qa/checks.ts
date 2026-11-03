@@ -11,7 +11,7 @@ import { adapterFor, choiceOptions, hasOptions, type ItemEnvelope } from '../con
 import { keyedOptions } from '../scoring/score.ts';
 import { normalizeByPolicy } from '../scoring/normalize.ts';
 
-export const QA_TOOL_VERSION = 'greekos-digital-qa/2.0';
+export const QA_TOOL_VERSION = 'greekos-digital-qa/2.1';
 
 export type Severity = 'blocking' | 'warning' | 'info';
 export interface Finding {
@@ -69,6 +69,9 @@ const VOWELS = /[αεηιουωάέήίόύώϊϋΐΰ]/giu;
 const HOMOGLYPHS = /[A-Za-zА-Яа-яЁё]/u;
 // Monosyllables that legitimately carry an accent (disambiguation / interrogatives).
 const ACCENTED_MONO = new Set(['ή', 'πού', 'πώς', 'Ή', 'Πού', 'Πώς']);
+// Clitic pronouns with the diacritic accent that removes an ambiguity (ο φίλος μού είπε / ο φίλος μου):
+// standard usage, reported as information only.
+const DIACRITIC_CLITICS = new Set(['μού', 'σού', 'τού', 'τής', 'μάς', 'σάς', 'τούς', 'τόν', 'τήν']);
 const ENCLITICS = new Set(['μου', 'σου', 'του', 'της', 'μας', 'σας', 'τους', 'το', 'τα', 'τον', 'την', 'τη', 'τις', 'τες', 'με', 'σε']);
 // Monosyllables by synizesis that are often wrongly accented (πιό, μιά, γιά, ποιός…).
 const SYNIZESIS_MONO = /^(πι[οό]|μι[αά]ς?|γι[αά]|γει[αά]|πι[αά]|ποι[οό][ςυνι]?|ποι[αά]ς?|ποι[εέ]ς|δυ[οό])$/u;
@@ -154,7 +157,8 @@ export function orthography(field: string, text: string, ctx: OrthographyContext
     const after = norm[tokens[i].end] ?? ' ';
     // Elided forms (δώσ' μου, στείλ' το) and notation fragments (γρά-φω, -ής, σ/ς) are not words.
     const elided = /['’ʼ]/u.test(after);
-    const fragment = /[-‑–/]/u.test(before) || /[-‑–/]/u.test(after) || [...w].length <= 1 || !/[αεηιουωάέήίόύώϊϋΐΰ]/iu.test(w);
+    // An ordinal suffix after digits (20ού, 3η) is notation, not a word.
+    const fragment = /[-‑–/\d]/u.test(before) || /[-‑–/]/u.test(after) || [...w].length <= 1 || !/[αεηιουωάέήίόύώϊϋΐΰ]/iu.test(w);
     if (HOMOGLYPHS.test(w)) {
       out.push({ check_id: 'ortho.mixed_script', severity: 'blocking', field, message_ru: `В слове «${w}» смешаны греческие и латинские/кириллические буквы.`, evidence: { word: w, foreign: w.match(/[A-Za-zА-Яа-яЁё]/gu) } });
       continue;
@@ -170,10 +174,16 @@ export function orthography(field: string, text: string, ctx: OrthographyContext
     }
     if (accents > 0 && SYNIZESIS_MONO.test(w.toLowerCase()) && !ACCENTED_MONO.has(w)) {
       out.push({ check_id: 'ortho.monosyllable_accent', severity: 'warning', field, message_ru: `«${w}»: односложное по синизезе слово пишется без ударения.`, evidence: { word: w }, suggestion: w.normalize('NFD').replace(/\u0301/g, '').normalize('NFC') });
+    } else if (syl === 1 && accents > 0 && DIACRITIC_CLITICS.has(w.toLowerCase())) {
+      out.push({ check_id: 'ortho.monosyllable_accent', severity: 'info', field, message_ru: `«${w}»: диакритическое ударение на местоимении — допустимо, если снимает двусмысленность.`, evidence: { word: w } });
     } else if (syl === 1 && accents > 0 && !ACCENTED_MONO.has(w) && !elided) {
       out.push({ check_id: 'ortho.monosyllable_accent', severity: 'warning', field, message_ru: `«${w}»: односложное слово обычно пишется без ударения.`, evidence: { word: w }, suggestion: w.normalize('NFD').replace(/́/g, '').normalize('NFC') });
     }
-    if (accents >= 2 && !ENCLITICS.has((words[i + 1] ?? '').toLowerCase())) {
+    // Two accents before an enclitic — also before a gap the learner fills with one (την απάντησή ___ → σας),
+    // and in a gap answer (the enclitic follows in the text around the gap).
+    const beforeGap = /^\s*(_{2,}|…|\.{3}|\(\d+\))/u.test(norm.slice(tokens[i].end));
+    const gapAnswer = /^(answer|accepted_alternatives|options)\b/.test(field) && i === words.length - 1;
+    if (accents >= 2 && !ENCLITICS.has((words[i + 1] ?? '').toLowerCase()) && !beforeGap && !gapAnswer) {
       out.push({ check_id: 'ortho.double_accent', severity: 'warning', field, message_ru: `«${w}»: два ударения допустимы только перед энклитикой (το όνομά μου).`, evidence: { word: w, next: words[i + 1] ?? null } });
     }
     if (ctx.unknownWords && ctx.unknownWords.has(w.toLowerCase()) && !isUpper && !elided && [...w].length > 2 && !(accents >= 2 && ENCLITICS.has((words[i + 1] ?? '').toLowerCase()))) {
@@ -182,6 +192,21 @@ export function orthography(field: string, text: string, ctx: OrthographyContext
     }
   }
   return out;
+}
+
+/**
+ * The key is given away when the instruction itself names it as a whole word — not when it sits in a
+ * quoted text to analyse («…»), in a lemma hint in brackets, or among alternatives offered as the task
+ * (τώρα или χτες).
+ */
+export function keyLeaks(prompt: string, answer: unknown): boolean {
+  if (typeof answer !== 'string') return false;
+  const a = answer.normalize('NFC').trim();
+  if ([...a].length < 4) return false;
+  const esc = a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const outside = prompt.normalize('NFC').replace(/«[^»]*»/gu, ' ').replace(/"[^"]*"/gu, ' ').replace(/“[^”]*”/gu, ' ').replace(/\([^)]*\)/gu, ' ');
+  if (!new RegExp(`(?<![\\p{L}\\p{M}])${esc}(?![\\p{L}\\p{M}])`, 'u').test(outside)) return false;
+  return !new RegExp(`${esc}\\s+(или|ή)\\s|\\s(или|ή)\\s+${esc}|${esc}\\s*/|/\\s*${esc}`, 'u').test(outside);
 }
 
 function greekShare(s: string): number {
@@ -258,14 +283,24 @@ export function checkItem(it: ItemForQa, ctx: QaContext): Finding[] {
   const st = (e.scoring?.policy?.normalization as string[] | undefined) ?? undefined;
   const altsNorm = [...answers, ...(e.accepted_alternatives ?? []).filter((x): x is string => typeof x === 'string')].map((a) => normalizeByPolicy(a, st));
   if (new Set(altsNorm).size < altsNorm.length) f.push({ check_id: 'keys.alternatives_duplicate', severity: 'info', field: 'accepted_alternatives', message_ru: 'Некоторые допустимые варианты совпадают после нормализации.' });
-  if (kind !== 'choice' && answers.length && answers.some((a) => a.trim().length >= 4 && e.prompt.includes(a.trim())) && it.item_type !== 'error_correction') {
-    f.push({ check_id: 'keys.key_in_prompt', severity: 'warning', field: 'prompt', message_ru: 'Ответ дословно присутствует в формулировке — проверьте, не подсказан ли он.', evidence: { answer: answers.find((a) => e.prompt.includes(a.trim())) } });
+  const leaked = kind !== 'choice' && it.item_type !== 'error_correction' ? answers.find((a) => keyLeaks(e.prompt, a)) : undefined;
+  if (leaked) {
+    f.push({ check_id: 'keys.key_in_prompt', severity: 'warning', field: 'prompt', message_ru: 'Ответ назван в самой инструкции (не в тексте для анализа) — задание сводится к копированию.', evidence: { answer: leaked } });
   }
-  if (it.scoring_strategy === 'REVIEW_REQUIRED' && !e.rubric && !(e.criteria ?? []).length && !e.model_response) {
+  // A key answer is a basis for the reviewer too.
+  if (it.scoring_strategy === 'REVIEW_REQUIRED' && !e.rubric && !(e.criteria ?? []).length && !e.model_response && !answers.length) {
     f.push({ check_id: 'scoring.review_basis', severity: 'warning', field: 'rubric', message_ru: 'Нет рубрики, критериев и образца — ответ сможет оценить только человек без опоры.' });
   }
-  // Orthography over every Greek string
-  for (const { field, text } of greekFields(e)) f.push(...orthography(field, text, ctx.ortho));
+  // Orthography over every Greek string. Options that differ only by accent are a deliberate stress
+  // contrast (Πότε / Ποτέ / Ποτε): their accent and spelling findings are not defects.
+  const contrast = (() => {
+    const labels = choiceOptions(e.options).map((o) => o.label.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim());
+    return labels.length > 1 && new Set(labels).size < labels.length;
+  })();
+  for (const { field, text } of greekFields(e)) {
+    const found = orthography(field, text, ctx.ortho);
+    f.push(...(contrast && field.startsWith('options') ? found.filter((x) => !/^ortho\.(missing_accent|monosyllable_accent|double_accent|spelling)$/.test(x.check_id)) : found));
+  }
   // Level
   const unit = it.unit_id ? ctx.units.get(it.unit_id) : undefined;
   if (unit && it.level && unit.level !== it.level) f.push({ check_id: 'level.consistency', severity: 'warning', field: 'level', message_ru: `Уровень задания ${it.level} ≠ уровень урока ${unit.level}.` });

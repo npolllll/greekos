@@ -58,6 +58,7 @@ if [ -f "$BUNDLE/AUDIO_BUNDLE_MANIFEST.json" ]; then npm run audio -- import-bun
 step "8/9 digital QA of the corpus (+ deterministic fixes as recorded revisions)"
 npx tsx scripts/qa-batch.ts
 npx tsx --conditions=react-server scripts/qa-autofix.ts
+npx tsx --conditions=react-server scripts/qa-engineering-fixes.ts
 
 step "9/9 DEV-PREVIEW tester (local only)"
 if [ ! -f .local-credentials/tester.json ]; then

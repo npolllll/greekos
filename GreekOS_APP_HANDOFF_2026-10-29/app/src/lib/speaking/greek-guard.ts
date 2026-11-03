@@ -25,23 +25,46 @@ export function greekWords(text: string): string[] {
 const NEUTER_PLURAL = /^(ευρώ|[\p{Script=Greek}]+[αά])$/u;
 const MASC_FEM_PLURAL = /^[\p{Script=Greek}]+(ες|ές|οι|είς|εις)$/u;
 
-// Frequent masculine nouns of the course scenes in the accusative singular that begin with a vowel or
-// κ, π, τ — where the final -ν of «έναν» is obligatory (έναν καφέ, έναν αριθμό). «ένα» before them is an
-// error small models often echo from the learner. (Before other consonants «ένα χρόνο» is accepted.)
-const MASC_ACC = new Set(['καφέ', 'κωδικό', 'καθηγητή', 'κήπο', 'πελάτη', 'πίνακα', 'πωλητή', 'τεχνικό', 'τόνο', 'υπάλληλο', 'οδηγό', 'αριθμό', 'όροφο', 'ήλιο', 'άνθρωπο', 'ακροατή', 'επιβάτη']);
+/** Closed-class words (articles, prepositions, particles, frequent adverbs): never the noun a rule is about. */
+export const CLOSED_CLASS = new Set([
+  'ο', 'η', 'το', 'οι', 'τα', 'τον', 'την', 'τη', 'του', 'της', 'των', 'τους', 'τις', 'στο', 'στη', 'στην', 'στον', 'στα', 'στους', 'στις', 'στου', 'στης',
+  'ένα', 'ένας', 'μια', 'μία', 'έναν', 'σε', 'με', 'για', 'από', 'παρά', 'μετά', 'κατά', 'προς', 'χωρίς', 'ως', 'μέχρι', 'πριν', 'και', 'κι', 'αλλά', 'ή', 'να', 'θα', 'δεν', 'μη', 'μην',
+  'που', 'πού', 'πως', 'πώς', 'αυτό', 'αυτά', 'εκείνο', 'εκείνα', 'κάθε', 'όλα', 'πολλά', 'λίγα', 'καλά', 'μακριά', 'κοντά', 'δεξιά', 'αριστερά', 'σιγά', 'γρήγορα', 'ακριβώς', 'περίπου', 'σχεδόν', 'ακόμα', 'ακόμη', 'μαζί', 'ήδη', 'τέτοια', 'μερικά',
+]);
 
-/** Numeral gender agreement with the following noun (3 and 4 have neuter forms; 1 with ευρώ). */
+// Frequent masculine nouns of the course scenes in the accusative singular that begin with a vowel or
+// κ, π, τ — where the final -ν of «έναν» is obligatory (έναν αριθμό, έναν πελάτη). «ένα» before them is an
+// error small models often echo from the learner. (Before other consonants «ένα χρόνο» is accepted.)
+// «καφέ» is not here: it is also the indeclinable neuter «το καφέ» (a café) — see coffeeMeant().
+export const MASC_ACC = new Set(['κωδικό', 'καθηγητή', 'κήπο', 'πελάτη', 'πίνακα', 'πωλητή', 'τεχνικό', 'τόνο', 'υπάλληλο', 'οδηγό', 'αριθμό', 'όροφο', 'ήλιο', 'άνθρωπο', 'ακροατή', 'επιβάτη']);
+
+const CAFE_PLACE = new Set(['σε', 'από', 'για', 'υπάρχει', 'υπάρχουν', 'δίπλα', 'απέναντι', 'μέσα', 'έξω', 'κοντά', 'βρήκα', 'ανοίγει', 'άνοιξε', 'κλείνει']);
+const CONSUME = new Set(['θέλω', 'θέλεις', 'θέλει', 'θέλουμε', 'θέλετε', 'θέλουν', 'ήθελα', 'πίνω', 'πίνεις', 'πίνει', 'πίνουμε', 'πίνετε', 'ήπια', 'παίρνω', 'παίρνεις', 'παίρνει', 'πάρω', 'πάρε', 'πάρτε', 'φέρτε', 'φέρε', 'φέρνω', 'δώστε', 'δώσε', 'κάνω', 'κάνε', 'κάντε', 'φτιάξε', 'φτιάξτε', 'φτιάχνω', 'παραγγέλνω', 'παρήγγειλα', 'ακόμα', 'ακόμη', 'μόνο', 'ετοιμάζω']);
+const DRINK_AFTER = /^\s*(?:,\s*)?(?:και|κι)\s+(?:ένα|έναν|μία|μια|δύο)?\s*(?:νερό|τσάι|χυμό|γλυκό|κρουασάν|πορτοκαλάδα|γάλα|μπίρα|κρασί|τοστ|σάντουιτς|κουλούρι|κέικ|μπουκάλι)/u;
+const COFFEE_WORD_AFTER = /^\s*(?:παρακαλώ|σκέτο|γλυκό|μέτριο|με\s+γάλα|με\s+ζάχαρη|χωρίς|ζεστό|κρύο|φρέντο|ελληνικό|φίλτρου)/u;
+
+/** «ένα καφέ»: a coffee (masculine, → έναν καφέ) only where the context says drink, never a café. */
+export function coffeeMeant(before: string, after: string): boolean {
+  const prev = (before.toLowerCase().match(/[\p{L}\p{M}]+(?=[^\p{L}\p{M}]*$)/u) ?? [''])[0];
+  if (CAFE_PLACE.has(prev)) return false;
+  if (CONSUME.has(prev) || DRINK_AFTER.test(after) || COFFEE_WORD_AFTER.test(after)) return true;
+  // «Ένα καφέ, παρακαλώ.» / «Ένα καφέ.» as an order on its own.
+  return /(^|[.!?;:]\s*)$/u.test(before) && /^\s*([,.!]|$)/u.test(after);
+}
+
+/** Numeral gender agreement with the following noun (3 and 4 have neuter forms; 1 with ευρώ and καφέ). */
 export function fixNumeralAgreement(text: string): { text: string; fixes: string[] } {
   const fixes: string[] = [];
-  const out = text.replace(/(?<!\p{L})(τρεις|τέσσερις|τρία|τέσσερα|ένας|ένα|μία|μια)(\s+)([\p{Script=Greek}]+)/giu, (all, num: string, sp: string, noun: string) => {
+  const out = text.replace(/(?<!\p{L})(τρεις|τέσσερις|τρία|τέσσερα|ένας|ένα|μία|μια)(\s+)([\p{Script=Greek}]+)/giu, (all: string, num: string, sp: string, noun: string, offset: number, str: string) => {
     const n = num.toLowerCase();
     const w = noun.toLowerCase();
+    if (CLOSED_CLASS.has(w)) return all;
     const keepCase = (to: string) => (num[0] === num[0].toUpperCase() ? to[0].toUpperCase() + to.slice(1) : to);
     let to: string | null = null;
     if ((n === 'τρεις' || n === 'τέσσερις') && NEUTER_PLURAL.test(w)) to = n === 'τρεις' ? 'τρία' : 'τέσσερα';
     else if ((n === 'τρία' || n === 'τέσσερα') && MASC_FEM_PLURAL.test(w) && w !== 'ευρώ') to = n === 'τρία' ? 'τρεις' : 'τέσσερις';
     else if ((n === 'ένας' || n === 'μία' || n === 'μια') && w === 'ευρώ') to = 'ένα';
-    else if (n === 'ένα' && MASC_ACC.has(w)) to = 'έναν';
+    else if (n === 'ένα' && (MASC_ACC.has(w) || (w === 'καφέ' && coffeeMeant(str.slice(0, offset), str.slice(offset + all.length))))) to = 'έναν';
     if (!to) return all;
     fixes.push(`${num} ${noun} → ${keepCase(to)} ${noun}`);
     return `${keepCase(to)}${sp}${noun}`;
