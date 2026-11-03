@@ -6,7 +6,7 @@ import { startVoiceGateway, type RunningGateway } from '@/lib/speaking/gateway';
 import { mintStreamToken } from '@/lib/speaking/stream-token';
 import { decodeAudioChunk, GATEWAY_PATH, FRAME_SAMPLES, type ServerMessage } from '@/lib/speaking/stream-protocol';
 import { startSession } from '@/lib/speaking/service';
-import { sayToWav, localAsrHealth, listLocalGreekVoices, listServiceVoices, serviceTts } from '@/lib/providers/local-engines';
+import { sayToWav, localAsrHealth, localTranscribe, listLocalGreekVoices, listServiceVoices, serviceTts } from '@/lib/providers/local-engines';
 import { parseWav, pcmSamples } from '@/lib/audio/wav';
 import { syncLocalVoices, proposeCastVoices } from '@/lib/voice/catalog';
 
@@ -90,8 +90,19 @@ class Client {
   }
 }
 
+const fold = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+
+/** Coqui VITS samples its prosody, and a rare take is unintelligible: the fixture is checked once with
+ * the same ASR (up to 3 takes), so the test exercises the gateway rather than an unlucky synthetic take. */
+async function intelligible(wav: Uint8Array, text: string) {
+  const want = fold(text).match(/\p{L}+/gu) ?? [];
+  const got = new Set(fold((await localTranscribe(wav)).text ?? '').match(/\p{L}+/gu) ?? []);
+  return want.filter((w) => got.has(w)).length >= Math.ceil(want.length / 2);
+}
+
 async function clip(text: string): Promise<Int16Array> {
-  const wav = engine === 'mac' ? await sayToWav(text, melina, 1, 16000) : (await serviceTts(melina, text, 'normal')).wav;
+  let wav = engine === 'mac' ? await sayToWav(text, melina, 1, 16000) : (await serviceTts(melina, text, 'normal')).wav;
+  for (let take = 1; engine === 'service' && take < 3 && !(await intelligible(wav, text)); take++) wav = (await serviceTts(melina, text, 'normal')).wav;
   const info = parseWav(wav)!;
   const pcm = pcmSamples(wav, info);
   if (info.sampleRate === 16000) return pcm;
@@ -341,6 +352,13 @@ describe('streaming voice gateway', () => {
       expect(row!.interrupted).toBe(true);
       expect(row!.heard_ms).toBe(400);
       expect(row!.text_el.length).toBeLessThan(JSON.parse(reply).reply_el.length);
+      // The latency of the interrupted reply is still recorded under the learner's turn (the barge-in
+      // came before the turn was stored, so the row is written once its number is known).
+      const { data: metrics } = await admin.from('speaking_turn_metrics').select('turn_seq, interrupted, heard_ms, playback_start_ms, llm_first_sentence_ms').eq('session_id', sid).order('turn_seq');
+      expect(metrics ?? []).toHaveLength(2);
+      expect(metrics!.at(-1)).toMatchObject({ interrupted: true, heard_ms: 400 });
+      expect(metrics!.at(-1)!.turn_seq).toBeGreaterThan(metrics![0].turn_seq);
+      expect(metrics!.at(-1)!.playback_start_ms).not.toBeNull();
       c.ws.close();
     } finally {
       Object.assign(process.env, { LLM_PROVIDER: saved.p ?? 'none', LLM_BASE_URL: saved.u ?? '', LLM_MODEL: saved.m ?? '', LLM_QUALIFICATION_FILE: saved.q ?? '' });

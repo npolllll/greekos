@@ -442,6 +442,9 @@ class StreamSession {
       timing.llmFirstSentenceMs = res.gen_first_ms;
       timing.dialogueEngine = res.engine_kind === 'llm' ? `llm:${res.engine.model ?? ''}` : res.engine_kind;
       timing.turnSeq = learner?.seq ?? -1;
+      // Playback of a streamed reply can end or be interrupted before the turn is stored, when the
+      // row could not be written yet (no turn number): write it now.
+      if (r.pb && this.playback !== r.pb) await this.writeMetrics(timing);
     }
     this.send({ type: 'turn', view: res, engine: res.engine_kind, hint_ru: res.hint_ru ?? null, engine_reason: res.engine_reason });
     await this.afterStored(r);

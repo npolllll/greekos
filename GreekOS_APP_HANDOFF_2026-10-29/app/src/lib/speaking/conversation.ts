@@ -367,11 +367,11 @@ export function ruleFeedback(text: string): TurnFeedback | null {
   return { quote, better_el: better, why_ru, kind: 'error', source: 'rule:numeral-agreement' };
 }
 
-export async function feedbackOnLearnerTurn(p: { userId: string | null; sessionId: string; learnerText: string; context: string | null; level: string | null; signal?: AbortSignal }): Promise<TurnFeedback | null> {
+export async function feedbackOnLearnerTurn(p: { userId: string | null; sessionId: string; learnerText: string; context: string | null; level: string | null; signal?: AbortSignal; /** false: the model alone (qualification measures the model, not the rules). */ rules?: boolean }): Promise<TurnFeedback | null> {
   const text = p.learnerText.trim();
   if (!text || !/\p{Script=Greek}/u.test(text)) return null;
   // Deterministic grammar rules first: certain, instant, and labelled as a rule, not as AI.
-  const rule = ruleFeedback(text);
+  const rule = p.rules === false ? null : ruleFeedback(text);
   if (rule) return rule;
   if (!generationAllowed()) return null;
   const r = await streamJson({

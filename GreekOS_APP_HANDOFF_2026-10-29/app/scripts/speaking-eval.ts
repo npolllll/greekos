@@ -13,7 +13,7 @@ import { join, resolve } from 'node:path';
 import { adminClient } from '../src/lib/supabase/admin.ts';
 import { env } from '../src/lib/env.ts';
 import { isLocalLlm, llmInfo } from '../src/lib/providers/llm.ts';
-import { conversationTurn, feedbackOnLearnerTurn, prefillConversation, CONVERSATION_ENGINE_VERSION } from '../src/lib/speaking/conversation.ts';
+import { conversationTurn, feedbackOnLearnerTurn, prefillConversation, ruleFeedback, CONVERSATION_ENGINE_VERSION } from '../src/lib/speaking/conversation.ts';
 import { greekWords } from '../src/lib/speaking/greek-guard.ts';
 import type { ScenarioPayload } from '../src/lib/speaking/dialogue.ts';
 import { CASES, SUITE, type EvalCase } from './speaking-eval.cases.ts';
@@ -55,6 +55,9 @@ async function main() {
     no_hint_ok: rate('no_hint_ok'),
     feedback_precision: fbGiven.length ? fbCorrect.length / fbGiven.length : 1,
     feedback_recall: fbIssue.length ? fbIssue.filter((r) => r.feedback_ok).length / fbIssue.length : 1,
+    // Not part of the qualification: rules + model, as shown to the learner.
+    shown_precision: (() => { const g = rows.filter((r) => r.feedback_expect !== 'skip' && (r.rule_feedback || r.feedback)); return g.length ? g.filter((r) => r.feedback_expect === 'issue' && r.shown_ok).length / g.length : 1; })(),
+    shown_recall: fbIssue.length ? fbIssue.filter((r) => r.shown_ok).length / fbIssue.length : 1,
     first_sentence_p50_ms: pct(rows.map((r) => Number(r.first_ms ?? 0)).filter(Boolean), 0.5),
     first_sentence_p95_ms: pct(rows.map((r) => Number(r.first_ms ?? 0)).filter(Boolean), 0.95),
     turn_p50_ms: pct(rows.map((r) => Number(r.total_ms)), 0.5),
@@ -96,7 +99,7 @@ async function runCase(c: EvalCase, sc: { level: string; payload: ScenarioPayloa
     persona: { name: 'Ελένη', presentation: 'female' }, onSentence: (x) => sentences.push({ t: Date.now() - t0, s: x }),
   });
   const f0 = Date.now();
-  const fb = c.expect.feedback === 'skip' ? null : await feedbackOnLearnerTurn({ userId: null, sessionId: `eval-${c.id}`, learnerText: c.learner, context: history.at(-1)?.text ?? null, level: c.level ?? sc.level });
+  const fb = c.expect.feedback === 'skip' ? null : await feedbackOnLearnerTurn({ userId: null, sessionId: `eval-${c.id}`, learnerText: c.learner, context: history.at(-1)?.text ?? null, level: c.level ?? sc.level, rules: false });
   const feedbackMs = c.expect.feedback === 'skip' ? null : Date.now() - f0;
   const reply = turn.assistantEl;
   const e = c.expect;
@@ -116,7 +119,11 @@ async function runCase(c: EvalCase, sc: { level: string; payload: ScenarioPayloa
     feedback: fb,
     feedback_ok: e.feedback === 'skip' ? null : e.feedback === 'none' ? !fb : !!fb && (!e.better_any || e.better_any.some((x) => fold(fb.better_el).includes(fold(x)))),
     feedback_ms: feedbackMs,
+    // What the learner actually sees: the course rules first, then the model (measured separately).
+    rule_feedback: c.expect.feedback === 'skip' ? null : ruleFeedback(c.learner),
   };
+  const shown = row.rule_feedback ?? fb;
+  Object.assign(row, { shown_ok: e.feedback === 'skip' ? null : e.feedback === 'none' ? !shown : !!shown && (!e.better_any || e.better_any.some((x) => fold(shown.better_el).includes(fold(x)))) });
   console.log(`${c.id}: ${row.engine} stage=${row.stage} ${row.stage_ok === false ? '✗' : ''} | ${reply} | fb=${fb ? `${fb.quote} → ${fb.better_el}` : '—'} ${row.feedback_ok === false ? '✗' : ''} | ${row.first_ms}ms/${row.total_ms}ms`);
   return row;
 }
@@ -141,6 +148,7 @@ function markdown(r: { model: string; suite: string; engine: string; evaluated_a
     `| Память фактов | ${(m.memory_ok * 100).toFixed(0)}% | — |`,
     `| Точность исправлений | ${(m.feedback_precision * 100).toFixed(0)}% | ≥ ${r.thresholds.feedback_precision * 100}% |`,
     `| Полнота исправлений | ${(m.feedback_recall * 100).toFixed(0)}% | ≥ ${r.thresholds.feedback_recall * 100}% |`,
+    ...(m.shown_recall !== undefined ? [`| Ученику показано (правила курса + модель): точность / полнота | ${(m.shown_precision * 100).toFixed(0)}% / ${(m.shown_recall * 100).toFixed(0)}% | вне квалификации |`] : []),
     `| Первое предложение p50 / p95 | ${m.first_sentence_p50_ms} / ${m.first_sentence_p95_ms} мс | — |`,
     `| Ход целиком p50 | ${m.turn_p50_ms} мс | — |`,
     `| Разбор фразы p50 (после ответа) | ${m.feedback_p50_ms} мс | — |`,
