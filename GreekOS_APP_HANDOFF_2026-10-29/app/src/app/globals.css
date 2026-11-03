@@ -590,7 +590,10 @@ button.alpha-cell:hover{transform:translateY(-3px);background:#fff;box-shadow:va
   body{font-size:14px}
   .viewport{padding:0}
   .studio-bar{position:relative;padding:9px 14px;margin:0;background:rgba(255,250,244,.7);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
-  .studio-bar>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .studio-bar{align-items:flex-start}
+  .studio-bar>span:first-child{flex:1 1 auto;flex-wrap:wrap;row-gap:2px;column-gap:6px;border-radius:14px;min-width:0}
+  .studio-bar .studio-right{flex:none}
+  .studio-bar .mode-badge{white-space:normal}
   .shell{display:block;border:0;border-radius:0;min-height:100vh;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
   .rail{display:none}
   .topbar{height:60px;padding:0 12px;gap:8px;border-radius:0}
@@ -680,7 +683,16 @@ p>.ic,small>.ic,.tiny>.ic,.small>.ic,li>.ic,h2>.ic{display:inline-block;vertical
 .journey-step.future{opacity:.72}
 .journey-line{position:absolute;right:-8px;top:50%;width:8px;height:2px;background:var(--line-strong)}
 @media(max-width:1100px){.route-journey{grid-template-columns:repeat(5,minmax(150px,1fr));overflow-x:auto;scrollbar-width:none}.route-journey::-webkit-scrollbar{display:none}}
-@media(max-width:700px){.route-journey{grid-template-columns:repeat(5,minmax(132px,1fr))}.journey-step{padding:8px;gap:8px}}
+@media(max-width:700px){
+  .route-journey{grid-template-columns:repeat(5,minmax(112px,1fr))}
+  .journey-step{flex-direction:column;text-align:center;padding:8px 6px;gap:6px}
+  .journey-line{top:40px}
+  .unit-row{flex-wrap:wrap;row-gap:8px;align-items:flex-start}
+  .unit-row>div{flex:1 1 calc(100% - 54px)}
+  .unit-row>div+*{margin-left:54px}
+  .unit-row .tag{margin-left:0}
+  .unit-row>div+.tag{margin-left:54px}
+}
 /* speaking stage */
 .scene-card{display:flex;gap:14px;align-items:center;padding:12px;border-radius:20px;background:rgba(255,255,255,.62);border:1px solid var(--glass-border)}
 .msg{display:flex;gap:10px;align-items:flex-end;margin:8px 0}
