@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T07:00:07.318Z",
+  "generated_at": "2026-11-03T01:36:59.582Z",
   "voices": [
     {
       "voice_id": "local:coqui-el-css10",
@@ -32,7 +32,7 @@
       "approved_by": null,
       "approved_at": null,
       "qa_status": "NOT_TESTED",
-      "last_synced_at": "2026-10-30T05:36:50.97+00:00",
+      "last_synced_at": "2026-11-03T01:33:35.144+00:00",
       "notes": "Открытая нейросетевая модель (локально, без сети). Лицензия допускает распространение; условия фиксирует владелец."
     },
     {
@@ -66,7 +66,7 @@
       "approved_by": null,
       "approved_at": null,
       "qa_status": "NOT_TESTED",
-      "last_synced_at": "2026-10-30T05:36:50.97+00:00",
+      "last_synced_at": "2026-11-03T01:33:35.144+00:00",
       "notes": "Дифонный синтез MBROLA: настоящий мужской голос, но низкая естественность; лицензия только некоммерческая (DEV_LOCAL_ONLY)."
     },
     {
@@ -100,7 +100,7 @@
       "approved_by": null,
       "approved_at": null,
       "qa_status": "NOT_TESTED",
-      "last_synced_at": "2026-10-30T05:36:50.97+00:00",
+      "last_synced_at": "2026-11-03T01:33:35.144+00:00",
       "notes": "Дифонный синтез MBROLA: настоящий мужской голос, но низкая естественность; лицензия только некоммерческая (DEV_LOCAL_ONLY)."
     }
   ],

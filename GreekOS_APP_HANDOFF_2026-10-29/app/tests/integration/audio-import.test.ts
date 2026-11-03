@@ -26,7 +26,12 @@ beforeAll(async () => {
 afterAll(async () => {
   for (const id of created) {
     const { data } = await admin.from('audio_assets').select('object_path, master_object_path').eq('id', id).single();
-    await admin.storage.from('course-audio').remove([data?.object_path, data?.master_object_path].filter(Boolean) as string[]);
+    // Re-importing the job's own file yields the same delivery bytes and path as the restored asset:
+    // only objects that no other asset references are removed.
+    const paths = [data?.object_path, data?.master_object_path].filter(Boolean) as string[];
+    const { data: others } = await admin.from('audio_assets').select('object_path, master_object_path').neq('id', id).eq('audio_id', 'U-A1-019-AUD01');
+    const used = new Set((others ?? []).flatMap((o) => [o.object_path, o.master_object_path]));
+    await admin.storage.from('course-audio').remove(paths.filter((x) => !used.has(x)));
     await admin.from('digital_qa_runs').delete().eq('content_id', id);
     await admin.from('audio_assets').delete().eq('id', id);
   }

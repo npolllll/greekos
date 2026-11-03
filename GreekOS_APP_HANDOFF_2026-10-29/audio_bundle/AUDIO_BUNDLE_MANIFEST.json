@@ -1,9 +1,9 @@
 {
   "format": "greekos-audio-bundle/1",
-  "exported_at": "2026-11-02T22:39:43.547Z",
+  "exported_at": "2026-11-03T01:36:58.810Z",
   "jobs": 142,
   "files": 137,
-  "bytes": 120606420,
+  "bytes": 120611688,
   "note": "Synthesized el-GR speech for local development. HUMAN_* statuses are never set. DEV_LOCAL_ONLY files must not be distributed to learners.",
   "counts": {
     "NEEDS_REVIEW": 53,
@@ -4194,7 +4194,7 @@
     },
     {
       "audio_id": "U-A1-001-AUD01",
-      "file": "files/U-A1-001-AUD01/e9837526f2a86699f702c621f6b49d289bb36d439ad14540629c25f9d1ed2138.wav",
+      "file": "files/U-A1-001-AUD01/8d9f4ca4cab88b2387c2f3c5da724a2d285b77bd0e062c8125c88dc8ce3d5dbc.wav",
       "status": "TECH_QA_PASS",
       "script_hash": "44a4e237b0f6d610ee01b7c6db0823d7c6398b1cc21593edf4abe2e32524e894",
       "provider": "local_coqui+local_mbrola",
@@ -4205,51 +4205,51 @@
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "e9837526f2a86699f702c621f6b49d289bb36d439ad14540629c25f9d1ed2138",
-      "byte_length": 669490,
-      "duration_ms": 13947,
+      "sha256": "8d9f4ca4cab88b2387c2f3c5da724a2d285b77bd0e062c8125c88dc8ce3d5dbc",
+      "byte_length": 674758,
+      "duration_ms": 14057,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
           "role": "Υπάλληλος",
-          "end_ms": 2544,
+          "end_ms": 2674,
           "start_ms": 0,
           "voice_id": "local:coqui-el-css10",
           "segment_id": "U-A1-001-AUD01-C01"
         },
         {
           "role": "Μαθητής",
-          "end_ms": 4212,
-          "start_ms": 3194,
+          "end_ms": 4342,
+          "start_ms": 3324,
           "voice_id": "local:mbrola-gr2",
           "segment_id": "U-A1-001-AUD01-C02"
         },
         {
           "role": "Υπάλληλος",
-          "end_ms": 5870,
-          "start_ms": 4862,
+          "end_ms": 5980,
+          "start_ms": 4992,
           "voice_id": "local:coqui-el-css10",
           "segment_id": "U-A1-001-AUD01-C03"
         },
         {
           "role": "Μαθητής",
-          "end_ms": 9474,
-          "start_ms": 6520,
+          "end_ms": 9583,
+          "start_ms": 6630,
           "voice_id": "local:mbrola-gr2",
           "segment_id": "U-A1-001-AUD01-C04"
         },
         {
           "role": "Υπάλληλος",
-          "end_ms": 12099,
-          "start_ms": 10124,
+          "end_ms": 12209,
+          "start_ms": 10233,
           "voice_id": "local:coqui-el-css10",
           "segment_id": "U-A1-001-AUD01-C05"
         },
         {
           "role": "Μαθητής",
-          "end_ms": 13947,
-          "start_ms": 12749,
+          "end_ms": 14057,
+          "start_ms": 12859,
           "voice_id": "local:mbrola-gr2",
           "segment_id": "U-A1-001-AUD01-C06"
         }
@@ -4267,34 +4267,29 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -20.74,
+        "rms_dbfs": -20.81,
         "peak_dbfs": -1,
-        "duration_ms": 13947,
+        "duration_ms": 14057,
         "sample_rate": 24000,
-        "speech_ratio": 0.5372492836676218,
+        "speech_ratio": 0.5433854907539118,
         "clipping_ratio": 0,
-        "longest_pause_ms": 760,
-        "leading_silence_ms": 40,
-        "trailing_silence_ms": 80
+        "longest_pause_ms": 780,
+        "leading_silence_ms": 0,
+        "trailing_silence_ms": 60
       },
       "asr_roundtrip": {
-        "wer": 0.2593,
+        "wer": 0.1481,
         "diff": {
           "missing": [
-            "ονομα",
-            "σασ",
             "πετροσ",
             "αντωνιου",
             "πατρα",
-            "φοιτητησ",
             "φοιτητησ"
           ],
           "inserted": [
-            "ονομασεσ",
             "πετοροσ",
             "αδονιου",
             "παταρα",
-            "θητητησ",
             "φοιπητησ"
           ],
           "repeated": []
@@ -4302,16 +4297,16 @@
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.3333,
+            "wer": 0,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
             "reference": "Καλημέρα σας. Το όνομά σας, παρακαλώ;",
-            "hypothesis": "Καλημέρα σας. Το ονομάσες παρακαλώ.",
+            "hypothesis": "Καλημέρα σας. Το όνομά σας παρακαλώ.",
             "segment_id": "U-A1-001-AUD01-C01",
-            "cer_phonetic": 0.0588,
+            "cer_phonetic": 0,
             "reference_words": 6,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0588
+            "cer_accent_insensitive": 0
           },
           {
             "wer": 1,
@@ -4350,16 +4345,16 @@
             "cer_accent_insensitive": 0.0227
           },
           {
-            "wer": 0.3333,
+            "wer": 0,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
             "reference": "Ευχαριστώ. Είστε φοιτητής;",
-            "hypothesis": "Ευχαριστώ. Είστε θητητής.",
+            "hypothesis": "Ευχαριστώ. Είστε φοιτητής.",
             "segment_id": "U-A1-001-AUD01-C05",
-            "cer_phonetic": 0.0455,
+            "cer_phonetic": 0,
             "reference_words": 3,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.125
+            "cer_accent_insensitive": 0
           },
           {
             "wer": 0.3333,
@@ -4374,10 +4369,10 @@
             "cer_accent_insensitive": 0.0556
           }
         ],
-        "cer_phonetic": 0.0473,
+        "cer_phonetic": 0.027,
         "reference_words": 27,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0692
+        "cer_accent_insensitive": 0.0377
       },
       "digital_status": "NEEDS_REVIEW",
       "rights_status": "DEV_LOCAL_ONLY",
@@ -4415,11 +4410,11 @@
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -20.74,
+          "rms_dbfs": -20.81,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -22.53,
+          "rms_dbfs": -22.6,
           "peak_dbfs": -2.79
         },
         "gain_db": 1.79,
@@ -4427,7 +4422,7 @@
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-11-02T22:06:01.349211+00:00"
+      "created_at": "2026-11-02T22:42:23.728581+00:00"
     },
     {
       "audio_id": "U-A1-002-AUD01",
