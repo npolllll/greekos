@@ -24,6 +24,7 @@ export const LEXICON_ADDITIONS: Record<string, 'standard' | 'colloquial' | 'abbr
   θεματοποίηση: 'standard', // thematisation
   επίρριψη: 'standard', // attribution (of blame)
   προκρατημένη: 'standard', // pre-booked (προκράτηση)
+  πλυμένη: 'standard', // participle of πλένω (πλυμένος, -η, -ο)
   // café words of the scenes (loanwords in everyday use)
   φρέντο: 'standard', // iced coffee (φρέντο εσπρέσο / καπουτσίνο)
   λάτε: 'standard',

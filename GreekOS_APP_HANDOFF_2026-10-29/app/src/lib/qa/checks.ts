@@ -187,6 +187,11 @@ export function orthography(field: string, text: string, ctx: OrthographyContext
       out.push({ check_id: 'ortho.double_accent', severity: 'warning', field, message_ru: `«${w}»: два ударения допустимы только перед энклитикой (το όνομά μου).`, evidence: { word: w, next: words[i + 1] ?? null } });
     }
     if (ctx.unknownWords && ctx.unknownWords.has(w.toLowerCase()) && !isUpper && !elided && [...w].length > 2 && !(accents >= 2 && ENCLITICS.has((words[i + 1] ?? '').toLowerCase()))) {
+      // An explanation that names a wrong form on purpose («изучаем γράφοντας, не «γράψοντας»»).
+      if (/_ru$|^theory/.test(field) && /(^|[\s(«"])(не|нельзя\s+\S+|вместо|неверно|ошибочно|а не)\s*[«"]?$/iu.test(norm.slice(Math.max(0, tokens[i].start - 28), tokens[i].start))) {
+        out.push({ check_id: 'ortho.spelling', severity: 'info', field, message_ru: `«${w}» приведено в объяснении как неверная форма.`, evidence: { word: w } });
+        continue;
+      }
       const capitalised = w[0] !== w[0].toLowerCase();
       out.push({ check_id: 'ortho.spelling', severity: capitalised ? 'info' : 'warning', field, message_ru: capitalised ? `«${w}» нет в словаре (вероятно, имя собственное).` : `«${w}» нет в словаре hunspell el_GR — проверить написание.`, evidence: { word: w } });
     }

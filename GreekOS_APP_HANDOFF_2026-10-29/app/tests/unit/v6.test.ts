@@ -51,6 +51,11 @@ describe('Greek orthography QA (v6)', () => {
     expect(clitic?.severity).toBe('info');
     expect(ids('Στις αρχές του 20ού αιώνα.')).not.toContain('ortho.monosyllable_accent');
   });
+  it('QA 2.1: a wrong form named on purpose in an explanation is information, not a spelling error', () => {
+    const f = orthography('theory_ru', 'Изучаем γράφοντας, не «γράψοντας».', { unknownWords: new Set(['γράψοντας']) }).find((x) => x.check_id === 'ortho.spelling');
+    expect(f?.severity).toBe('info');
+    expect(orthography('theory_ru', 'Пишем γράψοντας.', { unknownWords: new Set(['γράψοντας']) }).find((x) => x.check_id === 'ortho.spelling')?.severity).toBe('warning');
+  });
   it('QA 2.1: a key leak is the instruction naming the answer, not a text to analyse or a lemma hint', () => {
     expect(keyLeaks('Заполните только форму είμαι: Εγώ ___ φοιτητής.', 'είμαι')).toBe(true);
     expect(keyLeaks('Назовите причину, используя γιατί: Μένω σπίτι ___ είμαι άρρωστος.', 'γιατί')).toBe(true);
