@@ -32,7 +32,7 @@ function loadEnvFile(path: string) {
 loadEnvFile(resolve('.env.local'));
 
 const { adminClient, selectAll } = await import('../src/lib/supabase/admin.ts');
-const { planJob, renderJob, loadCastingContext, rescoreAsset } = await import('../src/lib/audio/pipeline.ts');
+const { planJob, renderJob, loadCastingContext, rescoreAsset, invalidateSpeakerMismatches } = await import('../src/lib/audio/pipeline.ts');
 const { syncLocalVoices, syncCloudVoices, proposeCastVoices, proposeJobCasting } = await import('../src/lib/voice/catalog.ts');
 const { analyzeWav } = await import('../src/lib/audio/wav.ts');
 const { contentHash } = await import('../src/lib/content/stable-json.ts');
@@ -96,7 +96,8 @@ async function cast() {
   const cloud = await syncCloudVoices();
   const proposed = await proposeCastVoices();
   const rows = await proposeJobCasting();
-  console.log(JSON.stringify({ command: 'cast', local_voices: local, cloud, proposed_cast_voices: proposed, job_casting_rows_written: rows, note: 'Proposals are unapproved; owner approval happens in Admin → Голоса и кастинг.' }, null, 2));
+  const invalidated = await invalidateSpeakerMismatches();
+  console.log(JSON.stringify({ command: 'cast', local_voices: local, cloud, proposed_cast_voices: proposed, job_casting_rows_written: rows, invalidated_speaker_mismatch: invalidated, note: 'Proposals are unapproved; owner approval happens in Admin → Голоса и кастинг.' }, null, 2));
 }
 
 async function renderBatch() {
@@ -211,7 +212,8 @@ async function importBundle() {
     await db.from('audio_job_render_status').upsert({ audio_id: e.audio_id, status: e.digital_status === 'AUDIO_VERIFIED_DIGITAL' ? 'DIGITAL_REVIEWED' : 'TECH_QA_PASS', reason: 'imported from audio bundle', updated_at: new Date().toISOString() });
     res.imported++;
   }
-  console.log(JSON.stringify({ command: 'import-bundle', dir, ...res }, null, 2));
+  const invalidated = await invalidateSpeakerMismatches();
+  console.log(JSON.stringify({ command: 'import-bundle', dir, ...res, invalidated_speaker_mismatch: invalidated }, null, 2));
 }
 
 async function report() {

@@ -596,6 +596,7 @@ button.alpha-cell:hover{transform:translateY(-3px);background:#fff;box-shadow:va
   .studio-bar>span:first-child{flex:1 1 auto;flex-wrap:wrap;row-gap:2px;column-gap:6px;border-radius:14px;min-width:0}
   .studio-bar .studio-right{flex:none}
   .studio-bar .mode-badge{white-space:normal}
+  .hide-phone{display:none}
   .shell{display:block;border:0;border-radius:0;min-height:100vh;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
   .rail{display:none}
   .topbar{height:60px;padding:0 12px;gap:8px;border-radius:0}

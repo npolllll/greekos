@@ -23,6 +23,10 @@ describe('ASR round-trip comparison (v6)', () => {
     expect(m.wer).toBe(0);
     expect(roundTrip('Καλημέρα. Καλημέρα. Τι κάνεις;', 'Καλημέρα.').wer).toBeGreaterThan(0.3);
   });
+  it('reads clock times written by the ASR as the words of the script', () => {
+    expect(roundTrip('Το μάθημα αρχίζει στις έξι και μισή το απόγευμα, στην αίθουσα πέντε.', 'Το μάθημα αρχίζει στις 6:30 το απόγευμα στην αίθουσα 5.').wer).toBe(0);
+    expect(roundTrip('Στις επτά παρά τέταρτο.', 'Στις 6:45.').wer).toBe(0);
+  });
   it('a dropped tail is a real failure', () => {
     expect(roundTripPass(roundTrip('Καλησπέρα σας. Είμαι η συντονίστρια του προγράμματος «Ανοιχτό Αρχείο».', 'Καλησπέρα σας.'))).toBe(false);
   });

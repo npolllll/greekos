@@ -3,7 +3,11 @@ import { stripAccents } from '../scoring/normalize.ts';
 /** Tokenise Greek text for round-trip comparison: NFC, lowercase, punctuation removed, accents KEPT. */
 export function tokens(s: string): string[] {
   // ASR writes symbols/units where the script has words («3 €/kg» for «τρία ευρώ το κιλό»).
-  const expanded = s.normalize('NFC').replace(/\/\s*kg\b/gi, ' το κιλό ').replace(/€/g, ' ευρώ ').replace(/%/g, ' τοις εκατό ').replace(/\bkg\b/gi, ' κιλό ').replace(/\bkm\b/gi, ' χιλιόμετρα ');
+  // Clock times: «6:30» is read «έξι και μισή», «6:15» «έξι και τέταρτο», «6:45» «επτά παρά τέταρτο», «6:00» «έξι».
+  const timed = s.normalize('NFC')
+    .replace(/\b(\d{1,2})[:.]30\b/g, '$1 και μισή').replace(/\b(\d{1,2})[:.]15\b/g, '$1 και τέταρτο')
+    .replace(/\b(\d{1,2})[:.]45\b/g, (_m, h: string) => `${(Number(h) % 12) + 1} παρά τέταρτο`).replace(/\b(\d{1,2})[:.]00\b/g, '$1');
+  const expanded = timed.replace(/\/\s*kg\b/gi, ' το κιλό ').replace(/€/g, ' ευρώ ').replace(/%/g, ' τοις εκατό ').replace(/\bkg\b/gi, ' κιλό ').replace(/\bkm\b/gi, ' χιλιόμετρα ');
   return expanded.toLowerCase().replace(/ς/g, 'σ').replace(/[^\p{L}\p{N}\s]/gu, ' ').split(/\s+/).filter(Boolean);
 }
 

@@ -1,14 +1,14 @@
 {
   "format": "greekos-audio-bundle/1",
-  "exported_at": "2026-11-03T01:36:58.810Z",
+  "exported_at": "2026-11-03T10:10:24.589Z",
   "jobs": 142,
-  "files": 137,
-  "bytes": 120611688,
+  "files": 134,
+  "bytes": 111008866,
   "note": "Synthesized el-GR speech for local development. HUMAN_* statuses are never set. DEV_LOCAL_ONLY files must not be distributed to learners.",
   "counts": {
-    "NEEDS_REVIEW": 53,
-    "AUDIO_VERIFIED_DIGITAL": 84,
-    "NO_FILE:BLOCKED_NO_SUITABLE_VOICE": 5
+    "NEEDS_REVIEW": 54,
+    "AUDIO_VERIFIED_DIGITAL": 80,
+    "NO_FILE:BLOCKED_NO_SUITABLE_VOICE": 8
   },
   "entries": [
     {
@@ -9466,8 +9466,8 @@
     },
     {
       "audio_id": "U-A1-020-AUD09",
-      "file": "files/U-A1-020-AUD09/d7801b629f7dd585448e831298f4cea6b4ee44ef181f4058f11771fb5a8fbb50.wav",
-      "status": "TECH_QA_PASS",
+      "file": "files/U-A1-020-AUD09/6e7b214d5edfac65c50b26ec706121a9da44fa9a6ab5e1833f880fbf227b46df.wav",
+      "status": "DIGITAL_REVIEWED",
       "script_hash": "3f1c3e9229eab7c5da6a35c174d3f98649ee5ba9838e0b027bcab5ed78dcb17f",
       "provider": "local_coqui",
       "model": "coqui-el-css10",
@@ -9476,15 +9476,15 @@
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "d7801b629f7dd585448e831298f4cea6b4ee44ef181f4058f11771fb5a8fbb50",
-      "byte_length": 184918,
-      "duration_ms": 3852,
+      "sha256": "6e7b214d5edfac65c50b26ec706121a9da44fa9a6ab5e1833f880fbf227b46df",
+      "byte_length": 187792,
+      "duration_ms": 3911,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
           "role": "__narrator__",
-          "end_ms": 3852,
+          "end_ms": 3911,
           "start_ms": 0,
           "voice_id": "local:coqui-el-css10",
           "segment_id": "U-A1-020-AUD09-S01"
@@ -9504,55 +9504,47 @@
         "profile": "greekos-tts-technical/1",
         "channels": 1,
         "rms_dbfs": -20,
-        "peak_dbfs": -2.6,
-        "duration_ms": 3852,
+        "peak_dbfs": -1.44,
+        "duration_ms": 3911,
         "sample_rate": 24000,
-        "speech_ratio": 0.8704663212435233,
+        "speech_ratio": 0.8877551020408163,
         "clipping_ratio": 0,
-        "longest_pause_ms": 60,
+        "longest_pause_ms": 80,
         "leading_silence_ms": 60,
         "trailing_silence_ms": 60
       },
       "asr_roundtrip": {
-        "wer": 0.25,
+        "wer": 0,
         "diff": {
-          "missing": [
-            "μαθημα",
-            "αρχιζει",
-            "5"
-          ],
-          "inserted": [
-            "μαθμα",
-            "γυζει",
-            "πενναι"
-          ],
+          "missing": [],
+          "inserted": [],
           "repeated": []
         },
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.25,
-            "pass": false,
+            "wer": 0,
+            "pass": true,
             "voice_id": "local:coqui-el-css10",
             "reference": "Το μάθημα αρχίζει στις έξι και μισή το απόγευμα, στην αίθουσα πέντε.",
-            "hypothesis": "Το μάθμα γύζει στις έξι και μισή το απόγευμα στην αίθουσα Πένναι.",
+            "hypothesis": "Το μάθημα αρχίζει στις 6:30 το απόγευμα στην αίθουσα 5.",
             "segment_id": "U-A1-020-AUD09-S01",
-            "cer_phonetic": 0.1429,
+            "cer_phonetic": 0,
             "reference_words": 12,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.1833
+            "cer_accent_insensitive": 0
           }
         ],
-        "cer_phonetic": 0.1429,
+        "cer_phonetic": 0,
         "reference_words": 12,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.1833
+        "cer_accent_insensitive": 0
       },
-      "digital_status": "NEEDS_REVIEW",
+      "digital_status": "AUDIO_VERIFIED_DIGITAL",
       "rights_status": "RIGHTS_PENDING",
       "rights_evidence": null,
       "synthetic_disclosure": true,
-      "render_status": "LINGUISTIC_QA_PENDING",
+      "render_status": "DIGITAL_REVIEWED",
       "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
         "local:coqui-el-css10"
@@ -9572,18 +9564,18 @@
       "normalization": {
         "after": {
           "rms_dbfs": -20,
-          "peak_dbfs": -2.6
+          "peak_dbfs": -1.44
         },
         "before": {
-          "rms_dbfs": -28.68,
-          "peak_dbfs": -11.28
+          "rms_dbfs": -28.42,
+          "peak_dbfs": -9.86
         },
-        "gain_db": 8.68,
+        "gain_db": 8.42,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-11-02T22:16:02.024264+00:00"
+      "created_at": "2026-11-03T09:59:10.325444+00:00"
     },
     {
       "audio_id": "U-A2-001-AUD01",
@@ -13157,28 +13149,43 @@
     },
     {
       "audio_id": "U-A2-017-AUD01",
-      "file": "files/U-A2-017-AUD01/a728de2a592ce5f470d650a98542ad9edabfafc26521d358ea9b9018af1bfda7.wav",
-      "status": "DIGITAL_REVIEWED",
+      "file": "files/U-A2-017-AUD01/89de51dc52787981d5599f9d1b29bbf3180af1274327e4c03243b232b6ae3776.wav",
+      "status": "TECH_QA_PASS",
       "script_hash": "203e4e453d71e2509af0c0eac6b6d31fdf24e91ec564cd08052c4a6d6afa80cc",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Πελάτης": "local:mbrola-gr2",
+        "Υπάλληλος": "local:coqui-el-css10"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "a728de2a592ce5f470d650a98542ad9edabfafc26521d358ea9b9018af1bfda7",
-      "byte_length": 464602,
-      "duration_ms": 9678,
+      "sha256": "89de51dc52787981d5599f9d1b29bbf3180af1274327e4c03243b232b6ae3776",
+      "byte_length": 492536,
+      "duration_ms": 10260,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 9678,
+          "role": "Πελάτης",
+          "end_ms": 1866,
           "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD01-L01"
+        },
+        {
+          "role": "Υπάλληλος",
+          "end_ms": 6906,
+          "start_ms": 2516,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-A2-017-AUD01-S01"
+          "segment_id": "U-A2-017-AUD01-L02"
+        },
+        {
+          "role": "Πελάτης",
+          "end_ms": 10260,
+          "start_ms": 7556,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD01-L03"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -13194,189 +13201,104 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -20,
-        "peak_dbfs": -1.14,
-        "duration_ms": 9678,
-        "sample_rate": 24000,
-        "speech_ratio": 0.8140495867768595,
-        "clipping_ratio": 0,
-        "longest_pause_ms": 400,
-        "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
-      },
-      "asr_roundtrip": {
-        "wer": 0.2308,
-        "diff": {
-          "missing": [
-            "ενα",
-            "ραντεβου",
-            "την",
-            "την",
-            "πεμπτη",
-            "πεμπτη"
-          ],
-          "inserted": [
-            "να",
-            "αντεβουν",
-            "τη",
-            "τη",
-            "5η",
-            "5η"
-          ],
-          "repeated": []
-        },
-        "engine": "local:sherpa-onnx:whisper-turbo-int8",
-        "segments": [
-          {
-            "wer": 0.2308,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Πελάτης: Θα ήθελα ένα ραντεβού την Τρίτη. Υπάλληλος: Την Τρίτη δεν υπάρχει διαθέσιμη ώρα. Μπορείτε την Πέμπτη στις δέκα; Πελάτης: Ναι, την Πέμπτη στις δέκα. Ευχαριστώ.",
-            "hypothesis": "Πελάτης, θα ήθελα να αντεβούν τη τρίτη. Υπάλληλος, τη τρίτη δεν υπάρχει διαθέσιμη ώρα. Μπορείτε την 5η στις 10. Πελάτης, ναι, την 5η στις 10. Ευχαριστώ.",
-            "segment_id": "U-A2-017-AUD01-S01",
-            "cer_phonetic": 0.0897,
-            "reference_words": 26,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0974
-          }
-        ],
-        "cer_phonetic": 0.0897,
-        "reference_words": 26,
-        "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0974
-      },
-      "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
-      "synthetic_disclosure": true,
-      "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
-      "voice_ids": [
-        "local:coqui-el-css10"
-      ],
-      "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
-      },
-      "generation_params": {
-        "speed": "normal",
-        "gaps_ms": [
-          650,
-          350
-        ],
-        "plan_hash": "d48f3af8b6d6c5f68de62d083deb0315e3705fa932dfcbc4b3e69f57bb672a11",
-        "sample_rate": 24000
-      },
-      "normalization": {
-        "after": {
-          "rms_dbfs": -20,
-          "peak_dbfs": -1.14
-        },
-        "before": {
-          "rms_dbfs": -26.43,
-          "peak_dbfs": -7.57
-        },
-        "gain_db": 6.43,
-        "target_rms_dbfs": -20,
-        "peak_ceiling_dbfs": -1
-      },
-      "cast_approved": false,
-      "created_at": "2026-10-30T06:20:21.773731+00:00"
-    },
-    {
-      "audio_id": "U-A2-017-AUD02",
-      "file": "files/U-A2-017-AUD02/14d65130d1b49816441737e6232b7e457126b1af5732022b1be64c463a62863a.wav",
-      "status": "DIGITAL_REVIEWED",
-      "script_hash": "358d77e93a4abbcd78501e4a4be99de17abd66e2fa329192376c9f05a6b30b56",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
-      "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
-      },
-      "locale": "el-GR",
-      "mime_type": "audio/wav",
-      "sha256": "14d65130d1b49816441737e6232b7e457126b1af5732022b1be64c463a62863a",
-      "byte_length": 399470,
-      "duration_ms": 8321,
-      "sample_rate": 24000,
-      "channels": 1,
-      "segment_cues": [
-        {
-          "role": "__narrator__",
-          "end_ms": 8321,
-          "start_ms": 0,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-A2-017-AUD02-S01"
-        }
-      ],
-      "technical_status": "TECHNICAL_PASS",
-      "technical_report": {
-        "pass": true,
-        "checks": {
-          "pauses": true,
-          "duration": true,
-          "decodable": true,
-          "no_clipping": true,
-          "edge_silence": true,
-          "has_speech_energy": true
-        },
-        "profile": "greekos-tts-technical/1",
-        "channels": 1,
-        "rms_dbfs": -20.09,
+        "rms_dbfs": -20.8,
         "peak_dbfs": -1,
-        "duration_ms": 8321,
+        "duration_ms": 10260,
         "sample_rate": 24000,
-        "speech_ratio": 0.8513189448441247,
+        "speech_ratio": 0.6867704280155642,
         "clipping_ratio": 0,
-        "longest_pause_ms": 240,
-        "leading_silence_ms": 60,
+        "longest_pause_ms": 780,
+        "leading_silence_ms": 0,
         "trailing_silence_ms": 80
       },
       "asr_roundtrip": {
-        "wer": 0.12,
+        "wer": 0.2609,
         "diff": {
           "missing": [
+            "ηθελα",
+            "ενα",
             "ραντεβου",
-            "πεμπτη",
+            "την",
+            "τριτη",
             "πεμπτη"
           ],
           "inserted": [
-            "ναντεβου",
-            "5η",
-            "5η"
+            "ειτε",
+            "λανα",
+            "ραδε",
+            "βουτιντριπη",
+            "πεπτε"
           ],
           "repeated": []
         },
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.12,
+            "wer": 0.8333,
+            "pass": false,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Θα ήθελα ένα ραντεβού την Τρίτη.",
+            "hypothesis": "Θα είτε λάνα ράδε βουτιντρίπη.",
+            "segment_id": "U-A2-017-AUD01-L01",
+            "cer_phonetic": 0.3793,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.4194
+          },
+          {
+            "wer": 0.0909,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
-            "reference": "Πελάτης: Θα ήθελα ένα ραντεβού την Τρίτη. Υπάλληλος: Την Τρίτη δεν υπάρχει διαθέσιμη ώρα. Μπορείτε την Πέμπτη στις δέκα; Πελάτης: Ναι, την Πέμπτη στις δέκα.",
-            "hypothesis": "Πελάτης, θα ήθελα ένα ναντεβού την Τρίτη. Υπάλληλος την Τρίτη δεν υπάρχει διαθέσιμη ώρα. Μπορείτε την 5η στις 10. Πελάτης, ναι την 5η στις 10.",
-            "segment_id": "U-A2-017-AUD02-S01",
-            "cer_phonetic": 0.0667,
-            "reference_words": 25,
+            "reference": "Την Τρίτη δεν υπάρχει διαθέσιμη ώρα. Μπορείτε την Πέμπτη στις δέκα;",
+            "hypothesis": "Την τρίτη δεν υπάρχει διαθέσιμη ώρα. Μπορείτε την πέπτε στις 10.",
+            "segment_id": "U-A2-017-AUD01-L02",
+            "cer_phonetic": 0.0339,
+            "reference_words": 11,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0764
+            "cer_accent_insensitive": 0.0317
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Ναι, την Πέμπτη στις δέκα. Ευχαριστώ.",
+            "hypothesis": "Ναι, την πέμπτη στις 10. Ευχαριστώ.",
+            "segment_id": "U-A2-017-AUD01-L03",
+            "cer_phonetic": 0,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
           }
         ],
-        "cer_phonetic": 0.0667,
-        "reference_words": 25,
+        "cer_phonetic": 0.1083,
+        "reference_words": 23,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0764
+        "cer_accent_insensitive": 0.1172
       },
-      "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "digital_status": "NEEDS_REVIEW",
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
-      "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
+        "local:mbrola-gr2",
         "local:coqui-el-css10"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Πελάτης": "NARRATOR_M",
+        "Υπάλληλος": "NARRATOR_F"
       },
       "generation_params": {
         "speed": "normal",
@@ -13384,24 +13306,202 @@
           650,
           350
         ],
-        "plan_hash": "2f2060758c7fca035b30d103389adb02407e84805093820cb1ea6052ae6bf780",
+        "plan_hash": "7938537342d70dac41f418dd782ba258e7510e650fb33f7c66daaa95a389fd19",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -20.09,
+          "rms_dbfs": -20.8,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -27.1,
-          "peak_dbfs": -8.01
+          "rms_dbfs": -22.13,
+          "peak_dbfs": -2.34
         },
-        "gain_db": 7.01,
+        "gain_db": 1.34,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-10-30T06:20:33.528552+00:00"
+      "created_at": "2026-11-03T09:59:48.231206+00:00"
+    },
+    {
+      "audio_id": "U-A2-017-AUD02",
+      "file": "files/U-A2-017-AUD02/d3de84ff5dd006f2620c5fa1aac18034f137ea930ed86d41db418fd4e30fbdcb.wav",
+      "status": "TECH_QA_PASS",
+      "script_hash": "358d77e93a4abbcd78501e4a4be99de17abd66e2fa329192376c9f05a6b30b56",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
+      "voice_map": {
+        "Πελάτης": "local:mbrola-gr2",
+        "Υπάλληλος": "local:coqui-el-css10"
+      },
+      "locale": "el-GR",
+      "mime_type": "audio/wav",
+      "sha256": "d3de84ff5dd006f2620c5fa1aac18034f137ea930ed86d41db418fd4e30fbdcb",
+      "byte_length": 456618,
+      "duration_ms": 9512,
+      "sample_rate": 24000,
+      "channels": 1,
+      "segment_cues": [
+        {
+          "role": "Πελάτης",
+          "end_ms": 1866,
+          "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD02-L01"
+        },
+        {
+          "role": "Υπάλληλος",
+          "end_ms": 7245,
+          "start_ms": 2516,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-A2-017-AUD02-L02"
+        },
+        {
+          "role": "Πελάτης",
+          "end_ms": 9512,
+          "start_ms": 7895,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD02-L03"
+        }
+      ],
+      "technical_status": "TECHNICAL_PASS",
+      "technical_report": {
+        "pass": true,
+        "checks": {
+          "pauses": true,
+          "duration": true,
+          "decodable": true,
+          "no_clipping": true,
+          "edge_silence": true,
+          "has_speech_energy": true
+        },
+        "profile": "greekos-tts-technical/1",
+        "channels": 1,
+        "rms_dbfs": -20.92,
+        "peak_dbfs": -1,
+        "duration_ms": 9512,
+        "sample_rate": 24000,
+        "speech_ratio": 0.7142857142857143,
+        "clipping_ratio": 0,
+        "longest_pause_ms": 780,
+        "leading_silence_ms": 0,
+        "trailing_silence_ms": 60
+      },
+      "asr_roundtrip": {
+        "wer": 0.2727,
+        "diff": {
+          "missing": [
+            "ηθελα",
+            "ενα",
+            "ραντεβου",
+            "την",
+            "τριτη",
+            "πεμπτη"
+          ],
+          "inserted": [
+            "ειτε",
+            "λανα",
+            "ραδε",
+            "βουτιντριπη",
+            "5η"
+          ],
+          "repeated": []
+        },
+        "engine": "local:sherpa-onnx:whisper-turbo-int8",
+        "segments": [
+          {
+            "wer": 0.8333,
+            "pass": false,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Θα ήθελα ένα ραντεβού την Τρίτη.",
+            "hypothesis": "Θα είτε λάνα ράδε βουτιντρίπη.",
+            "segment_id": "U-A2-017-AUD02-L01",
+            "cer_phonetic": 0.3793,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.4194
+          },
+          {
+            "wer": 0.0909,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Την Τρίτη δεν υπάρχει διαθέσιμη ώρα. Μπορείτε την Πέμπτη στις δέκα;",
+            "hypothesis": "Την τρίτη δεν υπάρχει διαθέσιμη ώρα. Μπορείτε την 5η στις 10.",
+            "segment_id": "U-A2-017-AUD02-L02",
+            "cer_phonetic": 0.0678,
+            "reference_words": 11,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0794
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Ναι, την Πέμπτη στις δέκα.",
+            "hypothesis": "Ναι, την πέμπτη στις 10.",
+            "segment_id": "U-A2-017-AUD02-L03",
+            "cer_phonetic": 0,
+            "reference_words": 5,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          }
+        ],
+        "cer_phonetic": 0.1364,
+        "reference_words": 22,
+        "accent_mismatches": [],
+        "cer_accent_insensitive": 0.1525
+      },
+      "digital_status": "NEEDS_REVIEW",
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
+      "synthetic_disclosure": true,
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "synthesis_version": "greekos-audio/2.2",
+      "voice_ids": [
+        "local:mbrola-gr2",
+        "local:coqui-el-css10"
+      ],
+      "cast_snapshot": {
+        "Πελάτης": "NARRATOR_M",
+        "Υπάλληλος": "NARRATOR_F"
+      },
+      "generation_params": {
+        "speed": "normal",
+        "gaps_ms": [
+          650,
+          350
+        ],
+        "plan_hash": "7ebc870ff128a915d79590ebcf74109486990427abcdf9543b529e2db45ab301",
+        "sample_rate": 24000
+      },
+      "normalization": {
+        "after": {
+          "rms_dbfs": -20.92,
+          "peak_dbfs": -1
+        },
+        "before": {
+          "rms_dbfs": -22.26,
+          "peak_dbfs": -2.34
+        },
+        "gain_db": 1.34,
+        "target_rms_dbfs": -20,
+        "peak_ceiling_dbfs": -1
+      },
+      "cast_approved": false,
+      "created_at": "2026-11-03T10:00:55.11327+00:00"
     },
     {
       "audio_id": "U-A2-017-AUD03",
@@ -13524,28 +13624,43 @@
     },
     {
       "audio_id": "U-A2-017-AUD04",
-      "file": "files/U-A2-017-AUD04/e830a517a3e38b541b8b3e3f04969e7000ad325b2b54a391b8528e617838efc1.wav",
-      "status": "DIGITAL_REVIEWED",
+      "file": "files/U-A2-017-AUD04/ba36de11b014276a34b5d20fda4b42325b0b88edd89ce78f7903651f107d3152.wav",
+      "status": "TECH_QA_PASS",
       "script_hash": "9e72b385f3e6923536b98bba839d5995615e1db73b6ae83c3d59288dcdd4de6b",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Πελάτης": "local:mbrola-gr2",
+        "Πωλήτρια": "local:coqui-el-css10"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "e830a517a3e38b541b8b3e3f04969e7000ad325b2b54a391b8528e617838efc1",
-      "byte_length": 362116,
-      "duration_ms": 7543,
+      "sha256": "ba36de11b014276a34b5d20fda4b42325b0b88edd89ce78f7903651f107d3152",
+      "byte_length": 316298,
+      "duration_ms": 6589,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 7543,
+          "role": "Πελάτης",
+          "end_ms": 1487,
           "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD04-L01"
+        },
+        {
+          "role": "Πωλήτρια",
+          "end_ms": 4432,
+          "start_ms": 2137,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-A2-017-AUD04-S01"
+          "segment_id": "U-A2-017-AUD04-L02"
+        },
+        {
+          "role": "Πελάτης",
+          "end_ms": 6589,
+          "start_ms": 5082,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD04-L03"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -13562,65 +13677,95 @@
         "profile": "greekos-tts-technical/1",
         "channels": 1,
         "rms_dbfs": -20,
-        "peak_dbfs": -1.32,
-        "duration_ms": 7543,
+        "peak_dbfs": -1.34,
+        "duration_ms": 6589,
         "sample_rate": 24000,
-        "speech_ratio": 0.7513227513227513,
+        "speech_ratio": 0.6272727272727273,
         "clipping_ratio": 0,
-        "longest_pause_ms": 460,
-        "leading_silence_ms": 40,
+        "longest_pause_ms": 760,
+        "leading_silence_ms": 0,
         "trailing_silence_ms": 60
       },
       "asr_roundtrip": {
-        "wer": 0.2941,
+        "wer": 0.1429,
         "diff": {
           "missing": [
-            "πελατησ",
-            "πωλητρια",
-            "μπλε",
-            "πελατησ",
-            "μπλε"
+            "μαυρη",
+            "τσαντα"
           ],
           "inserted": [
-            "μελατησ",
-            "πολυτρια",
-            "πλε",
-            "μελατησ",
-            "πλε"
+            "μαυριτσαδα"
           ],
           "repeated": []
         },
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.2941,
+            "wer": 0.5,
+            "pass": false,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Θέλω μια μαύρη τσάντα.",
+            "hypothesis": "Θέλω μια μαυριτσάδα.",
+            "segment_id": "U-A2-017-AUD04-L01",
+            "cer_phonetic": 0.1053,
+            "reference_words": 4,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.1905
+          },
+          {
+            "wer": 0,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
-            "reference": "Πελάτης: Θέλω μια μαύρη τσάντα. Πωλήτρια: Δεν έχουμε μαύρη. Έχουμε μπλε. Πελάτης: Εντάξει, θα πάρω την μπλε.",
-            "hypothesis": "Μελάτης θέλω μια μαύρη τσάντα. Πολύτρια δεν έχουμε μαύρη. Έχουμε πλε. Μελάτης εντάξει θα πάρω την πλε.",
-            "segment_id": "U-A2-017-AUD04-S01",
-            "cer_phonetic": 0.043,
-            "reference_words": 17,
+            "reference": "Δεν έχουμε μαύρη. Έχουμε μπλε.",
+            "hypothesis": "Δεν έχουμε μαύρη. Έχουμε μπλε.",
+            "segment_id": "U-A2-017-AUD04-L02",
+            "cer_phonetic": 0,
+            "reference_words": 5,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.06
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Εντάξει, θα πάρω την μπλε.",
+            "hypothesis": "Εντάξει, θα πάρω την μπλε.",
+            "segment_id": "U-A2-017-AUD04-L03",
+            "cer_phonetic": 0,
+            "reference_words": 5,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
           }
         ],
-        "cer_phonetic": 0.043,
-        "reference_words": 17,
+        "cer_phonetic": 0.0294,
+        "reference_words": 14,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.06
+        "cer_accent_insensitive": 0.0533
       },
-      "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "digital_status": "NEEDS_REVIEW",
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
-      "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
+      "render_status": "LINGUISTIC_QA_PENDING",
+      "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
+        "local:mbrola-gr2",
         "local:coqui-el-css10"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Πελάτης": "NARRATOR_M",
+        "Πωλήτρια": "NARRATOR_F"
       },
       "generation_params": {
         "speed": "normal",
@@ -13628,49 +13773,57 @@
           650,
           350
         ],
-        "plan_hash": "0087abe5ad83613e1a069e3e85371329bc27a7bfd44d2895510f5d9380a8f0e1",
+        "plan_hash": "db405ed12397b691764290e185dc0c75ba45b19f4a7c89c319276457ef55b5cb",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
           "rms_dbfs": -20,
-          "peak_dbfs": -1.32
+          "peak_dbfs": -1.34
         },
         "before": {
-          "rms_dbfs": -28.45,
-          "peak_dbfs": -9.78
+          "rms_dbfs": -21.76,
+          "peak_dbfs": -3.1
         },
-        "gain_db": 8.45,
+        "gain_db": 1.76,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-10-30T06:20:55.518644+00:00"
+      "created_at": "2026-11-03T10:01:17.492551+00:00"
     },
     {
       "audio_id": "U-A2-017-AUD05",
-      "file": "files/U-A2-017-AUD05/3f291eee73664442f5e24a53a2bf85e3e8f0cc279da862abde68c9bbb8c66622.wav",
+      "file": "files/U-A2-017-AUD05/84114a22eca3bf04e09e590deb742754bde2722d4706b72da4c01351a890117e.wav",
       "status": "DIGITAL_REVIEWED",
       "script_hash": "bc446f4a3a3b8858c1a56de2c5ed9e807cebca336eadd276be5e218db9c8f1f8",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_coqui+local_mbrola",
+      "model": "coqui-el-css10+mbrola-gr2",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Πελάτης": "local:mbrola-gr2",
+        "Υπάλληλος": "local:coqui-el-css10"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "3f291eee73664442f5e24a53a2bf85e3e8f0cc279da862abde68c9bbb8c66622",
-      "byte_length": 282616,
-      "duration_ms": 5887,
+      "sha256": "84114a22eca3bf04e09e590deb742754bde2722d4706b72da4c01351a890117e",
+      "byte_length": 210372,
+      "duration_ms": 4382,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 5887,
+          "role": "Υπάλληλος",
+          "end_ms": 2115,
           "start_ms": 0,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-A2-017-AUD05-S01"
+          "segment_id": "U-A2-017-AUD05-L01"
+        },
+        {
+          "role": "Πελάτης",
+          "end_ms": 4382,
+          "start_ms": 2765,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD05-L02"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -13686,15 +13839,15 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -20.22,
+        "rms_dbfs": -20.33,
         "peak_dbfs": -1,
-        "duration_ms": 5887,
+        "duration_ms": 4382,
         "sample_rate": 24000,
-        "speech_ratio": 0.7491525423728813,
+        "speech_ratio": 0.7,
         "clipping_ratio": 0,
-        "longest_pause_ms": 640,
-        "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
+        "longest_pause_ms": 700,
+        "leading_silence_ms": 20,
+        "trailing_silence_ms": 80
       },
       "asr_roundtrip": {
         "wer": 0,
@@ -13709,31 +13862,56 @@
             "wer": 0,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
-            "reference": "Υπάλληλος: Τηλεφωνήστε μας αύριο, παρακαλώ. Πελάτης: Εντάξει, θα σας τηλεφωνήσω.",
-            "hypothesis": "Υπάλληλος, τηλεφωνήστε μας αύριο παρακαλώ. Πελάτης, εντάξει, θα σας τηλεφωνήσω.",
-            "segment_id": "U-A2-017-AUD05-S01",
+            "reference": "Τηλεφωνήστε μας αύριο, παρακαλώ.",
+            "hypothesis": "Τηλεφωνήστε μας αύριο παρακαλώ.",
+            "segment_id": "U-A2-017-AUD05-L01",
             "cer_phonetic": 0,
-            "reference_words": 10,
+            "reference_words": 4,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Εντάξει, θα σας τηλεφωνήσω.",
+            "hypothesis": "Εντάξει, θα σας τηλεφωνήσω.",
+            "segment_id": "U-A2-017-AUD05-L02",
+            "cer_phonetic": 0,
+            "reference_words": 4,
             "accent_mismatches": [],
             "cer_accent_insensitive": 0
           }
         ],
         "cer_phonetic": 0,
-        "reference_words": 10,
+        "reference_words": 8,
         "accent_mismatches": [],
         "cer_accent_insensitive": 0
       },
       "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
       "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
+      "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
-        "local:coqui-el-css10"
+        "local:coqui-el-css10",
+        "local:mbrola-gr2"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Πελάτης": "NARRATOR_M",
+        "Υπάλληλος": "NARRATOR_F"
       },
       "generation_params": {
         "speed": "normal",
@@ -13741,49 +13919,64 @@
           650,
           350
         ],
-        "plan_hash": "23d21036eda4111f25658a4b3dd1739d729b44b9d8dc8143559cb046a19ce9b8",
+        "plan_hash": "100654bcf6592d4a8b38c4b09c301d40d4277680a34d560c2d58c01e32533410",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -20.22,
+          "rms_dbfs": -20.33,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -28.26,
-          "peak_dbfs": -9.04
+          "rms_dbfs": -23.04,
+          "peak_dbfs": -3.71
         },
-        "gain_db": 8.04,
+        "gain_db": 2.71,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-10-30T06:21:03.894627+00:00"
+      "created_at": "2026-11-03T10:01:26.92659+00:00"
     },
     {
       "audio_id": "U-A2-017-AUD06",
-      "file": "files/U-A2-017-AUD06/1d89094537ec81026ebc6503388b0e1ba8aa2c8eed8056e5564940cd3b0140ab.wav",
+      "file": "files/U-A2-017-AUD06/41b0f2a89e3adb49aa9d1321f7c2936e4b7c58603aa6fbc75fb8b661c12e2731.wav",
       "status": "TECH_QA_PASS",
       "script_hash": "f4d69dee413e2d6930917b0f29de280b61b55eed71572fae79e98b71a570038a",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Πελάτης": "local:mbrola-gr2",
+        "Υπάλληλος": "local:coqui-el-css10"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "1d89094537ec81026ebc6503388b0e1ba8aa2c8eed8056e5564940cd3b0140ab",
-      "byte_length": 376962,
-      "duration_ms": 7852,
+      "sha256": "41b0f2a89e3adb49aa9d1321f7c2936e4b7c58603aa6fbc75fb8b661c12e2731",
+      "byte_length": 327784,
+      "duration_ms": 6828,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 7852,
+          "role": "Πελάτης",
+          "end_ms": 1078,
           "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD06-L01"
+        },
+        {
+          "role": "Υπάλληλος",
+          "end_ms": 4023,
+          "start_ms": 1728,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-A2-017-AUD06-S01"
+          "segment_id": "U-A2-017-AUD06-L02"
+        },
+        {
+          "role": "Πελάτης",
+          "end_ms": 6828,
+          "start_ms": 4673,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD06-L03"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -13799,67 +13992,99 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -20.47,
+        "rms_dbfs": -20.06,
         "peak_dbfs": -1,
-        "duration_ms": 7852,
+        "duration_ms": 6828,
         "sample_rate": 24000,
-        "speech_ratio": 0.727735368956743,
+        "speech_ratio": 0.6023391812865497,
         "clipping_ratio": 0,
-        "longest_pause_ms": 820,
-        "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
+        "longest_pause_ms": 760,
+        "leading_silence_ms": 0,
+        "trailing_silence_ms": 80
       },
       "asr_roundtrip": {
-        "wer": 0.3529,
+        "wer": 0.2143,
         "diff": {
           "missing": [
             "μπορειτε",
-            "τεταρτη",
-            "μονο",
-            "την",
-            "παρασκευη"
+            "τεταρτη"
           ],
           "inserted": [
-            "πτωρειται",
-            "τεταχτη",
-            "με",
-            "ο",
-            "τι",
-            "παρασκευει"
+            "βρετε",
+            "καταρτηγη"
           ],
           "repeated": []
         },
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.3529,
+            "wer": 0.6667,
             "pass": false,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Πελάτης: Μπορείτε την Τετάρτη; Υπάλληλος: Όχι, μόνο την Παρασκευή το πρωί. Πελάτης: Εντάξει, την Παρασκευή το πρωί.",
-            "hypothesis": "Πελάτης πτωρείται την τετάχτη, υπάλληλος, όχι με ό,τι παρασκευεί το πρωί. Πελάτης εντάξει την παρασκευή το πρωί.",
-            "segment_id": "U-A2-017-AUD06-S01",
-            "cer_phonetic": 0.0583,
-            "reference_words": 17,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Μπορείτε την Τετάρτη;",
+            "hypothesis": "Βρέτε την καταρτηγή.",
+            "segment_id": "U-A2-017-AUD06-L01",
+            "cer_phonetic": 0.3889,
+            "reference_words": 3,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.1121
+            "cer_accent_insensitive": 0.4
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Όχι, μόνο την Παρασκευή το πρωί.",
+            "hypothesis": "Όχι, μόνο την παρασκευή το πρωί.",
+            "segment_id": "U-A2-017-AUD06-L02",
+            "cer_phonetic": 0,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.2,
+            "pass": false,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Εντάξει, την Παρασκευή το πρωί.",
+            "hypothesis": "Εντάξει, την Παράσκευή το πρωί.",
+            "segment_id": "U-A2-017-AUD06-L03",
+            "cer_phonetic": 0,
+            "reference_words": 5,
+            "accent_mismatches": [
+              "παρασκευή"
+            ],
+            "cer_accent_insensitive": 0
           }
         ],
-        "cer_phonetic": 0.0583,
-        "reference_words": 17,
+        "cer_phonetic": 0.0897,
+        "reference_words": 14,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.1121
+        "cer_accent_insensitive": 0.0988
       },
       "digital_status": "NEEDS_REVIEW",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
       "render_status": "LINGUISTIC_QA_PENDING",
       "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
+        "local:mbrola-gr2",
         "local:coqui-el-css10"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Πελάτης": "NARRATOR_M",
+        "Υπάλληλος": "NARRATOR_F"
       },
       "generation_params": {
         "speed": "normal",
@@ -13867,49 +14092,64 @@
           650,
           350
         ],
-        "plan_hash": "e92b70163d90abaff1d9b664c6c3fea26ee1bfcc8c95cc0012984091f6578bd1",
+        "plan_hash": "8b351f10fecad2e0947b0d55a745ba8de175e98616a35366440a293d9fdfcc73",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -20.47,
+          "rms_dbfs": -20.06,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -26.45,
-          "peak_dbfs": -6.98
+          "rms_dbfs": -21.71,
+          "peak_dbfs": -2.65
         },
-        "gain_db": 5.98,
+        "gain_db": 1.65,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-11-02T22:27:23.807618+00:00"
+      "created_at": "2026-11-03T10:01:58.341598+00:00"
     },
     {
       "audio_id": "U-A2-017-AUD07",
-      "file": "files/U-A2-017-AUD07/20f633484aede4c5c3d90c573f020ac82f4e095914772e76167e0795c538187d.wav",
+      "file": "files/U-A2-017-AUD07/bba05995654d59a29f7fc9df7e58575350053020585ec2a081485e9d931fb248.wav",
       "status": "DIGITAL_REVIEWED",
       "script_hash": "e49444ef473dd5f930dcdc4b69ac2e886012006a3cef0d6f82ec440392cf85d0",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_coqui+local_mbrola",
+      "model": "coqui-el-css10+mbrola-gr2",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Άννα": "local:coqui-el-css10",
+        "Πέτρος": "local:mbrola-gr2"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "20f633484aede4c5c3d90c573f020ac82f4e095914772e76167e0795c538187d",
-      "byte_length": 274954,
-      "duration_ms": 5727,
+      "sha256": "bba05995654d59a29f7fc9df7e58575350053020585ec2a081485e9d931fb248",
+      "byte_length": 327304,
+      "duration_ms": 6818,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 5727,
+          "role": "Άννα",
+          "end_ms": 1407,
           "start_ms": 0,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-A2-017-AUD07-S01"
+          "segment_id": "U-A2-017-AUD07-L01"
+        },
+        {
+          "role": "Πέτρος",
+          "end_ms": 4781,
+          "start_ms": 2057,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-A2-017-AUD07-L02"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 6818,
+          "start_ms": 5431,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-A2-017-AUD07-L03"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -13925,66 +14165,93 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -20.18,
+        "rms_dbfs": -21.37,
         "peak_dbfs": -1,
-        "duration_ms": 5727,
+        "duration_ms": 6818,
         "sample_rate": 24000,
-        "speech_ratio": 0.8222996515679443,
+        "speech_ratio": 0.6070381231671554,
         "clipping_ratio": 0,
-        "longest_pause_ms": 400,
-        "leading_silence_ms": 60,
+        "longest_pause_ms": 720,
+        "leading_silence_ms": 20,
         "trailing_silence_ms": 60
       },
       "asr_roundtrip": {
-        "wer": 0.3333,
+        "wer": 0.0833,
         "diff": {
-          "missing": [
-            "κυριακη",
-            "πετροσ",
-            "αννα",
-            "ναι",
-            "ενταξει"
-          ],
+          "missing": [],
           "inserted": [
-            "κυρια",
-            "κιπετροσ",
-            "ανα",
-            "ενεα",
-            "ενταψει"
+            "00"
           ],
           "repeated": []
         },
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.3333,
+            "wer": 0,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
-            "reference": "Άννα: Να βρεθούμε την Κυριακή; Πέτρος: Δεν μπορώ. Το Σάββατο στις δώδεκα; Άννα: Ναι, εντάξει.",
-            "hypothesis": "Άννα να βρεθούμε την κυρία Κίπέτρος. Δεν μπορώ. Το Σάββατο στις 12 άνα ενέα εντάψει.",
-            "segment_id": "U-A2-017-AUD07-S01",
-            "cer_phonetic": 0.0676,
-            "reference_words": 15,
+            "reference": "Να βρεθούμε την Κυριακή;",
+            "hypothesis": "Να βρεθούμε την Κυριακή.",
+            "segment_id": "U-A2-017-AUD07-L01",
+            "cer_phonetic": 0,
+            "reference_words": 4,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0988
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.1667,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Δεν μπορώ. Το Σάββατο στις δώδεκα;",
+            "hypothesis": "Δεν μπορώ. Το Σάββατο στις 12.00.",
+            "segment_id": "U-A2-017-AUD07-L02",
+            "cer_phonetic": 0.1154,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.1071
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Ναι, εντάξει.",
+            "hypothesis": "Ναι, εντάξει.",
+            "segment_id": "U-A2-017-AUD07-L03",
+            "cer_phonetic": 0,
+            "reference_words": 2,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
           }
         ],
-        "cer_phonetic": 0.0676,
-        "reference_words": 15,
+        "cer_phonetic": 0.0508,
+        "reference_words": 12,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0988
+        "cer_accent_insensitive": 0.0469
       },
       "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
       "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
+      "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
-        "local:coqui-el-css10"
+        "local:coqui-el-css10",
+        "local:mbrola-gr2"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Άννα": "NARRATOR_F",
+        "Πέτρος": "NARRATOR_M"
       },
       "generation_params": {
         "speed": "normal",
@@ -13992,24 +14259,24 @@
           650,
           350
         ],
-        "plan_hash": "60b63c7aaac7ce11830d7d6ae29c710b136854aa37f04638909a67f59fb83228",
+        "plan_hash": "bbd0f81af3baf82850edb9919642191602bca867eb4cd475d02159bd2b0678f4",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -20.18,
+          "rms_dbfs": -21.37,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -28.04,
-          "peak_dbfs": -8.85
+          "rms_dbfs": -22.48,
+          "peak_dbfs": -2.11
         },
-        "gain_db": 7.85,
+        "gain_db": 1.11,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-10-30T06:21:43.47751+00:00"
+      "created_at": "2026-11-03T10:02:38.413823+00:00"
     },
     {
       "audio_id": "U-A2-018-AUD01",
@@ -19589,28 +19856,64 @@
     },
     {
       "audio_id": "U-B1-019-AUD01",
-      "file": "files/U-B1-019-AUD01/715c34ea9b47c65251e5ab82115d1a1af3d5db7c021e94f9f116fa297dcd9861.wav",
+      "file": "files/U-B1-019-AUD01/cb5b69b2fedf29f16965cd4b675fdf3c1a83a41ce980864d6d5e4f2c4fde968a.wav",
       "status": "DIGITAL_REVIEWED",
       "script_hash": "81e5903c21e2359a639b0cca319c770b73c7609af28c6f6969b32cad3a7fb7c9",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Άννα": "local:coqui-el-css10",
+        "Δημοσιογράφος": "local:mbrola-gr2"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "715c34ea9b47c65251e5ab82115d1a1af3d5db7c021e94f9f116fa297dcd9861",
-      "byte_length": 1885054,
-      "duration_ms": 39271,
+      "sha256": "cb5b69b2fedf29f16965cd4b675fdf3c1a83a41ce980864d6d5e4f2c4fde968a",
+      "byte_length": 2020988,
+      "duration_ms": 42103,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 39271,
+          "role": "Δημοσιογράφος",
+          "end_ms": 2135,
           "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD01-L01"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 14529,
+          "start_ms": 2785,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B1-019-AUD01-S01"
+          "segment_id": "U-B1-019-AUD01-L02"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 16516,
+          "start_ms": 15179,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD01-L03"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 30785,
+          "start_ms": 17166,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD01-L04"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 33002,
+          "start_ms": 31435,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD01-L05"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 42103,
+          "start_ms": 33652,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD01-L06"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -19626,117 +19929,162 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -20.94,
+        "rms_dbfs": -23.94,
         "peak_dbfs": -1,
-        "duration_ms": 39271,
+        "duration_ms": 42103,
         "sample_rate": 24000,
-        "speech_ratio": 0.844704684317719,
+        "speech_ratio": 0.7269705603038936,
         "clipping_ratio": 0,
-        "longest_pause_ms": 480,
+        "longest_pause_ms": 760,
         "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
+        "trailing_silence_ms": 80
       },
       "asr_roundtrip": {
-        "wer": 0.2656,
+        "wer": 0.1393,
         "diff": {
           "missing": [
-            "ξεκινησεσ",
-            "βοηθασ",
-            "βιβλιοθηκη",
-            "αννα",
+            "στη",
+            "πηγαινα",
             "να",
             "δανειστω",
-            "βιβλια",
-            "μια",
             "ειδα",
             "μια",
-            "εθελοντεσ",
-            "μιλησα",
-            "να",
+            "υπευθυνη",
             "εξηγησε",
             "αρκετεσ",
-            "δημοσιογραφοσ",
-            "αννα",
-            "βρισκονταν",
-            "μηπωσ",
-            "δωσω",
             "τον",
-            "συναντησεισ",
             "ενιωθα",
-            "προτεινεσ",
-            "αννα",
-            "ναι",
+            "ψαχνουν",
             "αρκει",
+            "ακριβωσ",
             "εγκαιρωσ",
-            "μπορει",
-            "να",
             "ερθει"
           ],
           "inserted": [
-            "ξεκινησε",
-            "βοηθα",
-            "διβιοθηκη",
-            "ανα",
-            "τον",
-            "νηστο",
-            "διβλια",
-            "ενα",
-            "ειδαν",
+            "τη",
+            "πηγαινε",
+            "εναν",
+            "δανειστο",
+            "ηταν",
             "η",
-            "θελοντεσ",
-            "μιλησε",
+            "υπεθυνη",
             "εξηγησει",
-            "να",
-            "κοιτησει",
-            "δημοσιογραφωσε",
-            "ανα",
-            "φρισκονταν",
-            "οπωσ",
-            "δωσε",
+            "αριπητεσ",
             "το",
-            "συναντησετε",
-            "ενιωσα",
-            "προτεινε",
-            "ανα",
-            "νεα",
-            "και",
+            "ενιθα",
+            "ψαφνουν",
+            "ακη",
+            "αφηβωσ",
             "η",
             "γεροσ",
-            "μπορνεφθη"
+            "εφτει"
           ],
           "repeated": []
         },
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.2656,
+            "wer": 0.1667,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη;",
+            "hypothesis": "Πώς ξεκίνησες να βοηθάς τη βιβλιοθήκη;",
+            "segment_id": "U-B1-019-AUD01-L01",
+            "cer_phonetic": 0.0256,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0263
+          },
+          {
+            "wer": 0.2105,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
-            "reference": "Δημοσιογράφος: Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη; Άννα: Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές. Δημοσιογράφος: Ήταν εύκολη η πρώτη μέρα; Άννα: Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν. Δημοσιογράφος: Θα το πρότεινες σε κάποιον άλλο; Άννα: Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
-            "hypothesis": "Δημοσιογράφος πως ξεκίνησε να βοήθα στη διβιοθήκη, άνα στην αρχή πήγαινα μόνο για τον νηστό Διβλία. Ένα μέρα είδαν η ανακοίνωση για θέλοντές και μίλησε με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν έρχομαι κάθε μέρα αλλά μου εξηγήσει ότι δύο ώρες την εβδομάδα ήταν να κοιτήσει δημοσιογράφωσε ήταν εύκολη η πρώτη μέρα άνα όχι ακριβώς δεν ήξερα πού φρισκονταν όλα τα βιβλία και φοβόμουν όπως δώσε λάθος πληροφορία ένας άλλος εθελοντής μου έδειξε το κατάλογο Μετά από λίγες συναντήσετε ένιωσα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν. Δημοσιογράφος θα το πρότεινε σε κάποιον άλλο. Άνα νέα και να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η γέρος αν δεν μπορνέφθη.",
-            "segment_id": "U-B1-019-AUD01-S01",
-            "cer_phonetic": 0.0658,
-            "reference_words": 128,
+            "reference": "Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές.",
+            "hypothesis": "Στην αρχή πήγαινε μόνο για έναν δανειστό βιβλία. Μια μέρα ήταν η ανακοίνωση για εθελοντές και μίλησα με την υπέθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξηγήσει ότι δύο ώρες την εβδομάδα ήταν αριπητές.",
+            "segment_id": "U-B1-019-AUD01-L02",
+            "cer_phonetic": 0.0583,
+            "reference_words": 38,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0843
+            "cer_accent_insensitive": 0.0744
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Ήταν εύκολη η πρώτη μέρα;",
+            "hypothesis": "Ήταν εύκολη η πρώτη μέρα.",
+            "segment_id": "U-B1-019-AUD01-L03",
+            "cer_phonetic": 0,
+            "reference_words": 5,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.0789,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν.",
+            "hypothesis": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε το κατάλογο. Μετά από λίγες συναντήσεις ένιθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάφνουν.",
+            "segment_id": "U-B1-019-AUD01-L04",
+            "cer_phonetic": 0.0135,
+            "reference_words": 38,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0128
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Θα το πρότεινες σε κάποιον άλλο;",
+            "hypothesis": "Θα το πρότεινες σε κάποιον άλλο.",
+            "segment_id": "U-B1-019-AUD01-L05",
+            "cer_phonetic": 0,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.1724,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
+            "hypothesis": "Ναι, άκη να ρωτήσει πρώτα τι αφήβως χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η γέρος αν δεν μπορεί να έφτει.",
+            "segment_id": "U-B1-019-AUD01-L06",
+            "cer_phonetic": 0.0533,
+            "reference_words": 29,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0838
           }
         ],
-        "cer_phonetic": 0.0658,
-        "reference_words": 128,
+        "cer_phonetic": 0.0356,
+        "reference_words": 122,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0843
+        "cer_accent_insensitive": 0.0476
       },
       "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
       "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
+      "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
+        "local:mbrola-gr2",
         "local:coqui-el-css10"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Άννα": "NARRATOR_F",
+        "Δημοσιογράφος": "NARRATOR_M"
       },
       "generation_params": {
         "speed": "normal",
@@ -19744,49 +20092,85 @@
           650,
           350
         ],
-        "plan_hash": "e93f62f53f22f845f14b0bf72ccfc88876d396ac4103bad25fa004937d37319d",
+        "plan_hash": "52e097568e3fd81edccde49f4369854ad88cc9156d8b706a7c813106f0333a0c",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -20.94,
+          "rms_dbfs": -23.94,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -28.21,
-          "peak_dbfs": -8.27
+          "rms_dbfs": -25.29,
+          "peak_dbfs": -2.36
         },
-        "gain_db": 7.27,
+        "gain_db": 1.36,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-10-30T06:38:37.168726+00:00"
+      "created_at": "2026-11-03T10:03:40.102251+00:00"
     },
     {
       "audio_id": "U-B1-019-AUD02",
-      "file": "files/U-B1-019-AUD02/b39a23edb06e188cd2cc5636fbb14dcf22b102cf122a0d4dc77868c655c892f0.wav",
+      "file": "files/U-B1-019-AUD02/c8f45b1c5c025f03e0693a93ca947fb94a3492a4fe29eb6d890a8360a1e13af8.wav",
       "status": "DIGITAL_REVIEWED",
       "script_hash": "81e5903c21e2359a639b0cca319c770b73c7609af28c6f6969b32cad3a7fb7c9",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Άννα": "local:coqui-el-css10",
+        "Δημοσιογράφος": "local:mbrola-gr2"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "b39a23edb06e188cd2cc5636fbb14dcf22b102cf122a0d4dc77868c655c892f0",
-      "byte_length": 1920494,
-      "duration_ms": 40009,
+      "sha256": "c8f45b1c5c025f03e0693a93ca947fb94a3492a4fe29eb6d890a8360a1e13af8",
+      "byte_length": 2034876,
+      "duration_ms": 42392,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 40009,
+          "role": "Δημοσιογράφος",
+          "end_ms": 2135,
           "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD02-L01"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 14978,
+          "start_ms": 2785,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B1-019-AUD02-S01"
+          "segment_id": "U-B1-019-AUD02-L02"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 16965,
+          "start_ms": 15628,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD02-L03"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 30935,
+          "start_ms": 17615,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD02-L04"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 33152,
+          "start_ms": 31585,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD02-L05"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 42392,
+          "start_ms": 33802,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD02-L06"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -19802,75 +20186,49 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -22.03,
+        "rms_dbfs": -23.99,
         "peak_dbfs": -1,
-        "duration_ms": 40009,
+        "duration_ms": 42392,
         "sample_rate": 24000,
-        "speech_ratio": 0.8250874562718641,
+        "speech_ratio": 0.7268867924528302,
         "clipping_ratio": 0,
-        "longest_pause_ms": 580,
+        "longest_pause_ms": 760,
         "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
+        "trailing_silence_ms": 80
       },
       "asr_roundtrip": {
-        "wer": 0.2422,
+        "wer": 0.123,
         "diff": {
           "missing": [
-            "ξεκινησεσ",
-            "βοηθασ",
-            "βιβλιοθηκη",
-            "αννα",
+            "στη",
             "δανειστω",
+            "βιβλια",
             "ειδα",
             "μια",
             "εθελοντεσ",
-            "μιλησα",
-            "νομιζα",
-            "χρειαζοταν",
-            "να",
+            "υπευθυνη",
+            "ερχομαι",
             "αρκετεσ",
-            "αννα",
-            "μηπωσ",
-            "δωσω",
-            "εθελοντησ",
+            "βιβλια",
             "τον",
-            "ενιωθα",
             "βοηθαω",
-            "δημοσιογραφοσ",
-            "το",
-            "προτεινεσ",
-            "αννα",
-            "ναι",
-            "αρκει",
-            "να",
+            "ψαχνουν",
             "εγκαιρωσ"
           ],
           "inserted": [
-            "ξεκινησε",
-            "βοηθα",
-            "διβλιοθηκη",
-            "ανα",
-            "ταινιστω",
-            "ειδαμε",
+            "τη",
+            "δαινιστω",
+            "διβλια",
+            "ηταν",
+            "η",
             "θελοντεσ",
-            "μηρισα",
-            "νομιζε",
-            "χρυζοταν",
-            "αγκητεσ",
-            "ανα",
-            "μην",
-            "πωσ",
-            "δωσεισ",
-            "θελοντησ",
+            "υπεθυνη",
+            "εχομαι",
+            "ανοικετεσ",
+            "διδυεια",
             "το",
-            "ενιζα",
             "βοηθα",
-            "δημοσιογραφουσ",
-            "τον",
-            "προτεινε",
-            "αν",
-            "ανεει",
-            "εκεινη",
+            "ψαφνουν",
             "η",
             "γεροσ"
           ],
@@ -19879,34 +20237,107 @@
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.2422,
+            "wer": 0.1667,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη;",
+            "hypothesis": "Πώς ξεκίνησες να βοηθάς τη βιβλιοθήκη;",
+            "segment_id": "U-B1-019-AUD02-L01",
+            "cer_phonetic": 0.0256,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0263
+          },
+          {
+            "wer": 0.2105,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
-            "reference": "Δημοσιογράφος: Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη; Άννα: Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές. Δημοσιογράφος: Ήταν εύκολη η πρώτη μέρα; Άννα: Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν. Δημοσιογράφος: Θα το πρότεινες σε κάποιον άλλο; Άννα: Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
-            "hypothesis": "Δημοσιογράφος πως ξεκίνησε να βοηθά στη διβλιοθήκη, άνα στην αρχή πήγαινα μόνο για να ταινιστώ βιβλία. Μια μέρα είδαμε ανακοίνωση για θελοντές και μήρισα με την υπεύθυνη. Νόμιζε ότι θα χρυζόταν έρχομαι κάθε μέρα αλλά μου εξήγησε ότι δυο ώρες την εβδομάδα ήταν αγκητές. Δημοσιογράφος ήταν εύκολη η πρώτη μέρα. Άνα, όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μην πως δώσεις λάθος πληροφορία. Ένας άλλος θελοντής μου έδειξε το κατάλογο. Μετά από λίγες συναντήσεις ένιζα πιο άνετα. Τώρα βοηθά τους επισκέπτες να βρουν αυτό που ψάχνουν. Δημοσιογράφους θα τον πρότεινε σε κάποιον άλλο. Αν ανέει, εκείνη ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η γέρος αν δεν μπορεί να έρθει.",
-            "segment_id": "U-B1-019-AUD02-S01",
-            "cer_phonetic": 0.0549,
-            "reference_words": 128,
+            "reference": "Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές.",
+            "hypothesis": "Στην αρχή πήγαινα μόνο για να δαινιστώ διβλία. Μια μέρα ήταν η ανακοίνωση για θελοντές και μίλησα με την υπέθυνη. Νόμιζα ότι θα χρειαζόταν να έχομαι κάθε μέρα αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν ανοικετές.",
+            "segment_id": "U-B1-019-AUD02-L02",
+            "cer_phonetic": 0.0534,
+            "reference_words": 38,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0661
+            "cer_accent_insensitive": 0.0744
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Ήταν εύκολη η πρώτη μέρα;",
+            "hypothesis": "Ήταν εύκολη η πρώτη μέρα.",
+            "segment_id": "U-B1-019-AUD02-L03",
+            "cer_phonetic": 0,
+            "reference_words": 5,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.1053,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν.",
+            "hypothesis": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα διδυεία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε το κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθά τους επισκέπτες να βρουν αυτό που ψάφνουν.",
+            "segment_id": "U-B1-019-AUD02-L04",
+            "cer_phonetic": 0.0269,
+            "reference_words": 38,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0299
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Θα το πρότεινες σε κάποιον άλλο;",
+            "hypothesis": "Θα το πρότεινες σε κάποιον άλλο.",
+            "segment_id": "U-B1-019-AUD02-L05",
+            "cer_phonetic": 0,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.069,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
+            "hypothesis": "Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η γέρος αν δεν μπορεί να έρθει.",
+            "segment_id": "U-B1-019-AUD02-L06",
+            "cer_phonetic": 0.02,
+            "reference_words": 29,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0359
           }
         ],
-        "cer_phonetic": 0.0549,
-        "reference_words": 128,
+        "cer_phonetic": 0.0311,
+        "reference_words": 122,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0661
+        "cer_accent_insensitive": 0.042
       },
       "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
       "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
+      "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
+        "local:mbrola-gr2",
         "local:coqui-el-css10"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Άννα": "NARRATOR_F",
+        "Δημοσιογράφος": "NARRATOR_M"
       },
       "generation_params": {
         "speed": "normal",
@@ -19914,49 +20345,85 @@
           650,
           350
         ],
-        "plan_hash": "dd04ee5d2b1cb62f7a4574856f42caa1c6b3170a897755efea71ec226ab73485",
+        "plan_hash": "5a39ae9dd3a9215d2b6c796f1932aab54e84335230f35728c58a249faa43beb6",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -22.03,
+          "rms_dbfs": -23.99,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -28.41,
-          "peak_dbfs": -7.38
+          "rms_dbfs": -25.34,
+          "peak_dbfs": -2.36
         },
-        "gain_db": 6.38,
+        "gain_db": 1.36,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-10-30T06:39:40.362266+00:00"
+      "created_at": "2026-11-03T10:04:45.641528+00:00"
     },
     {
       "audio_id": "U-B1-019-AUD03",
-      "file": "files/U-B1-019-AUD03/2c22c46aa95aff296cae70e8af7f5094a27de60d75d4b75db434cce37dd18993.wav",
+      "file": "files/U-B1-019-AUD03/8a22527bd2956866d94f6235e3c67f0eec80af44543b07d23ac34950d17519aa.wav",
       "status": "DIGITAL_REVIEWED",
       "script_hash": "81e5903c21e2359a639b0cca319c770b73c7609af28c6f6969b32cad3a7fb7c9",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Άννα": "local:coqui-el-css10",
+        "Δημοσιογράφος": "local:mbrola-gr2"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "2c22c46aa95aff296cae70e8af7f5094a27de60d75d4b75db434cce37dd18993",
-      "byte_length": 1937256,
-      "duration_ms": 40359,
+      "sha256": "8a22527bd2956866d94f6235e3c67f0eec80af44543b07d23ac34950d17519aa",
+      "byte_length": 2012848,
+      "duration_ms": 41933,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 40359,
+          "role": "Δημοσιογράφος",
+          "end_ms": 2135,
           "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD03-L01"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 14519,
+          "start_ms": 2785,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B1-019-AUD03-S01"
+          "segment_id": "U-B1-019-AUD03-L02"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 16506,
+          "start_ms": 15169,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD03-L03"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 30296,
+          "start_ms": 17156,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD03-L04"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 32513,
+          "start_ms": 30946,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD03-L05"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 41933,
+          "start_ms": 33163,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD03-L06"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -19972,125 +20439,161 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -22.54,
+        "rms_dbfs": -23.98,
         "peak_dbfs": -1,
-        "duration_ms": 40359,
+        "duration_ms": 41933,
         "sample_rate": 24000,
-        "speech_ratio": 0.8191278493557979,
+        "speech_ratio": 0.7291368621840725,
         "clipping_ratio": 0,
-        "longest_pause_ms": 520,
+        "longest_pause_ms": 760,
         "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
+        "trailing_silence_ms": 80
       },
       "asr_roundtrip": {
-        "wer": 0.3125,
+        "wer": 0.1393,
         "diff": {
           "missing": [
-            "πωσ",
-            "ξεκινησεσ",
-            "βοηθασ",
-            "βιβλιοθηκη",
-            "αννα",
-            "μονο",
+            "στη",
+            "πηγαινα",
             "δανειστω",
+            "βιβλια",
+            "ειδα",
+            "μια",
             "εθελοντεσ",
-            "μιλησα",
             "υπευθυνη",
             "νομιζα",
-            "χρειαζοταν",
-            "να",
-            "αρκετεσ",
-            "δημοσιογραφοσ",
-            "ηταν",
-            "αννα",
-            "φοβομουν",
-            "μηπωσ",
-            "δωσω",
-            "λαθοσ",
-            "εθελοντησ",
+            "εξηγησε",
+            "βρισκονταν",
             "τον",
             "ενιωθα",
             "βοηθαω",
-            "ψαχνουν",
-            "προτεινεσ",
-            "αννα",
-            "ναι",
-            "αρκει",
+            "βρουν",
             "εγκαιρωσ"
           ],
           "inserted": [
-            "που",
-            "εωσ",
-            "ξεκινησε",
-            "βοηθα",
-            "διβλιοθηκη",
-            "ανα",
-            "μορα",
-            "δουνιστω",
+            "τη",
+            "πηγαινε",
+            "ηταν",
+            "νηστο",
+            "διβλια",
+            "ειδαμε",
             "θελοντεσ",
-            "μιλησε",
-            "υπερθυνη",
+            "υπεθυνη",
             "νομιζε",
-            "χρειζοταν",
-            "οικετεσ",
-            "δημωσε",
-            "ο",
-            "γραφοσ",
-            "τι",
-            "θα",
-            "ειναι",
-            "ανα",
-            "απο",
-            "φοβομενα",
-            "που",
-            "ζωσολαθουσε",
-            "ηθελοντησ",
+            "εξηγησει",
+            "φρισκονταν",
             "το",
-            "ειναι",
-            "στα",
+            "ενιδα",
             "βοηθα",
-            "οι",
-            "ψαφουν",
-            "προτεινε",
-            "αν",
-            "να",
-            "εκει",
-            "η",
-            "εγκεροσ"
+            "αφουν",
+            "καιρουσ"
           ],
           "repeated": []
         },
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.3125,
+            "wer": 0.1667,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη;",
+            "hypothesis": "Πώς ξεκίνησες να βοηθάς τη βιβλιοθήκη;",
+            "segment_id": "U-B1-019-AUD03-L01",
+            "cer_phonetic": 0.0256,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0263
+          },
+          {
+            "wer": 0.2632,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
-            "reference": "Δημοσιογράφος: Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη; Άννα: Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές. Δημοσιογράφος: Ήταν εύκολη η πρώτη μέρα; Άννα: Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν. Δημοσιογράφος: Θα το πρότεινες σε κάποιον άλλο; Άννα: Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
-            "hypothesis": "Δημοσιογράφος που έως ξεκίνησε να βοηθά στη διβλιοθήκη, άνα στην αρχή πήγαινα μόρα για να δουνιστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για θέλοντές και μίλησε με την υπέρθυνη. Νόμιζε ότι θα χρειζόταν έρχομαι κάθε μέρα αλλά μου εξήγησε ότι 2 ώρες την εβδομάδα ήταν οικετές. Δήμωσε ο γράφος τι θα είναι εύκολη η πρώτη μέρα. Άνα Όχι ακριβώς, δεν ήξερα από πού βρίσκονταν όλα τα βιβλία και φοβόμενα που ζωσολάθουσε πληροφορία. Ένας άλλος ήθελοντής μου έδειξε το κατάλογο. Μετά από λίγες συναντήσεις είναι στα πιο άνετα. Τώρα βοήθα τους οι επισκέπτες να βρουν αυτό που ψάφουν. Δημοσιογράφος θα το πρότεινε σε κάποιον άλλο. Αν να έκει να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η εγκέρος αν δεν μπορεί να έρθει.",
-            "segment_id": "U-B1-019-AUD03-S01",
-            "cer_phonetic": 0.0837,
-            "reference_words": 128,
+            "reference": "Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές.",
+            "hypothesis": "Στην αρχή πήγαινε μόνο για να ήταν νηστό διβλία. Μια μέρα είδαμε ανακοίνωση για θέλοντες και μίλησα με την υπέθυνη. Νόμιζε ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξηγήσει ότι δύο ώρες την εβδομάδα ήταν αρκετές.",
+            "segment_id": "U-B1-019-AUD03-L02",
+            "cer_phonetic": 0.0631,
+            "reference_words": 38,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0999
+            "cer_accent_insensitive": 0.0698
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Ήταν εύκολη η πρώτη μέρα;",
+            "hypothesis": "Ήταν εύκολη η πρώτη μέρα.",
+            "segment_id": "U-B1-019-AUD03-L03",
+            "cer_phonetic": 0,
+            "reference_words": 5,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.1316,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν.",
+            "hypothesis": "Όχι ακριβώς. Δεν ήξερα πού φρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε το κατάλογο. Μετά από λίγες συναντήσεις ένιδα πιο άνετα. Τώρα βοηθά τους επισκέπτες να αφούν αυτό που ψάχνουν.",
+            "segment_id": "U-B1-019-AUD03-L04",
+            "cer_phonetic": 0.0314,
+            "reference_words": 38,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0299
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Θα το πρότεινες σε κάποιον άλλο;",
+            "hypothesis": "Θα το πρότεινες σε κάποιον άλλο.",
+            "segment_id": "U-B1-019-AUD03-L05",
+            "cer_phonetic": 0,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.0345,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
+            "hypothesis": "Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει καιρούς αν δεν μπορεί να έρθει.",
+            "segment_id": "U-B1-019-AUD03-L06",
+            "cer_phonetic": 0.02,
+            "reference_words": 29,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.024
           }
         ],
-        "cer_phonetic": 0.0837,
-        "reference_words": 128,
+        "cer_phonetic": 0.0356,
+        "reference_words": 122,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0999
+        "cer_accent_insensitive": 0.0378
       },
       "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
       "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
+      "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
+        "local:mbrola-gr2",
         "local:coqui-el-css10"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Άννα": "NARRATOR_F",
+        "Δημοσιογράφος": "NARRATOR_M"
       },
       "generation_params": {
         "speed": "normal",
@@ -20098,49 +20601,85 @@
           650,
           350
         ],
-        "plan_hash": "0ce4f93b63cb2224a1b74409d2436aafff0a6ef5fa3c28f49177ef87e54cd430",
+        "plan_hash": "8bf050b8691923db7b85919ac48b7a6c4f7898c5e45704cbab846bb0209c0641",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -22.54,
+          "rms_dbfs": -23.98,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -28.18,
-          "peak_dbfs": -6.64
+          "rms_dbfs": -25.34,
+          "peak_dbfs": -2.36
         },
-        "gain_db": 5.64,
+        "gain_db": 1.36,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-10-30T06:40:38.109876+00:00"
+      "created_at": "2026-11-03T10:06:12.319026+00:00"
     },
     {
       "audio_id": "U-B1-019-AUD04",
-      "file": "files/U-B1-019-AUD04/ce16a7eaaa3db6bdf2a5f7932f9704f35974db5ff891b8ace155ede29abd10b6.wav",
+      "file": "files/U-B1-019-AUD04/c7836e81d47d81b3b28618e2f7c4dbff6fbc512748c2bef4bf7b01052d96140b.wav",
       "status": "DIGITAL_REVIEWED",
       "script_hash": "81e5903c21e2359a639b0cca319c770b73c7609af28c6f6969b32cad3a7fb7c9",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
       "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
+        "Άννα": "local:coqui-el-css10",
+        "Δημοσιογράφος": "local:mbrola-gr2"
       },
       "locale": "el-GR",
       "mime_type": "audio/wav",
-      "sha256": "ce16a7eaaa3db6bdf2a5f7932f9704f35974db5ff891b8ace155ede29abd10b6",
-      "byte_length": 1885532,
-      "duration_ms": 39281,
+      "sha256": "c7836e81d47d81b3b28618e2f7c4dbff6fbc512748c2bef4bf7b01052d96140b",
+      "byte_length": 1986988,
+      "duration_ms": 41395,
       "sample_rate": 24000,
       "channels": 1,
       "segment_cues": [
         {
-          "role": "__narrator__",
-          "end_ms": 39281,
+          "role": "Δημοσιογράφος",
+          "end_ms": 2135,
           "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD04-L01"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 14489,
+          "start_ms": 2785,
           "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B1-019-AUD04-S01"
+          "segment_id": "U-B1-019-AUD04-L02"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 16476,
+          "start_ms": 15139,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD04-L03"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 29997,
+          "start_ms": 17126,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD04-L04"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 32214,
+          "start_ms": 30647,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD04-L05"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 41395,
+          "start_ms": 32864,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD04-L06"
         }
       ],
       "technical_status": "TECHNICAL_PASS",
@@ -20156,75 +20695,321 @@
         },
         "profile": "greekos-tts-technical/1",
         "channels": 1,
-        "rms_dbfs": -21.27,
+        "rms_dbfs": -23.95,
         "peak_dbfs": -1,
-        "duration_ms": 39281,
+        "duration_ms": 41395,
         "sample_rate": 24000,
-        "speech_ratio": 0.8442748091603054,
+        "speech_ratio": 0.7207729468599033,
         "clipping_ratio": 0,
-        "longest_pause_ms": 500,
+        "longest_pause_ms": 760,
         "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
+        "trailing_silence_ms": 80
       },
       "asr_roundtrip": {
-        "wer": 0.2422,
+        "wer": 0.1557,
         "diff": {
           "missing": [
-            "βοηθασ",
-            "αννα",
-            "μονο",
-            "για",
+            "στη",
+            "πηγαινα",
             "δανειστω",
             "ειδα",
             "μια",
+            "ανακοινωση",
             "εθελοντεσ",
-            "μιλησα",
-            "με",
             "υπευθυνη",
-            "χρειαζοταν",
-            "ευκολη",
-            "που",
-            "βρισκονταν",
-            "δωσω",
+            "αρκετεσ",
             "εθελοντησ",
             "τον",
             "ενιωθα",
             "βοηθαω",
-            "τουσ",
-            "ψαχνουν",
-            "προτεινεσ",
-            "αννα",
+            "ακριβωσ",
+            "εγκαιρωσ",
+            "ερθει"
+          ],
+          "inserted": [
+            "τη",
+            "πηγαινε",
+            "διεστω",
+            "ειδαμε",
+            "να",
+            "κοινωσε",
+            "θελοντεσ",
+            "υπεθυνη",
+            "αλαιτητεσ",
+            "ηθελοντησ",
+            "το",
+            "ενιεσ",
+            "θα",
+            "βοηθα",
+            "ακθηβοσ",
+            "η",
+            "κεροσ",
+            "εφθει"
+          ],
+          "repeated": []
+        },
+        "engine": "local:sherpa-onnx:whisper-turbo-int8",
+        "segments": [
+          {
+            "wer": 0.1667,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη;",
+            "hypothesis": "Πώς ξεκίνησες να βοηθάς τη βιβλιοθήκη;",
+            "segment_id": "U-B1-019-AUD04-L01",
+            "cer_phonetic": 0.0256,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0263
+          },
+          {
+            "wer": 0.2105,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές.",
+            "hypothesis": "Στην αρχή πήγαινε μόνο για να διεστώ βιβλία. Μια μέρα είδαμε να κοίνωσε για θέλοντες και μίλησα με την υπέθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αλαιτητές.",
+            "segment_id": "U-B1-019-AUD04-L02",
+            "cer_phonetic": 0.0777,
+            "reference_words": 38,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0791
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Ήταν εύκολη η πρώτη μέρα;",
+            "hypothesis": "Ήταν εύκολη η πρώτη μέρα.",
+            "segment_id": "U-B1-019-AUD04-L03",
+            "cer_phonetic": 0,
+            "reference_words": 5,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.1316,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν.",
+            "hypothesis": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος ηθελοντής μου έδειξε το κατάλογο. Μετά από λίγες συναντήσεις ένιες θα πιο άνετα. Τώρα βοήθα τους επισκέπτες να βρουν αυτό που ψάχνουν.",
+            "segment_id": "U-B1-019-AUD04-L04",
+            "cer_phonetic": 0.0269,
+            "reference_words": 38,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0256
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Θα το πρότεινες σε κάποιον άλλο;",
+            "hypothesis": "Θα το πρότεινες σε κάποιον άλλο.",
+            "segment_id": "U-B1-019-AUD04-L05",
+            "cer_phonetic": 0,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.1724,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
+            "hypothesis": "Ναι, άρκει να ρωτήσει πρώτα τι ακθήβος χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η Κέρος αν δεν μπορεί να έφθει.",
+            "segment_id": "U-B1-019-AUD04-L06",
+            "cer_phonetic": 0.0333,
+            "reference_words": 29,
+            "accent_mismatches": [
+              "αρκεί"
+            ],
+            "cer_accent_insensitive": 0.0539
+          }
+        ],
+        "cer_phonetic": 0.0415,
+        "reference_words": 122,
+        "accent_mismatches": [
+          "αρκεί"
+        ],
+        "cer_accent_insensitive": 0.0462
+      },
+      "digital_status": "AUDIO_VERIFIED_DIGITAL",
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
+      "synthetic_disclosure": true,
+      "render_status": "DIGITAL_REVIEWED",
+      "synthesis_version": "greekos-audio/2.2",
+      "voice_ids": [
+        "local:mbrola-gr2",
+        "local:coqui-el-css10"
+      ],
+      "cast_snapshot": {
+        "Άννα": "NARRATOR_F",
+        "Δημοσιογράφος": "NARRATOR_M"
+      },
+      "generation_params": {
+        "speed": "normal",
+        "gaps_ms": [
+          650,
+          350
+        ],
+        "plan_hash": "2e215bdf79f538019d1a1d539516548eb561c4273233565e8b66e82ce2480c32",
+        "sample_rate": 24000
+      },
+      "normalization": {
+        "after": {
+          "rms_dbfs": -23.95,
+          "peak_dbfs": -1
+        },
+        "before": {
+          "rms_dbfs": -25.3,
+          "peak_dbfs": -2.36
+        },
+        "gain_db": 1.36,
+        "target_rms_dbfs": -20,
+        "peak_ceiling_dbfs": -1
+      },
+      "cast_approved": false,
+      "created_at": "2026-11-03T10:07:26.69754+00:00"
+    },
+    {
+      "audio_id": "U-B1-019-AUD05",
+      "file": "files/U-B1-019-AUD05/2f0bb559a5fc12496f88ff645f19ea654aedc76ab799fcdbc134639b0af0bf54.wav",
+      "status": "DIGITAL_REVIEWED",
+      "script_hash": "81e5903c21e2359a639b0cca319c770b73c7609af28c6f6969b32cad3a7fb7c9",
+      "provider": "local_mbrola+local_coqui",
+      "model": "mbrola-gr2+coqui-el-css10",
+      "voice_map": {
+        "Άννα": "local:coqui-el-css10",
+        "Δημοσιογράφος": "local:mbrola-gr2"
+      },
+      "locale": "el-GR",
+      "mime_type": "audio/wav",
+      "sha256": "2f0bb559a5fc12496f88ff645f19ea654aedc76ab799fcdbc134639b0af0bf54",
+      "byte_length": 2000876,
+      "duration_ms": 41684,
+      "sample_rate": 24000,
+      "channels": 1,
+      "segment_cues": [
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 2135,
+          "start_ms": 0,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD05-L01"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 14539,
+          "start_ms": 2785,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD05-L02"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 16526,
+          "start_ms": 15189,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD05-L03"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 30586,
+          "start_ms": 17176,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD05-L04"
+        },
+        {
+          "role": "Δημοσιογράφος",
+          "end_ms": 32802,
+          "start_ms": 31236,
+          "voice_id": "local:mbrola-gr2",
+          "segment_id": "U-B1-019-AUD05-L05"
+        },
+        {
+          "role": "Άννα",
+          "end_ms": 41684,
+          "start_ms": 33452,
+          "voice_id": "local:coqui-el-css10",
+          "segment_id": "U-B1-019-AUD05-L06"
+        }
+      ],
+      "technical_status": "TECHNICAL_PASS",
+      "technical_report": {
+        "pass": true,
+        "checks": {
+          "pauses": true,
+          "duration": true,
+          "decodable": true,
+          "no_clipping": true,
+          "edge_silence": true,
+          "has_speech_energy": true
+        },
+        "profile": "greekos-tts-technical/1",
+        "channels": 1,
+        "rms_dbfs": -23.97,
+        "peak_dbfs": -1,
+        "duration_ms": 41684,
+        "sample_rate": 24000,
+        "speech_ratio": 0.7189448441247003,
+        "clipping_ratio": 0,
+        "longest_pause_ms": 780,
+        "leading_silence_ms": 60,
+        "trailing_silence_ms": 80
+      },
+      "asr_roundtrip": {
+        "wer": 0.1721,
+        "diff": {
+          "missing": [
+            "στη",
+            "πηγαινα",
+            "μονο",
+            "δανειστω",
+            "βιβλια",
+            "ειδα",
+            "μια",
+            "ανακοινωση",
+            "για",
+            "εθελοντεσ",
+            "υπευθυνη",
+            "χρειαζοταν",
+            "να",
+            "εθελοντησ",
+            "εδειξε",
+            "τον",
+            "ενιωθα",
             "αρκει",
             "να",
             "εγκαιρωσ"
           ],
           "inserted": [
-            "βοηθασεισ",
-            "ανα",
-            "με",
-            "ολη",
-            "διευθυνω",
-            "ηταν",
-            "η",
-            "θελοντεσ",
-            "μιλησαμε",
-            "υπεθυνη",
-            "χρυζοταν",
-            "εκκολη",
-            "οπου",
-            "βρεισ",
-            "κονταν",
-            "δωσει",
-            "θελοντησ",
-            "το",
-            "ενιζα",
-            "βοηθα",
-            "οτωσ",
+            "τη",
+            "πηγαινε",
+            "αμονο",
+            "ταινιστω",
+            "διβλια",
+            "ειδαμε",
+            "ανακοινηση",
+            "για",
             "οι",
-            "ξαχνουν",
-            "προτεινε",
-            "ανα",
-            "εκεινο",
+            "θελοντεσ",
+            "υπεθυνη",
+            "δυναζοταν",
+            "ηθελοντησ",
+            "ερειξε",
+            "το",
+            "ενιωσα",
+            "αρκεινα",
             "η",
             "γεροσ"
           ],
@@ -20233,207 +21018,107 @@
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.2422,
+            "wer": 0.1667,
             "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Δημοσιογράφος: Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη; Άννα: Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές. Δημοσιογράφος: Ήταν εύκολη η πρώτη μέρα; Άννα: Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν. Δημοσιογράφος: Θα το πρότεινες σε κάποιον άλλο; Άννα: Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
-            "hypothesis": "Δημοσιογράφος πως ξεκίνησες να βοηθάσεις στη βιβλιοθήκη, άνα στην αρχή πήγαινα με όλη να διευθύνω βιβλία. Μια μέρα ήταν η ανακοίνωση για θέλοντές και μιλήσαμε την υπέθυνη. Νόμιζα ότι θα χρυζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές. Δημοσιογράφος ήταν έκκολη η πρώτη μέρα, Άννα, όχι ακριβώς. Δεν ήξερα όπου βρεις κονταν όλα τα βιβλία και φοβόμουν μήπως δώσει λάθος πληροφορία. Ένας άλλος θελοντής μου έδειξε το κατάλογο. Μετά από λίγες συναντήσεις ένιζα πιο άνετα. Τώρα βοήθα ότως οι επισκέπτες να βρουν αυτό που ξάχνουν. Δημοσιογράφος θα το πρότεινε σε κάποιον άλλο. Άνα ναι, εκείνο ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η γέρος αν δεν μπορεί να έρθει.",
-            "segment_id": "U-B1-019-AUD04-S01",
-            "cer_phonetic": 0.059,
-            "reference_words": 128,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη;",
+            "hypothesis": "Πώς ξεκίνησες να βοηθάς τη βιβλιοθήκη;",
+            "segment_id": "U-B1-019-AUD05-L01",
+            "cer_phonetic": 0.0256,
+            "reference_words": 6,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0765
-          }
-        ],
-        "cer_phonetic": 0.059,
-        "reference_words": 128,
-        "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0765
-      },
-      "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
-      "synthetic_disclosure": true,
-      "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
-      "voice_ids": [
-        "local:coqui-el-css10"
-      ],
-      "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
-      },
-      "generation_params": {
-        "speed": "normal",
-        "gaps_ms": [
-          650,
-          350
-        ],
-        "plan_hash": "d77c6f467a41bfd6ea8ce6607d85fbd4734727effbfa1fca95d51b2cec42f1b4",
-        "sample_rate": 24000
-      },
-      "normalization": {
-        "after": {
-          "rms_dbfs": -21.27,
-          "peak_dbfs": -1
-        },
-        "before": {
-          "rms_dbfs": -28.4,
-          "peak_dbfs": -8.13
-        },
-        "gain_db": 7.13,
-        "target_rms_dbfs": -20,
-        "peak_ceiling_dbfs": -1
-      },
-      "cast_approved": false,
-      "created_at": "2026-10-30T06:41:33.489049+00:00"
-    },
-    {
-      "audio_id": "U-B1-019-AUD05",
-      "file": "files/U-B1-019-AUD05/7e129de3eb567cb9e276151cc682cf9a35ce76a7b1971fa0cf14b928bd86637e.wav",
-      "status": "DIGITAL_REVIEWED",
-      "script_hash": "81e5903c21e2359a639b0cca319c770b73c7609af28c6f6969b32cad3a7fb7c9",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
-      "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
-      },
-      "locale": "el-GR",
-      "mime_type": "audio/wav",
-      "sha256": "7e129de3eb567cb9e276151cc682cf9a35ce76a7b1971fa0cf14b928bd86637e",
-      "byte_length": 1937256,
-      "duration_ms": 40359,
-      "sample_rate": 24000,
-      "channels": 1,
-      "segment_cues": [
-        {
-          "role": "__narrator__",
-          "end_ms": 40359,
-          "start_ms": 0,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B1-019-AUD05-S01"
-        }
-      ],
-      "technical_status": "TECHNICAL_PASS",
-      "technical_report": {
-        "pass": true,
-        "checks": {
-          "pauses": true,
-          "duration": true,
-          "decodable": true,
-          "no_clipping": true,
-          "edge_silence": true,
-          "has_speech_energy": true
-        },
-        "profile": "greekos-tts-technical/1",
-        "channels": 1,
-        "rms_dbfs": -21.05,
-        "peak_dbfs": -1,
-        "duration_ms": 40359,
-        "sample_rate": 24000,
-        "speech_ratio": 0.8379583746283449,
-        "clipping_ratio": 0,
-        "longest_pause_ms": 440,
-        "leading_silence_ms": 40,
-        "trailing_silence_ms": 40
-      },
-      "asr_roundtrip": {
-        "wer": 0.2656,
-        "diff": {
-          "missing": [
-            "ξεκινησεσ",
-            "στη",
-            "βιβλιοθηκη",
-            "αννα",
-            "να",
-            "δανειστω",
-            "ειδα",
-            "μια",
-            "εθελοντεσ",
-            "μιλησα",
-            "υπευθυνη",
-            "χρειαζοταν",
-            "να",
-            "εξηγησε",
-            "ηταν",
-            "ευκολη",
-            "η",
-            "ηξερα",
-            "βιβλια",
-            "εθελοντησ",
-            "τον",
-            "ενιωθα",
-            "προτεινεσ",
-            "σε",
-            "αρκει",
-            "δεν",
-            "εγκαιρωσ",
-            "μπορει",
-            "να",
-            "ερθει"
-          ],
-          "inserted": [
-            "ξεκινησε",
-            "τη",
-            "διεβλιοθηκη",
-            "ανα",
-            "την",
-            "αταριστω",
-            "ειδαμε",
-            "την",
-            "θελοντεσ",
-            "μιλησε",
-            "υπεθυνη",
-            "χρυζοταν",
-            "αξηγησε",
-            "τα",
-            "νευκογη",
-            "ηξελα",
-            "επιβληγη",
-            "η",
-            "θελοντησ",
-            "το",
-            "εναι",
-            "στα",
-            "προτεισε",
-            "ακινη",
-            "θα",
-            "η",
-            "καιροσ",
-            "πολυνερθει"
-          ],
-          "repeated": []
-        },
-        "engine": "local:sherpa-onnx:whisper-turbo-int8",
-        "segments": [
+            "cer_accent_insensitive": 0.0263
+          },
           {
-            "wer": 0.2656,
+            "wer": 0.3158,
             "pass": true,
             "voice_id": "local:coqui-el-css10",
-            "reference": "Δημοσιογράφος: Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη; Άννα: Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές. Δημοσιογράφος: Ήταν εύκολη η πρώτη μέρα; Άννα: Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν. Δημοσιογράφος: Θα το πρότεινες σε κάποιον άλλο; Άννα: Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
-            "hypothesis": "Δημοσιογράφος πως ξεκίνησε να βοηθάς τη διεβλιοθήκη άνα στην αρχή πήγαινα μόνο για την αταριστώ βιβλία μια μέρα είδαμε την ανακοίνωση για θέλοντες και μίλησε με την υπέθυνη νόμιζα ότι θα χρυζόταν έρχομαι κάθε μέρα αλλά μου αξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές Δημοσιογράφος, τα νεύκογη πρώτη μέρα, άννα, όχι ακριβώς. Δεν ήξελα πού βρίσκονταν όλα τα επιβλήγη και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος η θελοντής μου έδειξε το κατάλογο. Μετά από λίγες συναντήσεις έναι στα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν. Δημοσιογράφος θα το πρότεισε κάποιον άλλο. Άννα ναι, ακίνη να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Θα χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η καιρός αν δεν πολυνέρθει.",
-            "segment_id": "U-B1-019-AUD05-S01",
-            "cer_phonetic": 0.0796,
-            "reference_words": 128,
+            "reference": "Στην αρχή πήγαινα μόνο για να δανειστώ βιβλία. Μια μέρα είδα μια ανακοίνωση για εθελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές.",
+            "hypothesis": "Στην αρχή πήγαινε αμόνο για να ταινιστώ διβλία. Μια μέρα είδαμε ανακοίνηση για οι θελοντές και μίλησα με την υπέθυνη. Νόμιζα ότι θα δυναζόταν έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες την εβδομάδα ήταν αρκετές.",
+            "segment_id": "U-B1-019-AUD05-L02",
+            "cer_phonetic": 0.0874,
+            "reference_words": 38,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0869
+            "cer_accent_insensitive": 0.0977
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Ήταν εύκολη η πρώτη μέρα;",
+            "hypothesis": "Ήταν εύκολη η πρώτη μέρα.",
+            "segment_id": "U-B1-019-AUD05-L03",
+            "cer_phonetic": 0,
+            "reference_words": 5,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.1053,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος εθελοντής μου έδειξε τον κατάλογο. Μετά από λίγες συναντήσεις ένιωθα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν.",
+            "hypothesis": "Όχι ακριβώς. Δεν ήξερα πού βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος ηθελοντής μου έρειξε το κατάλογο. Μετά από λίγες συναντήσεις ένιωσα πιο άνετα. Τώρα βοηθάω τους επισκέπτες να βρουν αυτό που ψάχνουν.",
+            "segment_id": "U-B1-019-AUD05-L04",
+            "cer_phonetic": 0.0179,
+            "reference_words": 38,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0171
+          },
+          {
+            "wer": 0,
+            "pass": true,
+            "voice_id": "local:mbrola-gr2",
+            "reference": "Θα το πρότεινες σε κάποιον άλλο;",
+            "hypothesis": "Θα το πρότεινες σε κάποιον άλλο.",
+            "segment_id": "U-B1-019-AUD05-L05",
+            "cer_phonetic": 0,
+            "reference_words": 6,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0
+          },
+          {
+            "wer": 0.1379,
+            "pass": true,
+            "voice_id": "local:coqui-el-css10",
+            "reference": "Ναι, αρκεί να ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει εγκαίρως αν δεν μπορεί να έρθει.",
+            "hypothesis": "Ναι, αρκείνα ρωτήσει πρώτα τι ακριβώς χρειάζεται. Δεν χρειάζεται να ξέρει τα πάντα από την πρώτη μέρα. Είναι όμως σημαντικό να ενημερώνει η γέρος αν δεν μπορεί να έρθει.",
+            "segment_id": "U-B1-019-AUD05-L06",
+            "cer_phonetic": 0.0267,
+            "reference_words": 29,
+            "accent_mismatches": [],
+            "cer_accent_insensitive": 0.0419
           }
         ],
-        "cer_phonetic": 0.0796,
-        "reference_words": 128,
+        "cer_phonetic": 0.04,
+        "reference_words": 122,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.0869
+        "cer_accent_insensitive": 0.0462
       },
       "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
+      "rights_status": "DEV_LOCAL_ONLY",
+      "rights_evidence": {
+        "voices": [
+          {
+            "rights": {
+              "source": "Ubuntu package mbrola-gr2 (github.com/mbrola/mbrola-voices)",
+              "status": "DEV_LOCAL_ONLY",
+              "license": "MBROLA gr2: free for non-commercial use; may not be sold or incorporated into a sold product without the owners' permission"
+            },
+            "voice_id": "local:mbrola-gr2"
+          }
+        ]
+      },
       "synthetic_disclosure": true,
       "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
+      "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
+        "local:mbrola-gr2",
         "local:coqui-el-css10"
       ],
       "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
+        "Άννα": "NARRATOR_F",
+        "Δημοσιογράφος": "NARRATOR_M"
       },
       "generation_params": {
         "speed": "normal",
@@ -20441,24 +21126,24 @@
           650,
           350
         ],
-        "plan_hash": "f279b63616c8e379288305a81f0843654ca906bfe1513801513f8bc7af3cff89",
+        "plan_hash": "07df333fa2bec85a65343ef21ee4292851044e0837b26bf1079b5dcf75727780",
         "sample_rate": 24000
       },
       "normalization": {
         "after": {
-          "rms_dbfs": -21.05,
+          "rms_dbfs": -23.97,
           "peak_dbfs": -1
         },
         "before": {
-          "rms_dbfs": -28.35,
-          "peak_dbfs": -8.3
+          "rms_dbfs": -25.32,
+          "peak_dbfs": -2.36
         },
-        "gain_db": 7.3,
+        "gain_db": 1.36,
         "target_rms_dbfs": -20,
         "peak_ceiling_dbfs": -1
       },
       "cast_approved": false,
-      "created_at": "2026-10-30T06:42:26.907767+00:00"
+      "created_at": "2026-11-03T10:08:14.333637+00:00"
     },
     {
       "audio_id": "U-B1-019-AUD06",
@@ -23243,754 +23928,24 @@
     },
     {
       "audio_id": "U-B2-015-AUD01",
-      "file": "files/U-B2-015-AUD01/718bc2957e1dad8399fb0b2973214aa6823760d61a6225bea9905a60bee56812.wav",
-      "status": "DIGITAL_REVIEWED",
       "script_hash": "8fe3ae277fb2cb92dbba54dc7fa0962aaf2a2bb84f4e2a656941b5e6540a97ac",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
-      "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
-      },
-      "locale": "el-GR",
-      "mime_type": "audio/wav",
-      "sha256": "718bc2957e1dad8399fb0b2973214aa6823760d61a6225bea9905a60bee56812",
-      "byte_length": 7785700,
-      "duration_ms": 162201,
-      "sample_rate": 24000,
-      "channels": 1,
-      "segment_cues": [
-        {
-          "role": "__narrator__",
-          "end_ms": 14418,
-          "start_ms": 0,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 29016,
-          "start_ms": 15068,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#2"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 44293,
-          "start_ms": 29666,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#3"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 59421,
-          "start_ms": 44943,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#4"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 74578,
-          "start_ms": 60071,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#5"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 90124,
-          "start_ms": 75228,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#6"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 104913,
-          "start_ms": 90774,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#7"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 119332,
-          "start_ms": 105563,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#8"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 138021,
-          "start_ms": 119982,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#9"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 146633,
-          "start_ms": 138671,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#10"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 153649,
-          "start_ms": 147283,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#11"
-        },
-        {
-          "role": "__narrator__",
-          "end_ms": 162201,
-          "start_ms": 154299,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD01-S01#12"
-        }
-      ],
-      "technical_status": "TECHNICAL_PASS",
-      "technical_report": {
-        "pass": true,
-        "checks": {
-          "pauses": true,
-          "duration": true,
-          "decodable": true,
-          "no_clipping": true,
-          "edge_silence": true,
-          "has_speech_energy": true
-        },
-        "profile": "greekos-tts-technical/1",
-        "channels": 1,
-        "rms_dbfs": -22.38,
-        "peak_dbfs": -1,
-        "duration_ms": 162201,
-        "sample_rate": 24000,
-        "speech_ratio": 0.7794353347306128,
-        "clipping_ratio": 0,
-        "longest_pause_ms": 760,
-        "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
-      },
-      "asr_roundtrip": {
-        "wer": 0.1357,
-        "diff": {
-          "missing": [
-            "αιθουσα",
-            "απογευματα",
-            "αρχικα",
-            "αποφασισουμε",
-            "προτεινα",
-            "μεινει",
-            "ατομικη",
-            "μελετη",
-            "λαμπεσ",
-            "επιβλεψη",
-            "εβδομαδα",
-            "μη",
-            "ελεγχουμε",
-            "πριν",
-            "αννα",
-            "αρκει",
-            "θα",
-            "λεγατε",
-            "μανοσ",
-            "εγκαιρωσ",
-            "ποσοι",
-            "προβολεασ",
-            "δοκιμη",
-            "αν",
-            "αρεσε",
-            "ταινια",
-            "τη",
-            "μελετη",
-            "θα",
-            "αννα",
-            "συνοψισω",
-            "την",
-            "διορθωθει",
-            "υπευθυνοι",
-            "πεμπτη",
-            "προτεινουμε",
-            "μια",
-            "ελεγχθει",
-            "προβολεασ",
-            "σχεδιο",
-            "κτιριου",
-            "γραψουμε",
-            "οτι",
-            "για",
-            "επιβλεψη",
-            "συγκεκριμενη",
-            "ημερομηνια",
-            "εναρξησ"
-          ],
-          "inserted": [
-            "εφυξα",
-            "απογειματα",
-            "αλλικα",
-            "να",
-            "αποφασισουν",
-            "προτειται",
-            "μην",
-            "ειναι",
-            "το",
-            "μικρο",
-            "μιλετη",
-            "λαβεσ",
-            "ετη",
-            "βλεψη",
-            "εβδομανα",
-            "μην",
-            "ελεγουμε",
-            "φυμπ",
-            "ανα",
-            "ακει",
-            "τα",
-            "λελατε",
-            "μανω",
-            "σε",
-            "γεροσ",
-            "πωσ",
-            "προβολεσ",
-            "το",
-            "εκεινο",
-            "αναρεσε",
-            "εθνια",
-            "την",
-            "πελαιεθε",
-            "ανα",
-            "συναψησω",
-            "στη",
-            "η",
-            "2",
-            "θα",
-            "θεθει",
-            "υπεθυνοι",
-            "5",
-            "προτινωμενη",
-            "ελευθευει",
-            "προβολεσ",
-            "σχεριο",
-            "κτηριου",
-            "δραξουμε",
-            "ο",
-            "τι",
-            "και",
-            "επιβλεξη",
-            "συμδεκριμενη",
-            "ημερομηνη",
-            "εναξησ"
-          ],
-          "repeated": []
-        },
-        "engine": "local:sherpa-onnx:whisper-turbo-int8",
-        "segments": [
-          {
-            "wer": 0.1304,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Άννα: Ευχαριστώ που ήρθατε. Πρέπει να προτείνουμε πώς θα λειτουργήσει η αίθουσα της γειτονιάς τον επόμενο μήνα. Έχουμε δύο ελεύθερα απογεύματα, την Τρίτη και την Πέμπτη. Αρχικά σκέφτηκα να κάνουμε προβολές ταινιών και τις δύο ημέρες, αλλά θα ήθελα να ακούσω τις ανάγκες σας πριν αποφασίσουμε.",
-            "hypothesis": "Άννα, ευχαριστώ που ήρθατε. Πρέπει να προτείνουμε πως θα λειτουργήσει η έφυξα της γειτονιάς τον επόμενο μήνα. Έχουμε δύο ελεύθερα απογείματα, την τρίτη και την πέμπτη. Αλλικά σκέφτηκα να κάνουμε προβολές ταινιών και τις δύο ημέρες, αλλά θα ήθελα να ακούσω τις ανάγκες σας πριν να αποφασίσουν.",
-            "segment_id": "U-B2-015-AUD01-S01",
-            "cer_phonetic": 0.0462,
-            "reference_words": 46,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0463
-          },
-          {
-            "wer": 0.1395,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Μάνος: Οι προβολές είναι ωραία ιδέα, όμως υπάρχουν μαθητές που ψάχνουν ήσυχο χώρο για διάβασμα. Στο σπίτι δεν έχουν όλοι δικό τους δωμάτιο. Θα πρότεινα η Τρίτη να μείνει για ατομική μελέτη. Δεν χρειάζεται να αγοράσουμε πολλά πράγματα· υπάρχουν ήδη τραπέζια και καρέκλες.",
-            "hypothesis": "Μάνος, οι προβολές είναι ωραία ιδέα, όμως υπάρχουν μαθητές που ψάχνουν ήσυχο χώρο για διάβασμα. Στο σπίτι δεν έχουν όλοι δικό τους δωμάτιο. Θα πρότειται η τρίτη να μην είναι για το μικρό μιλέτη. Δεν χρειάζεται να αγοράσουμε πολλά πράγματα, υπάρχουν ήδη τραπέζια και καρέκλες.",
-            "segment_id": "U-B2-015-AUD01-S01#2",
-            "cer_phonetic": 0.0408,
-            "reference_words": 43,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0418
-          },
-          {
-            "wer": 0.0889,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Ελένη: Συμφωνώ ότι η μελέτη είναι σημαντική, αλλά θέλω να προσέξουμε τον φωτισμό. Δύο λάμπες δεν λειτουργούν. Αν δεν επισκευαστούν, δεν θα έλεγα ότι ο χώρος είναι έτοιμος. Επίσης, όποιος αναλάβει την επίβλεψη πρέπει να ξέρει πού βρίσκονται τα κλειδιά και πώς κλείνει το κτίριο.",
-            "hypothesis": "Ελένη, συμφωνώ ότι η μελέτη είναι σημαντική, αλλά θέλω να προσέξουμε τον φωτισμό. Δυο λάβες δεν λειτουργούν. Αν δεν επισκευαστούν, δεν θα έλεγα ότι ο χώρος είναι έτοιμος. Επίσης, όποιος αναλάβει την ετή βλέψη πρέπει να ξέρει που βρίσκονται τα κλειδιά και πώς κλείνει το κτίριο.",
-            "segment_id": "U-B2-015-AUD01-S01#3",
-            "cer_phonetic": 0.0122,
-            "reference_words": 45,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0187
-          },
-          {
-            "wer": 0.0851,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Πέτρος: Εγώ μπορώ να βοηθήσω την Τρίτη, όχι όμως κάθε εβδομάδα. Η δουλειά μου αλλάζει ωράριο. Αν στηριχτούμε μόνο σε εμένα, κάποια μέρα μπορεί να μη βρεθεί κανείς να ανοίξει. Θα προτιμούσα να υπάρχει δεύτερος υπεύθυνος και ένα κοινό πρόγραμμα, το οποίο να ελέγχουμε λίγες ημέρες πριν.",
-            "hypothesis": "Πέτρος, εγώ μπορώ να βοηθήσω την Τρίτη, όχι όμως κάθε εβδομάνα. Η δουλειά μου αλλάζει ωράριο. Αν στηριχτούμε μόνο σε εμένα κάποια μέρα μπορεί να μην βρεθεί κανείς να ανοίξει. Θα προτιμούσα να υπάρχει δεύτερος υπεύθυνος και ένα κοινό πρόγραμμα το οποίο να ελέγουμε λίγες ημέρες φύμπ.",
-            "segment_id": "U-B2-015-AUD01-S01#4",
-            "cer_phonetic": 0.0234,
-            "reference_words": 47,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0254
-          },
-          {
-            "wer": 0.1,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Άννα: Άρα δεν αρκεί να διαλέξουμε δραστηριότητα. Πρέπει να εξασφαλίσουμε και ότι ο χώρος θα ανοίγει κανονικά. Για την Πέμπτη θα μπορούσαμε να κρατήσουμε μια πολιτιστική δραστηριότητα. Τι θα λέγατε για συζήτηση γύρω από μια ταινία, χωρίς δυνατή μουσική μετά;",
-            "hypothesis": "Άνα, άρα δεν ακεί να διαλέξουμε δραστηριότητα. Πρέπει να εξασφαλίσουμε και ότι ο χώρος τα ανοίγει κανονικά. Για την πέμπτη θα μπορούσαμε να κρατήσουμε μια πολιτιστική δραστηριότητα. Τι θα λέλατε για συζήτηση γύρω από μια ταινία χωρίς δυνατή μουσική μετά.",
-            "segment_id": "U-B2-015-AUD01-S01#5",
-            "cer_phonetic": 0.0126,
-            "reference_words": 40,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0159
-          },
-          {
-            "wer": 0.093,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Μάνος: Αυτό μου φαίνεται πιο λογικό από δύο ίδιες βραδιές. Θα ήθελα όμως να μην αλλάζει η χρήση της Τρίτης τελευταία στιγμή. Αν οι μαθητές υπολογίζουν ότι θα διαβάσουν εδώ, μια ξαφνική προβολή θα τους δημιουργήσει πρόβλημα. Οι αλλαγές πρέπει να ανακοινώνονται εγκαίρως.",
-            "hypothesis": "Μάνω σε αυτό μου φαίνεται πιο λογικό από δύο ίδιες βραδιές. Θα ήθελα όμως να μην αλλάζει η χρήση της τρίτης τελευταία στιγμή. Αν οι μάθητες υπολογίζουν ότι θα διαβάσουν εδώ, μια ξαφνική προβολή θα τους δημιουργήσει πρόβλημα. Οι αλλαγές πρέπει να ανακοινώνονται γέρος.",
-            "segment_id": "U-B2-015-AUD01-S01#6",
-            "cer_phonetic": 0.0165,
-            "reference_words": 43,
-            "accent_mismatches": [
-              "μαθητέσ"
-            ],
-            "cer_accent_insensitive": 0.0307
-          },
-          {
-            "wer": 0.0698,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Ελένη: Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση. Δεν ξέρουμε ακόμη πόσοι θα έρθουν ούτε αν ο προβολέας λειτουργεί σωστά. Μπορώ να τον ελέγξω αύριο, αλλά δεν μπορώ να αναλάβω όλες τις τεχνικές ανάγκες του μήνα.",
-            "hypothesis": "Ελένη, δεν έχω αντίρρηση για την πέμπτη. Προτείνω μόνο να αρχίσουμε με μια δοκιμαστική συνάντηση. Δεν ξέρουμε ακόμη πώς θα έρθουν ούτε αν ο προβολές λειτουργεί σωστά. Μπορώ να τον ελέγξω αύριο, αλλά δεν μπορώ να αναλάβω όλες τις τεχνικές ανάγκες του μήνα.",
-            "segment_id": "U-B2-015-AUD01-S01#7",
-            "cer_phonetic": 0.0085,
-            "reference_words": 43,
-            "accent_mismatches": [
-              "μία"
-            ],
-            "cer_accent_insensitive": 0.0159
-          },
-          {
-            "wer": 0.1739,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Πέτρος: Αν γίνει δοκιμή, θα μπορούσαμε να ζητήσουμε σύντομα σχόλια. Όχι μόνο αν άρεσε η ταινία, αλλά αν η ώρα και ο χώρος ήταν κατάλληλα. Και για τη μελέτη θα ήταν χρήσιμο να ακούσουμε όσους ήρθαν αλλά δεν βρήκαν θέση. Αλλιώς θα μετράμε μόνο τους ικανοποιημένους.",
-            "hypothesis": "Πέτρος αν γίνει το εκείνο θα μπορούσαμε να ζητήσουμε σύντομα σχόλια όχι μόνο ανάρεσε η εθνία αλλά αν η ώρα και ο χώρος ήταν κατάλληλα και για την Πελαιεθέ ήταν χρήσιμο να ακούσουμε όσους ήρθαν αλλά δεν βρήκαν θέση αλλιώς θα μετράμε μόνο τους ικανοποιημένους",
-            "segment_id": "U-B2-015-AUD01-S01#8",
-            "cer_phonetic": 0.0588,
-            "reference_words": 46,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0664
-          },
-          {
-            "wer": 0.3261,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Άννα: Να συνοψίσω λοιπόν την πρόταση, όχι να την παρουσιάσω ως οριστική απόφαση. Την Τρίτη προτείνουμε μελέτη, εφόσον διορθωθεί ο φωτισμός και βρεθούν δύο υπεύθυνοι. Την Πέμπτη προτείνουμε μία δοκιμαστική πολιτιστική συνάντηση, αφού ελεγχθεί ο προβολέας. Θα στείλουμε το σχέδιο στην επιτροπή του κτιρίου για έγκριση.",
-            "hypothesis": "Άνα, να συναψήσω λοιπόν την πρόταση, όχι να την παρουσιάσω ως οριστική απόφαση. Στη τρίτη προτείνουμε η μελέτη, εφόσον δυο θα θεθεί ο φωτισμός και βρεθούν δύο υπέθυνοι. Την πέντε προτινωμενή δοκιμαστική πολιτιστική συνάντηση αφού ελευθεύει ο προβολές. Θα στείλουμε το σχέριο στην Επιτροπή του κτηρίου για έγκριση.",
-            "segment_id": "U-B2-015-AUD01-S01#9",
-            "cer_phonetic": 0.0941,
-            "reference_words": 46,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.1111
-          },
-          {
-            "wer": 0.2,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Μάνος: Συμφωνώ με αυτή τη διατύπωση. Να γράψουμε καθαρά ότι περιμένουμε έγκριση, για να μην εμφανιστούν άνθρωποι πριν είμαστε έτοιμοι.",
-            "hypothesis": "Μάνος συμφωνώ με αυτή τη διατύπωση, να δράξουμε καθαρά ό,τι περιμένουμε έγκριση και να μην εμφανιστούν άνθρωποι πριν είμαστε έτοιμοι.",
-            "segment_id": "U-B2-015-AUD01-S01#10",
-            "cer_phonetic": 0.0488,
-            "reference_words": 20,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0462
-          },
-          {
-            "wer": 0,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Ελένη: Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
-            "hypothesis": "Ελένη, θα στείλω αύριο το αποτέλεσμα του τεχνικού Ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
-            "segment_id": "U-B2-015-AUD01-S01#11",
-            "cer_phonetic": 0,
-            "reference_words": 17,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0
-          },
-          {
-            "wer": 0.1905,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Πέτρος: Κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη. Μέχρι να έχουμε απάντηση, ας μην υποσχεθούμε συγκεκριμένη ημερομηνία έναρξης.",
-            "hypothesis": "Πέτρος, κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεξη, μέχρι να έχουμε απάντηση, ας μην υποσχεθούμε συμδεκριμένη ημερομηνή έναξης.",
-            "segment_id": "U-B2-015-AUD01-S01#12",
-            "cer_phonetic": 0.0382,
-            "reference_words": 21,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.0435
-          }
-        ],
-        "cer_phonetic": 0.0352,
-        "reference_words": 457,
-        "accent_mismatches": [
-          "μία"
-        ],
-        "cer_accent_insensitive": 0.0411
-      },
-      "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
-      "synthetic_disclosure": true,
-      "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
-      "voice_ids": [
-        "local:coqui-el-css10"
-      ],
-      "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
-      },
-      "generation_params": {
-        "speed": "normal",
-        "gaps_ms": [
-          650,
-          350
-        ],
-        "plan_hash": "d804e2be5211e44fbe44ae55b4886cbf5cef9199813ce606e11e4f6da1649a14",
-        "sample_rate": 24000
-      },
-      "normalization": {
-        "after": {
-          "rms_dbfs": -22.38,
-          "peak_dbfs": -1
-        },
-        "before": {
-          "rms_dbfs": -28.33,
-          "peak_dbfs": -6.95
-        },
-        "gain_db": 5.95,
-        "target_rms_dbfs": -20,
-        "peak_ceiling_dbfs": -1
-      },
-      "cast_approved": false,
-      "created_at": "2026-10-30T06:57:06.126991+00:00"
+      "file": null,
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для ROLE_CAFE_F (female) нет голоса в каталоге"
     },
     {
       "audio_id": "U-B2-015-AUD02",
-      "file": "files/U-B2-015-AUD02/cd1ad913f1f5d094ead6db2f9e5808f577333a6d7bff43c0e5503158ebecb596.wav",
-      "status": "DIGITAL_REVIEWED",
       "script_hash": "6d4ca8730621c79778b302054491b269d92df287b039301e2bf9789128bb88e0",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
-      "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
-      },
-      "locale": "el-GR",
-      "mime_type": "audio/wav",
-      "sha256": "cd1ad913f1f5d094ead6db2f9e5808f577333a6d7bff43c0e5503158ebecb596",
-      "byte_length": 1277794,
-      "duration_ms": 26620,
-      "sample_rate": 24000,
-      "channels": 1,
-      "segment_cues": [
-        {
-          "role": "__narrator__",
-          "end_ms": 26620,
-          "start_ms": 0,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD02-S01"
-        }
-      ],
-      "technical_status": "TECHNICAL_PASS",
-      "technical_report": {
-        "pass": true,
-        "checks": {
-          "pauses": true,
-          "duration": true,
-          "decodable": true,
-          "no_clipping": true,
-          "edge_silence": true,
-          "has_speech_energy": true
-        },
-        "profile": "greekos-tts-technical/1",
-        "channels": 1,
-        "rms_dbfs": -21.81,
-        "peak_dbfs": -1,
-        "duration_ms": 26620,
-        "sample_rate": 24000,
-        "speech_ratio": 0.8054094665664914,
-        "clipping_ratio": 0,
-        "longest_pause_ms": 560,
-        "leading_silence_ms": 60,
-        "trailing_silence_ms": 60
-      },
-      "asr_roundtrip": {
-        "wer": 0.2903,
-        "diff": {
-          "missing": [
-            "λενα",
-            "για",
-            "εκδρομη",
-            "χρονο",
-            "για",
-            "μπορω",
-            "φυγετε",
-            "μονοσ",
-            "απασχολει",
-            "τοσο",
-            "η",
-            "οσο",
-            "ειμαι",
-            "αρησ",
-            "πριν",
-            "κλεισουμε",
-            "ασ",
-            "δουμε",
-            "καιρο",
-            "προβλεπεται",
-            "λενα",
-            "στειλω",
-            "κρατηστε",
-            "οτι",
-            "τισ",
-            "9"
-          ],
-          "inserted": [
-            "για",
-            "να",
-            "γι",
-            "εκτετρονη",
-            "χρονια",
-            "πορω",
-            "φυγεται",
-            "μοζ",
-            "απαχολει",
-            "τοση",
-            "ποσο",
-            "ειναι",
-            "αρα",
-            "σπιτι",
-            "λισουμε",
-            "ασχιζουμε",
-            "κεο",
-            "προβλεπετε",
-            "λενε",
-            "στελνω",
-            "κρατησει",
-            "τωρα",
-            "τη",
-            "συναρα"
-          ],
-          "repeated": []
-        },
-        "engine": "local:sherpa-onnx:whisper-turbo-int8",
-        "segments": [
-          {
-            "wer": 0.2903,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Λένα: Για την εκδρομή προτείνω να φύγουμε στις οκτώ, ώστε να έχουμε χρόνο για περπάτημα. Νίκος: Εγώ μπορώ μόνο μετά τις εννέα. Αν φύγετε νωρίτερα, θα έρθω μόνος μου. Σοφία: Δεν με απασχολεί τόσο η ώρα, όσο η επιστροφή. Πρέπει να είμαι πίσω πριν από τις έξι. Άρης: Πριν κλείσουμε μεταφορά, ας δούμε τον καιρό. Αν προβλέπεται δυνατή βροχή, προτείνω να αναβάλουμε. Λένα: Άρα δεν έχουμε ακόμη κοινή ώρα αναχώρησης. Θα ελέγξω πρώτα τον καιρό και μετά θα σας στείλω δύο επιλογές. Νίκος: Εντάξει, απλώς κρατήστε ότι πριν από τις εννέα δεν μπορώ.",
-            "hypothesis": "Για να γι' την εκτετρονή προτείνω να φύγουμε στις 8 ώστε να έχουμε χρόνια περπάτημα. Νίκος εγώ πορώ μόνο μετά τις 9. Αν φύγεται νωρίτερα θα έρθω μόζ μου. Σοφία δεν με απαχολεί τόση ώρα πόσο η επιστροφή. Πρέπει να είναι πίσω πριν από τις 6. Άρα σπίτι λίσουμε μεταφορά, άσχιζουμε τον κεό. Αν προβλέπετε δυνατή βροχή προτείνω να αναβάλουμε, λένε άρα δεν έχουμε ακόμη κοινή ώρα αναχώρησης. Θα ελέγξω πρώτα τον καιρό και μετά θα σας στέλνω δύο επιλογές. Νίκος εντάξει απλώς κρατήσει τώρα πριν από τη σύναρα δεν μπορώ.",
-            "segment_id": "U-B2-015-AUD02-S01",
-            "cer_phonetic": 0.096,
-            "reference_words": 93,
-            "accent_mismatches": [],
-            "cer_accent_insensitive": 0.1098
-          }
-        ],
-        "cer_phonetic": 0.096,
-        "reference_words": 93,
-        "accent_mismatches": [],
-        "cer_accent_insensitive": 0.1098
-      },
-      "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
-      "synthetic_disclosure": true,
-      "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
-      "voice_ids": [
-        "local:coqui-el-css10"
-      ],
-      "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
-      },
-      "generation_params": {
-        "speed": "normal",
-        "gaps_ms": [
-          650,
-          350
-        ],
-        "plan_hash": "41bea15bad175b16e8b84613ecb96349ed6457fcd52ff233d675396d923a4026",
-        "sample_rate": 24000
-      },
-      "normalization": {
-        "after": {
-          "rms_dbfs": -21.81,
-          "peak_dbfs": -1
-        },
-        "before": {
-          "rms_dbfs": -28.12,
-          "peak_dbfs": -7.32
-        },
-        "gain_db": 6.32,
-        "target_rms_dbfs": -20,
-        "peak_ceiling_dbfs": -1
-      },
-      "cast_approved": false,
-      "created_at": "2026-10-30T06:57:41.956561+00:00"
+      "file": null,
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для ROLE_CAFE_F (female) нет голоса в каталоге"
     },
     {
       "audio_id": "U-B2-015-AUD03",
-      "file": "files/U-B2-015-AUD03/ae50d386470559df98009cc8259e935b4dd08f109a20606efdffc259205da5c9.wav",
-      "status": "DIGITAL_REVIEWED",
       "script_hash": "6dd701389fdba9930c40eaf5a8da6e90e5b2cad13a96ab5ea21bc127c90d22f5",
-      "provider": "local_coqui",
-      "model": "coqui-el-css10",
-      "voice_map": {
-        "__narrator__": "local:coqui-el-css10"
-      },
-      "locale": "el-GR",
-      "mime_type": "audio/wav",
-      "sha256": "ae50d386470559df98009cc8259e935b4dd08f109a20606efdffc259205da5c9",
-      "byte_length": 1003378,
-      "duration_ms": 20903,
-      "sample_rate": 24000,
-      "channels": 1,
-      "segment_cues": [
-        {
-          "role": "__narrator__",
-          "end_ms": 20903,
-          "start_ms": 0,
-          "voice_id": "local:coqui-el-css10",
-          "segment_id": "U-B2-015-AUD03-S01"
-        }
-      ],
-      "technical_status": "TECHNICAL_PASS",
-      "technical_report": {
-        "pass": true,
-        "checks": {
-          "pauses": true,
-          "duration": true,
-          "decodable": true,
-          "no_clipping": true,
-          "edge_silence": true,
-          "has_speech_energy": true
-        },
-        "profile": "greekos-tts-technical/1",
-        "channels": 1,
-        "rms_dbfs": -21.72,
-        "peak_dbfs": -1,
-        "duration_ms": 20903,
-        "sample_rate": 24000,
-        "speech_ratio": 0.861376673040153,
-        "clipping_ratio": 0,
-        "longest_pause_ms": 480,
-        "leading_silence_ms": 60,
-        "trailing_silence_ms": 80
-      },
-      "asr_roundtrip": {
-        "wer": 0.2714,
-        "diff": {
-          "missing": [
-            "ρενα",
-            "ο",
-            "φθηνοτεροσ",
-            "χωρα",
-            "γιαννησ",
-            "τον",
-            "τον",
-            "προυπολογισμο",
-            "κωστασ",
-            "αρα",
-            "ρενα",
-            "για",
-            "την",
-            "προσθετη",
-            "και",
-            "γιαννησ",
-            "ωραια",
-            "κραταμε"
-          ],
-          "inserted": [
-            "ενα",
-            "φυσοτεροσ",
-            "χωραει",
-            "γεννησ",
-            "το",
-            "το",
-            "προπολογισμο",
-            "χωστασ",
-            "αλλα",
-            "ενα",
-            "γιατι",
-            "προσθετει",
-            "η",
-            "γιαννη",
-            "σορεα",
-            "καταμε"
-          ],
-          "repeated": []
-        },
-        "engine": "local:sherpa-onnx:whisper-turbo-int8",
-        "segments": [
-          {
-            "wer": 0.2714,
-            "pass": true,
-            "voice_id": "local:coqui-el-css10",
-            "reference": "Ρένα: Ο μικρός χώρος είναι φθηνότερος, αλλά δεν χωρά είκοσι άτομα. Γιάννης: Τότε προτιμώ τον μεγαλύτερο, αν το κόστος δεν ξεπερνά τον προϋπολογισμό μας. Δώρα: Η τιμή που έχουμε αφορά μόνο την αίθουσα, όχι τον εξοπλισμό. Κώστας: Άρα δεν πρέπει να κάνουμε κράτηση ακόμη. Ρένα: Θα ρωτήσω σήμερα για την πρόσθετη χρέωση και θα σας ενημερώσω. Γιάννης: Ωραία, κρατάμε την προτίμηση για τον μεγάλο χώρο, αλλά αποφασίζουμε μετά την απάντηση.",
-            "hypothesis": "Ένα μικρός χώρος είναι φυσότερος αλλά δεν χωράει 20 άτομα. Γέννης τότε προτιμώ το μεγαλύτερο αν το κόστος δεν ξεπερνά το προπολογισμό μας. Δώρα, η τίμη που έχουμε αφορά μόνο την αίθουσα, όχι τον εξοπλισμό. Χώστας, αλλά δεν πρέπει να κάνουμε κράτηση ακόμη. Ένα, θα ρωτήσω σήμερα γιατί προσθέτει η χρέωση θα σας ενημερώσω. Γιάννη Σορέα, κατάμε την προτίμηση για τον μεγάλο χώρο, αλλά αποφασίζουμε μετά την απάντηση.",
-            "segment_id": "U-B2-015-AUD03-S01",
-            "cer_phonetic": 0.0603,
-            "reference_words": 70,
-            "accent_mismatches": [
-              "τιμή"
-            ],
-            "cer_accent_insensitive": 0.0801
-          }
-        ],
-        "cer_phonetic": 0.0603,
-        "reference_words": 70,
-        "accent_mismatches": [
-          "τιμή"
-        ],
-        "cer_accent_insensitive": 0.0801
-      },
-      "digital_status": "AUDIO_VERIFIED_DIGITAL",
-      "rights_status": "RIGHTS_PENDING",
-      "rights_evidence": null,
-      "synthetic_disclosure": true,
-      "render_status": "DIGITAL_REVIEWED",
-      "synthesis_version": "greekos-audio/2.1",
-      "voice_ids": [
-        "local:coqui-el-css10"
-      ],
-      "cast_snapshot": {
-        "__narrator__": "NARRATOR_F"
-      },
-      "generation_params": {
-        "speed": "normal",
-        "gaps_ms": [
-          650,
-          350
-        ],
-        "plan_hash": "a0d7125dfcabac20dc1497525f3f59765a83c306ab7f5c7a13829699d4ccbb94",
-        "sample_rate": 24000
-      },
-      "normalization": {
-        "after": {
-          "rms_dbfs": -21.72,
-          "peak_dbfs": -1
-        },
-        "before": {
-          "rms_dbfs": -27.44,
-          "peak_dbfs": -6.71
-        },
-        "gain_db": 5.71,
-        "target_rms_dbfs": -20,
-        "peak_ceiling_dbfs": -1
-      },
-      "cast_approved": false,
-      "created_at": "2026-10-30T06:58:39.571812+00:00"
+      "file": null,
+      "status": "BLOCKED_NO_SUITABLE_VOICE",
+      "reason": "для ROLE_CAFE_F (female) нет голоса в каталоге"
     },
     {
       "audio_id": "U-B2-016-I11-AUDIO",
@@ -24112,7 +24067,7 @@
     {
       "audio_id": "U-B2-016-I12-AUDIO",
       "file": "files/U-B2-016-I12-AUDIO/01a4de34a17e514458824db861d81207b28646c3375cc205aff1df41c7fa61a7.wav",
-      "status": "TECH_QA_PASS",
+      "status": "DIGITAL_REVIEWED",
       "script_hash": "5d34d815a40f32a24d88f01d3c8b1a48272fc174adb22d942ed9a90420fbc183",
       "provider": "local_coqui",
       "model": "coqui-el-css10",
@@ -24159,7 +24114,7 @@
         "trailing_silence_ms": 60
       },
       "asr_roundtrip": {
-        "wer": 0.5,
+        "wer": 0,
         "diff": {
           "missing": [
             "η",
@@ -24176,28 +24131,28 @@
         "engine": "local:sherpa-onnx:whisper-turbo-int8",
         "segments": [
           {
-            "wer": 0.5,
-            "pass": false,
+            "wer": 0,
+            "pass": true,
             "voice_id": "local:coqui-el-css10",
             "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
             "hypothesis": "Η Μαρία θα στείλει την αίτηση αύριο.",
             "segment_id": "U-B2-016-I12-AUDIO-S01",
-            "cer_phonetic": 0.5077,
-            "reference_words": 14,
+            "cer_phonetic": 0,
+            "reference_words": 7,
             "accent_mismatches": [],
-            "cer_accent_insensitive": 0.507
+            "cer_accent_insensitive": 0
           }
         ],
-        "cer_phonetic": 0.5077,
-        "reference_words": 14,
+        "cer_phonetic": 0,
+        "reference_words": 7,
         "accent_mismatches": [],
-        "cer_accent_insensitive": 0.507
+        "cer_accent_insensitive": 0
       },
-      "digital_status": "NEEDS_REVIEW",
+      "digital_status": "AUDIO_VERIFIED_DIGITAL",
       "rights_status": "RIGHTS_PENDING",
       "rights_evidence": null,
       "synthetic_disclosure": true,
-      "render_status": "LINGUISTIC_QA_PENDING",
+      "render_status": "DIGITAL_REVIEWED",
       "synthesis_version": "greekos-audio/2.2",
       "voice_ids": [
         "local:coqui-el-css10"

@@ -186,7 +186,7 @@ export async function runQaBatch(opts: { actorId: string | null; label: string; 
     };
     const json = stableStringify(report);
     const sha = createHash('sha256').update(json).digest('hex');
-    const dir = opts.reportDir ?? resolve('reports/v6/qa');
+    const dir = opts.reportDir ?? resolve('reports/v7/qa');
     mkdirSync(dir, { recursive: true });
     const path = join(dir, `QA_BATCH_${batch.id}.json`);
     writeFileSync(path, JSON.stringify(report, null, 1));

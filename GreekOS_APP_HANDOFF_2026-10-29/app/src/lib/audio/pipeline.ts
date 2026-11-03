@@ -164,6 +164,29 @@ export interface RenderResult {
   error?: string;
 }
 
+/**
+ * A file rendered for a different set of speakers than the script now has (e.g. one narrator voice
+ * reading a labelled dialogue before it was split by speaker) does not match its script: it is
+ * invalidated, never kept as «verified». Returns the audio ids touched.
+ */
+export async function invalidateSpeakerMismatches(): Promise<string[]> {
+  const db = adminClient();
+  const { data: jobs } = await db.from('audio_jobs').select('audio_id, segments, text_el');
+  const { data: assets } = await db.from('audio_assets').select('id, audio_id, voice_map').is('invalidated_at', null);
+  const touched: string[] = [];
+  for (const a of assets ?? []) {
+    const job = (jobs ?? []).find((j) => j.audio_id === a.audio_id);
+    if (!job) continue;
+    const want = new Set(scriptSegments(job).map((s) => s.role ?? '__narrator__'));
+    if (!want.size) want.add('__narrator__');
+    const have = new Set(Object.keys((a.voice_map ?? {}) as Record<string, string>));
+    if (!have.size || [...want].every((r) => have.has(r))) continue;
+    await db.from('audio_assets').update({ invalidated_at: new Date().toISOString(), invalidated_reason: 'SCRIPT_SPEAKERS_CHANGED: файл озвучен для других говорящих (например, один голос читал метки ролей)' }).eq('id', a.id);
+    touched.push(a.audio_id);
+  }
+  return touched;
+}
+
 export async function setJobStatus(audioId: string, status: string, reason: string | null, extra: { attempted?: boolean; asset_id?: string; cost?: number } = {}) {
   const db = adminClient();
   const { data: prev } = await db.from('audio_job_render_status').select('attempts').eq('audio_id', audioId).maybeSingle();
