@@ -52,7 +52,7 @@ const context = await model.createContext({ contextSize: CTX, threads: THREADS, 
 // was switched off. Without that option the library diffs the new prompt against the cached tokens and
 // evaluates only the new tail; greedy output is identical to a clean sequence (measured).
 const NO_REUSE = process.env.LOCAL_LLM_NO_REUSE === '1';
-const slots = Array.from({ length: SLOTS }, () => { const seq = context.getSequence(); return { key: null, seq, chat: new LlamaChat({ contextSequence: seq }), used: 0, queue: Promise.resolve(), running: null, pending: 0 }; });
+const slots = Array.from({ length: SLOTS }, () => { const seq = context.getSequence(); return { key: null, seq, chat: new LlamaChat({ contextSequence: seq }), used: 0, queue: Promise.resolve(), running: null, pending: 0, waiting: [] }; });
 function slotFor(key) {
   let slot = key ? slots.find((x) => x.key === key) : null;
   if (!slot) {
@@ -92,66 +92,101 @@ function send(res, code, obj) {
   res.end(body);
 }
 
+// Background work (warm-ups, phrase feedback) yields the CPU to a learner's turn: on CPU, decoding two
+// sequences at once slows the turn by ~1.5×. While a turn runs, background jobs wait; a running one is
+// pre-empted — a warm-up stops (the turn evaluates its prompt anyway), feedback is recomputed afterwards
+// (its prompt stays cached, so only the generation is repeated). Background output is sent when complete.
+let foreground = 0;
+let fgWaiters = [];
+const fgIdle = () => (foreground === 0 ? Promise.resolve() : new Promise((r) => fgWaiters.push(r)));
+function fgEnter(self) {
+  foreground += 1;
+  for (const s of slots) {
+    const j = s.running;
+    if (j && j !== self && BACKGROUND.has(j.op)) { j.preempted = true; j.ac?.abort(); }
+  }
+}
+function fgLeave() {
+  foreground -= 1;
+  if (foreground === 0) { const w = fgWaiters; fgWaiters = []; for (const r of w) r(); }
+}
+
 async function complete(slot, job) {
   const { res, body, queuedAt, op } = job;
+  const background = BACKGROUND.has(op);
   // A caller that timed out while queued must not cost a full generation later.
   if (res.destroyed || res.writableEnded || !res.socket || res.socket.destroyed) { console.log(`skip aborted request queued ${Date.now() - queuedAt} ms`); return; }
-  const started = Date.now();
-  if (process.env.LOCAL_LLM_DUMP) (await import('node:fs')).writeFileSync(path.join(process.env.LOCAL_LLM_DUMP, `req-${started}.json`), JSON.stringify(body));
-  const grammar = await grammarFor(body.response_format);
-  const history = toHistory(body.messages ?? []);
-  let firstTokenMs = null;
+  let clientGone = false;
+  // IncomingMessage 'close' fires once the body is consumed; the response's 'close' means the client left.
+  res.on('close', () => { if (!res.writableEnded) { clientGone = true; job.ac?.abort(); } });
   const stream = !!body.stream;
   if (stream) res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache', connection: 'keep-alive' });
-  const ac = new AbortController();
-  job.ac = ac;
-  // IncomingMessage 'close' fires once the body is consumed; the response's 'close' means the client left.
-  res.on('close', () => { if (!res.writableEnded) ac.abort(); });
   const id = `chatcmpl-${Date.now().toString(36)}`;
-  if (NO_REUSE || slot.reset) { await slot.seq.clearHistory(); slot.reset = false; }
-  // How much of this prompt the slot already holds (for the log and the caller's timing).
-  const promptTokens = slot.chat.chatWrapper.generateContextState({ chatHistory: history }).contextText.tokenize(model.tokenizer);
-  const reusedTokens = Math.min(slot.seq.compareContextTokens(promptTokens).firstDifferentIndex, slot.seq.nextTokenIndex);
-  let result;
+  const grammar = await grammarFor(body.response_format);
+  const history = toHistory(body.messages ?? []);
+  const started = Date.now();
+  if (process.env.LOCAL_LLM_DUMP) (await import('node:fs')).writeFileSync(path.join(process.env.LOCAL_LLM_DUMP, `req-${started}.json`), JSON.stringify(body));
+  if (!background) fgEnter(job);
   try {
-    result = await slot.chat.generateResponse(history, {
-      grammar,
-      maxTokens: Math.min(Number(body.max_tokens ?? 512), 2048),
-      temperature: Number(body.temperature ?? 0.6),
-      signal: ac.signal,
-      stopOnAbortSignal: true,
-      evaluationPriority: BACKGROUND.has(op) ? 3 : 8,
-      onTextChunk: (chunk) => {
-        if (firstTokenMs === null) firstTokenMs = Date.now() - started;
-        if (stream && !res.writableEnded) res.write(`data: ${JSON.stringify({ id, object: 'chat.completion.chunk', model: NAME, choices: [{ index: 0, delta: { content: chunk }, finish_reason: null }] })}\n\n`);
-      },
-    });
-  } catch (e) {
-    // A pre-empted warm-up: the tokens it evaluated stay in the slot; nothing to report.
-    if (ac.signal.aborted) { if (!res.writableEnded) res.end(); console.log(`aborted ${op ?? 'request'} slot ${slots.indexOf(slot)} after ${Date.now() - started} ms`); return; }
-    throw e;
-  }
-  const text = result.response;
-  const finish = result.metadata?.stopReason === 'maxTokens' ? 'length' : 'stop';
-  const timing = { total_ms: Date.now() - started, first_token_ms: firstTokenMs, queued_ms: started - queuedAt, prompt_tokens: promptTokens.length, reused_tokens: reusedTokens };
-  console.log(`completion ${JSON.stringify({ op: op ?? null, ...timing, slot: slots.indexOf(slot), out_chars: text.length, finish: result.metadata?.stopReason ?? null, aborted: ac.signal.aborted })}`);
-  if (res.writableEnded) return;
-  if (stream) {
-    res.write(`data: ${JSON.stringify({ id, object: 'chat.completion.chunk', model: NAME, choices: [{ index: 0, delta: {}, finish_reason: finish }], usage: { prompt_tokens: promptTokens.length, completion_tokens: model.tokenize(text).length }, greekos_timing: timing })}\n\n`);
-    res.end('data: [DONE]\n\n');
-  } else {
-    send(res, 200, { id, object: 'chat.completion', model: NAME, choices: [{ index: 0, message: { role: 'assistant', content: text }, finish_reason: finish }], usage: { prompt_tokens: promptTokens.length, completion_tokens: model.tokenize(text).length }, greekos_timing: timing });
+    let result, firstTokenMs = null, promptTokens = [], reusedTokens = 0, runs = 0, waitedMs = 0;
+    for (;;) {
+      if (background && !job.cancelled && !clientGone) { const w = Date.now(); await fgIdle(); waitedMs += Date.now() - w; }
+      if (clientGone || job.cancelled) { if (!res.writableEnded) res.end(); console.log(`dropped ${op ?? 'request'} slot ${slots.indexOf(slot)} (${job.cancelled ? 'superseded by the turn' : 'client left'})`); return; }
+      const ac = new AbortController();
+      job.ac = ac;
+      job.preempted = false;
+      runs += 1;
+      if (NO_REUSE || slot.reset) { await slot.seq.clearHistory(); slot.reset = false; }
+      // How much of this prompt the slot already holds (for the log and the caller's timing).
+      promptTokens = slot.chat.chatWrapper.generateContextState({ chatHistory: history }).contextText.tokenize(model.tokenizer);
+      reusedTokens = Math.min(slot.seq.compareContextTokens(promptTokens).firstDifferentIndex, slot.seq.nextTokenIndex);
+      const runStart = Date.now();
+      firstTokenMs = null;
+      result = await slot.chat.generateResponse(history, {
+        grammar,
+        maxTokens: Math.min(Number(body.max_tokens ?? 512), 2048),
+        temperature: Number(body.temperature ?? 0.6),
+        signal: ac.signal,
+        stopOnAbortSignal: true,
+        evaluationPriority: background ? 3 : 8,
+        onTextChunk: (chunk) => {
+          if (firstTokenMs === null) firstTokenMs = Date.now() - runStart;
+          if (!background && stream && !res.writableEnded) res.write(`data: ${JSON.stringify({ id, object: 'chat.completion.chunk', model: NAME, choices: [{ index: 0, delta: { content: chunk }, finish_reason: null }] })}\n\n`);
+        },
+      });
+      if (!job.preempted || clientGone) break;
+      // A warm-up pre-empted by a turn is not repeated; feedback is, once the turn is done.
+      if (op === 'speaking_prefill') { job.cancelled = true; continue; }
+      console.log(`pre-empted ${op} slot ${slots.indexOf(slot)} after ${Date.now() - runStart} ms; resumes after the turn`);
+    }
+    const text = result.response;
+    const finish = result.metadata?.stopReason === 'maxTokens' ? 'length' : 'stop';
+    const timing = { total_ms: Date.now() - started, first_token_ms: firstTokenMs, queued_ms: started - queuedAt, waited_for_turns_ms: waitedMs, runs, prompt_tokens: promptTokens.length, reused_tokens: reusedTokens };
+    console.log(`completion ${JSON.stringify({ op: op ?? null, ...timing, slot: slots.indexOf(slot), out_chars: text.length, finish: result.metadata?.stopReason ?? null, aborted: clientGone })}`);
+    if (res.writableEnded) return;
+    if (stream) {
+      if (background && text) res.write(`data: ${JSON.stringify({ id, object: 'chat.completion.chunk', model: NAME, choices: [{ index: 0, delta: { content: text }, finish_reason: null }] })}\n\n`);
+      res.write(`data: ${JSON.stringify({ id, object: 'chat.completion.chunk', model: NAME, choices: [{ index: 0, delta: {}, finish_reason: finish }], usage: { prompt_tokens: promptTokens.length, completion_tokens: model.tokenize(text).length }, greekos_timing: timing })}\n\n`);
+      res.end('data: [DONE]\n\n');
+    } else {
+      send(res, 200, { id, object: 'chat.completion', model: NAME, choices: [{ index: 0, message: { role: 'assistant', content: text }, finish_reason: finish }], usage: { prompt_tokens: promptTokens.length, completion_tokens: model.tokenize(text).length }, greekos_timing: timing });
+    }
+  } finally {
+    if (!background) fgLeave();
   }
 }
 
 function enqueue(job) {
   const key = typeof job.body.user === 'string' ? job.body.user : null;
   const slot = slotFor(key);
-  // The learner is waiting: a warm-up of the same conversation stops; what it evaluated is kept.
-  if (!BACKGROUND.has(job.op) && slot.running && slot.running.op === 'speaking_prefill') slot.running.ac?.abort();
+  // The learner is waiting: warm-ups of the same conversation (running or queued) are superseded;
+  // what a running one evaluated stays in the cache.
+  if (!BACKGROUND.has(job.op)) for (const j of [slot.running, ...slot.waiting]) if (j && j.op === 'speaking_prefill') { j.cancelled = true; j.ac?.abort(); }
   slot.pending += 1;
+  slot.waiting.push(job);
   slot.queue = slot.queue.then(async () => {
     slot.pending -= 1;
+    slot.waiting = slot.waiting.filter((x) => x !== job);
     slot.running = job;
     try { await complete(slot, job); } finally { slot.running = null; }
   }).catch((e) => {

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, onTestFinished } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { buildItemDTO, assertNoLeak, publicTextObject } from '@/lib/content/dto';
@@ -81,6 +81,11 @@ describe('speaking state machine and fallback', () => {
     expect(bargeIn('listening')).toBeNull();
   });
   it('without an LLM the dialogue follows the authored graph and repair loops end in RETRY', async () => {
+    // Hermetic: the machine's .env.local may configure a local model; this case is about none.
+    const saved = { p: process.env.LLM_PROVIDER, u: process.env.LLM_BASE_URL };
+    process.env.LLM_PROVIDER = 'none';
+    delete process.env.LLM_BASE_URL;
+    onTestFinished(() => { if (saved.p === undefined) delete process.env.LLM_PROVIDER; else process.env.LLM_PROVIDER = saved.p; if (saved.u !== undefined) process.env.LLM_BASE_URL = saved.u; });
     const sc: ScenarioPayload = { scenario_id: 'T', entry_node: 'OPEN', off_script_policy: { max_repair_loops: 2 }, nodes: [
       { node_id: 'OPEN', assistant_el: 'Καλημέρα!', transitions: [{ condition: 'ok', to: 'CLOSE' }, { condition: 'repeat', to: 'REPAIR' }] },
       { node_id: 'REPAIR', assistant_el: 'Να το πω ξανά;', transitions: [{ condition: 'x', to: 'OPEN' }] },

@@ -395,7 +395,9 @@ export async function feedbackOnLearnerTurn(p: { userId: string | null; sessionI
   const r = await streamJson({
     userId: p.userId, operation: 'speaking_feedback', system: FEEDBACK_SYSTEM,
     messages: [{ role: 'user', content: `${p.context ? `Собеседник сказал: «${p.context}»\n` : ''}Уровень ученика: ${levelKey(p.level)}.\nРеплика: «${text}»` }],
-    schema: FEEDBACK_SCHEMA, maxTokens: 140, timeoutMs: Math.max(20_000, env.llmTurnTimeoutMs), temperature: 0.2, signal: p.signal, cacheKey: `${p.sessionId}:feedback`,
+    schema: FEEDBACK_SCHEMA, maxTokens: 140,
+    // On the local server feedback yields to the learner's turns and may wait for them.
+    timeoutMs: isLocalLlm() ? 120_000 : Math.max(20_000, env.llmTurnTimeoutMs), temperature: 0.2, signal: p.signal, cacheKey: `${p.sessionId}:feedback`,
   });
   if (!r.ok) return null;
   let out: z.infer<typeof FeedbackOut>;

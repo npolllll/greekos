@@ -12,6 +12,7 @@ import { adminClient, selectAll } from '../supabase/admin.ts';
 import { stableStringify } from '../content/stable-json.ts';
 import { CHECKS, QA_TOOL_VERSION, checkItem, collectGreekWords, greekFields, orthography, verdictOf, type Finding, type ItemForQa, type QaContext } from './checks.ts';
 import { LEXICON_ADDITIONS } from './lexicon-el.ts';
+import { knownWords } from './hunspell.ts';
 
 const run = promisify(execFile);
 
@@ -28,6 +29,9 @@ const DICT_CANDIDATES = [
 export async function unknownGreekWords(words: Set<string>): Promise<{ unknown: Set<string> | null; dictionary: string | null }> {
   const dict = DICT_CANDIDATES.find((d) => existsSync(`${d}.dic`) && existsSync(`${d}.aff`));
   if (!dict || !words.size) return { unknown: null, dictionary: null };
+  // Persistent pipe (hunspell.ts) first; a one-shot run if it is unavailable.
+  const known = await knownWords(dict, [...words].filter((w) => w && !/\s/.test(w)));
+  if (known) return { unknown: new Set([...known].filter(([w, ok]) => !ok).map(([w]) => w.toLowerCase()).filter((w) => !(w in LEXICON_ADDITIONS))), dictionary: dict };
   try {
     const child = execFile('hunspell', ['-i', 'UTF-8', '-d', dict, '-l'], { maxBuffer: 64 * 1024 * 1024, env: { ...process.env, LANG: 'C.UTF-8' } });
     let out = '';
