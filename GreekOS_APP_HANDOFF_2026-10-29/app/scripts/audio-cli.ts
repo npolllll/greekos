@@ -215,7 +215,7 @@ async function importBundle() {
 }
 
 async function report() {
-  const outDir = resolve(arg('--out') ?? '../reports');
+  const outDir = resolve(arg('--out') ?? 'reports/v6');
   const { mkdirSync, writeFileSync } = await import('node:fs');
   mkdirSync(outDir, { recursive: true });
   const ctx = await loadCastingContext();

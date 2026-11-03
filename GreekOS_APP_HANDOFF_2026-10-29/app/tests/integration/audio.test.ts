@@ -68,12 +68,13 @@ describe('digital audio pipeline', () => {
     expect(forced.error?.message).toMatch(/release_eligible_requirements/);
   }, 600_000);
 
-  it.skipIf(!canRender)('dialogue with uncast personal names is blocked with a reason, not rendered with a guessed voice', async () => {
-    const r = await renderJob(await loadJob('U-A1-001-AUD01'), { actorId: null, budgetCapUsd: 0 });
+  it.skipIf(!canRender)('a dialogue needing two distinct female voices is blocked with a reason, never voiced by one voice twice', async () => {
+    // Άννα and Λένα are both female; one female voice exists locally (Coqui and Piper share the CSS10 speaker).
+    const r = await renderJob(await loadJob('U-A1-002-AUD01'), { actorId: null, budgetCapUsd: 0 });
     expect(r.status).toBe('BLOCKED');
-    expect(r.job_status).toBe('BLOCKED_MISSING_VOICE_METADATA');
-    const { data } = await admin.from('audio_job_render_status').select('status, reason').eq('audio_id', 'U-A1-001-AUD01').single();
-    expect(data!.status).toBe('BLOCKED_MISSING_VOICE_METADATA');
+    expect(r.job_status).toBe('BLOCKED_NO_SUITABLE_VOICE');
+    const { data } = await admin.from('audio_job_render_status').select('status, reason').eq('audio_id', 'U-A1-002-AUD01').single();
+    expect(data!.status).toBe('BLOCKED_NO_SUITABLE_VOICE');
   });
 
   it('mock transport can never become publishable audio (DB guard)', async () => {
