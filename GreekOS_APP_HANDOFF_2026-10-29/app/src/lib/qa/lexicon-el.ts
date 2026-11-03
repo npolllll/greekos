@@ -24,6 +24,11 @@ export const LEXICON_ADDITIONS: Record<string, 'standard' | 'colloquial' | 'abbr
   θεματοποίηση: 'standard', // thematisation
   επίρριψη: 'standard', // attribution (of blame)
   προκρατημένη: 'standard', // pre-booked (προκράτηση)
+  // café words of the scenes (loanwords in everyday use)
+  φρέντο: 'standard', // iced coffee (φρέντο εσπρέσο / καπουτσίνο)
+  λάτε: 'standard',
+  μοκατσίνο: 'standard',
+  φρεντοτσίνο: 'standard',
   // spoken Greek of the «Живой греческий» module
   καρντάσι: 'colloquial', // «brother, mate» (Northern Greek slang, from Turkish)
   ντεμέκ: 'colloquial', // «supposedly» (slang)

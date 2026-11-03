@@ -17,7 +17,7 @@
  * learner's turn never waits behind phrase feedback, and it pre-empts a warm-up of its own slot.
  *
  * Env: GREEKOS_LLM_MODEL (gguf path), LOCAL_LLM_PORT (3313), LOCAL_LLM_THREADS (cores − 1 on CPU),
- * LOCAL_LLM_CTX (4096 per slot), LOCAL_LLM_SLOTS (4), LOCAL_LLM_FLASH_ATTENTION (1 = on),
+ * LOCAL_LLM_CTX (4096 per slot), LOCAL_LLM_SLOTS (4), LOCAL_LLM_FLASH_ATTENTION (default: on with Metal/CUDA),
  * LOCAL_LLM_NO_REUSE (1 = evaluate every request from a clean sequence, for diagnosis).
  */
 import http from 'node:http';
@@ -42,7 +42,9 @@ const ARCH = String(model.fileInfo?.metadata?.general?.architecture ?? '');
 // Gemma 3/4 use sliding-window attention: a full-size SWA cache keeps every position, so a cached
 // prefix stays valid when the tail of a conversation changes.
 const SWA_FULL = process.env.LOCAL_LLM_SWA_FULL !== '0';
-const FLASH = process.env.LOCAL_LLM_FLASH_ATTENTION === '1';
+// Flash attention: on by default with Metal/CUDA (llama.cpp's fused kernel cuts prefill time and KV
+// memory there), off on CPU where it brings nothing. LOCAL_LLM_FLASH_ATTENTION=0|1 overrides.
+const FLASH = process.env.LOCAL_LLM_FLASH_ATTENTION ? process.env.LOCAL_LLM_FLASH_ATTENTION === '1' : ['metal', 'cuda'].includes(String(llama.gpu));
 const context = await model.createContext({ contextSize: CTX, threads: THREADS, sequences: SLOTS, swaFullCache: SWA_FULL, flashAttention: FLASH });
 // History of this setting: v6.1 passed the previous turn's context window as `lastEvaluationContextWindow`.
 // node-llama-cpp then keeps that *old* window whenever it overlaps the sequence by ≥ 50 %, so the model

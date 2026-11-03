@@ -73,27 +73,29 @@
   },
   "gemma-4-E2B-it-Q4_K_M": {
     "model": "gemma-4-E2B-it-Q4_K_M",
-    "suite": "greekos-speaking-eval/1",
+    "suite": "greekos-speaking-eval/2",
     "engine": "greekos-conversation/2.0",
-    "evaluated_at": "2026-11-02T21:58:14.827Z",
-    "cases": 25,
+    "evaluated_at": "2026-11-03T04:11:29.672Z",
+    "cases": 34,
     "passed": true,
     "feedback_passed": true,
     "metrics": {
-      "reply_ok": 1,
-      "stage_ok": 1,
+      "reply_ok": 0.9117647058823529,
+      "stage_ok": 0.9545454545454546,
       "echo_violations": 0,
       "russian_or_latin": 0,
       "question_ok": 1,
       "length_ok": 1,
       "memory_ok": 0,
       "no_hint_ok": 1,
-      "feedback_precision": 0.75,
-      "feedback_recall": 0.5,
-      "first_sentence_p50_ms": 10274,
-      "first_sentence_p95_ms": 14016,
-      "turn_p50_ms": 12587,
-      "feedback_p50_ms": 10198
+      "feedback_precision": 1,
+      "feedback_recall": 0.6363636363636364,
+      "shown_precision": 1,
+      "shown_recall": 0.9090909090909091,
+      "first_sentence_p50_ms": 4148,
+      "first_sentence_p95_ms": 8477,
+      "turn_p50_ms": 8042,
+      "feedback_p50_ms": 15317
     },
     "thresholds": {
       "reply_ok": 0.9,
@@ -104,7 +106,7 @@
       "feedback_recall": 0.5,
       "question_ok": 0.75
     },
-    "report": "reports/v6/speaking-eval/gemma-4-E2B-it-Q4_K_M.md",
+    "report": "reports/v7/speaking-eval/gemma-4-E2B-it-Q4_K_M.md",
     "note_ru": "Автоматическая проверка набором GreekOS (разметка разработчика по грамматике). Не экспертная и не носительская оценка."
   }
 }

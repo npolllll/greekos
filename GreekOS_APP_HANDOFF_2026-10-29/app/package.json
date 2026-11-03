@@ -27,6 +27,7 @@
     "models:fetch": "node local-services/fetch-models.mjs",
     "local:speech": "${GREEKOS_PY:-$HOME/greekos-models/venv-coqui/bin/python} local-services/speech_server.py",
     "local:llm": "node local-services/llm/server.mjs",
+    "local:doctor": "tsx --conditions=react-server scripts/local-doctor.ts",
     "voice:gateway": "tsx --conditions=react-server voice-gateway/server.ts",
     "voice:bench": "tsx --conditions=react-server scripts/voice-bench.ts --out reports/v5.4",
     "audio:benchmark": "tsx scripts/audio-cli.ts benchmark --out reports/v5.4",
