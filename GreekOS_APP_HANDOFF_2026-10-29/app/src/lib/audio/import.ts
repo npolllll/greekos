@@ -9,7 +9,7 @@ import { createHash } from 'node:crypto';
 import { adminClient } from '../supabase/admin.ts';
 import { analyzeWav, normalizeLoudness, parseWav } from './wav.ts';
 import { alignmentDiff, roundTrip, roundTripPass } from './roundtrip.ts';
-import { asrEngine, normalizeSegments, setJobStatus } from './pipeline.ts';
+import { asrEngine, scriptSegments, setJobStatus } from './pipeline.ts';
 
 export const IMPORT_VERSION = 'greekos-import/1.0';
 
@@ -36,7 +36,7 @@ export async function importJobAudio(audioId: string, bytes: Uint8Array, meta: I
   const norm = normalizeLoudness(bytes);
   const tech = analyzeWav(norm.wav, { allowedPauseMs: 3500 });
   const technicalPass = !!tech?.pass;
-  const segments = normalizeSegments(audioId, job.segments);
+  const segments = scriptSegments(job);
   const script = segments.length ? segments.map((s) => s.text).join(' ') : job.text_el ?? '';
   const asr = technicalPass ? await asrEngine().catch(() => null) : null;
   let rt: (ReturnType<typeof roundTrip> & { engine: string; hypothesis: string; diff: ReturnType<typeof alignmentDiff>; pass: boolean }) | null = null;

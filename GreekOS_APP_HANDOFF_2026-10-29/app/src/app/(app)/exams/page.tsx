@@ -42,7 +42,7 @@ export default async function ExamsPage() {
               })}
             </div>
             {f.components.some((c) => c.last?.status === 'SUBMITTED') ? (
-              <div className="small quiet">
+              <div className="small quiet exam-attempts">
                 Последние попытки: {f.components.filter((c) => c.last?.status === 'SUBMITTED').map((c) => (
                   <Link key={c.component_id} className="text-link" href={`/exams/results/${c.last!.id}`}>{c.display_id.replace('KEG-B2-', '')} ({STATUS_RU[c.last!.status]})</Link>
                 ))}

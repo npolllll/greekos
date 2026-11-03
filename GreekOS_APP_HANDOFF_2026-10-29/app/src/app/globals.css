@@ -442,7 +442,8 @@ a.focus-row:hover{background:rgba(255,255,255,.55)}
 .exam-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .exam-card{padding:22px;min-height:208px;display:flex;flex-direction:column;gap:8px;position:relative}
 .exam-card h3{font-size:22px;margin:3px 0 0;letter-spacing:-.6px}
-.exam-card p{font-size:12.5px;color:var(--muted);margin:0 0 auto;line-height:1.6}
+.exam-card p{font-size:12.5px;color:var(--muted);margin:0 0 6px;line-height:1.6;min-height:3.2em}
+.exam-card .exam-attempts{margin-top:auto}
 .exam-parts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .exam-part{padding:14px 8px;text-align:center;background:rgba(255,255,255,.65);border:1px solid var(--glass-border);border-radius:16px;cursor:pointer;min-height:84px;transition:background var(--t-2),transform var(--t-2) var(--ease)}
 .exam-part:hover{background:#fff;transform:translateY(-2px)}

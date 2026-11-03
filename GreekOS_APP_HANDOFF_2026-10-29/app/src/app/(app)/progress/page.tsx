@@ -36,9 +36,9 @@ export default async function ProgressPage() {
           <div className="card-title"><Icon name="calendar" /> Девятимесячный план</div>
           {s.enrollment?.start_date ? (
             <>
-              <p className="metric mono">{s.enrollment.elapsed_days} <span className="small muted">из {s.enrollment.total_days} дней</span></p>
+              <p className="metric mono">{s.enrollment.elapsed_days}<span className="small muted metric-of">из {s.enrollment.total_days} дней</span></p>
               <div className="progress-track"><div className="progress-fill" style={{ width: `${elapsedPct}%` }} /></div>
-              <p className="small quiet mt8">Старт {formatLocalDateRu(s.enrollment.start_date, { day: 'numeric', month: 'long', year: 'numeric' })} → цель {formatLocalDateRu(s.enrollment.end_date!, { day: 'numeric', month: 'long', year: 'numeric' })}. Это прошедшее календарное время, а не уровень.{s.enrollment.exam_date ? ` Экзамен: ${formatLocalDateRu(s.enrollment.exam_date, { day: 'numeric', month: 'long', year: 'numeric' })} (не меняет план).` : ''}</p>
+              <p className="small quiet mt8">Старт {formatLocalDateRu(s.enrollment.start_date, { day: 'numeric', month: 'long', year: 'numeric' })} → цель {formatLocalDateRu(s.enrollment.end_date!, { day: 'numeric', month: 'long', year: 'numeric' }).replace(/\.$/, '')}. Это прошедшее календарное время, а не уровень.{s.enrollment.exam_date ? ` Экзамен: ${formatLocalDateRu(s.enrollment.exam_date, { day: 'numeric', month: 'long', year: 'numeric' })} (не меняет план).` : ''}</p>
             </>
           ) : <p className="small quiet">План начнётся после вводной настройки.</p>}
           <div className="subtle-divider" />
@@ -70,7 +70,7 @@ export default async function ProgressPage() {
           {(comps ?? []).filter((c) => byComp.has(c.competency_id)).map((c) => {
             const st = byComp.get(c.competency_id)!;
             const sum = st.summary as { recognition_items?: number; controlled_items?: number; spontaneous_items?: number; d7_passed?: boolean; d28_passed?: boolean };
-            return <tr key={c.competency_id}><td className="mono">{c.competency_id}</td><td><strong>{c.name}</strong></td><td>{c.level}</td><td>{MASTERY_LABEL_RU[st.state as MasteryState]}</td><td className="tiny">узнавание {sum.recognition_items ?? 0} · по образцу {sum.controlled_items ?? 0} · сам. {sum.spontaneous_items ?? 0} · D7 {sum.d7_passed ? '✓' : '—'} · D28 {sum.d28_passed ? '✓' : '—'}</td></tr>;
+            return <tr key={c.competency_id}><td className="mono nowrap">{c.competency_id}</td><td><strong>{c.name}</strong></td><td>{c.level}</td><td>{MASTERY_LABEL_RU[st.state as MasteryState]}</td><td className="tiny">узнавание {sum.recognition_items ?? 0} · по образцу {sum.controlled_items ?? 0} · сам. {sum.spontaneous_items ?? 0} · D7 {sum.d7_passed ? '✓' : '—'} · D28 {sum.d28_passed ? '✓' : '—'}</td></tr>;
           })}
         </tbody></table></div>
         {!seen ? <p className="small quiet">Таблица заполнится по мере ответов.</p> : null}

@@ -18,6 +18,11 @@ describe('ASR round-trip comparison (v6)', () => {
     expect(roundTripPass(roundTrip('Τρία ευρώ το κιλό.', '3€/kg.'))).toBe(true);
     expect(roundTrip('Η δοκιμή θα διαρκέσει έξι εβδομάδες.', 'Η δοκιμή θα διαρκέσει 6 εβδομάδες.').wer).toBe(0);
   });
+  it('a sentence the script repeats verbatim counts once when the ASR drops the repetition', () => {
+    const m = roundTrip('Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.', 'Η Μαρία θα στείλει την αίτηση αύριο.');
+    expect(m.wer).toBe(0);
+    expect(roundTrip('Καλημέρα. Καλημέρα. Τι κάνεις;', 'Καλημέρα.').wer).toBeGreaterThan(0.3);
+  });
   it('a dropped tail is a real failure', () => {
     expect(roundTripPass(roundTrip('Καλησπέρα σας. Είμαι η συντονίστρια του προγράμματος «Ανοιχτό Αρχείο».', 'Καλησπέρα σας.'))).toBe(false);
   });

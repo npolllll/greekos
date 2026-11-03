@@ -35,6 +35,27 @@ export function normalizeSegments(audioId: string, segments: unknown): Array<{ i
     .filter((s) => s.text.trim().length > 0);
 }
 
+const SPEAKER_LABEL = /(^|[.;!?…»")]\s+|\n\s*)([Α-ΩΆΈΉΊΌΎΏ][α-ωάέήίόύώϊϋΐΰς]{2,}(?: [Α-ΩΆΈΉΊΌΎΏ][α-ωάέήίόύώϊϋΐΰς]+)?):\s+/gu;
+
+/**
+ * A script written as a labelled dialogue in one text («Πελάτης: … Υπάλληλος: …») is split into the
+ * speakers' lines: the labels are not spoken, and every speaker gets their own cast voice. Applies only
+ * when the text starts with a label and has at least two lines.
+ */
+export function splitLabelledDialogue(audioId: string, text: string | null | undefined): Array<{ id: string; role: string; text: string }> | null {
+  const t = (text ?? '').trim();
+  const marks = [...t.matchAll(SPEAKER_LABEL)].map((m) => ({ role: m[2], start: m.index! + m[1].length, textStart: m.index! + m[0].length }));
+  if (marks.length < 2 || marks[0].start !== 0) return null;
+  const out = marks.map((m, i) => ({ id: `${audioId}-L${String(i + 1).padStart(2, '0')}`, role: m.role, text: t.slice(m.textStart, i + 1 < marks.length ? marks[i + 1].start : t.length).trim() })).filter((s) => s.text);
+  return out.length >= 2 ? out : null;
+}
+
+/** The spoken lines of a job: its segments, else a labelled dialogue split by speaker, else none (narration). */
+export function scriptSegments(job: { audio_id: string; segments: unknown; text_el?: string | null }): Array<{ id: string; role: string | null; text: string }> {
+  const norm = normalizeSegments(job.audio_id, job.segments);
+  return norm.length ? norm : splitLabelledDialogue(job.audio_id, job.text_el) ?? [];
+}
+
 export interface PlannedSegment {
   segment_id: string;
   role: string;
@@ -79,7 +100,7 @@ const CHUNK_GAP_MS = 350;
  * with a reason — never rendered with a random or wrong voice.
  */
 export function planJob(job: AudioJobRow, ctx: CastingContext): PlanResult {
-  const norm = normalizeSegments(job.audio_id, job.segments);
+  const norm = scriptSegments(job);
   const src = norm.length ? norm.map((s) => ({ ...s, role: s.role ?? '__narrator__' })) : [{ id: `${job.audio_id}-S01`, role: '__narrator__', text: job.text_el ?? '' }];
   const roles = [...new Set(src.map((s) => s.role))];
   const castMap: Record<string, string> = {};

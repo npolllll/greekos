@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 
 const TABS = [
   { href: '/admin', label: 'Обзор' },
@@ -23,8 +24,10 @@ export function AdminTabs() {
   // Longest matching tab wins (/admin/qa/release must not also light up /admin/qa).
   const best = TABS.filter((t) => (t.href === '/admin' ? path === '/admin' : path === t.href || path.startsWith(`${t.href}/`))).sort((a, b) => b.href.length - a.href.length)[0]?.href;
   const active = (href: string) => href === best;
+  const nav = useRef<HTMLElement>(null);
+  useEffect(() => { nav.current?.querySelector('[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'center' }); }, [best]);
   return (
-    <nav className="admin-tabs" aria-label="Разделы админ-панели">
+    <nav className="admin-tabs" aria-label="Разделы админ-панели" ref={nav}>
       {TABS.map((t) => (
         <Link key={t.href} href={t.href} className={`chip ${active(t.href) ? 'active' : ''}`} aria-current={active(t.href) ? 'page' : undefined}>{t.label}</Link>
       ))}

@@ -5,6 +5,7 @@
 import { adminClient } from '../supabase/admin.ts';
 import { env } from '../env.ts';
 import { listLocalGreekVoices, listServiceVoices, localTtsSupported } from '../providers/local-engines.ts';
+import { scriptSegments } from '../audio/pipeline.ts';
 
 export type Presentation = 'female' | 'male' | 'other' | 'unspecified';
 
@@ -171,7 +172,7 @@ export const ROLE_NOUN_GENDER: Record<string, 'female' | 'male'> = {
   'Ενοικιαστής': 'male', 'Επιβάτης': 'male', 'Επιμελητής': 'male', 'Υπεύθυνος': 'male', 'Φίλος': 'male', 'Πατέρας': 'male', 'Δάσκαλος': 'male',
 };
 
-export const COMMON_GENDER_NOUNS = new Set(['Υπάλληλος', 'Γραμματέας', 'Βοηθός', 'Οδηγός', 'Γιατρός', 'Δικηγόρος', 'Φαρμακοποιός']);
+export const COMMON_GENDER_NOUNS = new Set(['Υπάλληλος', 'Γραμματέας', 'Βοηθός', 'Οδηγός', 'Γιατρός', 'Δικηγόρος', 'Φαρμακοποιός', 'Δημοσιογράφος', 'Συνάδελφος', 'Ψυχολόγος', 'Αρχιτέκτονας', 'Οικονομολόγος', 'Ξεναγός']);
 
 export interface CastingProposal {
   speaker_role: string;
@@ -297,9 +298,14 @@ export async function proposeJobCasting() {
   const locked = new Set((existing ?? []).filter((e) => e.approved || e.source === 'owner').map((e) => `${e.audio_id}|${e.speaker_role}`));
   let written = 0;
   for (const j of jobs ?? []) {
-    const segs = (Array.isArray(j.segments) ? j.segments : []) as Array<{ speaker_role?: string; speaker?: string }>;
-    const roles = [...new Set(segs.map((s) => s.speaker_role ?? s.speaker).filter((r): r is string => !!r))];
+    const roles = [...new Set(scriptSegments(j).map((s) => s.role).filter((r): r is string => !!r))];
     const proposals = roles.length ? roles.map((r) => proposeRoleCasting(r, corpusText)) : [proposeNarratorCasting(j.text_el ?? '')];
+    // Rows for speakers the script no longer has (e.g. a narrator before a labelled dialogue was split)
+    // are removed, unless the owner decided them.
+    const current = new Set(proposals.map((p) => p.speaker_role));
+    for (const e of (existing ?? []).filter((x) => x.audio_id === j.audio_id && !current.has(x.speaker_role) && !locked.has(`${x.audio_id}|${x.speaker_role}`))) {
+      await db.from('audio_job_casting').delete().eq('audio_id', j.audio_id).eq('speaker_role', e.speaker_role);
+    }
     const cast = castRolesForJob(proposals);
     for (const p of proposals) {
       if (locked.has(`${j.audio_id}|${p.speaker_role}`)) continue;

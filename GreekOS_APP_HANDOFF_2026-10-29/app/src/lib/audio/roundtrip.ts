@@ -91,7 +91,29 @@ function vowelNuclei(bare: string): number {
  * ASR round-trip of synthesized audio. Greek ASR errs too, so this is a screening signal and
  * never proof of correct pronunciation.
  */
-export function roundTrip(reference: string, hypothesis: string): RoundTripMetrics {
+/**
+ * Whisper drops an immediately repeated sentence (dictation-style scripts read a sentence twice). When
+ * the script repeats a sentence verbatim and the transcript has it only once, the repetition is
+ * compared once — the audio is not blamed for the recogniser's habit.
+ */
+export function collapseScriptRepeats(reference: string, hypothesis: string): string {
+  const sentences = reference.match(/[^.;!?·]+[.;!?·]*/gu)?.map((x) => x.trim()).filter(Boolean) ?? [];
+  if (sentences.length < 2) return reference;
+  const key = (x: string) => stripAccents(tokens(x).join(' '));
+  const hyp = key(hypothesis);
+  const out: string[] = [];
+  for (const sent of sentences) {
+    const k = key(sent);
+    const prev = out.length ? key(out[out.length - 1]) : null;
+    const occurrences = k ? hyp.split(k).length - 1 : 0;
+    if (prev === k && occurrences < 2) continue;
+    out.push(sent);
+  }
+  return out.join(' ');
+}
+
+export function roundTrip(referenceIn: string, hypothesis: string): RoundTripMetrics {
+  const reference = collapseScriptRepeats(referenceIn, hypothesis);
   const ref = normalizeNumerals(tokens(reference));
   const hyp = normalizeNumerals(tokens(hypothesis));
   const wer = ref.length ? editDistance(ref, hyp) / ref.length : hyp.length ? 1 : 0;

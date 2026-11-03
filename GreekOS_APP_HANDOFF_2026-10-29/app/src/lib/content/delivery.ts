@@ -1,6 +1,7 @@
 import { buildItemDTO, assertNoLeak, type ItemDTO } from './dto.ts';
 import { adminClient } from '../supabase/admin.ts';
 import { loadTextObjects, playableAudio, devPreviewAudio, releaseMap, itemAccess, PUBLIC_VIEWER, type ItemRow, type ItemAccess, type Viewer } from './repo.ts';
+import { scriptSegments } from '../audio/pipeline.ts';
 
 export interface DeliveredItem {
   dto: ItemDTO;
@@ -24,11 +25,8 @@ export async function deliverItems(rows: ItemRow[], opts: { examMode?: boolean; 
   const assignJobs = [...new Set(rows.filter((r) => r.envelope.type === 'multiple_assignment').flatMap((r) => r.audio_job_ids))];
   const speakersByJob = new Map<string, string[]>();
   if (assignJobs.length) {
-    const { data } = await adminClient().from('audio_jobs').select('audio_id, segments').in('audio_id', assignJobs);
-    for (const j of data ?? []) {
-      const segs = (Array.isArray(j.segments) ? j.segments : []) as Array<{ speaker?: string; speaker_role?: string }>;
-      speakersByJob.set(j.audio_id, [...new Set(segs.map((x) => x.speaker ?? x.speaker_role).filter((x): x is string => !!x))]);
-    }
+    const { data } = await adminClient().from('audio_jobs').select('audio_id, segments, text_el').in('audio_id', assignJobs);
+    for (const j of data ?? []) speakersByJob.set(j.audio_id, [...new Set(scriptSegments(j).map((x) => x.role).filter((x): x is string => !!x))]);
   }
   const out: DeliveredItem[] = [];
   for (const r of rows) {

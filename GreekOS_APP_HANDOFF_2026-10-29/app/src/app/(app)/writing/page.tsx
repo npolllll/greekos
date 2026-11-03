@@ -20,7 +20,7 @@ export default async function WritingPage() {
         {items.map((i) => (
           <Link key={i.dto.item_id} className="unit-row" href={i.access.learnerUsable ? `/practice/${encodeURIComponent(i.dto.item_id)}?context=writing` : u.isOwner ? `/practice/${encodeURIComponent(i.dto.item_id)}?context=writing&preview=1` : '/writing'} aria-disabled={!i.access.learnerUsable}>
             <span className="unit-num"><Icon name="pen" size={15} /></span>
-            <div style={{ minWidth: 0 }}><h3>{i.unit?.title_ru ?? i.dto.item_id}</h3><p lang="el">{i.dto.prompt.slice(0, 120)}</p></div>
+            <div style={{ minWidth: 0 }}><h3>{i.unit?.title_ru ?? i.dto.item_id}</h3><p className="clamp2" lang={/^[^А-Яа-яЁё]*\p{Script=Greek}/u.test(i.dto.prompt) ? 'el' : undefined}>{i.dto.prompt}</p></div>
             <span className={`tag ${i.access.learnerUsable ? 'green' : 'gray'}`}>{i.access.learnerUsable ? i.dto.level : 'На проверке'}</span>
           </Link>
         ))}
