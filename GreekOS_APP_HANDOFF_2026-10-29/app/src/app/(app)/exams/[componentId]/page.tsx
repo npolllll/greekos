@@ -8,6 +8,7 @@ import { Icon } from '@/components/Icon';
 import { ExamRunner } from './ExamRunner';
 import { ExamPreview } from './ExamPreview';
 import '../exams.css';
+import { countRu } from '@/lib/plural-ru';
 
 export const metadata = { title: 'Экзаменационный компонент' };
 
@@ -33,7 +34,7 @@ export default async function ExamComponentPage({ params, searchParams }: { para
         <div>
           <div className="eyebrow">GreekOS / Экзамены / {c.form_id.replace('KEG-B2-', '')}</div>
           <h1 className="screen-title">{kindRu} · {display.replace('KEG-B2-', '')}</h1>
-          <p className="screen-sub">{display !== c.component_id ? `Логический ${display}; канонический ID ${c.component_id}. ` : ''}{view.duration.minutes ? `Заявленное время: ${view.duration.minutes} мин.` : 'Время для компонента не задано.'} {items.length} заданий.</p>
+          <p className="screen-sub">{display !== c.component_id ? `Логический ${display}; канонический ID ${c.component_id}. ` : ''}{view.duration.minutes ? `Заявленное время: ${view.duration.minutes} мин.` : 'Время для компонента не задано.'} {countRu(items.length, 'задание', 'задания', 'заданий')}.</p>
         </div>
         <Link className="btn outline" href="/exams"><Icon name="school" size={15} /> Все формы</Link>
       </div>

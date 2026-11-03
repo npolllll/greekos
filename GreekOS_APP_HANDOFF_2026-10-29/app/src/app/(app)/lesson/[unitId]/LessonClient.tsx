@@ -7,6 +7,7 @@ import type { ItemDTO } from '@/lib/content/dto';
 import { ItemPlayer } from '@/components/ItemPlayer';
 import { Icon } from '@/components/Icon';
 import { SayButton } from '@/components/SayButton';
+import { countRu, singularVerbRu } from '@/lib/plural-ru';
 
 export interface LessonStep {
   key: string;
@@ -217,7 +218,7 @@ export function LessonClient(props: {
         </div>
         <div className="card cardpad">
           <div className="card-title"><Icon name="rotate" /> Когда повторим</div>
-          <p className="small quiet" style={{ marginBottom: 0 }}>После первого самостоятельного верного ответа: D1, D3, D7, D14, D28 по вашему календарю.{props.retentionCount ? ` ${props.retentionCount} заданий для отсроченных проверок ждут своего дня.` : ''}</p>
+          <p className="small quiet" style={{ marginBottom: 0 }}>После первого самостоятельного верного ответа: D1, D3, D7, D14, D28 по вашему календарю.{props.retentionCount ? ` ${countRu(props.retentionCount, 'задание', 'задания', 'заданий')} для отсроченных проверок ${singularVerbRu(props.retentionCount) ? 'ждёт' : 'ждут'} своего дня.` : ''}</p>
         </div>
         <div className="tip">
           <Icon name="info" />

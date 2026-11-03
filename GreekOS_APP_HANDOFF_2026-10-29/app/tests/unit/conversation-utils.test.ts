@@ -58,3 +58,11 @@ describe('mixed-alphabet autofix', async () => {
     expect(fixMixedText('Κороткое объяснение: кλεισμένες πόρτες.').fixes).toHaveLength(2);
   });
 });
+
+describe('Russian plural forms', async () => {
+  const { countRu, singularVerbRu } = await import('@/lib/plural-ru');
+  it('picks the form by the last digits', () => {
+    expect([1, 2, 5, 11, 12, 21, 22, 44, 111, 0].map((n) => countRu(n, 'сценарий', 'сценария', 'сценариев'))).toEqual(['1 сценарий', '2 сценария', '5 сценариев', '11 сценариев', '12 сценариев', '21 сценарий', '22 сценария', '44 сценария', '111 сценариев', '0 сценариев']);
+    expect([1, 11, 21].map(singularVerbRu)).toEqual([true, false, true]);
+  });
+});

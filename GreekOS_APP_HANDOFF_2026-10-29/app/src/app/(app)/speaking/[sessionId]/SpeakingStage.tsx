@@ -9,6 +9,7 @@ import { VoiceAnswer, type Transcript } from '@/components/VoiceAnswer';
 import { useVoiceStream, STREAM_LABEL_RU, streamSupported } from '@/components/useVoiceStream';
 import type { Speed } from '@/lib/speaking/stream-protocol';
 import { LevelOrb, ConfirmTranscript } from './StreamParts';
+import { countRu } from '@/lib/plural-ru';
 
 interface HelpResult { kind: string; answer_ru: string; example_el: string | null; source: string; note: string | null }
 
@@ -311,7 +312,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
               ) : summary.status === 'AI_FEEDBACK' ? (
                 <>
                   <div className="context-head">
-                    <div><h4>{summary.progress?.closed ? 'Сцена пройдена до конца' : `Этапов пройдено: ${summary.progress?.reached ?? 0} из ${summary.progress?.total ?? 0}`}</h4><p>{summary.learner_turns ?? 0} ваших реплик · {summary.ai_turns ?? 0} ответов AI{summary.fallback_turns ? ` · ${summary.fallback_turns} запасных реплик сценария` : ''}{summary.help_used ? ' · с подсказками' : ''}</p></div>
+                    <div><h4>{summary.progress?.closed ? 'Сцена пройдена до конца' : `Этапов пройдено: ${summary.progress?.reached ?? 0} из ${summary.progress?.total ?? 0}`}</h4><p>{countRu(summary.learner_turns ?? 0, 'ваша реплика', 'ваши реплики', 'ваших реплик')} · {countRu(summary.ai_turns ?? 0, 'ответ AI', 'ответа AI', 'ответов AI')}{summary.fallback_turns ? ` · ${countRu(summary.fallback_turns, 'запасная реплика', 'запасные реплики', 'запасных реплик')} сценария` : ''}{summary.help_used ? ' · с подсказками' : ''}</p></div>
                     <span className="ai-label">AI · подсказки</span>
                   </div>
                   {summary.corrections?.length ? <div className="card-title mt16" style={{ fontSize: 13.5 }}>Главное ({summary.corrections.length})</div> : null}

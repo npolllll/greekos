@@ -2,6 +2,7 @@
 import { useMemo, useState, ViewTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/components/Icon';
+import { countRu } from '@/lib/plural-ru';
 
 const MODE_NOTE: Record<string, string> = {
   a0_guided: 'С нуля: образец, затем ваша короткая фраза; можно русский, медленный темп, текст. Без оценки фонетики.',
@@ -70,7 +71,7 @@ export function StartSpeaking({ scenarios, isOwner, voice, stream, personas, def
       </div>
       <div className="row between" style={{ padding: '0 4px' }}>
         <div className="chip-row" role="radiogroup" aria-label="Уровень">{['Все', 'A1', 'A2', 'B1', 'B2'].map((l) => <button key={l} type="button" role="radio" aria-checked={level === l} className={`chip ${level === l ? 'active' : ''}`} onClick={() => setLevel(l)}>{l}</button>)}</div>
-        <span className="tiny quiet">{visible.length} сценариев</span>
+        <span className="count-pill">{countRu(visible.length, 'сценарий', 'сценария', 'сценариев')}</span>
       </div>
       {err ? <p className="error-text" role="alert">{err}</p> : null}
       <div className="sc-grid stagger">

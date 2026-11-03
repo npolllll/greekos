@@ -8,6 +8,7 @@ import { formatClock, type ExamAnswer, type ExamAnswers } from '@/lib/exams/core
 import { Icon } from '@/components/Icon';
 import { ExamItemInput } from '../ExamItemInput';
 import { ExamResults } from '../ExamResults';
+import { countRu } from '@/lib/plural-ru';
 
 interface AttemptState {
   attempt_id: string;
@@ -237,7 +238,7 @@ export function ExamRunner(props: {
           </button>
         </div>
         {error ? <p className="error-text" role="alert">{error}</p> : null}
-        <div className="placement-footer"><span className="quiet">{props.items.length} заданий. Прогресс сохраняется на сервере, вкладку можно закрыть.</span><button className="btn" type="button" onClick={start} disabled={busy}>{busy ? 'Начинаю…' : 'Начать'}</button></div>
+        <div className="placement-footer"><span className="quiet">{countRu(props.items.length, 'задание', 'задания', 'заданий')}. Прогресс сохраняется на сервере, вкладку можно закрыть.</span><button className="btn" type="button" onClick={start} disabled={busy}>{busy ? 'Начинаю…' : 'Начать'}</button></div>
       </div>
     );
   }

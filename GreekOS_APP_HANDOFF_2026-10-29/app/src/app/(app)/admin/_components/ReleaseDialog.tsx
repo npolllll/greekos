@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { countRu, singularVerbRu } from '@/lib/plural-ru';
 
 type Expand = 'unit' | 'item' | 'exam_component' | 'pegp_packet' | 'rg_expression' | 'scenario' | 'audio_asset' | 'diagnostics';
 
@@ -65,7 +66,7 @@ export function ReleaseDialog(props: {
             {result ? (
               <div className="mt16">
                 <div className="banner ok"><span>Создано записей допуска: <b>{result.created}</b> из {result.targets}. Уже были выпущены: {result.skipped_existing}.</span></div>
-                {result.audio_pending.length ? <div className="banner warn"><span>{result.audio_pending.length} заданий требуют аудио: они останутся закрытыми для учеников, пока не будет выпущено проверенное аудио.</span></div> : null}
+                {result.audio_pending.length ? <div className="banner warn"><span>{countRu(result.audio_pending.length, 'задание', 'задания', 'заданий')} {singularVerbRu(result.audio_pending.length) ? 'требует' : 'требуют'} аудио: они останутся закрытыми для учеников, пока не будет выпущено проверенное аудио.</span></div> : null}
                 <button type="button" className="btn outline" onClick={() => setOpen(false)}>Закрыть</button>
               </div>
             ) : (

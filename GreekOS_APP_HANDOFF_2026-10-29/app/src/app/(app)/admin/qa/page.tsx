@@ -6,6 +6,7 @@ import { dateTimeRu } from '@/lib/admin/labels';
 import { Icon } from '@/components/Icon';
 import { ProgressRing } from '@/components/ui/Motion';
 import { RunQaButton, IssueActions } from '../_components/QaControls';
+import { countRu } from '@/lib/plural-ru';
 
 export const metadata = { title: 'Цифровой QA' };
 const PAGE = 40;
@@ -47,7 +48,7 @@ export default async function QaPage({ searchParams }: { searchParams: Promise<{
               <ProgressRing value={total ? (t.PASS / total) * 100 : 0} size={116} stroke={11} tone="olive" sub="PASS" />
               <div className="stack" style={{ gap: 6, flex: 1, minWidth: 220 }}>
                 <div className="row"><span className="tag green">PASS {t.PASS}</span><span className="tag gold">на проверку {t.NEEDS_REVIEW}</span><span className="tag">FAIL {t.FAIL}</span></div>
-                <p className="small quiet" style={{ margin: 0 }}>{t.objects} объектов: {t.items} заданий, {t.units} уроков, {t.scenarios} сценариев · {dateTimeRu(latest.finished_at ?? latest.started_at)}</p>
+                <p className="small quiet" style={{ margin: 0 }}>{countRu(t.objects, 'объект', 'объекта', 'объектов')}: {countRu(t.items, 'задание', 'задания', 'заданий')}, {countRu(t.units, 'урок', 'урока', 'уроков')}, {countRu(t.scenarios, 'сценарий', 'сценария', 'сценариев')} · {dateTimeRu(latest.finished_at ?? latest.started_at)}</p>
                 <p className="tiny quiet" style={{ margin: 0 }}>Отчёт <span className="code">{latest.report_path}</span> · SHA-256 <span className="code">{latest.report_sha256?.slice(0, 16)}…</span></p>
                 <div className="row"><Link className="btn small" href="/admin/qa/release">Перейти к выпуску <Icon name="arrow" size={14} /></Link></div>
               </div>
