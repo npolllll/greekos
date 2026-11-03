@@ -59,6 +59,9 @@ async function* sseData(body: ReadableStream<Uint8Array>): AsyncGenerator<string
 async function compatStream(p: StreamJsonParams, signal: AbortSignal, started: number) {
   const headers: Record<string, string> = { 'content-type': 'application/json' };
   if (env.llmApiKey) headers.authorization = `Bearer ${env.llmApiKey}`;
+  // The GreekOS local server schedules by operation: a learner's turn pre-empts a warm-up of the same
+  // conversation and never waits behind phrase feedback. Other servers ignore the header.
+  if (isLocalLlm()) headers['x-greekos-operation'] = p.operation;
   let text = '';
   let first: number | null = null;
   let finish: string | null = null;

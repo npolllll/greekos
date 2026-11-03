@@ -212,8 +212,12 @@ export interface TurnResult extends SessionView {
   hint_ru: string | null;
   intent: string;
   gen_first_ms: number | null;
-  /** Feedback on the learner phrase and pre-warming of the next turn; resolves with a fresh view. */
-  background: Promise<SessionView | null>;
+  /**
+   * Work after the reply: warm-up of the next turn (prompt up to the learner's words) and feedback on
+   * the learner's phrase, in parallel. The caller starts it once the reply no longer needs the CPU
+   * (the gateway: after the reply's speech is synthesised); resolves with a fresh view, if feedback ran.
+   */
+  afterReply: () => Promise<SessionView | null>;
 }
 
 export async function learnerTurn(user: SessionUser, b: { session_id: string; text: string; source: LearnerSource; asr_confidence: number | null; help_used: string[]; repair: boolean; interrupted_previous: boolean; idempotency_key: string }, opts: TurnStreamOptions = {}): Promise<TurnResult> {
@@ -223,7 +227,7 @@ export async function learnerTurn(user: SessionUser, b: { session_id: string; te
   if (s.status !== 'ACTIVE') throw new HttpError(409, 'SESSION_CLOSED', 'Разговор уже завершён');
   if (s.input_mode === 'voice' && b.source === 'typed' && !b.repair) throw new HttpError(422, 'VOICE_SESSION', 'В голосовом режиме ответ отправляется голосом.');
   const replay = await db.from('speaking_turns').select('turn_id').eq('user_id', user.userId).eq('idempotency_key', `${b.idempotency_key}:a`).maybeSingle();
-  if (replay.data) return { ...(await sessionView(user, b.session_id)), engine_kind: 'authored', engine_reason: 'IDEMPOTENT_REPLAY', hint_ru: null, intent: 'replay', gen_first_ms: null, background: Promise.resolve(null) };
+  if (replay.data) return { ...(await sessionView(user, b.session_id)), engine_kind: 'authored', engine_reason: 'IDEMPOTENT_REPLAY', hint_ru: null, intent: 'replay', gen_first_ms: null, afterReply: async () => null };
 
   const { data: sc } = await db.from('speaking_scenarios').select('payload, level').eq('scenario_id', s.scenario_id).single();
   const payload = sc!.payload as ScenarioPayload;
@@ -290,7 +294,14 @@ export async function learnerTurn(user: SessionUser, b: { session_id: string; te
   const newMemory = d.facts.length ? mergeMemory(memory, d.facts) : memory;
   await db.from('speaking_sessions').update({ current_node: d.nextNode, repair_loops: d.repairLoops, memory: newMemory }).eq('session_id', s.session_id);
 
-  const background = (async (): Promise<SessionView | null> => {
+  const nextNode = nodeById(payload, d.nextNode);
+  let started: Promise<SessionView | null> | null = null;
+  const afterReply = () => (started ??= (async (): Promise<SessionView | null> => {
+    // Warm the next turn while the persona speaks and the learner thinks: the prompt up to the learner's
+    // words is evaluated now, so their turn only has to process what they say.
+    const warm = ai && !(nextNode && isTerminal(nextNode))
+      ? prefillConversation({ userId: user.userId, sessionId: s.session_id, scenario: payload, mode: s.mode, level: sc!.level, history: [...history, ...(b.repair ? [] : [{ role: 'learner' as const, text }]), { role: 'assistant' as const, text: d.assistantEl }], persona, currentNode: d.nextNode, memory: newMemory }).catch(() => null)
+      : null;
     if (wantsFeedback && learnerTurnId) {
       const lastA = [...history].reverse().find((h) => h.role === 'assistant')?.text ?? null;
       try {
@@ -300,27 +311,22 @@ export async function learnerTurn(user: SessionUser, b: { session_id: string; te
         await db.from('speaking_turns').update({ feedback: { status: 'failed' } }).eq('turn_id', learnerTurnId);
       }
     }
-    // Warm the next turn while the learner listens and thinks.
-    if (ai) {
-      const nextHistory = [...history, ...(b.repair ? [] : [{ role: 'learner' as const, text }]), { role: 'assistant' as const, text: d.assistantEl }];
-      await prefillConversation({ userId: user.userId, sessionId: s.session_id, scenario: payload, mode: s.mode, level: sc!.level, history: nextHistory, persona }).catch(() => null);
-    }
+    await warm;
     return wantsFeedback ? sessionView(user, s.session_id) : null;
-  })();
-  background.catch(() => undefined);
-  return { ...(await sessionView(user, s.session_id)), engine_kind: engine, engine_reason: reason, hint_ru: d.hintRu, intent: d.intent, gen_first_ms: d.firstMs, background };
+  })());
+  return { ...(await sessionView(user, s.session_id)), engine_kind: engine, engine_reason: reason, hint_ru: d.hintRu, intent: d.intent, gen_first_ms: d.firstMs, afterReply };
 }
 
 /** Pre-evaluates a session's opening so the first learner turn is fast (call when the learner opens the scene). */
 export async function warmSession(user: SessionUser, sessionId: string): Promise<number | null> {
   if (!generationAllowed()) return null;
   const db = adminClient();
-  const { data: s } = await db.from('speaking_sessions').select('session_id, user_id, scenario_id, mode, voice_persona, status').eq('session_id', sessionId).maybeSingle();
+  const { data: s } = await db.from('speaking_sessions').select('session_id, user_id, scenario_id, mode, voice_persona, status, current_node, memory').eq('session_id', sessionId).maybeSingle();
   if (!s || s.user_id !== user.userId || s.status !== 'ACTIVE') return null;
   const { data: sc } = await db.from('speaking_scenarios').select('payload, level').eq('scenario_id', s.scenario_id).single();
   const { data: turns } = await db.from('speaking_turns').select('speaker, text_el, interrupted, heard_text').eq('session_id', sessionId).order('seq');
   const history = (turns ?? []).map((t) => ({ role: t.speaker === 'learner' ? 'learner' as const : 'assistant' as const, text: t.speaker === 'assistant' && t.interrupted ? t.heard_text ?? '' : t.text_el ?? '' }));
-  return prefillConversation({ userId: user.userId, sessionId, scenario: sc!.payload as ScenarioPayload, mode: s.mode, level: sc!.level, history, persona: await personaFor(s.voice_persona, s.scenario_id) });
+  return prefillConversation({ userId: user.userId, sessionId, scenario: sc!.payload as ScenarioPayload, mode: s.mode, level: sc!.level, history, persona: await personaFor(s.voice_persona, s.scenario_id), currentNode: s.current_node, memory: (s.memory as Memory | null) ?? { facts: [] } });
 }
 
 const HelpOut = z.object({ answer_ru: z.string(), example_el: z.string().nullable() });

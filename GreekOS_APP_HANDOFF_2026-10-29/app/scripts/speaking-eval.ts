@@ -91,7 +91,7 @@ async function runCase(c: EvalCase, sc: { level: string; payload: ScenarioPayloa
   const history = [{ role: 'assistant' as const, text: opening }, ...(c.history ?? []).map(([w, t]) => ({ role: w === 'a' ? 'assistant' as const : 'learner' as const, text: t }))];
   const sentences: Array<{ t: number; s: string }> = [];
   // As in a live session: the conversation so far is pre-evaluated while the persona speaks.
-  const prefillMs = process.env.GREEKOS_EVAL_NO_PREFILL === '1' ? null : await prefillConversation({ userId: null, sessionId: `eval-${c.id}`, scenario: s, mode: c.mode, level: c.level ?? sc.level, history, persona: { name: 'Ελένη', presentation: 'female' } });
+  const prefillMs = process.env.GREEKOS_EVAL_NO_PREFILL === '1' ? null : await prefillConversation({ userId: null, sessionId: `eval-${c.id}`, scenario: s, mode: c.mode, level: c.level ?? sc.level, history, persona: { name: 'Ελένη', presentation: 'female' }, currentNode: node, memory: { facts: c.facts ?? [] } });
   const t0 = Date.now();
   const turn = await conversationTurn({
     userId: null, sessionId: `eval-${c.id}`, scenario: s, mode: c.mode, level: c.level ?? sc.level, currentNode: node,

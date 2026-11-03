@@ -21,10 +21,10 @@ describe('streaming JSON field reader', () => {
 });
 
 describe('sentence cutter', () => {
-  it('cuts finished sentences, keeps short fragments with the next, flushes the tail', () => {
+  it('voices a short opening reaction at once, keeps later short fragments with the next, flushes the tail', () => {
     const c = new SentenceCutter();
-    const out = [...c.push('Ναι. Βεβαίως, ένα κιλό μήλα. Θέλετε '), ...c.push('κάτι άλλο; Τέλος')];
-    expect(out).toEqual(['Ναι. Βεβαίως, ένα κιλό μήλα.', 'Θέλετε κάτι άλλο;']);
+    const out = [...c.push('Ναι. Βεβαίως, ένα κιλό μήλα. Ωραία. Θέλετε '), ...c.push('κάτι άλλο; Τέλος')];
+    expect(out).toEqual(['Ναι.', 'Βεβαίως, ένα κιλό μήλα.', 'Ωραία. Θέλετε κάτι άλλο;']);
     expect(c.flush()).toEqual(['Τέλος']);
   });
 });

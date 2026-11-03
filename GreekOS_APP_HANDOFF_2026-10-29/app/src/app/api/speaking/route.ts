@@ -31,9 +31,9 @@ export const POST = route(async (req) => {
       return v;
     }
     if (b.action === 'turn') {
-      const { background, ...view } = await learnerTurn(u, b);
+      const { afterReply, ...view } = await learnerTurn(u, b);
       // Feedback on the learner's phrase and warming of the next turn continue after the response.
-      after(() => background.catch(() => null));
+      after(() => afterReply().catch(() => null));
       return view;
     }
     if (b.action === 'warm') return { warmed_ms: await warmSession(u, b.session_id) };

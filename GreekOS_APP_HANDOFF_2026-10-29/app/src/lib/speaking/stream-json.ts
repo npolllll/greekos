@@ -54,6 +54,7 @@ export class JsonFieldStream {
  */
 export class SentenceCutter {
   private pending = '';
+  private emitted = 0;
 
   push(text: string): string[] {
     this.pending += text;
@@ -62,10 +63,14 @@ export class SentenceCutter {
     let last = 0;
     for (let m = re.exec(this.pending); m; m = re.exec(this.pending)) {
       const s = this.pending.slice(last, m.index + m[0].length).trim();
-      // Very short fragments ("Ναι.") ride with the next sentence: fewer, more natural TTS calls.
-      if (s.length >= 12 || /[;?]$/.test(s)) { out.push(s); last = m.index + m[0].length; }
+      // A short opening reaction ("Ωραία.", "Βεβαίως!") is voiced at once — the learner hears the
+      // persona react while the rest is still being written. Later short fragments ride with the next
+      // sentence: fewer, more natural TTS calls.
+      const opening = this.emitted === 0 && out.length === 0 && /\p{L}{3,}/u.test(s);
+      if (opening || s.length >= 12 || /[;?]$/.test(s)) { out.push(s); last = m.index + m[0].length; }
     }
     this.pending = this.pending.slice(last);
+    this.emitted += out.length;
     return out;
   }
 

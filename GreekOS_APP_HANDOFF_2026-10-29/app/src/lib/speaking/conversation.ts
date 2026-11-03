@@ -183,25 +183,39 @@ function fallbackTurn(input: ConversationTurnInput, target: string, reason: stri
  * Generates the persona's next turn. Without a usable model (none configured, or a local model that
  * has not passed the GreekOS dialogue qualification) the caller should use the authored engine instead.
  */
+const LEARNER_SAID = '[Ученик сказал]: «';
+
+/**
+ * Service notes of a turn (Russian, for the model only), before the learner's own words, which come
+ * last and quoted. They depend only on the state before the learner speaks, so a warm-up can evaluate
+ * them while the learner is still talking.
+ */
+function stateLines(input: Pick<ConversationTurnInput, 'scenario' | 'mode' | 'memory'>, node: ScenarioNode, allowed: string[]): string[] {
+  const free = input.mode === 'free_talk';
+  return [
+    SERVICE_NOTE,
+    input.memory.facts.length ? `Факты сцены: ${input.memory.facts.join('; ')}.` : '',
+    free ? 'Продолжи разговор: отреагируй на слова ученика и задай вопрос.' : branches(input.scenario, node, allowed, input.mode),
+    HINTS_ALLOWED(input.mode) ? 'hint_ru — подсказка по-русски, что ученик может сказать, только если он явно затрудняется, иначе null.' : '',
+    'facts — 0–2 новых факта сцены по-русски (очень коротко), иначе [].',
+  ].filter(Boolean);
+}
+
+function allowedStages(s: ScenarioPayload, node: ScenarioNode, mode: SpeakingMode): string[] {
+  return mode === 'free_talk' ? [node.node_id] : [...new Set([node.node_id, ...node.transitions.map((t) => t.to)])].filter((id) => nodeById(s, id));
+}
+
 export async function conversationTurn(input: ConversationTurnInput): Promise<ConversationTurn> {
   const started = Date.now();
   const s = input.scenario;
   const node = nodeById(s, input.currentNode) ?? nodeById(s, s.entry_node)!;
   const maxRepairs = s.off_script_policy?.max_repair_loops ?? 2;
   const free = input.mode === 'free_talk';
-  const allowed = free ? [node.node_id] : [...new Set([node.node_id, ...node.transitions.map((t) => t.to)])].filter((id) => nodeById(s, id));
+  const allowed = allowedStages(s, node, input.mode);
   const lv = levelKey(input.level ?? s.cefr_level);
   const withHint = HINTS_ALLOWED(input.mode);
 
-  // Service notes first (Russian, for the model only), the learner's own words last and quoted.
-  const stateBlock = [
-    SERVICE_NOTE,
-    input.memory.facts.length ? `Факты сцены: ${input.memory.facts.join('; ')}.` : '',
-    free ? 'Продолжи разговор: отреагируй на слова ученика и задай вопрос.' : branches(s, node, allowed, input.mode),
-    withHint ? 'hint_ru — подсказка по-русски, что ученик может сказать, только если он явно затрудняется, иначе null.' : '',
-    'facts — 0–2 новых факта сцены по-русски (очень коротко), иначе [].',
-    input.repairRequested ? '[Ученик нажал кнопку «Не понял(а)»]' : `[Ученик сказал]: «${input.learnerText}»`,
-  ].filter(Boolean).join('\n');
+  const stateBlock = [...stateLines(input, node, allowed), input.repairRequested ? '[Ученик нажал кнопку «Не понял(а)»]' : `${LEARNER_SAID}${input.learnerText}»`].join('\n');
 
   const ac = new AbortController();
   const signal = input.signal ? AbortSignal.any([input.signal, ac.signal]) : ac.signal;
@@ -274,21 +288,24 @@ export async function conversationTurn(input: ConversationTurnInput): Promise<Co
  * learner turn only has to process the learner's own words. Run while the persona speaks or the
  * learner thinks; it never produces anything the learner sees.
  */
-export async function prefillConversation(p: { userId: string | null; sessionId: string; scenario: ConversationTurnInput['scenario']; mode: SpeakingMode; level: string | null; history: TurnContext[]; persona: Persona }): Promise<number | null> {
+export async function prefillConversation(p: { userId: string | null; sessionId: string; scenario: ConversationTurnInput['scenario']; mode: SpeakingMode; level: string | null; history: TurnContext[]; persona: Persona; currentNode: string | null; memory: Memory }): Promise<number | null> {
   // Only a local server that keeps the conversation's KV cache benefits; cloud APIs cache prompts themselves.
   if (!generationAllowed() || !isLocalLlm() || !(await localKvReuse())) return null;
   const started = Date.now();
   const lv = levelKey(p.level ?? p.scenario.cefr_level);
+  const node = nodeById(p.scenario, p.currentNode ?? '') ?? nodeById(p.scenario, p.scenario.entry_node)!;
+  // The same prompt as the next turn, cut right where the learner's words will go.
+  const block = [...stateLines(p, node, allowedStages(p.scenario, node, p.mode)), LEARNER_SAID].join('\n');
   const r = await streamJson({
     userId: p.userId, operation: 'speaking_prefill', system: systemPrompt({ scenario: p.scenario, mode: p.mode, level: lv, persona: p.persona }),
-    messages: chatMessages(p.history, SERVICE_NOTE), schema: { type: 'object', properties: { reply_el: { type: 'string' } }, required: ['reply_el'], additionalProperties: false },
+    messages: chatMessages(p.history, block), schema: { type: 'object', properties: { reply_el: { type: 'string' } }, required: ['reply_el'], additionalProperties: false },
     maxTokens: 1, timeoutMs: 60_000, temperature: 0, cacheKey: p.sessionId,
   });
   return r.ok || r.reason === 'TRUNCATED' ? Date.now() - started : null;
 }
 
 let kvReuse: { at: number; value: boolean } | null = null;
-/** Whether the local LLM server reuses a conversation's KV cache (it does not for Gemma; see server.mjs). */
+/** Whether the local LLM server reuses a conversation's KV cache (see server.mjs). */
 async function localKvReuse(): Promise<boolean> {
   if (kvReuse && Date.now() - kvReuse.at < 60_000) return kvReuse.value;
   try {

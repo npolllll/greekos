@@ -134,11 +134,14 @@ describe('conversation engine v2 (wire-protocol mocks)', () => {
     const { data: s } = await admin.from('speaking_sessions').select('memory').eq('session_id', sid).single();
     expect((s!.memory as { facts: string[] }).facts).toContain('Груши 2 € за кг');
     // Feedback arrives after the reply (background), validated against the learner's own words.
-    const later = await res.background;
+    const later = await res.afterReply();
     const l = later!.turns.find((t) => t.speaker === 'learner')!;
     expect(l.feedback).toMatchObject({ status: 'ready', quote: 'δύο κιλό', better_el: 'δύο κιλά', kind: 'error' });
     // The next turn was pre-evaluated in the same conversation slot.
-    expect(requests.slice(before).some((r) => r.body.max_tokens === 1 && r.body.user === sid)).toBe(true);
+    const pre = requests.slice(before).find((r) => r.body.max_tokens === 1 && r.body.user === sid)!;
+    // It is the next turn's prompt (new stage, its branches, the facts) cut where the learner's words go.
+    expect(pre.body.messages.at(-1).content).toMatch(/Факты сцены: .*Груши 2 € за кг\.[\s\S]*Сейчас этап TWIST[\s\S]*\[Ученик сказал\]: «$/);
+    expect(pre.body.messages.at(-2)).toMatchObject({ role: 'assistant' });
   });
 
   it('rejects a reply that fails the Greek guard and says so: authored line, labelled fallback', async () => {
@@ -155,7 +158,7 @@ describe('conversation engine v2 (wire-protocol mocks)', () => {
     expect(a.engine).toBe('scripted_fallback');
     expect(a.generated).toBe(false);
     expect(res.current_node).toBe('TWIST'); // a Greek answer advances along the authored main path
-    await res.background;
+    await res.afterReply();
   });
 
   it('a hallucinated correction (quote not in the learner phrase) is dropped', async () => {
@@ -164,7 +167,7 @@ describe('conversation engine v2 (wire-protocol mocks)', () => {
     turnJson = JSON.stringify({ stage: 'TWIST', reply_el: 'Τα μήλα τελείωσαν σήμερα. Θέλετε αχλάδια;', intent: 'on_task', hint_ru: null, facts: [] });
     feedbackJson = JSON.stringify({ has_issue: true, quote: 'πορτοκάλια', better_el: 'πορτοκάλι', why_ru: 'x', kind: 'error' });
     const res = await say(sid, 'Θέλω ένα κιλό μήλα.');
-    const later = await res.background;
+    const later = await res.afterReply();
     expect(later!.turns.find((t) => t.speaker === 'learner')!.feedback).toEqual({ status: 'none' });
   });
 
@@ -180,7 +183,7 @@ describe('conversation engine v2 (wire-protocol mocks)', () => {
     expect(sentences).toHaveLength(1);
     expect(res.turns.at(-1)!.text).toBe(sentences[0]);
     expect(res.engine_kind).toBe('llm');
-    await res.background;
+    await res.afterReply();
   });
 
   it('an unqualified local model never generates the persona\'s Greek (authored engine)', async () => {
@@ -193,7 +196,7 @@ describe('conversation engine v2 (wire-protocol mocks)', () => {
     expect(res.turns.at(-1)!.engine).toBe('authored');
     expect(requests.slice(before).some((r) => r.body.stream)).toBe(false);
     expect(res.turns.find((t) => t.speaker === 'learner')!.feedback).toBeNull();
-    await res.background;
+    await res.afterReply();
     qualify(true);
   });
 
@@ -202,10 +205,10 @@ describe('conversation engine v2 (wire-protocol mocks)', () => {
     const sid = await session();
     turnJson = JSON.stringify({ stage: 'TWIST', reply_el: 'Τα μήλα τελείωσαν σήμερα. Θέλετε αχλάδια;', intent: 'on_task', hint_ru: null, facts: [] });
     feedbackJson = JSON.stringify({ has_issue: true, quote: 'ένα καφέ', better_el: 'έναν καφέ', why_ru: 'Ο καφές — мужской род: έναν καφέ.', kind: 'error' });
-    await (await say(sid, 'Θέλω ένα καφέ και μήλα.')).background;
+    await (await say(sid, 'Θέλω ένα καφέ και μήλα.')).afterReply();
     turnJson = JSON.stringify({ stage: 'NEGOTIATE', reply_el: 'Ωραία, μισό κιλό αχλάδια. Θα πληρώσετε με κάρτα;', intent: 'on_task', hint_ru: null, facts: [] });
     feedbackJson = JSON.stringify({ has_issue: false, quote: '', better_el: '', why_ru: '', kind: 'error' });
-    await (await say(sid, 'Ναι, μισό κιλό αχλάδια.')).background;
+    await (await say(sid, 'Ναι, μισό κιλό αχλάδια.')).afterReply();
     const v = await endSession(owner.session, sid);
     expect(v.summary).toMatchObject({ status: 'AI_FEEDBACK', mastery_counted: false, learner_turns: 2 });
     expect((v.summary as { corrections: Array<{ better_el: string }> }).corrections.map((c) => c.better_el)).toEqual(['έναν καφέ']);

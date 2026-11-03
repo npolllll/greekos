@@ -446,12 +446,23 @@ class StreamSession {
       // row could not be written yet (no turn number): write it now.
       if (r.pb && this.playback !== r.pb) await this.writeMetrics(timing);
     }
-    this.send({ type: 'turn', view: res, engine: res.engine_kind, hint_ru: res.hint_ru ?? null, engine_reason: res.engine_reason });
+    this.send({ type: 'turn', view: viewOf(res), engine: res.engine_kind, hint_ru: res.hint_ru ?? null, engine_reason: res.engine_reason });
     await this.afterStored(r);
-    // Feedback on the learner phrase arrives later, without blocking the conversation.
-    void res.background.then((v) => { if (v && !this.closed) this.send({ type: 'turn', view: v, engine: null, hint_ru: null, engine_reason: null, refresh: true }); });
     // Speech streams beside the dialogue lock: the learner may barge in or speak again meanwhile.
-    this.spawn(() => this.finishReply(r, res, timing));
+    this.spawn(() => this.finishReplyThenWarm(r, res, timing));
+  }
+
+  /**
+   * Once the reply's speech is synthesised, the warm-up of the next turn and the feedback on the
+   * learner's phrase run (earlier they would take the CPU from speech synthesis); the feedback
+   * arrives as a refreshed view.
+   */
+  private async finishReplyThenWarm(r: StreamedReply, res: TurnResult, timing: TurnTiming | null) {
+    try {
+      await this.finishReply(r, res, timing);
+    } finally {
+      void res.afterReply().then((v) => { if (v && !this.closed) this.send({ type: 'turn', view: v, engine: null, hint_ru: null, engine_reason: null, refresh: true }); }, () => undefined);
+    }
   }
 
   private async onRepair() {
@@ -467,9 +478,9 @@ class StreamSession {
       } finally {
         r.stored = true;
       }
-      this.send({ type: 'turn', view: res, engine: res.engine_kind, hint_ru: res.hint_ru ?? null, engine_reason: res.engine_reason });
+      this.send({ type: 'turn', view: viewOf(res), engine: res.engine_kind, hint_ru: res.hint_ru ?? null, engine_reason: res.engine_reason });
       await this.afterStored(r);
-      this.spawn(() => this.finishReply(r, res, null));
+      this.spawn(() => this.finishReplyThenWarm(r, res, null));
     } finally {
       this.busy = false;
     }
@@ -698,6 +709,13 @@ class StreamSession {
       },
     });
   }
+}
+
+/** The view part of a turn result (without the deferred work), as sent to the browser. */
+function viewOf(res: TurnResult): Omit<TurnResult, 'afterReply'> {
+  const { afterReply: _deferred, ...view } = res;
+  void _deferred;
+  return view;
 }
 
 function originAllowed(req: IncomingMessage): boolean {
