@@ -186,7 +186,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
   }
 
   const lastAssistant = [...view.turns].reverse().find((t) => t.speaker === 'assistant');
-  const summary = view.summary as null | { status: string; reason?: string; label?: string; communicative_goal?: string; progress?: { reached: number; total: number; closed: boolean }; learner_turns?: number; ai_turns?: number; fallback_turns?: number; help_used?: boolean; dimensions?: Array<{ dimension: string; level: string; note_ru: string }>; corrections?: Array<{ quote: string; better_el: string; why_ru: string; kind: string }>; next_step_ru?: string; mastery_counted?: boolean; mastery_reason?: string; confidence?: string };
+  const summary = view.summary as null | { status: string; reason?: string; label?: string; communicative_goal?: string; progress?: { reached: number; total: number; closed: boolean }; learner_turns?: number; ai_turns?: number; fallback_turns?: number; help_used?: boolean; dimensions?: Array<{ dimension: string; level: string; note_ru: string }>; corrections?: Array<{ quote: string; better_el: string; why_ru: string; kind: string; source?: string }>; next_step_ru?: string; mastery_counted?: boolean; mastery_reason?: string; confidence?: string };
 
   const initial0 = (view.persona.voice_name ?? 'Α').replace(/[^\p{L}]/gu, '').slice(0, 1) || 'Α';
   const statusLabel = streamUi ? STREAM_LABEL_RU[stream.status] : STATE_LABEL_RU[state];
@@ -317,7 +317,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
                   {summary.corrections?.length ? <div className="card-title mt16" style={{ fontSize: 13.5 }}>Главное ({summary.corrections.length})</div> : null}
                   {summary.corrections?.map((c, i) => (
                     <div className="context-insight fb-point" key={i}>
-                      <span lang="el"><s>{c.quote}</s> → <b>{c.better_el}</b></span> — {c.why_ru}{c.kind === 'more_natural' ? ' (естественнее, не ошибка)' : ''}
+                      <span lang="el"><s>{c.quote}</s> → <b>{c.better_el}</b></span> — {c.why_ru}{c.kind === 'more_natural' ? ' (естественнее, не ошибка)' : ''}{c.source?.startsWith('rule:') ? ' (правило курса)' : ''}
                       <ExamplePhrase sessionId={view.session_id} text={c.better_el} canPlay={!!view.providers.tts} />
                     </div>
                   ))}
@@ -413,7 +413,7 @@ function ExamplePhrase({ sessionId, text, canPlay }: { sessionId: string; text: 
   );
 }
 
-/** Validated suggestion on one learner phrase (model-proposed; shown as a hint, never a grade). */
+/** Validated suggestion on one learner phrase (a course rule or a model proposal; a hint, never a grade). */
 function PhraseFeedback({ fb }: { fb: SessionView['turns'][number]['feedback'] }) {
   if (!fb) return null;
   if (fb.status === 'pending') return <span className="phrase-fb pending" role="status">Проверяю фразу…</span>;
@@ -422,7 +422,7 @@ function PhraseFeedback({ fb }: { fb: SessionView['turns'][number]['feedback'] }
     <span className={`phrase-fb ${fb.kind === 'error' ? 'err' : 'style'}`}>
       <span lang="el"><s>{fb.quote}</s> → <b>{fb.better_el}</b></span>
       <span className="why">{fb.why_ru}</span>
-      <span className="tiny quiet">{fb.kind === 'error' ? 'Подсказка AI' : 'Можно естественнее (не ошибка)'} — может ошибаться, на оценку не влияет</span>
+      <span className="tiny quiet">{fb.source.startsWith('rule:') ? 'Правило курса (проверка без AI) — на оценку не влияет' : `${fb.kind === 'error' ? 'Подсказка AI' : 'Можно естественнее (не ошибка)'} — может ошибаться, на оценку не влияет`}</span>
     </span>
   );
 }

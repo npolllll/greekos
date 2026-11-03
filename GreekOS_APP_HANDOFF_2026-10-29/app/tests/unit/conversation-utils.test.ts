@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { JsonFieldStream, SentenceCutter } from '@/lib/speaking/stream-json';
 import { fixNumeralAgreement, greekWords } from '@/lib/speaking/greek-guard';
+import { ruleFeedback } from '@/lib/speaking/conversation';
 
 describe('streaming JSON field reader', () => {
   it('decodes the reply field across arbitrary chunk boundaries, including escapes', () => {
@@ -32,6 +33,14 @@ describe('Greek guard helpers', () => {
   it('repairs numeral gender agreement, both directions', () => {
     expect(fixNumeralAgreement('Είναι τρεις ευρώ, τέσσερις κιλά και τρία ώρες. Μία ευρώ.').text).toBe('Είναι τρία ευρώ, τέσσερα κιλά και τρεις ώρες. Ένα ευρώ.');
     expect(fixNumeralAgreement('Τρεις φίλοι και τέσσερα παιδιά.').fixes).toEqual([]);
+    // «ένα» + a frequent masculine accusative noun (the learner error a small model tends to echo).
+    expect(fixNumeralAgreement('Εντάξει. Ένα καφέ και ένα νερό.').text).toBe('Εντάξει. Έναν καφέ και ένα νερό.');
+  });
+
+  it('turns a numeral-agreement error of the learner into a rule-labelled correction', () => {
+    expect(ruleFeedback('Θέλω ένα καφέ και ένα νερό, παρακαλώ.')).toMatchObject({ quote: 'ένα καφέ', better_el: 'έναν καφέ', kind: 'error', source: 'rule:numeral-agreement' });
+    expect(ruleFeedback('Είναι τρεις ευρώ;')).toMatchObject({ quote: 'τρεις ευρώ', better_el: 'τρία ευρώ' });
+    expect(ruleFeedback('Θέλω ένα χυμό και έναν καφέ.')).toBeNull();
   });
 
   it('lists Greek word forms only', () => {

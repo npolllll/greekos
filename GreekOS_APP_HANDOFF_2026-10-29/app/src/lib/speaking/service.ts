@@ -12,7 +12,7 @@ import type { CatalogVoice } from '../voice/catalog.ts';
 import { localDateOf } from '../learning/calendar.ts';
 import { refreshCompetencyState } from '../learning/state.ts';
 import { nextTurn, nodeById, isTerminal, summarizeSession, type ScenarioPayload } from './dialogue.ts';
-import { conversationTurn, feedbackOnLearnerTurn, mergeMemory, prefillConversation, type Memory, type Persona, type TurnFeedback } from './conversation.ts';
+import { conversationTurn, feedbackOnLearnerTurn, mergeMemory, prefillConversation, ruleFeedback, type Memory, type Persona, type TurnFeedback } from './conversation.ts';
 import { generationAllowed, qualificationOf } from './qualification.ts';
 import { sceneRole } from './personas.ts';
 import { HINTS_ALLOWED, type SpeakingMode } from './state-machine.ts';
@@ -235,8 +235,11 @@ export async function learnerTurn(user: SessionUser, b: { session_id: string; te
   }
   const text = b.text.trim().slice(0, 1200);
   const ai = generationAllowed();
-  // Feedback is proposed only by a usable model, for Greek phrases, never during an exam turn.
-  const wantsFeedback = ai && !b.repair && /\p{Script=Greek}/u.test(text) && s.mode !== 'b2_mock';
+  // Feedback is proposed by a usable model, for Greek phrases, never during an exam turn. Without a
+  // model, only the deterministic grammar rules (labelled as rules) are applied, synchronously.
+  const feedbackTurn = !b.repair && /\p{Script=Greek}/u.test(text) && s.mode !== 'b2_mock';
+  const wantsFeedback = ai && feedbackTurn;
+  const ruleOnly = !ai && feedbackTurn ? ruleFeedback(text) : null;
   let learnerTurnId: string | null = null;
   if (!b.repair) {
     if (!text) throw new HttpError(422, 'EMPTY_TURN', 'Пустая реплика не отправляется.');
@@ -244,7 +247,7 @@ export async function learnerTurn(user: SessionUser, b: { session_id: string; te
       session_id: s.session_id, user_id: user.userId, seq, speaker: 'learner', node_id: s.current_node, text_el: text,
       asr_text: b.source === 'typed' ? null : text, asr_confidence: b.asr_confidence, asr_provider: b.source === 'typed' ? null : (s.provider_snapshot as { asr?: string }).asr ?? null,
       transcript_confirmed: b.source !== 'typed', help_used: b.help_used, idempotency_key: `${b.idempotency_key}:l`, intent: b.source,
-      feedback: wantsFeedback ? { status: 'pending' } : null,
+      feedback: wantsFeedback ? { status: 'pending' } : ruleOnly ? { ...ruleOnly, status: 'ready' } : null,
     }).select('turn_id').maybeSingle();
     if (ins.error && ins.error.code !== '23505') throw ins.error;
     learnerTurnId = ins.data?.turn_id ?? null;
@@ -416,6 +419,12 @@ export async function endSession(user: SessionUser, sessionId: string) {
   if (s.status === 'ENDED') return sessionView(user, sessionId);
   const { data: sc } = await db.from('speaking_scenarios').select('payload, competency_ids').eq('scenario_id', s.scenario_id).single();
   const payload = sc!.payload as ScenarioPayload & { unscored?: boolean };
+  // Feedback on the last phrases may still be running: give it a short moment so the summary is complete.
+  for (let i = 0; i < 25; i++) {
+    const { count } = await db.from('speaking_turns').select('turn_id', { count: 'exact', head: true }).eq('session_id', sessionId).eq('speaker', 'learner').eq('feedback->>status', 'pending');
+    if (!count) break;
+    await new Promise((r) => setTimeout(r, 1000));
+  }
   const { data: turns } = await db.from('speaking_turns').select('turn_id, speaker, text_el, asr_text, transcript_confirmed, help_used, interrupted, feedback, node_id, engine').eq('session_id', sessionId).order('seq');
   const usable = (turns ?? []).filter((t) => !t.interrupted).map((t) => ({ turn_id: t.turn_id, speaker: t.speaker, text: t.text_el ?? t.asr_text ?? '', confirmed: t.transcript_confirmed }));
   // The 2–3 main points from the validated per-phrase feedback (errors before style notes).
@@ -437,7 +446,7 @@ export async function endSession(user: SessionUser, sessionId: string) {
       status: 'AI_FEEDBACK', corrections: feedbackPoints, learner_turns: learnerCount, ai_turns: aiTurns, fallback_turns: fallbackTurns,
       progress: { reached: prog.reached, total: prog.total, closed: !!nodeById(payload, s.current_node ?? '') && isTerminal(nodeById(payload, s.current_node ?? '')) && s.current_node !== 'RETRY' },
       help_used: helpUsed,
-      next_step_ru: feedbackPoints.length ? 'Послушайте и произнесите исправленные фразы, затем пройдите сцену ещё раз своими словами.' : learnerCount < 2 ? 'Скажите хотя бы две реплики — тогда появится разбор.' : 'Ошибок, которые модель уверенно нашла, нет. Попробуйте ту же сцену на уровень сложнее или свободный разговор.',
+      next_step_ru: feedbackPoints.length ? 'Послушайте и произнесите исправленные фразы, затем пройдите сцену ещё раз своими словами.' : learnerCount < 2 ? 'Скажите хотя бы две реплики — тогда появится разбор.' : 'Ошибок, которые правила курса и модель уверенно нашли, нет. Попробуйте ту же сцену на уровень сложнее или свободный разговор.',
       label: `Подсказки локальной модели ${llmInfo().model ?? ''}: она прошла автоматическую проверку GreekOS, но это не экспертная оценка. На освоение компетенций не влияет.`,
       mastery_counted: false, mastery_reason: 'оценку локальной модели не засчитываем как доказательство освоения',
     };

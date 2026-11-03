@@ -17,7 +17,7 @@ import { isLocalLlm, llmInfo } from '../providers/llm.ts';
 import { HINTS_ALLOWED, type SpeakingMode } from './state-machine.ts';
 import { nodeById, isTerminal, type ScenarioNode, type ScenarioPayload, type TurnContext } from './dialogue.ts';
 import { JsonFieldStream, SentenceCutter } from './stream-json.ts';
-import { guardGreek, greekWords } from './greek-guard.ts';
+import { fixNumeralAgreement, guardGreek, greekWords } from './greek-guard.ts';
 import { generationAllowed } from './qualification.ts';
 import { sceneRole } from './personas.ts';
 
@@ -351,9 +351,29 @@ const variantKey = (t: string) => fold(t).normalize('NFD').replace(/\p{M}/gu, ''
  * what the learner said, the better form must differ and pass the Greek guard. Returns null when the
  * model finds nothing, fails, or proposes something that does not survive validation.
  */
+/** Numeral agreement the course teaches (έναν καφέ, τρία ευρώ, τρεις καφέδες, ένα ευρώ). */
+export function ruleFeedback(text: string): TurnFeedback | null {
+  const { fixes } = fixNumeralAgreement(text.normalize('NFC'));
+  if (!fixes.length) return null;
+  const [quote, better] = fixes[0].split(' → ');
+  const to = better.split(' ')[0].toLowerCase();
+  const why_ru = to === 'έναν'
+    ? 'Существительное мужского рода в винительном падеже: «έναν» (перед гласной и κ, π, τ буква -ν обязательна).'
+    : to === 'ένα'
+      ? '«ευρώ» — среднего рода: «ένα ευρώ».'
+      : to === 'τρία' || to === 'τέσσερα'
+        ? 'Числительное согласуется с родом: «τρία», «τέσσερα» — со словами среднего рода.'
+        : 'Числительное согласуется с родом: «τρεις», «τέσσερις» — со словами мужского и женского рода.';
+  return { quote, better_el: better, why_ru, kind: 'error', source: 'rule:numeral-agreement' };
+}
+
 export async function feedbackOnLearnerTurn(p: { userId: string | null; sessionId: string; learnerText: string; context: string | null; level: string | null; signal?: AbortSignal }): Promise<TurnFeedback | null> {
   const text = p.learnerText.trim();
-  if (!text || !/\p{Script=Greek}/u.test(text) || !generationAllowed()) return null;
+  if (!text || !/\p{Script=Greek}/u.test(text)) return null;
+  // Deterministic grammar rules first: certain, instant, and labelled as a rule, not as AI.
+  const rule = ruleFeedback(text);
+  if (rule) return rule;
+  if (!generationAllowed()) return null;
   const r = await streamJson({
     userId: p.userId, operation: 'speaking_feedback', system: FEEDBACK_SYSTEM,
     messages: [{ role: 'user', content: `${p.context ? `Собеседник сказал: «${p.context}»\n` : ''}Уровень ученика: ${levelKey(p.level)}.\nРеплика: «${text}»` }],

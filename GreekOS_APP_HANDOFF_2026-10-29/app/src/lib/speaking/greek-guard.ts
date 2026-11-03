@@ -25,10 +25,15 @@ export function greekWords(text: string): string[] {
 const NEUTER_PLURAL = /^(ευρώ|[\p{Script=Greek}]+[αά])$/u;
 const MASC_FEM_PLURAL = /^[\p{Script=Greek}]+(ες|ές|οι|είς|εις)$/u;
 
+// Frequent masculine nouns of the course scenes in the accusative singular that begin with a vowel or
+// κ, π, τ — where the final -ν of «έναν» is obligatory (έναν καφέ, έναν αριθμό). «ένα» before them is an
+// error small models often echo from the learner. (Before other consonants «ένα χρόνο» is accepted.)
+const MASC_ACC = new Set(['καφέ', 'κωδικό', 'καθηγητή', 'κήπο', 'πελάτη', 'πίνακα', 'πωλητή', 'τεχνικό', 'τόνο', 'υπάλληλο', 'οδηγό', 'αριθμό', 'όροφο', 'ήλιο', 'άνθρωπο', 'ακροατή', 'επιβάτη']);
+
 /** Numeral gender agreement with the following noun (3 and 4 have neuter forms; 1 with ευρώ). */
 export function fixNumeralAgreement(text: string): { text: string; fixes: string[] } {
   const fixes: string[] = [];
-  const out = text.replace(/(?<!\p{L})(τρεις|τέσσερις|τρία|τέσσερα|ένας|μία|μια)(\s+)([\p{Script=Greek}]+)/giu, (all, num: string, sp: string, noun: string) => {
+  const out = text.replace(/(?<!\p{L})(τρεις|τέσσερις|τρία|τέσσερα|ένας|ένα|μία|μια)(\s+)([\p{Script=Greek}]+)/giu, (all, num: string, sp: string, noun: string) => {
     const n = num.toLowerCase();
     const w = noun.toLowerCase();
     const keepCase = (to: string) => (num[0] === num[0].toUpperCase() ? to[0].toUpperCase() + to.slice(1) : to);
@@ -36,6 +41,7 @@ export function fixNumeralAgreement(text: string): { text: string; fixes: string
     if ((n === 'τρεις' || n === 'τέσσερις') && NEUTER_PLURAL.test(w)) to = n === 'τρεις' ? 'τρία' : 'τέσσερα';
     else if ((n === 'τρία' || n === 'τέσσερα') && MASC_FEM_PLURAL.test(w) && w !== 'ευρώ') to = n === 'τρία' ? 'τρεις' : 'τέσσερις';
     else if ((n === 'ένας' || n === 'μία' || n === 'μια') && w === 'ευρώ') to = 'ένα';
+    else if (n === 'ένα' && MASC_ACC.has(w)) to = 'έναν';
     if (!to) return all;
     fixes.push(`${num} ${noun} → ${keepCase(to)} ${noun}`);
     return `${keepCase(to)}${sp}${noun}`;
