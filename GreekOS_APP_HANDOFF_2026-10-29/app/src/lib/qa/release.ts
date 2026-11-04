@@ -143,7 +143,7 @@ export async function scopeObjects(scope: Scope): Promise<ScopeObject[]> {
     scope.kind === 'level' ? i.module === 'core' && i.level === scope.level :
     scope.kind === 'module' ? i.module === scope.module :
     scope.ids?.includes(i.item_id));
-  const unitIds = scope.kind === 'all' ? (units ?? []).map((u) => u.unit_id) : scope.kind === 'unit' ? scope.ids ?? [] : scope.kind === 'level' ? (units ?? []).filter((u) => u.level === scope.level).map((u) => u.unit_id) : [];
+  const unitIds = scope.kind === 'all' ? (units ?? []).filter((u) => !u.unit_id.startsWith('SYN-')).map((u) => u.unit_id) : scope.kind === 'unit' ? scope.ids ?? [] : scope.kind === 'level' ? (units ?? []).filter((u) => u.level === scope.level).map((u) => u.unit_id) : [];
   const withScenarios = scope.kind === 'all';
   const withRg = scope.kind === 'all' || (scope.kind === 'module' && scope.module === 'real_greek');
   const withPackets = scope.kind === 'all' || (scope.kind === 'module' && scope.module === 'pegp');
@@ -208,13 +208,16 @@ export async function scopeStatus(batchId: string, scope: Scope) {
     const res = byId.get(o.content_id);
     const fresh = res && res.content_hash === o.current_hash;
     const own = issues.filter((x) => x.content_id === o.content_id);
-    const openBlocking = own.filter((x) => x.severity === 'blocking' && x.status === 'open').length;
-    const openWarnings = own.filter((x) => x.severity === 'warning' && x.status === 'open').length;
+    // An issue stays unresolved until the owner marks it false positive / accepted risk or a revision
+    // fixes it; «superseded» only means a later run exists, never that the problem went away.
+    const unresolved = (x: { status: string }) => x.status === 'open' || x.status === 'superseded';
+    const openBlocking = own.filter((x) => x.severity === 'blocking' && unresolved(x)).length;
+    const openWarnings = own.filter((x) => x.severity === 'warning' && unresolved(x)).length;
     const acceptedWarnings = own.filter((x) => x.status === 'accepted_risk').length;
     let state: 'PASS' | 'ACCEPTED' | 'NEEDS_DECISION' | 'BLOCKED' | 'STALE' | 'NOT_CHECKED' = 'NOT_CHECKED';
     if (!res) state = newer.some((n) => n.content_id === o.content_id && n.content_hash === o.current_hash) ? 'STALE' : 'NOT_CHECKED';
     else if (!fresh) state = 'STALE';
-    else if (openBlocking) state = 'BLOCKED';
+    else if (openBlocking || (res.verdict === 'FAIL' && !own.some((x) => x.severity === 'blocking'))) state = 'BLOCKED';
     else if (openWarnings) state = 'NEEDS_DECISION';
     else if (res.verdict === 'PASS' && !acceptedWarnings) state = 'PASS';
     else state = 'ACCEPTED';

@@ -37,7 +37,7 @@ export default async function ReleasePage({ searchParams }: { searchParams: Prom
   const reasons = new Map<string, number>();
   if (full && closed.length) {
     for (let i = 0; i < closed.length; i += 300) {
-      const { data } = await db.from('qa_issues').select('content_id, check_id, message_ru').eq('batch_id', full.id).eq('severity', 'blocking').eq('status', 'open').in('content_id', closed.slice(i, i + 300).map((o) => o.content_id));
+      const { data } = await db.from('qa_issues').select('content_id, check_id, message_ru').eq('batch_id', full.id).eq('severity', 'blocking').in('status', ['open', 'superseded']).in('content_id', closed.slice(i, i + 300).map((o) => o.content_id));
       for (const r of data ?? []) { const k = r.check_id.startsWith('rights.') ? 'Права источника не урегулированы' : r.check_id === 'content.status' ? 'Автор пометил материал как незавершённый' : r.message_ru.replace(/\s*\(.*\)\.?$/, ''); reasons.set(k, (reasons.get(k) ?? 0) + 1); }
     }
     const noIssue = closed.filter((o) => o.state === 'STALE' || o.state === 'NOT_CHECKED').length;

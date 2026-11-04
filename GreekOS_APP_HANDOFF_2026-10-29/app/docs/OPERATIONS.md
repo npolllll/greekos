@@ -74,8 +74,12 @@ npm run voice:bench     # замер задержек и ASR на синтети
 
 ## Резервные копии и восстановление
 
-- Supabase: ежедневные бэкапы (план Pro) или PITR. Регулярно скачивайте логический дамп:
-  `npx supabase db dump --linked -f backup.sql` (+ `--data-only` для данных).
+- Supabase: ежедневные бэкапы (план Pro) или PITR.
+- Логическая копия на своём компьютере (раз в неделю и перед каждой миграцией):
+  `DATABASE_URL=<строка Session pooler> bash scripts/backup-db.sh` — дамп схем `public`, `auth`,
+  `storage` (без содержимого файлов) в `backups/greekos-<дата>.dump` и список аудиофайлов с SHA-256.
+  Нужен `pg_dump` 17+. Восстановление в новый проект: `npx supabase db push`, затем
+  `pg_restore --data-only --disable-triggers -d "$DATABASE_URL" backups/greekos-<дата>.dump`.
 - Корпус воспроизводим: любой экземпляр восстанавливается миграциями + `npm run import` из
   исходного пакета (хеши проверяются).
 - Storage: `course-audio` воспроизводим из пайплайна; `voice-review` не бэкапится (по политике

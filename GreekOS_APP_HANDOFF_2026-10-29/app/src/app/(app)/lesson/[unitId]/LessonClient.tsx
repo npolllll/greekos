@@ -59,6 +59,8 @@ export function LessonClient(props: {
   const [answered, setAnswered] = useState<Set<string>>(() => new Set(props.answeredBefore));
   const [sessionId, setSessionId] = useState(props.sessionId);
   const [done, setDone] = useState(props.completed);
+  // Listening tasks whose audio is not released are not part of the completion; say so honestly.
+  const audioPending = props.steps.reduce((a, st) => a + st.locked.filter((l) => l.reason === 'AUDIO_PENDING').length, 0);
   const [msg, setMsg] = useState<string | null>(null);
   const started = useRef(false);
   const panel = useRef<HTMLDivElement>(null);
@@ -199,7 +201,7 @@ export function LessonClient(props: {
           ) : null}
         </div>
         {msg ? <p className="error-text" role="alert">{msg}</p> : null}
-        {done ? <div className="banner ok mt16" role="status"><Icon name="check" /><span><strong>Урок завершён и сохранён.</strong> Повторения D1–D28 поставлены по вашему календарю; освоение засчитают самостоятельные ответы и отсроченные проверки.</span></div> : null}
+        {done ? <div className="banner ok mt16" role="status"><Icon name="check" /><span><strong>Урок завершён и сохранён.</strong> Повторения D1–D28 поставлены по вашему календарю; освоение засчитают самостоятельные ответы и отсроченные проверки.{audioPending ? ` Заданий на слух без выпущенного аудио: ${audioPending} — урок отмечен «кроме аудио», вернитесь к ним, когда звук появится.` : ''}</span></div> : null}
       </div>
 
       <aside className="stack">

@@ -53,7 +53,8 @@ async function answerProbe(page: Page, list: Probe[]): Promise<{ result: 'answer
 test('owner releases a scope; an experienced learner without preview is placed by the diagnostic and studies the route', async ({ browser }) => {
   test.setTimeout(10 * 60_000);
   const db = admin();
-  const created: { policy: string | null; batch: string | null; decision: string | null; report: string | null } = { policy: null, batch: null, decision: null, report: null };
+  const created: { policy: string | null; batch: string | null; decision: string | null; report: string | null; decisions: string[] } = { policy: null, batch: null, decision: null, report: null, decisions: [] };
+  const batchId0: { id: string | null } = { id: null };
   const learner = await makeUser('learner', false);
   const owner = await browser.newPage();
   await login(owner, readState().owner);
@@ -65,21 +66,28 @@ test('owner releases a scope; an experienced learner without preview is placed b
       expect(r.ok(), await r.text()).toBe(true);
       created.policy = (await r.json()).policy_id;
     }
-    const qa = await owner.request.post('/api/admin/qa/batches', { data: { label: 'E2E: выпуск и маршрут' }, timeout: 180_000 });
-    expect(qa.ok(), await qa.text()).toBe(true);
-    const qaRes = (await qa.json()) as { batch_id: string; report_path?: string };
-    created.batch = qaRes.batch_id;
-    created.report = qaRes.report_path ?? null;
+    // The owner's latest full QA run is used as is; a run is made only when none exists. (A new run
+    // supersedes the previous run's issues, so the test must not leave one behind.)
+    let batchId = (await db.from('qa_batches').select('id').eq('status', 'COMPLETED').eq('scope->>kind', 'all').order('started_at', { ascending: false }).limit(1).maybeSingle()).data?.id ?? null;
+    if (!batchId) {
+      const qa = await owner.request.post('/api/admin/qa/batches', { data: { label: 'E2E: выпуск и маршрут' }, timeout: 180_000 });
+      expect(qa.ok(), await qa.text()).toBe(true);
+      const qaRes = (await qa.json()) as { batch_id: string; report_path?: string };
+      created.batch = qaRes.batch_id;
+      created.report = qaRes.report_path ?? null;
+      batchId = created.batch;
+    }
+    batchId0.id = batchId;
 
     const diag = (await probes()).map((p) => p.item_id);
     const { data: a2 } = await db.from('items').select('item_id').eq('module', 'core').eq('level', 'A2');
     // The sample is a deterministic subset of the scope; the owner marks every reviewed item OK.
     for (const id of [...diag, ...(a2 ?? []).map((x) => x.item_id)]) {
-      const r = await owner.request.post('/api/admin/qa/sample', { data: { batch_id: created.batch, item_id: id, decision: 'OK' } });
+      const r = await owner.request.post('/api/admin/qa/sample', { data: { batch_id: batchId, item_id: id, decision: 'OK' } });
       expect(r.ok()).toBe(true);
     }
     const decide = async (scope: Record<string, unknown>) => {
-      const r = await owner.request.post('/api/admin/qa/decision', { data: { batch_id: created.batch, scope, risk_acceptance: 'PASS_ONLY', note: 'E2E', confirm: true }, timeout: 120_000 });
+      const r = await owner.request.post('/api/admin/qa/decision', { data: { batch_id: batchId, scope, risk_acceptance: 'PASS_ONLY', note: 'E2E', confirm: true }, timeout: 120_000 });
       expect(r.ok(), await r.text()).toBe(true);
       return (await r.json()) as { decision_id: string; released: number };
     };
@@ -87,6 +95,7 @@ test('owner releases a scope; an experienced learner without preview is placed b
     const d2 = await decide({ kind: 'level', level: 'A2' });
     created.decision = d1.decision_id;
     const decisions = [d1.decision_id, d2.decision_id];
+    created.decisions = decisions;
     expect(d1.released + d2.released).toBeGreaterThan(100);
 
     // ---- Learner: experience → diagnostic → individual route → lesson ----
@@ -145,10 +154,12 @@ test('owner releases a scope; an experienced learner without preview is placed b
     created.decision = null;
   } finally {
     if (created.decision) {
-      const { data: ds } = await db.from('release_decisions').select('id').eq('batch_id', created.batch!);
-      const ids = (ds ?? []).map((d) => d.id);
-      if (ids.length) { await db.from('content_releases').delete().in('decision_id', ids); await db.from('release_decisions').delete().in('id', ids); }
+      const ids = created.decisions.length ? created.decisions : [created.decision];
+      await db.from('content_releases').delete().in('decision_id', ids);
+      await db.from('release_decisions').delete().in('id', ids);
     }
+    // The owner's sample marks this test made (they belong to the e2e owner account).
+    if (batchId0.id) await db.from('qa_sample_reviews').delete().eq('batch_id', batchId0.id).eq('reviewer_id', readState().owner.id);
     if (created.batch) {
       const { data: ds } = await db.from('release_decisions').select('id').eq('batch_id', created.batch);
       const ids = (ds ?? []).map((d) => d.id);

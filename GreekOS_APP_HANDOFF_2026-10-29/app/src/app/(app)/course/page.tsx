@@ -66,7 +66,7 @@ export default async function CoursePage({ searchParams }: { searchParams: Promi
           </div>
           <div className="unit-list stagger">
             {list.map((x, i) => {
-              const status = !x.released ? { cls: 'gray', t: 'На проверке' } : x.completed ? { cls: 'green', t: 'Пройден' } : next?.unit_id === x.unit_id ? { cls: '', t: 'Следующий' } : x.skippable_by_placement ? { cls: 'blue', t: 'Можно пропустить' } : x.started ? { cls: '', t: 'Начат' } : { cls: 'gray', t: 'Открыт' };
+              const status = !x.released ? { cls: 'gray', t: 'На проверке' } : x.completed ? (x.item_audio_pending ? { cls: 'blue', t: 'Пройден, кроме аудио' } : { cls: 'green', t: 'Пройден' }) : next?.unit_id === x.unit_id ? { cls: '', t: 'Следующий' } : x.skippable_by_placement ? { cls: 'blue', t: 'Можно пропустить' } : x.started ? { cls: '', t: 'Начат' } : { cls: 'gray', t: 'Открыт' };
               return (
                 <Link key={x.unit_id} className="unit-row" href={`/lesson/${x.unit_id}`} transitionTypes={['nav-forward']} style={next?.unit_id === x.unit_id ? { borderColor: 'rgba(223,106,46,.45)', background: 'var(--glass-3)' } : undefined}>
                   <span className={`unit-num ${x.completed ? 'done' : !x.released ? 'locked' : ''}`}>{x.completed ? <Icon name="check" size={16} /> : FOUNDATION_UNITS.includes(x.unit_id) ? 'α' : i + 1}</span>
