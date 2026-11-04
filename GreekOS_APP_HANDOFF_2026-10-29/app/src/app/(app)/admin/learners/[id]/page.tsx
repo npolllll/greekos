@@ -18,7 +18,7 @@ export default async function LearnerCard({ params }: { params: Promise<{ id: st
   const db = adminClient();
   const { data: p } = await db.from('profiles').select('*').eq('user_id', id).maybeSingle();
   if (!p) notFound();
-  const [roles, enr, route, routeHist, axes, states, act, attempts, lessons, errors, speaking, consents, units, pendingCount] = await Promise.all([
+  const [roles, enr, route, routeHist, axes, states, act, attempts, lessons, errors, speaking, consents, units, pendingCount, reviews] = await Promise.all([
     db.from('role_assignments').select('role').eq('user_id', id),
     db.from('enrollments').select('*').eq('user_id', id).maybeSingle(),
     db.from('learning_routes').select('*').eq('user_id', id).maybeSingle(),
@@ -33,7 +33,10 @@ export default async function LearnerCard({ params }: { params: Promise<{ id: st
     db.from('consents').select('consent_id, purpose, artifact_id, granted_at, expires_at, revoked_at').eq('user_id', id),
     db.from('units').select('unit_id, title_ru, level, sort_key').order('sort_key'),
     db.from('assessments').select('assessment_id', { count: 'exact', head: true }).eq('user_id', id).in('verdict', ['PENDING_REVIEW', 'ABSTAIN']).eq('status', 'ACTIVE'),
+    db.from('spaced_reviews').select('competency_id, interval_days, due_local_date, status').eq('user_id', id).order('due_local_date').limit(200),
   ]);
+  const dueReviews = (reviews.data ?? []).filter((r) => r.status === 'due');
+  const doneReviews = (reviews.data ?? []).filter((r) => r.status !== 'due').length;
   const isOwnerTarget = (roles.data ?? []).some((r) => r.role === 'owner_admin');
   const stateCounts = new Map<string, number>();
   for (const s of states.data ?? []) stateCounts.set(s.state, (stateCounts.get(s.state) ?? 0) + 1);
@@ -90,6 +93,10 @@ export default async function LearnerCard({ params }: { params: Promise<{ id: st
             <div className="status-grid mt8">{[...stateCounts.entries()].map(([s, n]) => <div key={s} className="skill-card"><b>{n}</b><p>{MASTERY_LABEL_RU[s as MasteryState] ?? s}</p></div>)}</div>
             {!stateCounts.size ? <p className="small quiet">Пока нет доказательств освоения.</p> : null}
             {needsReview.length ? <p className="small mt8">Нужно повторить: {needsReview.join(', ')}</p> : null}
+            <div className="subtle-divider" />
+            <div className="card-title" style={{ fontSize: 13 }}>Отсроченные проверки D1–D28</div>
+            {dueReviews.length ? dueReviews.slice(0, 6).map((r) => <div key={`${r.competency_id}-${r.interval_days}`} className="review-row"><b>{r.competency_id}</b><small>D{r.interval_days} · {r.due_local_date}</small></div>) : <p className="small quiet">Запланированных проверок нет.</p>}
+            {dueReviews.length || doneReviews ? <p className="tiny quiet">Впереди: {dueReviews.length} · выполнено или закрыто: {doneReviews}</p> : null}
           </div>
         </div>
         <div className="stack">

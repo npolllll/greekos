@@ -300,6 +300,10 @@ test.describe.serial('final acceptance on the real corpus', () => {
     await expect(page.getByText(B.email)).toBeVisible();
     await page.getByRole('link', { name: A.name }).click();
     await expect(page.getByText('Жить и общаться в Греции')).toBeVisible();
+    // Criterion 7 on the owner's side: the lesson, the confirmed error and the D-reviews of A.
+    await expect(page.getByText('U-A1-007').first()).toBeVisible();
+    await expect(page.getByText('Отсроченные проверки D1–D28')).toBeVisible();
+    await expect(page.locator('.review-row', { hasText: /D\d+ ·/ }).first()).toBeVisible();
     await page.goto('/admin/learners');
     await page.getByRole('link', { name: B.name }).click();
     await expect(page.getByText('Сдать экзамен ΚΕΓ B2').or(page.getByText('Работа')).first()).toBeVisible();

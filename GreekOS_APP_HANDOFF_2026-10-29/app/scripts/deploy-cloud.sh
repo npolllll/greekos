@@ -8,6 +8,10 @@
 #   bash scripts/deploy-cloud.sh             # asks for what it needs, remembers it in .deploy/cloud.env
 #   DRY_RUN=1 bash scripts/deploy-cloud.sh   # prints every step (secrets masked), changes nothing
 #
+# Without questions (e.g. from a cloud session whose environment holds the values as variables):
+#   NONINTERACTIVE=1 with SUPABASE_ACCESS_TOKEN (supabase.com → Account → Access Tokens) and
+#   VERCEL_TOKEN (vercel.com → Account Settings → Tokens) plus the values asked below set in the env.
+#
 # Re-running is safe: finished steps are detected and skipped. The answers (including secrets) stay
 # on this computer in .deploy/cloud.env (git-ignored, mode 600). Nothing is released to learners:
 # releases, voice approval and provider terms are the owner's decisions in the admin panel.
@@ -17,7 +21,7 @@ cd "$(dirname "$0")/.."
 CONF=${DEPLOY_CONF:-.deploy/cloud.env}
 DRY=${DRY_RUN:-0}
 DATA_SQL=${CONTENT_DATA_SQL:-../database/02_content_data.sql}
-SECRETS=(DATABASE_URL SUPABASE_DB_PASSWORD SUPABASE_SERVICE_ROLE_KEY NEXT_PUBLIC_SUPABASE_ANON_KEY ANTHROPIC_API_KEY AZURE_SPEECH_KEY CRON_SECRET REGISTRATION_SALT VOICE_GATEWAY_SECRET)
+SECRETS=(DATABASE_URL SUPABASE_DB_PASSWORD SUPABASE_SERVICE_ROLE_KEY NEXT_PUBLIC_SUPABASE_ANON_KEY ANTHROPIC_API_KEY AZURE_SPEECH_KEY CRON_SECRET REGISTRATION_SALT VOICE_GATEWAY_SECRET SUPABASE_ACCESS_TOKEN VERCEL_TOKEN)
 
 mkdir -p "$(dirname "$CONF")" && chmod 700 "$(dirname "$CONF")"
 [ -f "$CONF" ] || : > "$CONF"
@@ -105,21 +109,25 @@ step "6/8 голоса Azure: каталог и предложения каст�
 run cloud_env npm run audio -- cast
 
 step "7/8 Vercel: проект и переменные"
-if [ "$DRY" != 1 ] && ! npx --yes vercel whoami >/dev/null 2>&1; then npx --yes vercel login; fi
-run npx --yes vercel link --yes
+VT=(); [ -n "${VERCEL_TOKEN:-}" ] && VT=(--token "$VERCEL_TOKEN")
+if [ "$DRY" != 1 ] && ! npx --yes vercel whoami "${VT[@]}" >/dev/null 2>&1; then
+  [ "${NONINTERACTIVE:-0}" = 1 ] && { echo "Vercel: нужен VERCEL_TOKEN" >&2; exit 2; }
+  npx --yes vercel login
+fi
+run npx --yes vercel link --yes "${VT[@]}"
 VARS=(NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY APP_URL CRON_SECRET REGISTRATION_SALT ANTHROPIC_API_KEY AZURE_SPEECH_KEY AZURE_SPEECH_REGION VOICE_GATEWAY_SECRET)
 declare -A FIXED=([APP_ENV]=production [LLM_PROVIDER]=anthropic [ASR_PROVIDER]=azure [TTS_PROVIDER]=azure [BUDGET_MONTHLY_USD]=${BUDGET_MONTHLY_USD:-40})
 set_var() {
   echo "+ vercel env add $1 production ← $(mask "$2")"
   [ "$DRY" = 1 ] && return 0
-  npx --yes vercel env rm "$1" production --yes >/dev/null 2>&1 || true
-  printf '%s' "$2" | npx --yes vercel env add "$1" production >/dev/null
+  npx --yes vercel env rm "$1" production --yes "${VT[@]}" >/dev/null 2>&1 || true
+  printf '%s' "$2" | npx --yes vercel env add "$1" production "${VT[@]}" >/dev/null
 }
 for k in "${VARS[@]}"; do set_var "$k" "${!k}"; done
 for k in "${!FIXED[@]}"; do set_var "$k" "${FIXED[$k]}"; done
 
 step "8/8 развёртывание"
-run npx --yes vercel deploy --prod --yes
+run npx --yes vercel deploy --prod --yes "${VT[@]}"
 if [ "$DRY" != 1 ]; then
   for i in $(seq 1 30); do curl -sf "$APP_URL/api/health" >/dev/null && break; sleep 5; done
   curl -sf "$APP_URL/api/health" && echo " ← $APP_URL работает" || echo "Проверьте адрес $APP_URL (домен в Vercel → Settings → Domains)."
