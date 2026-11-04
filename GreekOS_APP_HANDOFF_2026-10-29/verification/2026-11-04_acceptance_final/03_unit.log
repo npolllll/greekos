@@ -1,0 +1,14 @@
+
+> greekos@1.0.0 test
+> vitest run --project unit
+
+
+ RUN  v4.1.12 /home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app
+
+
+ Test Files  11 passed (11)
+      Tests  96 passed | 16 skipped (112)
+   Start at  14:52:27
+   Duration  4.92s (transform 2.04s, setup 0ms, import 4.76s, tests 5.11s, environment 1ms)
+
+03_unit exit 0

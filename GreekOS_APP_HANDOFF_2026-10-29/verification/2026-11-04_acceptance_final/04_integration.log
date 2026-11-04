@@ -1,0 +1,32 @@
+
+> greekos@1.0.0 test:integration
+> vitest run --project integration
+
+
+ RUN  v4.1.12 /home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app
+
+ ❯ |integration| tests/integration/audio-import.test.ts (3 tests | 1 failed) 81121ms
+     × the job's own recording passes digital QA and supersedes the previous file; rights stay pending 60005ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |integration| tests/integration/audio-import.test.ts > import of a finished recording > the job's own recording passes digital QA and supersedes the previous file; rights stay pending
+Error: Test timed out in 60000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/integration/audio-import.test.ts:43:19
+     41|
+     42| describe('import of a finished recording', () => {
+     43|   it.skipIf(!have)('the job\'s own recording passes digital QA and sup…
+       |                   ^
+     44|     const r = await importJobAudio('U-A1-019-AUD01', new Uint8Array(re…
+     45|     expect(r.ok).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 12 passed (13)
+      Tests  1 failed | 57 passed (58)
+   Start at  14:52:33
+   Duration  205.11s (transform 871ms, setup 0ms, import 3.66s, tests 199.57s, environment 1ms)
+
+04_integration exit 1

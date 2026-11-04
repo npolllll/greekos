@@ -97,4 +97,12 @@ describe('uncertain recognition is confirmed, never penalised', () => {
     expect(confirmationReason(t({}), { snrDb: 12 })).toBe('noisy_audio');
     expect(confirmationReason(t({}), { snrDb: 35 })).toBeNull();
   });
+
+  it('a speech service that cannot be reached is named, not reported as an internal error', async () => {
+    const { gatewayErrorFor } = await import('@/lib/speaking/gateway');
+    const refused = Object.assign(new TypeError('fetch failed'), { cause: { code: 'ECONNREFUSED' } });
+    expect(gatewayErrorFor(refused).code).toBe('SPEECH_UNAVAILABLE');
+    expect(gatewayErrorFor(Object.assign(new Error('Голос недоступен'), { code: 'PROVIDER_UNAVAILABLE' })).code).toBe('SPEECH_UNAVAILABLE');
+    expect(gatewayErrorFor(new RangeError('index out of range'))).toEqual({ code: 'INTERNAL', message: expect.stringContaining('Внутренняя ошибка') });
+  });
 });

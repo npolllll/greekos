@@ -204,8 +204,9 @@ class StreamSession {
   private handleError(e: unknown) {
     if (e instanceof HttpError) return this.fail(e.code, e.message, e.status === 401 || e.status === 403);
     if (e instanceof BudgetExceededError) return this.fail('BUDGET_EXCEEDED', e.message);
-    console.error('[voice-gateway]', (e as Error)?.message ?? e);
-    this.fail('INTERNAL', 'Внутренняя ошибка голосового шлюза. Реплика не сохранена — можно повторить.');
+    const mapped = gatewayErrorFor(e);
+    console.error('[voice-gateway]', mapped.code, (e as Error)?.message ?? e, (e as { cause?: { code?: string } })?.cause?.code ?? '');
+    this.fail(mapped.code, mapped.message);
     this.busy = false;
     this.setState('listening');
   }
@@ -770,4 +771,21 @@ export async function startVoiceGateway(opts: { port: number; host?: string }): 
     server, port, sessions: () => live.size,
     close: () => new Promise<void>((resolve) => { clearInterval(ping); for (const ws of wss.clients) ws.terminate(); wss.close(); server.close(() => resolve()); }),
   };
+}
+
+
+/**
+ * What the learner is told when a turn fails inside the gateway. A speech or model service that cannot
+ * be reached (stopped, restarting, out of memory, network) is named as such — the turn is not lost
+ * and text mode remains — instead of an anonymous internal error.
+ */
+export function gatewayErrorFor(e: unknown): { code: 'SPEECH_UNAVAILABLE' | 'INTERNAL'; message: string } {
+  const err = e as { name?: string; code?: string; message?: string; cause?: { code?: string } };
+  const unreachable = err?.code === 'PROVIDER_UNAVAILABLE'
+    || (err?.name === 'TypeError' && /fetch failed/i.test(err?.message ?? ''))
+    || ['ECONNREFUSED', 'ECONNRESET', 'UND_ERR_SOCKET', 'UND_ERR_CONNECT_TIMEOUT', 'ETIMEDOUT'].includes(err?.cause?.code ?? '')
+    || err?.name === 'TimeoutError' || err?.name === 'AbortError';
+  return unreachable
+    ? { code: 'SPEECH_UNAVAILABLE', message: 'Сервис распознавания или синтеза речи сейчас недоступен. Реплика не сохранена — повторите через минуту или продолжите текстом.' }
+    : { code: 'INTERNAL', message: 'Внутренняя ошибка голосового шлюза. Реплика не сохранена — можно повторить.' };
 }

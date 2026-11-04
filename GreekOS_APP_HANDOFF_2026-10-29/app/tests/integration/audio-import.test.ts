@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { admin } from './helpers';
 import { importJobAudio } from '@/lib/audio/import';
-import { localAsrHealth } from '@/lib/providers/local-engines';
+import { localAsrHealth, localTranscribe } from '@/lib/providers/local-engines';
 
 /**
  * Import of a finished recording for one job: real bytes from the audio bundle go through technical
@@ -18,10 +18,15 @@ const restore: { assets: string[]; status: Record<string, unknown> | null } = { 
 
 beforeAll(async () => {
   process.env.APP_ENV = 'local';
-  asr = !!(await localAsrHealth())?.available?.length;
+  const health = await localAsrHealth();
+  asr = !!health?.available?.length;
+  // The speech service loads a Whisper model on first use (tens of seconds on CPU after a restart):
+  // load the round-trip model here, so the test's own time budget measures the import itself.
+  const best = health?.available.includes('turbo') ? 'turbo' : health?.available.includes('medium') ? 'medium' : null;
+  if (have && best && !(health?.loaded ?? []).includes(best)) await localTranscribe(new Uint8Array(readFileSync(new URL(OWN, BUNDLE))), best, 300_000);
   restore.assets = ((await admin.from('audio_assets').select('id').eq('audio_id', 'U-A1-019-AUD01').is('invalidated_at', null)).data ?? []).map((a) => a.id);
   restore.status = (await admin.from('audio_job_render_status').select('*').eq('audio_id', 'U-A1-019-AUD01').maybeSingle()).data;
-});
+}, 330_000);
 
 afterAll(async () => {
   for (const id of created) {

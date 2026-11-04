@@ -5,7 +5,7 @@
 # Every step writes its log; nothing is skipped silently and nothing is released.
 set -u
 cd "$(dirname "$0")/.."
-OUT="../verification/$(date +%F)_acceptance"
+OUT="${ACCEPTANCE_OUT:-../verification/$(date +%F)_acceptance}"
 mkdir -p "$OUT"
 [ -f .env.local ] && { set -a; . ./.env.local; set +a; }
 run() {
