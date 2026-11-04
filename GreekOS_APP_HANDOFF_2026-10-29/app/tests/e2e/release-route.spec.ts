@@ -95,6 +95,10 @@ test('owner releases a scope; an experienced learner without preview is placed b
     await login(page, learner);
     await page.waitForURL(/\/welcome/);
     await page.getByRole('radio', { name: /Уже изучал/ }).click();
+    // Self-estimate (orientation only) and the goal.
+    await page.getByRole('radiogroup', { name: 'Предполагаемый уровень' }).getByRole('radio', { name: 'B1' }).click();
+    await page.getByRole('radiogroup', { name: 'Уверенность: Чтение' }).getByRole('radio', { name: 'Частично' }).click();
+    await page.getByRole('radio', { name: 'Сдать экзамен ΚΕΓ B2' }).click();
     await page.getByRole('button', { name: 'Начать' }).click();
     await page.waitForURL(/\/diagnostic/, { timeout: 30_000 });
     await page.getByRole('button', { name: 'Начать диагностику' }).click();
@@ -111,6 +115,11 @@ test('owner releases a scope; an experienced learner without preview is placed b
     await page.getByRole('button', { name: 'Показать результат' }).click();
     await expect(page.getByRole('heading', { name: 'Результат диагностики' })).toBeVisible();
     await expect(page.locator('.placement-panel h2')).toHaveText('A2 · ориентир');
+    // The self-estimate is compared, not used as a level; retaking keeps history.
+    await expect(page.getByText(/Ваша оценка при регистрации: B1/)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Пройти диагностику заново' })).toBeVisible();
+    const { data: enr } = await db.from('enrollments').select('goal, self_level, skill_confidence').eq('user_id', learner.id).single();
+    expect(enr).toMatchObject({ goal: 'keg_b2', self_level: 'B1', skill_confidence: { reading: 1 } });
     const { data: route } = await db.from('learning_routes').select('route_kind, start_unit_id').eq('user_id', learner.id).single();
     expect(route).toEqual({ route_kind: 'provisional', start_unit_id: 'U-A2-001' });
 

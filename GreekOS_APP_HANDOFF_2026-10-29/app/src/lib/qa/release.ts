@@ -121,34 +121,65 @@ export async function patchUnit(actor: PatchActor, input: z.infer<typeof UnitPat
 // ---------------- Scope, sample and decision ----------------
 
 export const DecisionScope = z.object({
-  kind: z.enum(['unit', 'level', 'module', 'items']),
+  // 'all' — the whole admissible package: every lesson and task, AI Speaking scenarios,
+  // Real Greek cards and ΠΕΓΠ packets; whatever QA does not pass stays closed with its reason.
+  kind: z.enum(['all', 'unit', 'level', 'module', 'items']),
   ids: z.array(z.string().min(1).max(80)).max(500).optional(),
   module: z.enum(['core', 'keg_b2', 'pegp', 'real_greek']).optional(),
   level: z.enum(['A1', 'A2', 'B1', 'B2']).optional(),
 }).strict();
 type Scope = z.infer<typeof DecisionScope>;
 
-export interface ScopeObject { content_kind: 'item' | 'unit' | 'scenario'; content_id: string; current_hash: string; module: string | null; unit_id: string | null }
+export type ScopeKind = 'item' | 'unit' | 'scenario' | 'rg_expression' | 'pegp_packet';
+export interface ScopeObject { content_kind: ScopeKind; content_id: string; current_hash: string; module: string | null; unit_id: string | null; item_type?: string; level?: string | null }
 
 export async function scopeObjects(scope: Scope): Promise<ScopeObject[]> {
   const db = adminClient();
-  const items = await selectAll<{ item_id: string; module: string; unit_id: string | null; level: string | null; current_hash: string }>((f, t) => db.from('items').select('item_id, module, unit_id, level, current_hash').order('item_id').range(f, t));
+  const items = await selectAll<{ item_id: string; module: string; unit_id: string | null; level: string | null; item_type: string; current_hash: string }>((f, t) => db.from('items').select('item_id, module, unit_id, level, item_type, current_hash').order('item_id').range(f, t));
   const { data: units } = await db.from('units').select('unit_id, level, current_hash');
   const pick = items.filter((i) =>
+    scope.kind === 'all' ? i.module !== 'synthetic_fixture' :
     scope.kind === 'unit' ? scope.ids?.includes(i.unit_id ?? '') :
     scope.kind === 'level' ? i.module === 'core' && i.level === scope.level :
     scope.kind === 'module' ? i.module === scope.module :
     scope.ids?.includes(i.item_id));
-  const unitIds = scope.kind === 'unit' ? scope.ids ?? [] : scope.kind === 'level' ? (units ?? []).filter((u) => u.level === scope.level).map((u) => u.unit_id) : [];
+  const unitIds = scope.kind === 'all' ? (units ?? []).map((u) => u.unit_id) : scope.kind === 'unit' ? scope.ids ?? [] : scope.kind === 'level' ? (units ?? []).filter((u) => u.level === scope.level).map((u) => u.unit_id) : [];
+  const withScenarios = scope.kind === 'all';
+  const withRg = scope.kind === 'all' || (scope.kind === 'module' && scope.module === 'real_greek');
+  const withPackets = scope.kind === 'all' || (scope.kind === 'module' && scope.module === 'pegp');
+  const [{ data: scenarios }, { data: rg }, { data: packets }] = await Promise.all([
+    withScenarios ? db.from('speaking_scenarios').select('scenario_id, current_hash').order('scenario_id') : Promise.resolve({ data: [] as Array<{ scenario_id: string; current_hash: string }> }),
+    withRg ? db.from('rg_expressions').select('expression_id, current_hash').order('expression_id') : Promise.resolve({ data: [] as Array<{ expression_id: string; current_hash: string }> }),
+    withPackets ? db.from('pegp_packets').select('packet_id, current_hash').order('packet_id') : Promise.resolve({ data: [] as Array<{ packet_id: string; current_hash: string }> }),
+  ]);
   return [
-    ...(units ?? []).filter((u) => unitIds.includes(u.unit_id)).map((u) => ({ content_kind: 'unit' as const, content_id: u.unit_id, current_hash: u.current_hash, module: 'core', unit_id: u.unit_id })),
-    ...pick.map((i) => ({ content_kind: 'item' as const, content_id: i.item_id, current_hash: i.current_hash, module: i.module, unit_id: i.unit_id })),
+    ...(units ?? []).filter((u) => unitIds.includes(u.unit_id)).map((u) => ({ content_kind: 'unit' as const, content_id: u.unit_id, current_hash: u.current_hash, module: 'core', unit_id: u.unit_id, level: u.level })),
+    ...pick.map((i) => ({ content_kind: 'item' as const, content_id: i.item_id, current_hash: i.current_hash, module: i.module, unit_id: i.unit_id, item_type: i.item_type, level: i.level })),
+    ...(scenarios ?? []).map((x) => ({ content_kind: 'scenario' as const, content_id: x.scenario_id, current_hash: x.current_hash, module: 'speaking', unit_id: null })),
+    ...(rg ?? []).map((x) => ({ content_kind: 'rg_expression' as const, content_id: x.expression_id, current_hash: x.current_hash, module: 'real_greek', unit_id: null })),
+    ...(packets ?? []).map((x) => ({ content_kind: 'pegp_packet' as const, content_id: x.packet_id, current_hash: x.current_hash, module: 'pegp', unit_id: null })),
   ];
 }
 
-/** Deterministic sample of PASS/accepted items in a scope (sha256(batch|id) order). */
+/**
+ * Size of the owner's sample: 10% of the releasable tasks, at least 5 and at most 30 — one procedure
+ * for the whole package, not hundreds of identical cards. The sample is spread over task types.
+ */
+export const SAMPLE_CAP = 30;
 export function sampleSize(n: number): number {
-  return Math.min(n, Math.max(5, Math.ceil(n * 0.1)));
+  return Math.min(n, Math.max(5, Math.min(SAMPLE_CAP, Math.ceil(n * 0.1))));
+}
+
+/** Deterministic, type-diverse sample: one task of each type first (sha256(batch|id) order), then the rest. */
+export function pickSample<T extends { content_id: string; item_type?: string }>(batchId: string, items: T[]): T[] {
+  const order = (id: string) => createHash('sha256').update(`${batchId}|${id}`).digest('hex');
+  const sorted = [...items].sort((a, b) => order(a.content_id).localeCompare(order(b.content_id)));
+  const n = sampleSize(items.length);
+  const seenTypes = new Set<string>();
+  const first: T[] = [];
+  for (const it of sorted) if (!seenTypes.has(it.item_type ?? '') && first.length < n) { seenTypes.add(it.item_type ?? ''); first.push(it); }
+  const rest = sorted.filter((x) => !first.includes(x)).slice(0, n - first.length);
+  return [...first, ...rest];
 }
 
 export async function scopeStatus(batchId: string, scope: Scope) {
@@ -166,7 +197,12 @@ export async function scopeStatus(batchId: string, scope: Scope) {
     issues.push(...(is ?? []));
   }
   // Later per-object re-checks (after a patch) live in newer batches: use the newest result per hash.
-  const { data: newer } = await db.from('qa_item_results').select('batch_id, content_id, content_hash, verdict, qa_batches!inner(started_at, status)').in('content_id', ids.length ? ids.slice(0, 500) : ['-']).eq('qa_batches.status', 'COMPLETED');
+  const newer: Array<{ content_id: string; content_hash: string }> = [];
+  const missingIds = ids.filter((id) => !results.some((r) => r.content_id === id));
+  for (let i = 0; i < missingIds.length; i += 300) {
+    const { data } = await db.from('qa_item_results').select('batch_id, content_id, content_hash, verdict, qa_batches!inner(started_at, status)').in('content_id', missingIds.slice(i, i + 300)).eq('qa_batches.status', 'COMPLETED');
+    newer.push(...(data ?? []));
+  }
   const byId = new Map(results.map((r) => [r.content_id, r]));
   const evaluated = objs.map((o) => {
     const res = byId.get(o.content_id);
@@ -176,7 +212,7 @@ export async function scopeStatus(batchId: string, scope: Scope) {
     const openWarnings = own.filter((x) => x.severity === 'warning' && x.status === 'open').length;
     const acceptedWarnings = own.filter((x) => x.status === 'accepted_risk').length;
     let state: 'PASS' | 'ACCEPTED' | 'NEEDS_DECISION' | 'BLOCKED' | 'STALE' | 'NOT_CHECKED' = 'NOT_CHECKED';
-    if (!res) state = (newer ?? []).some((n) => n.content_id === o.content_id && n.content_hash === o.current_hash) ? 'STALE' : 'NOT_CHECKED';
+    if (!res) state = newer.some((n) => n.content_id === o.content_id && n.content_hash === o.current_hash) ? 'STALE' : 'NOT_CHECKED';
     else if (!fresh) state = 'STALE';
     else if (openBlocking) state = 'BLOCKED';
     else if (openWarnings) state = 'NEEDS_DECISION';
@@ -186,8 +222,7 @@ export async function scopeStatus(batchId: string, scope: Scope) {
   });
   const releasable = evaluated.filter((x) => x.state === 'PASS' || x.state === 'ACCEPTED');
   const items = releasable.filter((x) => x.content_kind === 'item');
-  const order = (id: string) => createHash('sha256').update(`${batchId}|${id}`).digest('hex');
-  const sample = [...items].sort((a, b) => order(a.content_id).localeCompare(order(b.content_id))).slice(0, sampleSize(items.length));
+  const sample = pickSample(batchId, items);
   const { data: reviews } = await db.from('qa_sample_reviews').select('content_id, content_hash, decision, note, reviewed_at').eq('batch_id', batchId).in('content_id', sample.length ? sample.map((s) => s.content_id) : ['-']);
   return { objects: evaluated, releasable: releasable.length, sample: sample.map((s) => ({ ...s, review: (reviews ?? []).find((r) => r.content_id === s.content_id && r.content_hash === s.current_hash) ?? null })) };
 }
@@ -257,8 +292,11 @@ export async function decideRelease(actor: SessionUser, input: z.infer<typeof De
     policy_id: policy.id, qa_batch_id: batch.id, decision_id: decision.id,
   }));
   // Skip objects that already hold an active release for the same hash.
-  const { data: existing } = await db.from('content_releases').select('content_kind, content_id, content_hash').is('revoked_at', null).in('content_id', rows.map((r) => r.content_id).slice(0, 1000));
-  const have = new Set((existing ?? []).map((e) => `${e.content_kind}|${e.content_id}|${e.content_hash}`));
+  const have = new Set<string>();
+  for (let i = 0; i < rows.length; i += 300) {
+    const { data: existing } = await db.from('content_releases').select('content_kind, content_id, content_hash').is('revoked_at', null).in('content_id', rows.slice(i, i + 300).map((r) => r.content_id));
+    for (const e of existing ?? []) have.add(`${e.content_kind}|${e.content_id}|${e.content_hash}`);
+  }
   const fresh = rows.filter((r) => !have.has(`${r.content_kind}|${r.content_id}|${r.content_hash}`));
   for (let i = 0; i < fresh.length; i += 200) {
     const { error } = await db.from('content_releases').insert(fresh.slice(i, i + 200));

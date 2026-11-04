@@ -60,3 +60,14 @@ export const ERROR_KIND_LABEL: Record<string, string> = {
 export const ERROR_STATUS_LABEL: Record<string, string> = { open: 'открыта', resolved: 'исправлена', superseded: 'заменена', disputed: 'оспорена' };
 export const ROUTE_KIND_LABEL: Record<string, string> = { foundations: 'основы чтения (с нуля)', provisional: 'предварительный по диагностике', verified: 'подтверждённый', manual: 'задан владельцем' };
 export const SESSION_STATUS_LABEL: Record<string, string> = { ACTIVE: 'идёт', ENDED: 'завершён', ABANDONED: 'брошен' };
+
+/** Onboarding answers (orientation only; the route is set by the diagnostic). */
+export const GOAL_LABEL: Record<string, string> = {
+  life_in_greece: 'Жить и общаться в Греции', keg_b2: 'Сдать экзамен ΚΕΓ B2', work: 'Работа', study: 'Учёба',
+  travel: 'Путешествия', family: 'Семья и друзья', other: 'Другое',
+};
+export const SELF_SKILLS: Array<{ id: string; label: string }> = [
+  { id: 'reading', label: 'Чтение' }, { id: 'listening', label: 'Аудирование' }, { id: 'grammar', label: 'Грамматика и слова' },
+  { id: 'writing', label: 'Письмо' }, { id: 'speaking', label: 'Говорение' },
+];
+export const CONFIDENCE_LABEL = ['Не уверен(а)', 'Частично', 'Уверенно'];

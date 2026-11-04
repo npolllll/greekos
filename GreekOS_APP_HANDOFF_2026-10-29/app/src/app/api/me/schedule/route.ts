@@ -7,6 +7,7 @@ const Body = z.object({
   daily_minutes: z.number().int().min(10).max(480),
   days_per_week: z.number().int().min(1).max(7),
   exam_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
+  goal: z.enum(['life_in_greece', 'keg_b2', 'work', 'study', 'travel', 'family', 'other']).optional(),
 }).strict();
 
 /** Editable schedule; start date (and thus the 9-month end) is not changed by the exam date. */

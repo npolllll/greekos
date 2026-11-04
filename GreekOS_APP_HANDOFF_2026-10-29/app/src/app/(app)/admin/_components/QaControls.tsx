@@ -157,7 +157,8 @@ export function DecisionForm(props: { batchId: string; scope: Record<string, unk
   const router = useRouter();
   const [risk, setRisk] = useState<'PASS_ONLY' | 'PASS_AND_ACCEPTED_WARNINGS'>('PASS_ONLY');
   const [note, setNote] = useState('');
-  const [exp, setExp] = useState('');
+  // ΠΕΓΠ materials are tied to an exam period: suggest one year ahead, the owner can change it.
+  const [exp, setExp] = useState(() => new Date(Date.now() + 365 * 86_400_000).toISOString().slice(0, 10));
   const [ack, setAck] = useState(false);
   const [busy, setBusy] = useState(false);
   const [res, setRes] = useState<{ ok: boolean; text: string } | null>(null);

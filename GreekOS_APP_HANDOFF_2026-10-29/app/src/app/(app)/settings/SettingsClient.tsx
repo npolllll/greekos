@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { browserClient } from '@/lib/supabase/browser';
+import { GOAL_LABEL } from '@/lib/admin/labels';
+import Link from 'next/link';
 
 interface Consent { consent_id: string; purpose: string; artifact_id: string | null; granted_at: string; expires_at: string | null; revoked_at: string | null }
 
 export function SettingsClient(props: {
   consents: Consent[];
-  enrollment: { daily_minutes: number; days_per_week: number; exam_date: string | null; start_date: string | null; end_date: string | null } | null;
+  enrollment: { daily_minutes: number; days_per_week: number; exam_date: string | null; start_date: string | null; end_date: string | null; goal: string | null } | null;
   reducedMotion: boolean;
   speakingRate: 'slow' | 'normal';
   isOwner: boolean;
@@ -17,6 +19,7 @@ export function SettingsClient(props: {
   const [minutes, setMinutes] = useState(props.enrollment?.daily_minutes ?? 60);
   const [days, setDays] = useState(props.enrollment?.days_per_week ?? 6);
   const [exam, setExam] = useState(props.enrollment?.exam_date ?? '');
+  const [goal, setGoal] = useState(props.enrollment?.goal ?? '');
   const [rate, setRate] = useState(props.speakingRate);
   const [del, setDel] = useState('');
   const activeVoice = props.consents.find((c) => c.purpose === 'voice_review_retention' && !c.revoked_at && (!c.expires_at || new Date(c.expires_at) > new Date()));
@@ -34,13 +37,22 @@ export function SettingsClient(props: {
     <div className="stack">
       {props.enrollment ? (
         <div className="card cardpad">
-          <div className="card-title">Расписание</div>
+          <div className="card-title">План и цель</div>
           <div className="grid-2">
             <div className="field"><label htmlFor="m">Минут в день</label><input id="m" type="number" min={10} max={480} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} /></div>
             <div className="field"><label htmlFor="d">Дней в неделю</label><input id="d" type="number" min={1} max={7} value={days} onChange={(e) => setDays(Number(e.target.value))} /></div>
             <div className="field"><label htmlFor="x">Дата экзамена</label><input id="x" type="date" value={exam} onChange={(e) => setExam(e.target.value)} /><span className="hint">Не меняет 9 месяцев от старта ({props.enrollment.start_date} → {props.enrollment.end_date}).</span></div>
           </div>
-          <button className="btn outline" type="button" onClick={() => post('/api/me/schedule', { daily_minutes: minutes, days_per_week: days, exam_date: exam || null }, 'Расписание сохранено.')}>Сохранить</button>
+          <div className="field"><label id="goal-label">Цель изучения</label>
+            <div className="chip-row" role="radiogroup" aria-labelledby="goal-label">
+              {Object.entries(GOAL_LABEL).map(([id, t]) => <button key={id} type="button" role="radio" aria-checked={goal === id} className={`chip ${goal === id ? 'active' : ''}`} onClick={() => setGoal(id)}>{t}</button>)}
+            </div>
+          </div>
+          <div className="row">
+            <button className="btn outline" type="button" onClick={() => post('/api/me/schedule', { daily_minutes: minutes, days_per_week: days, exam_date: exam || null, ...(goal ? { goal } : {}) }, 'План сохранён.')}>Сохранить</button>
+            <Link className="text-link" href="/diagnostic">Пройти диагностику заново</Link>
+          </div>
+          <p className="tiny quiet">Изменение цели и расписания не стирает историю: ответы, ошибки и прогресс сохраняются, маршрут меняется только по новой диагностике.</p>
         </div>
       ) : null}
       <div className="card cardpad">

@@ -16,7 +16,7 @@ const STATUS_RU: Record<string, string> = { OBSERVED: 'Наблюдалось', 
 
 function key() { return crypto.randomUUID(); }
 
-export function DiagnosticRunner({ initial, entryPath, voice }: { initial: DiagView; entryPath: string | null; voice: boolean }) {
+export function DiagnosticRunner({ initial, entryPath, selfLevel, voice }: { initial: DiagView; entryPath: string | null; selfLevel?: string | null; voice: boolean }) {
   const router = useRouter();
   const [view, setView] = useState<DiagView>(initial);
   const [choice, setChoice] = useState<string | null>(null);
@@ -76,8 +76,14 @@ export function DiagnosticRunner({ initial, entryPath, voice }: { initial: DiagV
               <div className="plan-row" key={a.axis}><span className="plan-text">{AXIS_RU[a.axis]}</span>
                 <span className="tag gray">{a.status === 'OBSERVED' ? (a.demonstrated ? `показан ${a.demonstrated} · старт ${a.candidate_start}` : `старт ${a.candidate_start ?? 'A1'}`) : `${STATUS_RU[a.status]}${a.reason && REASON_RU[a.reason] ? ` — ${REASON_RU[a.reason]}` : ''}`}</span></div>
             ))}
+            {selfLevel && selfLevel !== 'unknown' ? <p className="small">Ваша оценка при регистрации: <b>{selfLevel}</b>. {res.route_level && res.route_level !== 'FOUNDATIONS' && res.route_level !== selfLevel ? `Диагностика рекомендует начать с ${res.route_level}: ${res.route_level < selfLevel ? 'на нескольких навыках не хватило подтверждений — уроки выше откроются по мере прохождения.' : 'вы показали больше, чем оценили.'}` : 'Совпадает с рекомендацией диагностики.'}</p> : null}
             <div className="warning-note">{res.disclaimer} Никаких автоматических утверждений «уровень B1/B2 подтверждён».</div>
-            <Link className="btn" href="/course">Открыть маршрут <Icon name="arrow" size={14} /></Link>
+            <div className="row">
+              <Link className="btn" href="/course">Открыть маршрут <Icon name="arrow" size={14} /></Link>
+              <button className="btn outline" type="button" disabled={busy} onClick={() => call({ action: 'start' })}>Пройти диагностику заново</button>
+            </div>
+            <p className="tiny quiet">Повторная диагностика сохраняет историю: прежний маршрут и ответы остаются в журнале, новый маршрут назначается по её итогам.</p>
+            {err ? <p className="error-text" role="alert">{err}</p> : null}
           </div>
           <aside className="card cardpad"><div className="card-title"><Icon name="layers" /> Что дальше</div><p className="small quiet">Профиль по навыкам хранится у вас и виден владельцу. Через 2–4 недели маршрут пересматривается по реальным ответам, письму, речи и D7-проверкам.</p></aside>
         </div>

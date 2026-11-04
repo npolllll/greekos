@@ -70,6 +70,7 @@ test('a visitor registers with the owner\'s code, confirms the e-mail and starts
     await page.getByRole('button', { name: 'Сохранить и продолжить' }).click();
     await page.waitForURL(/\/welcome/, { timeout: 60_000 });
     await page.getByRole('radio', { name: /С полного нуля/ }).click();
+    await page.getByRole('radio', { name: 'Жить и общаться в Греции' }).click();
     await page.getByRole('button', { name: 'Начать' }).click();
     await page.waitForURL((u) => u.pathname === '/');
     // Stay on the origin of the e-mail link (APP_URL): the session lives there.

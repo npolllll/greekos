@@ -70,6 +70,7 @@ test('new learner without enrollment is sent to onboarding, chooses "from zero"'
   await login(page, learner2);
   await page.waitForURL(/\/welcome/);
   await page.getByRole('radio', { name: /С полного нуля/ }).click();
+  await page.getByRole('radio', { name: 'Жить и общаться в Греции' }).click();
   await page.getByRole('button', { name: 'Начать' }).click();
   await page.waitForURL((u) => u.pathname === '/');
   await page.goto('/course');

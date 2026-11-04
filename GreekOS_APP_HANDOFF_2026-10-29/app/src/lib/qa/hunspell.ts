@@ -22,6 +22,9 @@ class HunspellPipe {
     this.ready = new Promise<void>((resolve, reject) => {
       const child = spawn('hunspell', ['-a', '-i', 'UTF-8', '-d', this.dict], { env: { ...process.env, LANG: 'C.UTF-8' } });
       this.child = child;
+      // A long-lived helper must not keep a CLI script (QA batch, admission plan) running after its
+      // work: it holds the event loop only while a request is in flight (see check()); a fresh
+      // process stays referenced until its first request completes.
       let banner = false;
       child.stdout.setEncoding('utf8');
       child.stdout.on('data', (chunk: string) => {
@@ -58,11 +61,23 @@ class HunspellPipe {
     }
   }
 
+  private pending = 0;
+  private hold(on: boolean) {
+    const c = this.child;
+    if (!c) return;
+    const m = on ? 'ref' : 'unref';
+    (c as unknown as Record<string, (() => void) | undefined>)[m]?.();
+    for (const st of [c.stdin, c.stdout, c.stderr] as unknown as Array<Record<string, (() => void) | undefined>>) st[m]?.call(st);
+  }
+
   check(words: string[]): Promise<boolean[]> {
     const run = async () => {
-      await this.start();
+      this.pending += 1;
+      const release = () => { this.pending -= 1; if (!this.pending) this.hold(false); };
+      try { await this.start(); } catch (e) { release(); throw e; }
+      this.hold(true);
       return new Promise<boolean[]>((resolve, reject) => {
-        this.current = { words, resolve, reject, results: [] };
+        this.current = { words, resolve: (r) => { release(); resolve(r); }, reject: (e) => { release(); reject(e); }, results: [] };
         // «^» makes hunspell read the line as text, never as a command.
         this.child!.stdin.write(words.map((w) => `^${w.replace(/\s+/g, '')}\n`).join(''));
       });

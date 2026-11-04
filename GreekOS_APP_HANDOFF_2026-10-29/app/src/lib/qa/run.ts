@@ -74,7 +74,12 @@ export async function runQaBatch(opts: { actorId: string | null; label: string; 
       selectAll<{ item_id: string; claim_id: string }>((f, t) => db.from('item_sources').select('item_id, claim_id').order('item_id').range(f, t)),
       scope.kind === 'all' ? selectAll<{ scenario_id: string; current_hash: string; payload: Record<string, unknown>; revision_id: number }>((f, t) => db.from('speaking_scenarios').select('scenario_id, current_hash, payload, revision_id').order('scenario_id').range(f, t)) : Promise.resolve([]),
     ]);
-    const revIds = [...new Set([...items.map((i) => i.revision_id), ...units.map((u) => u.revision_id), ...scenarios.map((s) => s.revision_id)])];
+    // Real Greek cards and ΠΕΓΠ packets are released alongside their items in the whole-package decision.
+    const [rgCards, packets] = scope.kind === 'all' ? await Promise.all([
+      selectAll<{ expression_id: string; expression: string; current_hash: string; payload: Record<string, unknown>; revision_id: number }>((f, t) => db.from('rg_expressions').select('expression_id, expression, current_hash, payload, revision_id').order('expression_id').range(f, t)),
+      selectAll<{ packet_id: string; current_hash: string; payload: Record<string, unknown>; revision_id: number }>((f, t) => db.from('pegp_packets').select('packet_id, current_hash, payload, revision_id').order('packet_id').range(f, t)),
+    ]) : [[], []];
+    const revIds = [...new Set([...items.map((i) => i.revision_id), ...units.map((u) => u.revision_id), ...scenarios.map((s) => s.revision_id), ...rgCards.map((r) => r.revision_id), ...packets.map((p) => p.revision_id)])];
     const revisions = new Map<number, { content_hash: string; payload: unknown }>();
     for (let i = 0; i < revIds.length; i += 300) {
       const { data } = await db.from('content_revisions').select('id, content_hash, payload_private').in('id', revIds.slice(i, i + 300));
@@ -93,8 +98,12 @@ export async function runQaBatch(opts: { actorId: string | null; label: string; 
       const nodes = (s.payload.nodes as Array<{ node_id?: string; assistant_el?: string; acceptable_examples_el?: string[] }> | undefined) ?? [];
       return nodes.flatMap((n) => [{ field: `nodes.${n.node_id}.assistant_el`, text: n.assistant_el ?? '' }, ...(n.acceptable_examples_el ?? []).map((x, i) => ({ field: `nodes.${n.node_id}.acceptable[${i}]`, text: x }))]).filter((x) => x.text);
     };
+    const rgTexts = (r: (typeof rgCards)[number]) => {
+      const contexts = (r.payload.contexts as Array<{ example_original?: string; neutral_alternative?: string }> | undefined) ?? [];
+      return [{ field: 'expression', text: r.expression }, ...contexts.flatMap((c, i) => [{ field: `contexts[${i}].example_original`, text: c.example_original ?? '' }, { field: `contexts[${i}].neutral_alternative`, text: c.neutral_alternative ?? '' }])].filter((x) => x.text);
+    };
     const scopedUnits = units.filter((u) => !unitIds || unitIds.includes(u.unit_id));
-    const words = collectGreekWords([...items.flatMap((i) => greekFields(i.envelope).map((x) => x.text)), ...scopedUnits.flatMap((u) => unitTexts(u).map((x) => x.text)), ...scenarios.flatMap((s) => scenarioTexts(s).map((x) => x.text))]);
+    const words = collectGreekWords([...items.flatMap((i) => greekFields(i.envelope).map((x) => x.text)), ...scopedUnits.flatMap((u) => unitTexts(u).map((x) => x.text)), ...scenarios.flatMap((s) => scenarioTexts(s).map((x) => x.text)), ...rgCards.flatMap((r) => rgTexts(r).map((x) => x.text))]);
     const spell = await unknownGreekWords(words);
 
     const ctx: QaContext = {
@@ -138,15 +147,59 @@ export async function runQaBatch(opts: { actorId: string | null; label: string; 
       f.push({ check_id: 'human.review', severity: 'info', field: null, message_ru: 'Независимая проверка преподавателем не проводилась.' });
       results.push({ content_kind: 'unit', content_id: u.unit_id, content_hash: u.current_hash, unit_id: u.unit_id, module: 'core', findings: f });
     }
+    const itemIds = new Set(items.map((i) => i.item_id));
+    const licenseFindings = (lic: Record<string, unknown> | undefined, what: string): Finding[] =>
+      !lic ? [{ check_id: 'rights.license', severity: 'blocking', field: 'licensing', message_ru: `Нет блока прав ${what}.` }]
+        : lic.third_party_assets === true || lic.commercial_web_distribution_allowed === false ? [{ check_id: 'rights.license', severity: 'blocking', field: 'licensing', message_ru: `Права ${what} ограничены.` }] : [];
     for (const s of scenarios) {
       const f: Finding[] = [];
       const rev = revisions.get(s.revision_id);
       if (!rev || rev.content_hash !== s.current_hash) f.push({ check_id: 'hash.revision', severity: 'blocking', field: null, message_ru: 'Ревизия сценария не совпадает с текущим хешем.' });
       const lic = s.payload.licensing as Record<string, unknown> | undefined;
-      if (!lic) f.push({ check_id: 'rights.license', severity: 'blocking', field: 'licensing', message_ru: 'Нет блока прав сценария.' });
+      // A Real Greek scenario is the branching scene of its expression cards: it carries their rights.
+      const parents = ((s.payload.expression_ids as string[] | undefined) ?? []).map((id) => rgCards.find((r) => r.expression_id === id));
+      const inherited = !lic && parents.length > 0 && parents.every((r) => r && !licenseFindings(r.payload.licensing as Record<string, unknown> | undefined, '').length);
+      if (inherited) f.push({ check_id: 'rights.license', severity: 'info', field: 'licensing', message_ru: `Права по карточкам Real Greek (${(s.payload.expression_ids as string[]).join(', ')}).` });
+      else f.push(...licenseFindings(lic, 'сценария'));
       for (const { field, text } of scenarioTexts(s)) f.push(...orthography(field, text, ctx.ortho));
       f.push({ check_id: 'human.review', severity: 'info', field: null, message_ru: 'Сценарий не проверялся преподавателем; свободный AI-диалог требует подключённого LLM.' });
       results.push({ content_kind: 'scenario', content_id: s.scenario_id, content_hash: s.current_hash, unit_id: null, module: 'speaking', findings: f });
+    }
+
+    for (const r of rgCards) {
+      const f: Finding[] = [];
+      const rev = revisions.get(r.revision_id);
+      if (!rev || rev.content_hash !== r.current_hash) f.push({ check_id: 'hash.revision', severity: 'blocking', field: null, message_ru: 'Ревизия карточки не совпадает с текущим хешем.' });
+      f.push(...licenseFindings(r.payload.licensing as Record<string, unknown> | undefined, 'карточки'));
+      const learning = ((r.payload.learning_items as Array<{ item_id?: string }> | undefined) ?? []).map((x) => x.item_id).filter((x): x is string => !!x);
+      const missing = learning.filter((id) => !itemIds.has(id));
+      if (!learning.length) f.push({ check_id: 'content.practice', severity: 'blocking', field: 'learning_items', message_ru: 'У карточки нет упражнений.' });
+      if (missing.length) f.push({ check_id: 'refs.items', severity: 'blocking', field: 'learning_items', message_ru: `Нет заданий: ${missing.join(', ')}.` });
+      // Source risk flags mean «can sound rude in the wrong context», not that the expression is rude;
+      // a card that shows the risk and a neutral alternative for every context teaches exactly that.
+      // Sexual content, profanity or a context without a neutral alternative needs the owner's decision.
+      const safety = r.payload.safety as { offensive?: boolean; sexual?: boolean; profanity_level?: number; potential_disrespect_risk?: boolean } | undefined;
+      const ctxs = (r.payload.contexts as Array<{ neutral_alternative?: string }> | undefined) ?? [];
+      const allNeutral = ctxs.length > 0 && ctxs.every((c) => (c.neutral_alternative ?? '').trim());
+      if (safety?.sexual || (safety?.profanity_level ?? 0) > 1) f.push({ check_id: 'safety.register', severity: 'warning', field: 'safety', message_ru: 'Карточка с интимной или нецензурной лексикой — нужен осознанный допуск владельца.' });
+      else if ((safety?.offensive || safety?.potential_disrespect_risk) && !allNeutral) f.push({ check_id: 'safety.register', severity: 'warning', field: 'contexts', message_ru: 'Выражение может прозвучать грубо, а у части ситуаций нет нейтральной замены.' });
+      else if (safety?.offensive || safety?.potential_disrespect_risk) f.push({ check_id: 'safety.register', severity: 'info', field: 'safety', message_ru: 'Может прозвучать грубо в неподходящей ситуации; карточка показывает риск и нейтральную замену.' });
+      for (const { field, text } of rgTexts(r)) f.push(...orthography(field, text, ctx.ortho));
+      f.push({ check_id: 'human.review', severity: 'info', field: null, message_ru: 'Социолингвистическая проверка носителем не проводилась; интонация без проверенного аудио.' });
+      results.push({ content_kind: 'rg_expression', content_id: r.expression_id, content_hash: r.current_hash, unit_id: null, module: 'real_greek', findings: f });
+    }
+    for (const pk of packets) {
+      const f: Finding[] = [];
+      const rev = revisions.get(pk.revision_id);
+      if (!rev || rev.content_hash !== pk.current_hash) f.push({ check_id: 'hash.revision', severity: 'blocking', field: null, message_ru: 'Ревизия пакета не совпадает с текущим хешем.' });
+      const blockers = ((pk.payload.blockers as string[] | undefined) ?? []).map(String);
+      if (blockers.some((b) => /RIGHTS|REPUBLICATION/i.test(b))) f.push({ check_id: 'rights.third_party', severity: 'blocking', field: 'blockers', message_ru: `Права на перепубликацию источника не урегулированы (${blockers.filter((b) => /RIGHTS|REPUBLICATION/i.test(b)).join(', ')}).` });
+      const status = String(pk.payload.status ?? '');
+      if (/NOT_RELEASED|PARTIAL/i.test(status)) f.push({ check_id: 'content.status', severity: 'blocking', field: 'status', message_ru: `Автор пометил пакет как незавершённый (${status}).` });
+      const refs = [...((pk.payload.item_ids as string[] | undefined) ?? []), ...((pk.payload.language_item_ids as string[] | undefined) ?? [])].filter((id) => !itemIds.has(id));
+      if (refs.length) f.push({ check_id: 'refs.items', severity: 'blocking', field: 'item_ids', message_ru: `Нет заданий: ${refs.slice(0, 5).join(', ')}${refs.length > 5 ? '…' : ''}.` });
+      f.push({ check_id: 'human.review', severity: 'info', field: null, message_ru: 'Фактическая и языковая проверка человеком не проводилась; материалы — учебная подготовка, не официальный банк.' });
+      results.push({ content_kind: 'pegp_packet', content_id: pk.packet_id, content_hash: pk.current_hash, unit_id: null, module: 'pegp', findings: f });
     }
 
     // Persist

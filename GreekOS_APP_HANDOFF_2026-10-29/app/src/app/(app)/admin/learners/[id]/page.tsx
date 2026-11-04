@@ -4,7 +4,7 @@ import { requireOwnerPage } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { planEndDate } from '@/lib/learning/calendar';
 import { MASTERY_LABEL_RU, type MasteryState } from '@/lib/learning/mastery';
-import { LIFECYCLE_LABEL, ENTRY_LABEL, AXIS_LABEL, ERROR_KIND_LABEL, ERROR_STATUS_LABEL, ROUTE_KIND_LABEL, SESSION_STATUS_LABEL, minutesLabel, dateTimeRu } from '@/lib/admin/labels';
+import { LIFECYCLE_LABEL, ENTRY_LABEL, AXIS_LABEL, ERROR_KIND_LABEL, ERROR_STATUS_LABEL, ROUTE_KIND_LABEL, SESSION_STATUS_LABEL, GOAL_LABEL, SELF_SKILLS, CONFIDENCE_LABEL, minutesLabel, dateTimeRu } from '@/lib/admin/labels';
 import { MODE_LABEL_RU } from '@/lib/speaking/state-machine';
 import { LearnerActions, RoleControl } from '../../_components/LearnerActions';
 import { RouteForm } from '../../_components/RouteForm';
@@ -50,7 +50,9 @@ export default async function LearnerCard({ params }: { params: Promise<{ id: st
           <span className={`status ${p.active ? '' : 'blocked'}`}>{p.active ? LIFECYCLE_LABEL[p.lifecycle_state] ?? p.lifecycle_state : 'Отключён'}</span>
         </div>
         <dl className="kv">
-          <dt>Опыт (самоотчёт)</dt><dd>{p.entry_path ? ENTRY_LABEL[p.entry_path] : '—'}</dd>
+          <dt>Опыт (самоотчёт)</dt><dd>{p.entry_path ? ENTRY_LABEL[p.entry_path] : '—'}{enr.data?.self_level && enr.data.self_level !== 'unknown' ? ` · оценил(а) себя как ${enr.data.self_level}` : ''}</dd>
+          <dt>Цель</dt><dd>{enr.data?.goal ? GOAL_LABEL[enr.data.goal] ?? enr.data.goal : '—'}</dd>
+          {enr.data && Object.keys(enr.data.skill_confidence ?? {}).length ? <><dt>Уверенность (самооценка)</dt><dd>{SELF_SKILLS.filter((sk) => (enr.data!.skill_confidence as Record<string, number>)[sk.id] !== undefined).map((sk) => `${sk.label}: ${CONFIDENCE_LABEL[(enr.data!.skill_confidence as Record<string, number>)[sk.id]]}`).join(' · ')}</dd></> : null}
           <dt>Приглашён / активирован</dt><dd>{dateTimeRu(p.invited_at)} / {dateTimeRu(p.activated_at)}</dd>
           <dt>Часовой пояс</dt><dd>{p.timezone}</dd>
           <dt>Начало и 9 месяцев</dt><dd>{enr.data?.start_date ? `${enr.data.start_date} → ${planEndDate(enr.data.start_date)} (цель, не обещание)` : 'Не начато'}</dd>

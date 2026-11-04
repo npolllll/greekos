@@ -14,7 +14,9 @@ const STATE_RU: Record<string, { t: string; cls: string }> = {
   BLOCKED: { t: 'блокирующая ошибка', cls: 'blocked' }, STALE: { t: 'изменено после проверки — перепроверить', cls: 'wait' }, NOT_CHECKED: { t: 'не проверялось', cls: 'wait' },
 };
 
-export default async function ReleasePage({ searchParams }: { searchParams: Promise<{ unit?: string; level?: string; module?: string }> }) {
+const KIND_RU: Record<string, string> = { unit: 'Уроки', item: 'Задания', scenario: 'Сценарии AI Speaking', rg_expression: 'Карточки Real Greek', pegp_packet: 'Пакеты ΠΕΓΠ' };
+
+export default async function ReleasePage({ searchParams }: { searchParams: Promise<{ unit?: string; level?: string; module?: string; scope?: string }> }) {
   await requireOwnerPage();
   const sp = await searchParams;
   const db = adminClient();
@@ -25,9 +27,33 @@ export default async function ReleasePage({ searchParams }: { searchParams: Prom
     db.from('release_decisions').select('id, scope, risk_acceptance, sample_size, counts, note, decided_at, revoked_at, revoked_reason, batch_id').order('decided_at', { ascending: false }).limit(20),
   ]);
   const full = (batch ?? []).find((b) => (b.scope as { kind?: string }).kind === 'all');
-  const scope = sp.unit ? { kind: 'unit' as const, ids: [sp.unit] } : sp.level ? { kind: 'level' as const, level: sp.level as 'A1' } : sp.module ? { kind: 'module' as const, module: sp.module as 'core' } : null;
-  const scopeLabel = sp.unit ? `урок ${sp.unit}` : sp.level ? `все уроки и задания уровня ${sp.level}` : sp.module ? `модуль ${sp.module}` : '';
-  const st = full && scope ? await scopeStatus(full.id, scope) : null;
+  // Default: the whole admissible package — one procedure for the owner; narrower scopes stay available.
+  const scope = sp.unit ? { kind: 'unit' as const, ids: [sp.unit] } : sp.level ? { kind: 'level' as const, level: sp.level as 'A1' } : sp.module ? { kind: 'module' as const, module: sp.module as 'core' } : { kind: 'all' as const };
+  const isAll = scope.kind === 'all';
+  const scopeLabel = sp.unit ? `урок ${sp.unit}` : sp.level ? `все уроки и задания уровня ${sp.level}` : sp.module ? `модуль ${sp.module}` : 'весь допустимый пакет: уроки, задания, диагностика, экзаменационные тренажёры, сценарии AI Speaking, Real Greek и ΠΕΓΠ';
+  const st = full ? await scopeStatus(full.id, scope) : null;
+  // Why closed objects stay closed: open blocking issues of the batch, grouped by message.
+  const closed = st ? st.objects.filter((o) => o.state !== 'PASS' && o.state !== 'ACCEPTED') : [];
+  const reasons = new Map<string, number>();
+  if (full && closed.length) {
+    for (let i = 0; i < closed.length; i += 300) {
+      const { data } = await db.from('qa_issues').select('content_id, check_id, message_ru').eq('batch_id', full.id).eq('severity', 'blocking').eq('status', 'open').in('content_id', closed.slice(i, i + 300).map((o) => o.content_id));
+      for (const r of data ?? []) { const k = r.check_id.startsWith('rights.') ? 'Права источника не урегулированы' : r.check_id === 'content.status' ? 'Автор пометил материал как незавершённый' : r.message_ru.replace(/\s*\(.*\)\.?$/, ''); reasons.set(k, (reasons.get(k) ?? 0) + 1); }
+    }
+    const noIssue = closed.filter((o) => o.state === 'STALE' || o.state === 'NOT_CHECKED').length;
+    if (noIssue) reasons.set('Изменено или не проверялось — перезапустите цифровой QA', noIssue);
+  }
+  // Releasable tasks whose sound is not yet released open without audio (the player says so).
+  const releasableItems = st ? st.objects.filter((o) => o.content_kind === 'item' && (o.state === 'PASS' || o.state === 'ACCEPTED')).map((o) => o.content_id) : [];
+  let withoutAudio = 0;
+  if (releasableItems.length) {
+    const { data: needAudio } = await db.from('items').select('item_id, audio_job_ids').eq('requires_audio', true);
+    const ready = new Set(((await db.from('audio_assets').select('audio_id').is('invalidated_at', null).eq('digital_status', 'AUDIO_VERIFIED_DIGITAL').eq('rights_status', 'PROVIDER_TERMS_RECORDED')).data ?? []).map((a) => a.audio_id));
+    const set = new Set(releasableItems);
+    withoutAudio = (needAudio ?? []).filter((x) => set.has(x.item_id) && !(x.audio_job_ids as string[]).every((a) => ready.has(a))).length;
+  }
+  const byKind = st ? Object.entries(st.objects.reduce<Record<string, { total: number; open: number }>>((a, o) => { const k = (a[o.content_kind] ??= { total: 0, open: 0 }); k.total += 1; if (o.state === 'PASS' || o.state === 'ACCEPTED') k.open += 1; return a; }, {})) : [];
+  const shown = st ? (isAll ? closed : st.objects) : [];
   const sampleIds = st?.sample.map((s) => s.content_id) ?? [];
   const { data: sampleItems } = sampleIds.length ? await db.from('items').select('item_id, item_type, level, envelope').in('item_id', sampleIds) : { data: [] };
   const byState = st ? st.objects.reduce<Record<string, number>>((a, o) => ({ ...a, [o.state]: (a[o.state] ?? 0) + 1 }), {}) : {};
@@ -41,6 +67,10 @@ export default async function ReleasePage({ searchParams }: { searchParams: Prom
         <>
           <div className="card cardpad">
             <div className="card-top"><div className="card-title"><Icon name="target" /> Что выпускаем</div><span className="tiny quiet">Пакет QA {full.id.slice(0, 8)} · {dateTimeRu(full.finished_at ?? '')}</span></div>
+            <div className="row" style={{ marginBottom: 10 }}>
+              <Link className={`chip ${isAll ? 'active' : ''}`} href="/admin/qa/release">Весь допустимый пакет (рекомендуется)</Link>
+              <span className="tiny quiet">Одно решение открывает всё, что прошло проверку; остальное остаётся закрытым с причиной. Отдельные области — ниже.</span>
+            </div>
             <form className="row" action="/admin/qa/release">
               <select name="unit" className="input" defaultValue={sp.unit ?? ''} style={{ maxWidth: 420, padding: '10px 12px', fontSize: 13.5 }} aria-label="Урок">
                 <option value="">— урок —</option>
@@ -54,17 +84,28 @@ export default async function ReleasePage({ searchParams }: { searchParams: Prom
             </form>
           </div>
 
-          {st && scope ? (
+          {st ? (
             <>
+              {isAll ? (
+                <div className="card cardpad">
+                  <div className="card-top"><div className="card-title"><Icon name="layers" /> Что откроется ученикам</div><span className="tag green">к выпуску: {st.releasable} из {st.objects.length}</span></div>
+                  <div className="table-wrap"><table className="data-table">
+                    <thead><tr><th>Материалы</th><th>Откроется</th><th>Останется закрыто</th></tr></thead>
+                    <tbody>{byKind.map(([k, v]) => <tr key={k}><td>{KIND_RU[k] ?? k}</td><td className="mono">{v.open}</td><td className="mono">{v.total - v.open}</td></tr>)}</tbody>
+                  </table></div>
+                  {reasons.size ? <><div className="card-title mt16"><Icon name="lock" /> Почему закрыто</div><ul className="small">{[...reasons.entries()].sort((a, b) => b[1] - a[1]).map(([r, n]) => <li key={r}>{r} — {n}</li>)}</ul></> : null}
+                  {withoutAudio ? <p className="small quiet">{withoutAudio} заданий на слух откроются с пометкой «аудио ещё не выпущено»: звук появится после выпуска аудио (Админ → Аудио).</p> : null}
+                </div>
+              ) : null}
               <div className="admin-top">
                 {['PASS', 'ACCEPTED', 'NEEDS_DECISION', 'BLOCKED'].map((k) => <div className="card admin-stat" key={k}><small className="quiet">{STATE_RU[k].t}</small><div className="metric mono">{byState[k] ?? 0}</div></div>)}
               </div>
               <div className="admin-split">
                 <div className="card cardpad">
-                  <div className="card-top"><div className="card-title"><Icon name="layers" /> Объекты ({st.objects.length})</div><span className="tag green">к выпуску: {st.releasable}</span></div>
+                  <div className="card-top"><div className="card-title"><Icon name="layers" /> {isAll ? `Закрытые объекты (${shown.length})` : `Объекты (${st.objects.length})`}</div><span className="tag green">к выпуску: {st.releasable}</span></div>
                   <div className="table-wrap" style={{ maxHeight: 460, overflow: 'auto' }}><table className="data-table">
                     <thead><tr><th>Объект</th><th>Статус</th><th>Открыто</th></tr></thead>
-                    <tbody>{st.objects.map((o) => (
+                    <tbody>{shown.map((o) => (
                       <tr key={`${o.content_kind}-${o.content_id}`}>
                         <td><Link href={`/admin/qa/item/${encodeURIComponent(o.content_id)}?kind=${o.content_kind}`}><strong>{o.content_id}</strong></Link><div className="tiny quiet">{o.content_kind}</div></td>
                         <td><span className={`status ${STATE_RU[o.state].cls}`}>{STATE_RU[o.state].t}</span></td>
@@ -75,12 +116,12 @@ export default async function ReleasePage({ searchParams }: { searchParams: Prom
                 </div>
                 <div className="card cardpad">
                   <div className="card-title"><Icon name="shield" /> Решение</div>
-                  <DecisionForm batchId={full.id} scope={scope} policyActive={!!policy} releasable={st.releasable} accepted={st.objects.filter((o) => o.state === 'ACCEPTED').length} sampleDone={st.sample.every((s) => s.review?.decision === 'OK')} needsExpiry={st.objects.some((o) => o.module === 'pegp')} scopeLabel={scopeLabel} />
+                  <DecisionForm batchId={full.id} scope={scope} policyActive={!!policy} releasable={st.releasable} accepted={st.objects.filter((o) => o.state === 'ACCEPTED').length} sampleDone={st.sample.every((s) => s.review?.decision === 'OK')} needsExpiry={st.objects.some((o) => o.module === 'pegp' && (o.state === 'PASS' || o.state === 'ACCEPTED'))} scopeLabel={scopeLabel} />
                 </div>
               </div>
               <div className="card cardpad">
                 <div className="card-top"><div className="card-title"><Icon name="eye" /> Выборочная проверка владельцем</div><span className="tag gray">{st.sample.filter((s) => s.review).length} / {st.sample.length}</span></div>
-                <p className="small quiet">Детерминированная выборка (10%, не меньше 5) из готовых к выпуску заданий. Отметка «Есть проблема» создаёт блокирующее замечание.</p>
+                <p className="small quiet">Детерминированная выборка из готовых к выпуску заданий: 10%, не меньше 5 и не больше 30, сначала по одному заданию каждого типа. Отметка «Есть проблема» создаёт блокирующее замечание.</p>
                 <div className="grid-2 stagger">
                   {st.sample.map((s) => {
                     const it = (sampleItems ?? []).find((x) => x.item_id === s.content_id);
@@ -90,7 +131,7 @@ export default async function ReleasePage({ searchParams }: { searchParams: Prom
                 </div>
               </div>
             </>
-          ) : <div className="empty card"><strong>Выберите область выпуска</strong>Урок, уровень или модуль.</div>}
+          ) : null}
         </>
       )}
       <div className="card cardpad">

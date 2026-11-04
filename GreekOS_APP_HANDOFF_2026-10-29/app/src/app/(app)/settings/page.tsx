@@ -14,7 +14,7 @@ export default async function SettingsPage() {
   const supabase = await serverClient();
   const [{ data: consents }, { data: enr }, { data: prefs }] = await Promise.all([
     supabase.from('consents').select('consent_id, purpose, artifact_id, granted_at, expires_at, revoked_at').order('granted_at', { ascending: false }),
-    adminClient().from('enrollments').select('start_date, end_date, exam_date, daily_minutes, days_per_week').eq('user_id', u.userId).maybeSingle(),
+    adminClient().from('enrollments').select('start_date, end_date, exam_date, daily_minutes, days_per_week, goal').eq('user_id', u.userId).maybeSingle(),
     adminClient().from('preferences').select('reduced_motion, speaking_rate').eq('user_id', u.userId).maybeSingle(),
   ]);
   return (
@@ -35,7 +35,7 @@ export default async function SettingsPage() {
         </div>
         <SettingsClient
           consents={(consents ?? []).map((c) => ({ ...c }))}
-          enrollment={enr ? { daily_minutes: enr.daily_minutes, days_per_week: enr.days_per_week, exam_date: enr.exam_date, start_date: enr.start_date, end_date: enr.end_date } : null}
+          enrollment={enr ? { daily_minutes: enr.daily_minutes, days_per_week: enr.days_per_week, exam_date: enr.exam_date, start_date: enr.start_date, end_date: enr.end_date, goal: enr.goal ?? null } : null}
           reducedMotion={!!prefs?.reduced_motion}
           speakingRate={(prefs?.speaking_rate as 'slow' | 'normal') ?? 'normal'}
           isOwner={u.isOwner}

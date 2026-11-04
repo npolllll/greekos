@@ -209,7 +209,11 @@ export function keyLeaks(prompt: string, answer: unknown): boolean {
   const a = answer.normalize('NFC').trim();
   if ([...a].length < 4) return false;
   const esc = a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const outside = prompt.normalize('NFC').replace(/«[^»]*»/gu, ' ').replace(/"[^"]*"/gu, ' ').replace(/“[^”]*”/gu, ' ').replace(/\([^)]*\)/gu, ' ');
+  // Quoted material and a Greek reported-speech frame before a quote («Ο Πάνος είπε: «…»») are the
+  // text for analysis, not the instruction.
+  const outside = prompt.normalize('NFC')
+    .replace(/[\p{Script=Greek}\s,]+\s(?:είπε|λέει|ρώτησε|ρωτάει|απάντησε|απαντάει|έγραψε|γράφει)\s*:\s*(?=«)/gu, ' ')
+    .replace(/«[^»]*»/gu, ' ').replace(/"[^"]*"/gu, ' ').replace(/“[^”]*”/gu, ' ').replace(/\([^)]*\)/gu, ' ');
   if (!new RegExp(`(?<![\\p{L}\\p{M}])${esc}(?![\\p{L}\\p{M}])`, 'u').test(outside)) return false;
   return !new RegExp(`${esc}\\s+(или|ή)\\s|\\s(или|ή)\\s+${esc}|${esc}\\s*/|/\\s*${esc}`, 'u').test(outside);
 }

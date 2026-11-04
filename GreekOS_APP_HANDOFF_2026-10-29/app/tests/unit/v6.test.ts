@@ -64,6 +64,9 @@ describe('Greek orthography QA (v6)', () => {
     expect(keyLeaks('Найдите начало урока в строке: «Μάθημα: 18:00. Βιβλιοθήκη: 09:00–20:00».', '18:00')).toBe(false);
     expect(keyLeaks('Диагностика: «Αν είχα χρόνο τώρα, θα ερχόμουν». Условие относится к τώρα или χτες?', 'τώρα')).toBe(false);
     expect(keyLeaks('Ударный слог в θάλασσα: первый/второй/третий от начала?', 'первый')).toBe(false);
+    // A reported-speech frame belongs to the text for analysis (who is «εγώ»?), not to the instruction.
+    expect(keyLeaks('Ο Πάνος είπε: «Εγώ μένω εδώ». Кто живёт здесь?', 'ο Πάνος')).toBe(false);
+    expect(keyLeaks('Ответьте: Πάνος. Ο Πάνος είπε: «Εγώ μένω εδώ».', 'Πάνος')).toBe(true);
   });
   it('counts syllables with digraphs and synizesis', () => {
     expect(syllables('παιδί')).toBe(2);

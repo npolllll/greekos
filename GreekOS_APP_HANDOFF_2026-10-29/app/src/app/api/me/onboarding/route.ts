@@ -12,6 +12,10 @@ const Body = z.object({
   daily_minutes: z.number().int().min(10).max(480),
   days_per_week: z.number().int().min(1).max(7),
   exam_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+  goal: z.enum(['life_in_greece', 'keg_b2', 'work', 'study', 'travel', 'family', 'other']),
+  // The learner's own estimate: orientation for the diagnostic, never a level assigned by itself.
+  self_level: z.enum(['A1', 'A2', 'B1', 'B2', 'unknown']).optional(),
+  skill_confidence: z.partialRecord(z.enum(['reading', 'listening', 'grammar', 'writing', 'speaking']), z.number().int().min(0).max(2)).optional(),
 }).strict();
 
 export const POST = route(async (req) => {
@@ -26,6 +30,7 @@ export const POST = route(async (req) => {
   await db.from('enrollments').upsert({
     user_id: u.userId, start_date: b.start_date, timezone: b.timezone, target_months: 9, end_date: planEndDate(b.start_date),
     exam_date: b.exam_date ?? null, daily_minutes: b.daily_minutes, days_per_week: b.days_per_week, updated_at: new Date().toISOString(),
+    goal: b.goal, self_level: b.entry_path === 'from_zero' ? null : (b.self_level ?? 'unknown'), skill_confidence: b.entry_path === 'from_zero' ? {} : (b.skill_confidence ?? {}),
   });
   const lifecycle = b.entry_path === 'from_zero' ? 'foundations' : 'placement_pending';
   await db.from('profiles').update({ entry_path: b.entry_path, timezone: b.timezone, lifecycle_state: lifecycle, activated_at: u.profile.activated_at ?? new Date().toISOString() }).eq('user_id', u.userId);
@@ -36,6 +41,6 @@ export const POST = route(async (req) => {
     set_by: u.userId,
   });
   await emitEvent(u.userId, 'route_changed', `onboarding-${u.userId}`, { route_kind: b.entry_path });
-  await audit(u.userId, 'learner.onboarded', { userId: u.userId }, { entry_path: b.entry_path });
+  await audit(u.userId, 'learner.onboarded', { userId: u.userId }, { entry_path: b.entry_path, goal: b.goal, self_level: b.self_level ?? null });
   return { ok: true, next: b.entry_path === 'from_zero' ? '/' : '/diagnostic' };
 });
