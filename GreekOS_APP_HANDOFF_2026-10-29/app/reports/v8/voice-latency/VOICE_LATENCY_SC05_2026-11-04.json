@@ -1,0 +1,124 @@
+{
+ "method": "end of learner speech (last voiced frame, VAD) → first audio chunk received and playback started by the client; synthetic learner clip streamed in real time through the local voice gateway",
+ "machine": {
+  "cpus": 4,
+  "model": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "platform": "linux"
+ },
+ "llm": {
+  "provider": "openai_compatible",
+  "model": "gemma-4-E2B-it-Q4_K_M",
+  "local": true,
+  "label_ru": "Локальная модель gemma-4-E2B-it-Q4_K_M (разработка; качество греческого не валидировано)"
+ },
+ "scenario": "SC05",
+ "turns": 5,
+ "end_of_speech_to_audio_ms": {
+  "p50": 17721,
+  "p95": 21752,
+  "n": 5
+ },
+ "components": {
+  "asr_final_ms": {
+   "p50": 4875,
+   "p95": 10236,
+   "n": 5
+  },
+  "llm_first_sentence_ms": {
+   "p50": 3080,
+   "p95": 12487,
+   "n": 5
+  },
+  "tts_first_audio_ms": {
+   "p50": 8194,
+   "p95": 20448,
+   "n": 5
+  },
+  "vad_hangover_ms": {
+   "p50": 1300,
+   "p95": 1800,
+   "n": 5
+  }
+ },
+ "pilot_target": {
+  "p50_ms": 1500,
+  "p95_ms": 3500
+ },
+ "rows": [
+  {
+   "learner": "Θέλω ένα καφέ, παρακαλώ.",
+   "recognized": "Φέρεται στο καφέ για να το φαίνεται.",
+   "reply": "Καταλαβαίνω.",
+   "speech_ms": 1240,
+   "vad_hangover_ms": 1300,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 6879,
+   "dialogue_ms": 18152,
+   "llm_first_sentence_ms": 12487,
+   "tts_first_audio_ms": 20448,
+   "playback_start_ms": 20452,
+   "end_of_speech_to_audio_ms": 21752,
+   "interrupted": false
+  },
+  {
+   "learner": "Ναι, μεγάλο, ευχαριστώ.",
+   "recognized": "Ναι, μεγάλο, πευχαριστώ.",
+   "reply": "Καλά.",
+   "speech_ms": 1520,
+   "vad_hangover_ms": 1300,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 10236,
+   "dialogue_ms": 11907,
+   "llm_first_sentence_ms": 5464,
+   "tts_first_audio_ms": 16789,
+   "playback_start_ms": 16790,
+   "end_of_speech_to_audio_ms": 18090,
+   "interrupted": false
+  },
+  {
+   "learner": "Θα μείνω εδώ.",
+   "recognized": "Τα μην είναι εδώ.",
+   "reply": "Καταλαβαίνω.",
+   "speech_ms": 760,
+   "vad_hangover_ms": 1800,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 4639,
+   "dialogue_ms": 8100,
+   "llm_first_sentence_ms": 2729,
+   "tts_first_audio_ms": 7417,
+   "playback_start_ms": 13575,
+   "end_of_speech_to_audio_ms": 15375,
+   "interrupted": false
+  },
+  {
+   "learner": "Πόσο κάνει;",
+   "recognized": "Ποσοκάνι",
+   "reply": "Καταλαβαίνω.",
+   "speech_ms": 700,
+   "vad_hangover_ms": 1800,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 4875,
+   "dialogue_ms": 9987,
+   "llm_first_sentence_ms": 3080,
+   "tts_first_audio_ms": 8005,
+   "playback_start_ms": 15921,
+   "end_of_speech_to_audio_ms": 17721,
+   "interrupted": false
+  },
+  {
+   "learner": "Ευχαριστώ πολύ!",
+   "recognized": "Ευχαριστώ πολύ!",
+   "reply": "Εντάξει.",
+   "speech_ms": 840,
+   "vad_hangover_ms": 1300,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 4846,
+   "dialogue_ms": 11031,
+   "llm_first_sentence_ms": 2480,
+   "tts_first_audio_ms": 8194,
+   "playback_start_ms": 8200,
+   "end_of_speech_to_audio_ms": 9500,
+   "interrupted": false
+  }
+ ]
+}

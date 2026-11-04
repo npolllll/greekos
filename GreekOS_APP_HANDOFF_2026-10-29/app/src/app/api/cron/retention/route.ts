@@ -17,6 +17,8 @@ export async function GET(req: Request) {
     await db.storage.from('voice-review').remove(all.map((a) => a.object_path));
     await db.from('voice_artifacts').update({ deleted_at: now }).in('id', all.map((a) => a.id));
   }
+  // The server error log keeps 30 days.
+  await db.from('server_errors').delete().lt('at', new Date(Date.now() - 30 * 86_400_000).toISOString());
   await db.from('admin_audit_log').insert({ actor_id: null, action: 'cron.retention', meta: { deleted: all.length } });
   return NextResponse.json({ ok: true, deleted: all.length });
 }

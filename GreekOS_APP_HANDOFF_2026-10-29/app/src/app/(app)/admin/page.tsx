@@ -25,6 +25,7 @@ export default async function AdminOverview() {
     db.from('content_releases').select('id', { count: 'exact', head: true }).in('review_type', ['HUMAN_TEACHER_REVIEW', 'HUMAN_EXAMINER_REVIEW']).is('revoked_at', null),
     db.from('activity_days').select('user_id').gte('local_date', since),
   ]);
+  const { data: errors, count: errorCount } = await db.from('server_errors').select('at, method, path, kind, message', { count: 'exact' }).gte('at', isoDaysAgo(1)).order('at', { ascending: false }).limit(5);
   const activeIds = new Set((recentAct.data ?? []).map((r) => r.user_id));
   const activeLearners = cohort.filter((c) => c.active && activeIds.has(c.user_id)).length;
   const totalSeconds = cohort.reduce((a, c) => a + c.active_seconds, 0);
@@ -81,6 +82,12 @@ export default async function AdminOverview() {
             <div className="attention-row"><b>Закрытые задания</b><span className={gated === 0 ? 'ok' : ''}>{gated} из {statuses.length} не выпущены{audioPending ? ` · ${audioPending} ждут аудио` : ''}</span></div>
             <div className="attention-row"><b>Ответы на проверке</b><span className={pending.count ? '' : 'ok'}><Link href="/admin/reviews" className="text-link">{pending.count ?? 0}</Link></span></div>
             <div className="attention-row"><b>Оспаривания</b><span className={appeals.count ? '' : 'ok'}><Link href="/admin/reviews" className="text-link">{appeals.count ?? 0} открыто</Link></span></div>
+            <div className="attention-row"><b>Ошибки сервера за сутки</b><span className={errorCount ? '' : 'ok'}>{errorCount ?? 0}</span></div>
+            {(errors ?? []).length ? (
+              <ul className="tiny quiet" style={{ margin: '6px 0 0', paddingLeft: 18 }}>
+                {(errors ?? []).map((e) => <li key={`${e.at}-${e.path}`}>{dateTimeRu(e.at)} · {e.method} {e.path} · {e.kind}: {e.message}</li>)}
+              </ul>
+            ) : null}
           </div>
         </div>
       </div>
