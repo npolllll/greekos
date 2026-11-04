@@ -1,0 +1,90 @@
+{
+ "gateway": "ws://127.0.0.1:38080",
+ "at": "2026-11-04T21:31:42.125Z",
+ "providers": {
+  "asr": "azure",
+  "tts": "azure",
+  "llm": "openai_compatible"
+ },
+ "end_of_speech_to_audio_ms": {
+  "p50": 1358,
+  "p95": 1380,
+  "n": 4
+ },
+ "checks": {
+  "barge_in": true,
+  "summary": true,
+  "turns_saved": true,
+  "every_turn_voiced": true
+ },
+ "rows": [
+  {
+   "learner": "Καλημέρα. Θέλω ένα καφέ, παρακαλώ.",
+   "recognized": "Ναι, έναν μεγάλο φρέντο χωρίς ζάχαρη.",
+   "needs_confirmation": false,
+   "reply": "Βεβαίως.",
+   "audio_chunks": 21,
+   "speech_ms": 1400,
+   "vad_hangover_ms": 1300,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 15,
+   "dialogue_ms": 77,
+   "llm_first_sentence_ms": 10,
+   "tts_first_audio_ms": 56,
+   "playback_start_ms": 58,
+   "end_of_speech_to_audio_ms": 1358,
+   "interrupted": false
+  },
+  {
+   "learner": "Ναι, έναν μεγάλο φρέντο χωρίς ζάχαρη.",
+   "recognized": "Θα μείνω εδώ, περιμένω μια φίλη.",
+   "needs_confirmation": false,
+   "reply": "Βεβαίως.",
+   "audio_chunks": 21,
+   "speech_ms": 1400,
+   "vad_hangover_ms": 1300,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 17,
+   "dialogue_ms": 71,
+   "llm_first_sentence_ms": 9,
+   "tts_first_audio_ms": 55,
+   "playback_start_ms": 58,
+   "end_of_speech_to_audio_ms": 1358,
+   "interrupted": true
+  },
+  {
+   "learner": "Θα μείνω εδώ, περιμένω μια φίλη.",
+   "recognized": "Πόσο κάνει; Ευχαριστώ πολύ!",
+   "needs_confirmation": false,
+   "reply": "Βεβαίως.",
+   "audio_chunks": 21,
+   "speech_ms": 1400,
+   "vad_hangover_ms": 1300,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 26,
+   "dialogue_ms": 87,
+   "llm_first_sentence_ms": 10,
+   "tts_first_audio_ms": 78,
+   "playback_start_ms": 80,
+   "end_of_speech_to_audio_ms": 1380,
+   "interrupted": false
+  },
+  {
+   "learner": "Πόσο κάνει; Ευχαριστώ πολύ!",
+   "recognized": "Καλημέρα. Θέλω ένα καφέ, παρακαλώ.",
+   "needs_confirmation": false,
+   "reply": "Βεβαίως.",
+   "audio_chunks": 21,
+   "speech_ms": 1400,
+   "vad_hangover_ms": 1300,
+   "asr_partial_first_ms": null,
+   "asr_final_ms": 18,
+   "dialogue_ms": 75,
+   "llm_first_sentence_ms": 9,
+   "tts_first_audio_ms": 54,
+   "playback_start_ms": 58,
+   "end_of_speech_to_audio_ms": 1358,
+   "interrupted": false
+  }
+ ]
+}

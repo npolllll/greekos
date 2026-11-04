@@ -1,0 +1,13 @@
+node_modules
+.next
+test-results
+playwright-report
+reports
+local-services
+tests
+backups
+.deploy
+.local-credentials
+.env
+.env.*
+*.tsbuildinfo

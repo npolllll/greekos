@@ -1,18 +1,44 @@
-# Развёртывание: Supabase + Vercel
+# Развёртывание: Supabase + Vercel + Fly.io
 
-**Быстрый путь — один сценарий.** Создайте проект Supabase (регион ЕС) и аккаунт Vercel, подготовьте
-ключи Anthropic и Azure Speech и выполните в папке приложения:
+Рабочая система — три сервиса:
+
+| Часть | Где | Зачем |
+|---|---|---|
+| База, вход, письма, хранилище аудио | **Supabase Cloud**, регион ЕС (Франкфурт) | PostgreSQL с RLS, Auth, Storage; письма — через ваш SMTP (Resend) |
+| Веб-приложение | **Vercel** | страницы, API, ежедневный cron хранения данных |
+| Голосовой шлюз живого разговора | **Fly.io**, регион `fra`, 1 постоянная машина 512 МБ | долгое WebSocket-соединение (микрофон ↔ голос), которое функция Vercel держать не может |
+| Модель разговора и оценки | Anthropic API | Claude |
+| Распознавание и голоса | Azure Speech, `westeurope` | el-GR ASR и нейронные голоса |
+
+**Быстрый путь — один сценарий.** Создайте проект Supabase (регион ЕС), аккаунты Vercel, Fly.io и
+Resend (с подтверждённым доменом отправителя), ключи Anthropic и Azure Speech, и выполните в папке
+приложения:
 
 ```bash
-bash scripts/deploy-cloud.sh            # спросит данные проекта и ключи, сделает шаги 1–5 ниже
-DRY_RUN=1 bash scripts/deploy-cloud.sh  # показать все команды, ничего не меняя
+bash scripts/deploy-cloud.sh
 ```
 
-Сценарий применяет миграции, загружает корпус, создаёт владельца, проводит цифровой QA с записанными
-исправлениями, синхронизирует голоса Azure и предложения кастинга, задаёт переменные Vercel и
-развёртывает приложение; повторный запуск пропускает сделанное. Ответы хранятся только на вашем
-компьютере (`.deploy/cloud.env`, вне git). В конце он печатает оставшиеся настройки панели Supabase
-(адрес сайта, шаблоны писем, SMTP) и решения в админке. Ниже — те же шаги вручную.
+Проверка без изменений (все секреты в выводе замаскированы):
+
+```bash
+DRY_RUN=1 bash scripts/deploy-cloud.sh
+```
+
+Сценарий (10 шагов) применяет миграции; настраивает вход и письма Supabase (`supabase config push`:
+адрес сайта и перенаправления, запрет прямой регистрации, пароль ≥ 10, шаблоны писем, SMTP);
+загружает корпус; создаёт владельца; проводит цифровой QA с записанными исправлениями; синхронизирует
+голоса Azure, предлагает кастинг и генерирует аудио в пределах `AUDIO_RUN_BUDGET_USD`; разворачивает
+голосовой шлюз на Fly.io; задаёт переменные Vercel (включая `NEXT_PUBLIC_VOICE_GATEWAY_URL`) и
+развёртывает приложение; проверяет `/api/health`, `/health` шлюза и проводит короткий живой разговор
+через шлюз временным тестовым аккаунтом. Повторный запуск пропускает сделанное. Ответы хранятся только
+на вашем компьютере (`.deploy/cloud.env`, права 600, вне git). Ручных настроек в панели Supabase
+больше нет. Ниже — те же шаги вручную.
+
+**Почта.** Resend отправляет письма только с подтверждённого домена (адрес `onboarding@resend.dev`
+доходит лишь до владельца аккаунта Resend — ученикам он не подойдёт). Подтвердите домен в Resend
+(Domains → Add → DNS-записи SPF/DKIM у регистратора) и укажите отправителя на нём
+(`SMTP_SENDER=no-reply@ваш-домен`). Подойдёт и любой другой SMTP (Postmark, Brevo, Mailgun):
+`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`.
 
 Порядок: облачный Supabase → импорт корпуса → владелец → Vercel preview → проверка → production
 (только по решению владельца). Все секреты — только в серверных переменных Vercel и локальном
@@ -28,6 +54,9 @@ DRY_RUN=1 bash scripts/deploy-cloud.sh  # показать все команды
    npx supabase link --project-ref <PROJECT_REF>
    npx supabase db push
    ```
+Шаги 3–6 сценарий выполняет сам (`supabase config push` с минимальным конфигом из шага 3 сценария);
+вручную — так:
+
 3. **Authentication → Sign In / Providers**: Email включён; **Allow new users to sign up — выключить**.
    Самостоятельная регистрация учеников работает и при выключенном флаге: заявку проверяет сервер
    GreekOS (режим, код, свободные места, лимит попыток) и отправляет письмо со ссылкой; прямые
@@ -120,17 +149,35 @@ APP_URL=https://<домен> npx tsx scripts/create-owner.ts --email <ваш e-m
 Потоковый разговор (микрофон ↔ ответ голосом, перебивание) работает через отдельный процесс
 `voice-gateway/server.ts` — долгоживущий WebSocket нельзя держать в serverless-функции Vercel.
 
-- Хостинг: любой контейнер/VM рядом с регионом Supabase (Fly.io, Railway, Render, Cloud Run с
-  `--no-cpu-throttling` и `min-instances=1`, ECS). Команда запуска: `npm ci && npm run voice:gateway`.
-  За TLS-прокси (wss://), idle-timeout ≥ 120 с, sticky-сессии не нужны.
+- Хостинг: **Fly.io** (выбран как минимальная надёжная схема): образ `voice-gateway/Dockerfile`,
+  настройки `voice-gateway/fly.toml` — регион `fra` рядом с Supabase EU и Azure westeurope, одна
+  машина 512 МБ, `auto_stop_machines = "off"` и `min_machines_running = 1` (разговор не ждёт
+  «холодного старта»), HTTPS/WSS и проверка `GET /health` силами Fly. Шлюз пингует соединения каждые
+  15 с, поэтому простаивающий разговор не обрывается прокси. Для 4–5 учеников одной машины
+  достаточно. Вручную:
+  ```bash
+  fly apps create greekos-voice
+  ```
+  ```bash
+  fly secrets import --app greekos-voice < файл-с-переменными   # NAME=VALUE по строке, не коммитить
+  ```
+  ```bash
+  fly deploy . --app greekos-voice --config voice-gateway/fly.toml --dockerfile voice-gateway/Dockerfile --remote-only
+  ```
+  Другой хостинг с тем же образом тоже подходит (Railway, Render, Cloud Run с `--no-cpu-throttling`
+  и `min-instances=1`): TLS-прокси (wss://), idle-timeout ≥ 120 с, sticky-сессии не нужны.
 - Переменные шлюза: `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `APP_URL`, `APP_ENV`,
   `VOICE_GATEWAY_SECRET` (тот же, что у Vercel), `VOICE_GATEWAY_HOST=0.0.0.0`, `VOICE_GATEWAY_PORT`,
   ключи ASR/TTS/LLM, лимиты бюджета. Шлюз не принимает соединения без токена.
 - В Vercel: `VOICE_GATEWAY_SECRET` и `NEXT_PUBLIC_VOICE_GATEWAY_URL=wss://voice.<домен>`.
 - Без шлюза приложение автоматически предлагает пошаговый режим (запись → проверка → ответ),
   честно помеченный как менее интерактивный.
-- Проверка: `GET https://voice.<домен>/health` → `{"ok":true}`; Админ → Голоса → таблица задержек
-  (p50/p95 «конец речи → звук»; цель пилота 1,5 / 3,5 с).
+- Проверка: `GET https://<app>.fly.dev/health` → `{"ok":true,…,"providers":{…}}` (имена провайдеров,
+  без ключей); живой разговор через шлюз с замером «конец речи → звук»:
+  `npx tsx --conditions=react-server scripts/voice-smoke.ts --gateway wss://<app>.fly.dev --turns 4`
+  (временный тестовый аккаунт, удаляется после проверки); Админ → Голоса → таблица задержек
+  (p50/p95; цель пилота 1,5 / 3,5 с). Ошибки шлюза попадают в журнал ошибок владельца (Админ → Обзор).
+- До утверждения голосов владельцем тьютор отвечает только текстом — это правило выпуска, не сбой.
 
 ## 5. Vercel
 

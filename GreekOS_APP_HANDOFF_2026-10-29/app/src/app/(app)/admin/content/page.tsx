@@ -7,6 +7,7 @@ import { activePolicy } from '@/lib/admin/releases';
 import { MODULE_LABEL, dateTimeRu } from '@/lib/admin/labels';
 import { ReleaseDialog } from '../_components/ReleaseDialog';
 import { ActionButton } from '../_components/ActionButton';
+import { buildLessonQa } from '@/lib/qa/lesson-report';
 
 export const metadata = { title: 'Контент и QA' };
 
@@ -61,12 +62,14 @@ type Statuses = Awaited<ReturnType<typeof itemStatuses>>;
 async function UnitsTab({ statuses, dialog }: { statuses: Statuses; dialog: Dialog }) {
   const db = adminClient();
   const { data: units } = await db.from('units').select('unit_id, level, title_ru, sort_key, current_hash').order('sort_key');
-  const rel = await releaseMap('unit', (units ?? []).map((u) => ({ id: u.unit_id, hash: u.current_hash })));
+  const [rel, lessonQa] = await Promise.all([releaseMap('unit', (units ?? []).map((u) => ({ id: u.unit_id, hash: u.current_hash }))), buildLessonQa()]);
+  const qaOf = new Map(lessonQa.map((q) => [q.unit_id, q]));
   return (
     <div className="card cardpad">
       <div className="card-title">Уроки ({units?.length ?? 0})</div>
+      <p className="tiny muted">«Цифровая проверка» — автоматическая содержательная проверка урока и его заданий по полноте, греческому, ключам, объяснениям, уровню, логике, теории, правам и аудио (не проверка преподавателем). Подробно — на странице урока; сводка по всем урокам — <code>npm run qa:lessons</code>.</p>
       <div className="table-wrap"><table className="data-table">
-        <thead><tr><th>Урок</th><th>Статус</th><th>Задания: доступно / всего</th><th>Ждут аудио</th><th>Действия</th></tr></thead>
+        <thead><tr><th>Урок</th><th>Статус</th><th>Цифровая проверка</th><th>Задания: доступно / всего</th><th>Ждут аудио</th><th>Действия</th></tr></thead>
         <tbody>
           {(units ?? []).map((u) => {
             const its = statuses.filter((s) => s.item.unit_id === u.unit_id);
@@ -75,6 +78,12 @@ async function UnitsTab({ statuses, dialog }: { statuses: Statuses; dialog: Dial
               <tr key={u.unit_id}>
                 <td><Link href={`/admin/content/units/${u.unit_id}`}><strong>{u.unit_id}</strong></Link><div className="tiny muted">{u.level} · {u.title_ru}</div></td>
                 <td>{released ? <span className="status">Выпущен</span> : <span className="status wait">На проверке</span>}</td>
+                <td>{(() => {
+                  const q = qaOf.get(u.unit_id);
+                  if (!q) return '—';
+                  const warns = q.dimensions.filter((d) => d.status === 'warn').length;
+                  return <Link href={`/admin/content/units/${u.unit_id}`} className="tiny" style={{ textDecoration: 'none' }}><span className={`status ${q.summary === 'READY_FOR_OWNER' ? '' : q.summary === 'NEEDS_FIX' ? 'blocked' : 'wait'}`}>{q.summary === 'READY_FOR_OWNER' ? 'Без блокирующих' : q.summary === 'NEEDS_FIX' ? 'Исправить' : 'Не проверена'}</span>{warns ? <span className="muted"> · предупреждений: {warns}</span> : null}</Link>;
+                })()}</td>
                 <td className="mono">{its.filter((s) => s.usable).length} / {its.length}</td>
                 <td className="mono">{its.filter((s) => s.item.requires_audio && !s.audioReady).length}</td>
                 <td><div className="row">

@@ -1,0 +1,7 @@
+{
+ "GET /log": 3,
+ "GET /azure/cognitiveservices/voices/list": 1,
+ "POST /azure/cognitiveservices/v1": 12,
+ "POST /azure/speech/recognition/conversation/cognitiveservices/v1": 9,
+ "POST /v1/messages": 15
+}

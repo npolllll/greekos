@@ -34,6 +34,7 @@
     "speaking:eval": "tsx scripts/speaking-eval.ts",
     "qa:autofix": "tsx --conditions=react-server scripts/qa-autofix.ts",
     "qa:engineering-fixes": "tsx --conditions=react-server scripts/qa-engineering-fixes.ts",
+    "qa:lessons": "tsx --conditions=react-server scripts/lesson-qa-report.ts",
     "speaking:latency": "tsx --conditions=react-server scripts/speaking-latency.ts",
     "rules:corpus": "tsx --conditions=react-server scripts/rules-on-corpus.ts",
     "admission:plan": "tsx --conditions=react-server scripts/admission-plan.ts"

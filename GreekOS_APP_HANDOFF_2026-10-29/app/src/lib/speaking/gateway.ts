@@ -205,7 +205,10 @@ class StreamSession {
     if (e instanceof HttpError) return this.fail(e.code, e.message, e.status === 401 || e.status === 403);
     if (e instanceof BudgetExceededError) return this.fail('BUDGET_EXCEEDED', e.message);
     const mapped = gatewayErrorFor(e);
-    console.error('[voice-gateway]', mapped.code, (e as Error)?.message ?? e, (e as { cause?: { code?: string } })?.cause?.code ?? '');
+    const cause = (e as { cause?: { code?: string } })?.cause?.code ?? '';
+    console.error('[voice-gateway]', mapped.code, (e as Error)?.message ?? e, cause);
+    // The owner's error log (Admin → Обзор): error kind and provider message only — never audio or transcripts.
+    void Promise.resolve(adminClient().from('server_errors').insert({ method: 'WS', path: '/voice-gateway', kind: mapped.code, message: `${String((e as Error)?.message ?? e)} ${cause}`.replace(/\s+/g, ' ').trim().slice(0, 300) })).catch(() => undefined);
     this.fail(mapped.code, mapped.message);
     this.busy = false;
     this.setState('listening');
@@ -222,7 +225,12 @@ class StreamSession {
     if (!s || s.user_id !== user.userId) return this.fail('NOT_FOUND', 'Разговор не найден.', true);
     if (s.status !== 'ACTIVE') return this.fail('SESSION_CLOSED', 'Разговор уже завершён.', true);
     if (s.input_mode !== 'voice') return this.fail('VOICE_SESSION', 'Потоковый канал только для голосового режима.', true);
-    if (m.input_source === 'synthetic_test_clip' && !env.localEnginesAllowed) return this.fail('SYNTHETIC_INPUT', 'Синтетический вход разрешён только в тестовой среде.', true);
+    // Synthetic speech never stands in for a learner's voice: in production only an explicit test
+    // account (the owner's smoke test) may send it, and its metrics stay labelled synthetic.
+    if (m.input_source === 'synthetic_test_clip' && !env.localEnginesAllowed) {
+      const { data: kind } = await db.from('profiles').select('account_kind').eq('user_id', user.userId).maybeSingle();
+      if (kind?.account_kind !== 'dev_preview_tester') return this.fail('SYNTHETIC_INPUT', 'Синтетический вход разрешён только в тестовой среде.', true);
+    }
     try { this.asr = utteranceAsr(); } catch (e) { return this.fail('ASR_UNAVAILABLE', (e as Error).message, true); }
     const { data: sc } = await db.from('speaking_scenarios').select('level').eq('scenario_id', s.scenario_id).single();
     this.user = user;
@@ -735,7 +743,8 @@ export async function startVoiceGateway(opts: { port: number; host?: string }): 
   const server = createServer((req, res) => {
     if (req.url === '/health') {
       res.writeHead(200, { 'content-type': 'application/json' });
-      res.end(JSON.stringify({ ok: true, protocol: STREAM_PROTOCOL, sessions: live.size }));
+      // Provider names only (never keys): lets a smoke test state which engines actually served it.
+      res.end(JSON.stringify({ ok: true, protocol: STREAM_PROTOCOL, sessions: live.size, providers: { asr: env.asrProvider, tts: env.ttsProvider, llm: env.llmProvider } }));
       return;
     }
     res.writeHead(404).end();

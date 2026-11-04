@@ -9,6 +9,10 @@ import { dateTimeRu } from '@/lib/admin/labels';
 import { ReleaseDialog } from '../../../_components/ReleaseDialog';
 import { ActionButton } from '../../../_components/ActionButton';
 import { QaButton } from '../../../_components/QaButton';
+import { buildLessonQa, type DimensionStatus } from '@/lib/qa/lesson-report';
+
+const DIM_CLASS: Record<DimensionStatus, string> = { ok: '', warn: 'wait', block: 'blocked', not_done: 'gray' };
+const DIM_WORD: Record<DimensionStatus, string> = { ok: 'Без замечаний', warn: 'Предупреждения', block: 'Блокирует выпуск', not_done: 'Не выполнялось' };
 
 export const metadata = { title: 'Урок · QA' };
 
@@ -19,11 +23,12 @@ export default async function UnitQaPage({ params }: { params: Promise<{ unitId:
   const { data: unit } = await db.from('units').select('unit_id, level, title_ru, current_hash, teaching').eq('unit_id', unitId).maybeSingle();
   if (!unit) notFound();
   const rows = await selectAll<ItemRow>((f, t) => db.from('items').select('item_id, module, unit_id, item_type, level, pool, section, requires_audio, scoring_strategy, competency_ids, prerequisite_ids, audio_job_ids, error_tags, current_hash').eq('unit_id', unitId).order('item_id').range(f, t));
-  const [statuses, policy, unitRel, qa] = await Promise.all([
+  const [statuses, policy, unitRel, qa, [lessonQa]] = await Promise.all([
     itemStatuses(rows),
     activePolicy(),
     releaseMap('unit', [{ id: unit.unit_id, hash: unit.current_hash }]),
     db.from('digital_qa_runs').select('content_id, content_hash, verdict, created_at, tool_id').eq('content_kind', 'item').in('content_id', rows.map((r) => r.item_id)).order('created_at', { ascending: false }),
+    buildLessonQa({ unitIds: [unitId] }),
   ]);
   const qaFor = (id: string, hash: string) => (qa.data ?? []).find((q) => q.content_id === id && q.content_hash === hash);
   const tqa = (unit.teaching as { qa?: Record<string, string> }).qa ?? {};
@@ -42,6 +47,21 @@ export default async function UnitQaPage({ params }: { params: Promise<{ unitId:
         </div>
         <div className="pill-row">{Object.entries(tqa).map(([k, v]) => <span key={k} className="tag gray">{k}: {String(v)}</span>)}</div>
       </div>
+      {lessonQa ? (
+        <div className="card cardpad" data-testid="lesson-qa">
+          <div className="card-top">
+            <div className="card-title">Содержательная проверка урока</div>
+            <span className={`status ${lessonQa.summary === 'READY_FOR_OWNER' ? '' : lessonQa.summary === 'NEEDS_FIX' ? 'blocked' : 'wait'}`}>{lessonQa.summary_ru}</span>
+          </div>
+          <p className="tiny muted">Автоматическая цифровая проверка текущей версии урока и всех его заданий{lessonQa.checked_at ? ` (последний прогон ${dateTimeRu(lessonQa.checked_at)})` : ''}: PASS {lessonQa.verdicts.PASS}, на проверку {lessonQa.verdicts.NEEDS_REVIEW}, FAIL {lessonQa.verdicts.FAIL}{lessonQa.verdicts.NOT_CHECKED ? `, не проверено ${lessonQa.verdicts.NOT_CHECKED}` : ''}. Ваша выборка: OK {lessonQa.owner_sample.ok}, замечаний {lessonQa.owner_sample.issue}. Это не проверка преподавателем или носителем.</p>
+          <div className="table-wrap"><table className="data-table">
+            <thead><tr><th>Что проверено</th><th>Итог</th><th>Замечания</th></tr></thead>
+            <tbody>{lessonQa.dimensions.map((d) => (
+              <tr key={d.id}><td><strong>{d.title_ru}</strong></td><td><span className={`status ${DIM_CLASS[d.status]}`}>{DIM_WORD[d.status]}</span></td><td className="tiny">{d.notes.length ? d.notes.join(' ') : '—'}</td></tr>
+            ))}</tbody>
+          </table></div>
+        </div>
+      ) : null}
       <div className="card cardpad">
         <div className="card-title">Задания ({rows.length})</div>
         <div className="table-wrap"><table className="data-table">

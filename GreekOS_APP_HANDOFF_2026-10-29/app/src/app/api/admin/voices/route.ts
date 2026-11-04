@@ -4,6 +4,7 @@ import { apiOwner, audit, HttpError } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { syncLocalVoices, syncCloudVoices, proposeCastVoices, proposeJobCasting, loadCatalog } from '@/lib/voice/catalog';
 import { renderVoiceSample } from '@/lib/voice/samples';
+import { env } from '@/lib/env';
 import { renderJob, loadCastingContext, planJob } from '@/lib/audio/pipeline';
 import { normalizeAudioJob } from '@/lib/admin/audio';
 
@@ -41,6 +42,7 @@ export const POST = route(async (req) => {
       const { data: v } = await db.from('voice_catalog').select('provider, sample_object_path').eq('voice_id', b.voice_id).maybeSingle();
       if (!v) throw new HttpError(404, 'NOT_FOUND', 'Голос не найден');
       if (v.provider === 'mock') throw new HttpError(409, 'MOCK', 'Тестовый транспорт не утверждается как голос');
+      if (b.approved && v.provider === 'local_mbrola' && !env.localEnginesAllowed) throw new HttpError(409, 'NOT_DISTRIBUTABLE', 'Голоса MBROLA используются только для разработки и не утверждаются в рабочей версии.');
       if (b.approved && !v.sample_object_path) throw new HttpError(409, 'NO_SAMPLE', 'Сначала прослушайте образец голоса');
       await db.from('voice_catalog').update({ approved_by_owner: b.approved, approved_by: b.approved ? owner.userId : null, approved_at: b.approved ? now : null, qa_status: b.approved ? 'OWNER_LISTENED' : 'TECH_QA_PASS' }).eq('voice_id', b.voice_id);
       await audit(owner.userId, 'voices.approve', { id: b.voice_id }, { approved: b.approved });
