@@ -91,7 +91,9 @@ test('a visitor registers with the owner\'s code, confirms the e-mail and starts
     expect(r.status()).toBe(409);
     expect((await r.json()).error).toBe('NO_SEATS');
   } finally {
-    for (const id of created) await db.auth.admin.deleteUser(id);
+    // Also when the test failed before the account id was recorded: find it by the address.
+    const { data: left } = await db.from('profiles').select('user_id').eq('email', email);
+    for (const id of new Set([...created, ...(left ?? []).map((x) => x.user_id)])) await db.auth.admin.deleteUser(id);
     await db.from('platform_settings').update({ registration_mode: before.registration_mode, registration_code_hash: before.registration_code_hash, max_learners: before.max_learners }).eq('id', true);
     await owner.close();
   }

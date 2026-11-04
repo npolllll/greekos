@@ -21,6 +21,18 @@ test('learner screens: no horizontal scroll and no serious axe violations', asyn
   }
 });
 
+test('public screens (sign-in, registration): no horizontal scroll and no serious axe violations', async ({ page }, info) => {
+  for (const path of ['/login', '/register']) {
+    await page.goto(path);
+    await page.waitForLoadState('networkidle');
+    await noHorizontalScroll(page);
+    const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).disableRules(['color-contrast']).analyze();
+    const serious = r.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+    expect(serious.map((v) => `${path}: ${v.id} — ${v.nodes.length}`)).toEqual([]);
+    await page.screenshot({ path: `test-results/screens/${info.project.name}${path.replace(/\//g, '_')}.png`, fullPage: true });
+  }
+});
+
 test('owner admin screens: no horizontal scroll', async ({ page }, info) => {
   const s = readState();
   await login(page, s.owner);
