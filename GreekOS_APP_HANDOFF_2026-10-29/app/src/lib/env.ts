@@ -15,6 +15,8 @@ export const env = {
   get supabaseAnonKey() { return req('NEXT_PUBLIC_SUPABASE_ANON_KEY'); },
   get serviceRoleKey() { return req('SUPABASE_SERVICE_ROLE_KEY'); },
   get appUrl() { return opt('APP_URL') ?? 'http://127.0.0.1:3210'; },
+  /** Salt for hashing IP addresses and e-mails in the registration rate limit (never stored in clear). */
+  get registrationSalt() { return opt('REGISTRATION_SALT') ?? this.serviceRoleKey.slice(-24); },
   get appEnv(): 'local' | 'preview' | 'production' | 'test' {
     const v = opt('APP_ENV') ?? (process.env.VERCEL_ENV === 'production' ? 'production' : process.env.VERCEL_ENV === 'preview' ? 'preview' : 'local');
     return v as 'local' | 'preview' | 'production' | 'test';

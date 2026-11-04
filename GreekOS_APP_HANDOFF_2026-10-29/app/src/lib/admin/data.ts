@@ -11,6 +11,7 @@ export interface CohortRow {
   active: boolean;
   lifecycle_state: string;
   entry_path: string | null;
+  signup_source: string | null;
   start_date: string | null;
   route_start: string | null;
   lessons_completed: number;
@@ -28,7 +29,7 @@ export async function loadCohort(): Promise<CohortRow[]> {
   const ids = (roles ?? []).map((r) => r.user_id);
   if (!ids.length) return [];
   const [profiles, enr, routes, lessons, attempts, act, states, comps, axes, pending, events] = await Promise.all([
-    db.from('profiles').select('user_id, display_name, email, active, lifecycle_state, entry_path').in('user_id', ids),
+    db.from('profiles').select('user_id, display_name, email, active, lifecycle_state, entry_path, signup_source').in('user_id', ids),
     db.from('enrollments').select('user_id, start_date').in('user_id', ids),
     db.from('learning_routes').select('user_id, start_unit_id').in('user_id', ids),
     db.from('lesson_sessions').select('user_id').in('user_id', ids).eq('status', 'COMPLETED').eq('preview', false),
@@ -51,7 +52,7 @@ export async function loadCohort(): Promise<CohortRow[]> {
     const lastDay = days.at(-1)?.local_date ?? null;
     const lastEvent = (events.data ?? []).find((e) => e.user_id === p.user_id)?.occurred_at ?? null;
     return {
-      user_id: p.user_id, display_name: p.display_name, email: p.email, active: p.active, lifecycle_state: p.lifecycle_state, entry_path: p.entry_path,
+      user_id: p.user_id, display_name: p.display_name, email: p.email, active: p.active, lifecycle_state: p.lifecycle_state, entry_path: p.entry_path, signup_source: p.signup_source ?? null,
       start_date: (enr.data ?? []).find((e) => e.user_id === p.user_id)?.start_date ?? null,
       route_start: (routes.data ?? []).find((r) => r.user_id === p.user_id)?.start_unit_id ?? null,
       lessons_completed: count(lessons.data, p.user_id),

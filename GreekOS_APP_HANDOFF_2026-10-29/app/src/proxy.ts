@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { requestOrigin } from './lib/http/origin';
 
 /** Refreshes the Supabase session cookie; authorization itself happens in server handlers. */
 export async function proxy(request: NextRequest) {
@@ -16,12 +17,10 @@ export async function proxy(request: NextRequest) {
   });
   const { data } = await supabase.auth.getUser();
   const path = request.nextUrl.pathname;
-  const isPublic = path.startsWith('/login') || path.startsWith('/auth') || path.startsWith('/api/cron') || path.startsWith('/api/health');
+  const isPublic = path.startsWith('/login') || path.startsWith('/register') || path.startsWith('/auth') || path.startsWith('/api/cron') || path.startsWith('/api/health');
   if (!data.user && !isPublic && !path.startsWith('/api/')) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.search = '';
-    return NextResponse.redirect(url);
+    // On the host the browser used (not the server's bind host): the session cookie lives there.
+    return NextResponse.redirect(`${requestOrigin(request)}/login`);
   }
   return response;
 }

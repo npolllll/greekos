@@ -416,7 +416,7 @@ enabled = true
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
 
 [auth.email.template.invite]
-subject = "Приглашение в GreekOS"
+subject = "GreekOS — ссылка для входа в курс"
 content_path = "./supabase/templates/invite.html"
 
 [auth.email.template.recovery]
