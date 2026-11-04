@@ -59,6 +59,11 @@ export const env = {
   get azureSpeechRegion() { return opt('AZURE_SPEECH_REGION'); },
   get azureTtsVoices() { return (opt('AZURE_TTS_VOICES') ?? 'el-GR-AthinaNeural,el-GR-NestorasNeural').split(',').map((s) => s.trim()); },
   get googleTtsKey() { return opt('GOOGLE_TTS_API_KEY'); },
+  /** Provider endpoints (overridable for a regional/private endpoint, or a contract-test server). */
+  get azureTtsBase() { return (opt('AZURE_SPEECH_TTS_URL') ?? `https://${this.azureSpeechRegion}.tts.speech.microsoft.com`).replace(/\/$/, ''); },
+  get azureSttBase() { return (opt('AZURE_SPEECH_STT_URL') ?? `https://${this.azureSpeechRegion}.stt.speech.microsoft.com`).replace(/\/$/, ''); },
+  get googleTtsBase() { return (opt('GOOGLE_TTS_URL') ?? 'https://texttospeech.googleapis.com').replace(/\/$/, ''); },
+  get openaiBase() { return (opt('OPENAI_BASE_URL') ?? 'https://api.openai.com').replace(/\/$/, ''); },
   get googleTtsVoices() { return (opt('GOOGLE_TTS_VOICES') ?? 'el-GR-Wavenet-A,el-GR-Standard-B').split(',').map((s) => s.trim()); },
 
   /** Cost guards (USD). Exceeding them blocks provider calls; they are estimates, not invoices. */

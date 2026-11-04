@@ -70,21 +70,37 @@ export async function syncLocalVoices() {
   return [...voices.map((v) => ({ id: v.id, name: v.name, presentation: v.presentation })), ...service.map((v) => ({ id: v.id, name: v.name, presentation: v.presentation }))];
 }
 
-/** Cloud voice lists (declared gender). Requires keys; returns NOT_CONFIGURED otherwise. NOT_TESTED live. */
+/**
+ * Licensed cloud voices are not development-only voices: their output may be used in the customer's
+ * application under the provider's terms. Each rendered file still waits for the owner to record
+ * those terms (rights_status RIGHTS_PENDING → PROVIDER_TERMS_RECORDED) before it can be released.
+ */
+const CLOUD_TERMS: Record<'azure' | 'google' | 'openai', { license: string; terms_url: string }> = {
+  azure: { license: 'Azure AI Speech — Microsoft Product Terms (Text to speech)', terms_url: 'https://www.microsoft.com/licensing/terms/productoffering/MicrosoftAzure' },
+  google: { license: 'Google Cloud Text-to-Speech — Google Cloud Platform Terms of Service', terms_url: 'https://cloud.google.com/terms' },
+  openai: { license: 'OpenAI Services Agreement and Usage Policies (disclose AI-generated voice)', terms_url: 'https://openai.com/policies/' },
+};
+const cloudRights = (p: keyof typeof CLOUD_TERMS) => ({ rights: { ...CLOUD_TERMS[p], status: 'PROVIDER_TERMS_OWNER_MUST_RECORD' }, distribution_allowed: true });
+
+/** Cloud voice lists (declared gender). Requires keys; returns NOT_CONFIGURED otherwise. */
 export async function syncCloudVoices(): Promise<Record<string, string>> {
   const db = adminClient();
   const out: Record<string, string> = {};
   const now = new Date().toISOString();
   if (env.azureSpeechKey && env.azureSpeechRegion) {
     try {
-      const r = await fetch(`https://${env.azureSpeechRegion}.tts.speech.microsoft.com/cognitiveservices/voices/list`, { headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey }, signal: AbortSignal.timeout(15_000) });
+      const r = await fetch(`${env.azureTtsBase}/cognitiveservices/voices/list`, { headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey }, signal: AbortSignal.timeout(15_000) });
       if (!r.ok) throw new Error(String(r.status));
-      const list = (await r.json()) as Array<{ ShortName: string; DisplayName: string; Locale: string; Gender: string; VoiceType?: string }>;
-      for (const v of list.filter((x) => x.Locale === 'el-GR')) {
+      const list = (await r.json()) as Array<{ ShortName: string; DisplayName: string; Locale: string; Gender: string; VoiceType?: string; SecondaryLocaleList?: string[] }>;
+      // Native el-GR voices, plus multilingual neural voices that list el-GR (they speak Greek inside
+      // <lang xml:lang="el-GR">): Azure has one female and one male native Greek voice, and a dialogue
+      // of two women needs a second female voice.
+      for (const v of list.filter((x) => x.Locale === 'el-GR' || (x.SecondaryLocaleList ?? []).includes('el-GR'))) {
+        const native = v.Locale === 'el-GR';
         await db.from('voice_catalog').upsert({
-          voice_id: `azure:${v.ShortName}`, provider: 'azure', provider_voice_name: v.ShortName, display_name: `${v.DisplayName} (Azure)`,
+          voice_id: `azure:${v.ShortName}`, provider: 'azure', provider_voice_name: v.ShortName, display_name: `${v.DisplayName} (Azure${native ? '' : ', многоязычный'})`,
           presentation: v.Gender === 'Female' ? 'female' : v.Gender === 'Male' ? 'male' : 'unspecified', presentation_source: 'azure voices/list Gender',
-          quality_tier: v.VoiceType ?? null, engine_kind: 'cloud', available: true, streaming_capable: true, last_synced_at: now,
+          quality_tier: native ? (v.VoiceType ?? 'Neural') : 'Multilingual', engine_kind: 'cloud', available: true, streaming_capable: true, last_synced_at: now, ...cloudRights('azure'),
         }, { onConflict: 'voice_id' });
       }
       out.azure = 'SYNCED';
@@ -92,14 +108,14 @@ export async function syncCloudVoices(): Promise<Record<string, string>> {
   } else out.azure = 'NOT_CONFIGURED';
   if (env.googleTtsKey) {
     try {
-      const r = await fetch(`https://texttospeech.googleapis.com/v1/voices?languageCode=el-GR&key=${encodeURIComponent(env.googleTtsKey)}`, { signal: AbortSignal.timeout(15_000) });
+      const r = await fetch(`${env.googleTtsBase}/v1/voices?languageCode=el-GR&key=${encodeURIComponent(env.googleTtsKey)}`, { signal: AbortSignal.timeout(15_000) });
       if (!r.ok) throw new Error(String(r.status));
       const j = (await r.json()) as { voices?: Array<{ name: string; ssmlGender: string }> };
       for (const v of j.voices ?? []) {
         await db.from('voice_catalog').upsert({
           voice_id: `google:${v.name}`, provider: 'google', provider_voice_name: v.name, display_name: `${v.name} (Google)`,
           presentation: v.ssmlGender === 'FEMALE' ? 'female' : v.ssmlGender === 'MALE' ? 'male' : 'unspecified', presentation_source: 'google voices.list ssmlGender',
-          quality_tier: v.name.split('-')[2] ?? null, engine_kind: 'cloud', available: true, streaming_capable: false, last_synced_at: now,
+          quality_tier: v.name.split('-')[2] ?? null, engine_kind: 'cloud', available: true, streaming_capable: false, last_synced_at: now, ...cloudRights('google'),
         }, { onConflict: 'voice_id' });
       }
       out.google = 'SYNCED';
@@ -109,7 +125,7 @@ export async function syncCloudVoices(): Promise<Record<string, string>> {
     for (const name of env.openaiTtsVoices) {
       await db.from('voice_catalog').upsert({
         voice_id: `openai:${name}`, provider: 'openai', provider_voice_name: name, display_name: `${name} (OpenAI)`,
-        presentation: 'unspecified', presentation_source: 'OpenAI does not declare voice gender', engine_kind: 'cloud', available: true, streaming_capable: true, last_synced_at: now,
+        presentation: 'unspecified', presentation_source: 'OpenAI does not declare voice gender', engine_kind: 'cloud', available: true, streaming_capable: true, last_synced_at: now, ...cloudRights('openai'),
       }, { onConflict: 'voice_id' });
     }
     out.openai = 'LISTED_FROM_CONFIG';
@@ -129,32 +145,50 @@ export async function loadCastRoles(): Promise<Map<string, CastRole>> {
   return new Map(((data ?? []) as CastRole[]).map((c) => [c.cast_role_id, c]));
 }
 
-/**
- * Propose (never approve) a voice for each cast role whose voice is empty: the first available
- * catalog voice whose DECLARED presentation matches. Distinct cast roles get distinct voices when
- * the catalog allows it; otherwise the role stays empty (blocked) rather than reusing a voice.
- */
 /** Local voice preference by measured round-trip quality (lower is better); unknown voices last. */
 const LOCAL_VOICE_RANK: Record<string, number> = { 'coqui-el-css10': 0, 'mbrola-gr2': 1, 'mbrola-gr1': 2 };
-function voiceRank(v: CatalogVoice): number {
-  return LOCAL_VOICE_RANK[v.provider_voice_name] ?? 9;
+
+/**
+ * Voice quality order for proposals (lower is better): native Greek neural cloud voices, then
+ * standard cloud voices, then multilingual cloud voices speaking Greek, then local engines.
+ */
+export function voiceQualityRank(v: Pick<CatalogVoice, 'engine_kind' | 'quality_tier' | 'provider_voice_name'>): number {
+  if (v.engine_kind === 'cloud') return v.quality_tier === 'Multilingual' ? 2 : /Standard/i.test(v.provider_voice_name) ? 1 : 0;
+  return 5 + (LOCAL_VOICE_RANK[v.provider_voice_name] ?? 4);
 }
 
+/**
+ * Propose (never approve) a voice for each cast role the owner has not approved: the best available
+ * catalog voice whose DECLARED presentation matches. A role keeps its voice unless a better one is
+ * available (e.g. a licensed cloud voice after a key is added replaces a local development voice).
+ * Distinct cast roles get distinct voices; if the catalog has too few, the role stays empty (its jobs
+ * are blocked) rather than reusing a voice.
+ */
 export async function proposeCastVoices() {
   const db = adminClient();
   const [roles, catalog] = await Promise.all([loadCastRoles(), loadCatalog()]);
-  const used = new Set([...roles.values()].map((r) => r.voice_id).filter(Boolean) as string[]);
-  const changes: Array<{ cast_role_id: string; voice_id: string }> = [];
-  for (const r of [...roles.values()].sort((a, b) => a.cast_role_id.localeCompare(b.cast_role_id))) {
-    if (r.voice_id) continue;
+  const sorted = [...roles.values()].sort((a, b) => a.cast_role_id.localeCompare(b.cast_role_id));
+  // Owner-approved roles keep their voices; their voices are not offered to other roles.
+  const used = new Set(sorted.filter((r) => r.approved && r.voice_id).map((r) => r.voice_id!));
+  const changes: Array<{ cast_role_id: string; voice_id: string; previous: string | null }> = [];
+  // Non-tutor roles first in a stable order: NARRATOR_F/M get the best voice, ROLE_CAFE_* the next one.
+  const order = [...sorted.filter((r) => !r.cast_role_id.startsWith('TUTOR_')), ...sorted.filter((r) => r.cast_role_id.startsWith('TUTOR_'))]
+    .sort((a, b) => Number(a.cast_role_id.startsWith('TUTOR_')) - Number(b.cast_role_id.startsWith('TUTOR_')) || Number(b.cast_role_id.startsWith('NARRATOR_')) - Number(a.cast_role_id.startsWith('NARRATOR_')) || a.cast_role_id.localeCompare(b.cast_role_id));
+  for (const r of order) {
+    if (r.approved) continue;
+    const tutor = r.cast_role_id.startsWith('TUTOR_');
     const pick = [...catalog.values()]
       .filter((v) => v.available && v.provider !== 'mock' && (r.requested_presentation === 'any' || v.presentation === r.requested_presentation))
-      .sort((a, b) => Number(b.engine_kind === 'cloud') - Number(a.engine_kind === 'cloud') || voiceRank(a) - voiceRank(b) || a.voice_id.localeCompare(b.voice_id))
-      .find((v) => !used.has(v.voice_id) || r.cast_role_id.startsWith('TUTOR_'));
-    if (!pick) continue;
-    await db.from('cast_roles').update({ voice_id: pick.voice_id, approved: false, status: 'proposed' }).eq('cast_role_id', r.cast_role_id);
-    if (!r.cast_role_id.startsWith('TUTOR_')) used.add(pick.voice_id);
-    changes.push({ cast_role_id: r.cast_role_id, voice_id: pick.voice_id });
+      .sort((a, b) => voiceQualityRank(a) - voiceQualityRank(b) || a.voice_id.localeCompare(b.voice_id))
+      .find((v) => tutor || !used.has(v.voice_id));
+    const current = r.voice_id ? catalog.get(r.voice_id) : undefined;
+    const keep = current && current.available && (!pick || voiceQualityRank(current) <= voiceQualityRank(pick)) && (tutor || !used.has(current.voice_id));
+    const chosen = keep ? current : pick;
+    if (!chosen) continue;
+    if (!tutor) used.add(chosen.voice_id);
+    if (chosen.voice_id === r.voice_id) continue;
+    await db.from('cast_roles').update({ voice_id: chosen.voice_id, approved: false, status: 'proposed' }).eq('cast_role_id', r.cast_role_id);
+    changes.push({ cast_role_id: r.cast_role_id, voice_id: chosen.voice_id, previous: r.voice_id ?? null });
   }
   return changes;
 }

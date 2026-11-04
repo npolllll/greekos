@@ -78,14 +78,14 @@ export async function transcribe(wav: Uint8Array, userId: string | null): Promis
       form.append('language', 'el');
       form.append('response_format', 'json');
       form.append('include[]', 'logprobs');
-      const res = await timed(() => fetch('https://api.openai.com/v1/audio/transcriptions', { method: 'POST', headers: { Authorization: `Bearer ${env.openaiKey}` }, body: form }), 30_000);
+      const res = await timed(() => fetch(`${env.openaiBase}/v1/audio/transcriptions`, { method: 'POST', headers: { Authorization: `Bearer ${env.openaiKey}` }, body: form }), 30_000);
       if (!res.ok) throw new Error(`openai asr ${res.status}`);
       const json = (await res.json()) as { text?: string; logprobs?: Array<{ logprob: number }> };
       const lp = json.logprobs ?? [];
       const confidence = lp.length ? Math.exp(lp.reduce((a, l) => a + l.logprob, 0) / lp.length) : null;
       result = { text: (json.text ?? '').trim(), confidence, provider: 'openai', model: env.openaiAsrModel, durationMs: info?.durationMs ?? null, synthetic: false };
     } else if (st.provider === 'azure') {
-      const url = `https://${env.azureSpeechRegion}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=el-GR&format=detailed`;
+      const url = `${env.azureSttBase}/speech/recognition/conversation/cognitiveservices/v1?language=el-GR&format=detailed`;
       const res = await timed(() => fetch(url, { method: 'POST', headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey!, 'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000', Accept: 'application/json' }, body: wav as BodyInit }), 30_000);
       if (!res.ok) throw new Error(`azure asr ${res.status}`);
       const json = (await res.json()) as { RecognitionStatus?: string; NBest?: Array<{ Display?: string; Confidence?: number }> };
@@ -125,7 +125,7 @@ export async function synthesize(text: string, opts: { voice?: string; rate?: 's
     let model = '';
     if (st.provider === 'openai') {
       model = env.openaiTtsModel;
-      const res = await timed(() => fetch('https://api.openai.com/v1/audio/speech', {
+      const res = await timed(() => fetch(`${env.openaiBase}/v1/audio/speech`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${env.openaiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ model, voice, input: text, response_format: 'wav', speed: slow ? 0.8 : 1.0, instructions: 'Speak standard Modern Greek (el-GR) with natural Greek stress and intonation. Read exactly the given text.' }),
@@ -135,7 +135,7 @@ export async function synthesize(text: string, opts: { voice?: string; rate?: 's
     } else if (st.provider === 'azure') {
       model = 'azure-neural-tts';
       const ssml = `<speak version="1.0" xml:lang="el-GR"><voice name="${escapeXml(voice)}"><prosody rate="${slow ? '-20%' : '0%'}">${escapeXml(text)}</prosody></voice></speak>`;
-      const res = await timed(() => fetch(`https://${env.azureSpeechRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+      const res = await timed(() => fetch(`${env.azureTtsBase}/cognitiveservices/v1`, {
         method: 'POST',
         headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey!, 'Content-Type': 'application/ssml+xml', 'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm', 'User-Agent': 'greekos' },
         body: ssml,
@@ -144,7 +144,7 @@ export async function synthesize(text: string, opts: { voice?: string; rate?: 's
       bytes = new Uint8Array(await res.arrayBuffer());
     } else if (st.provider === 'google') {
       model = 'google-cloud-tts';
-      const res = await timed(() => fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${encodeURIComponent(env.googleTtsKey!)}`, {
+      const res = await timed(() => fetch(`${env.googleTtsBase}/v1/text:synthesize?key=${encodeURIComponent(env.googleTtsKey!)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ input: { text }, voice: { languageCode: 'el-GR', name: voice }, audioConfig: { audioEncoding: 'LINEAR16', sampleRateHertz: 24000, speakingRate: slow ? 0.8 : 1.0 } }),
@@ -202,20 +202,23 @@ export async function synthesizeWithVoice(text: string, voice: CatalogVoice, opt
       if (!env.azureSpeechKey || !env.azureSpeechRegion) throw new ProviderUnavailableError('Azure Speech не подключён.');
       await assertBudget(opts.userId);
       const pct = Math.round((mult - 1) * 100);
-      const ssml = `<speak version="1.0" xml:lang="el-GR"><voice name="${escapeXml(voice.provider_voice_name)}"><prosody rate="${pct >= 0 ? '+' : ''}${pct}%">${escapeXml(text)}</prosody></voice></speak>`;
-      const res = await fetch(`https://${env.azureSpeechRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, { method: 'POST', headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey, 'Content-Type': 'application/ssml+xml', 'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm', 'User-Agent': 'greekos' }, body: ssml, signal: AbortSignal.timeout(45_000) });
+      // A multilingual voice (another locale) speaks Greek inside <lang xml:lang="el-GR">.
+      const body = `<prosody rate="${pct >= 0 ? '+' : ''}${pct}%">${escapeXml(text)}</prosody>`;
+      const greekNative = voice.provider_voice_name.startsWith('el-GR-');
+      const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="el-GR"><voice name="${escapeXml(voice.provider_voice_name)}">${greekNative ? body : `<lang xml:lang="el-GR">${body}</lang>`}</voice></speak>`;
+      const res = await fetch(`${env.azureTtsBase}/cognitiveservices/v1`, { method: 'POST', headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey, 'Content-Type': 'application/ssml+xml', 'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm', 'User-Agent': 'greekos' }, body: ssml, signal: AbortSignal.timeout(45_000) });
       if (!res.ok) throw new Error(`azure tts ${res.status}`);
       bytes = new Uint8Array(await res.arrayBuffer());
     } else if (voice.provider === 'google') {
       if (!env.googleTtsKey) throw new ProviderUnavailableError('Google TTS не подключён.');
       await assertBudget(opts.userId);
-      const res = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${encodeURIComponent(env.googleTtsKey)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ input: { text }, voice: { languageCode: 'el-GR', name: voice.provider_voice_name }, audioConfig: { audioEncoding: 'LINEAR16', sampleRateHertz: 24000, speakingRate: mult } }), signal: AbortSignal.timeout(45_000) });
+      const res = await fetch(`${env.googleTtsBase}/v1/text:synthesize?key=${encodeURIComponent(env.googleTtsKey)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ input: { text }, voice: { languageCode: 'el-GR', name: voice.provider_voice_name }, audioConfig: { audioEncoding: 'LINEAR16', sampleRateHertz: 24000, speakingRate: mult } }), signal: AbortSignal.timeout(45_000) });
       if (!res.ok) throw new Error(`google tts ${res.status}`);
       bytes = Uint8Array.from(Buffer.from(((await res.json()) as { audioContent?: string }).audioContent ?? '', 'base64'));
     } else if (voice.provider === 'openai') {
       if (!env.openaiKey) throw new ProviderUnavailableError('OpenAI не подключён.');
       await assertBudget(opts.userId);
-      const res = await fetch('https://api.openai.com/v1/audio/speech', { method: 'POST', headers: { Authorization: `Bearer ${env.openaiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: env.openaiTtsModel, voice: voice.provider_voice_name, input: text, response_format: 'wav', speed: mult, instructions: 'Speak standard Modern Greek (el-GR) at a natural, moderate conversational pace. Read exactly the given text.' }), signal: AbortSignal.timeout(45_000) });
+      const res = await fetch(`${env.openaiBase}/v1/audio/speech`, { method: 'POST', headers: { Authorization: `Bearer ${env.openaiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: env.openaiTtsModel, voice: voice.provider_voice_name, input: text, response_format: 'wav', speed: mult, instructions: 'Speak standard Modern Greek (el-GR) at a natural, moderate conversational pace. Read exactly the given text.' }), signal: AbortSignal.timeout(45_000) });
       if (!res.ok) throw new Error(`openai tts ${res.status}`);
       bytes = new Uint8Array(await res.arrayBuffer());
     } else {
