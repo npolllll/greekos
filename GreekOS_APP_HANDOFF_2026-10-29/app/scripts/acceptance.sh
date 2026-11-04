@@ -22,7 +22,11 @@ run 01_typecheck npm run typecheck
 run 02_lint npm run lint
 run 03_unit npm test
 run 04_integration npm run test:integration
-run 05_e2e npm run test:e2e
+# Chromium keeps its shared memory in TMPDIR (Playwright passes --disable-dev-shm-usage); on a Linux
+# box with a large RAM-backed /dev/shm use it, so a nearly full disk cannot crash browser tabs.
+E2E_TMP=${TMPDIR:-}
+if [ -z "$E2E_TMP" ] && [ -d /dev/shm ] && [ "$(df -Pk /dev/shm | awk 'NR==2{print $4}')" -gt 2000000 ]; then E2E_TMP=/dev/shm; fi
+run 05_e2e env ${E2E_TMP:+TMPDIR=$E2E_TMP} npm run test:e2e
 run 06_rules_on_corpus npm run rules:corpus -- --out "$OUT/rules"
 run 07_speaking_latency npm run speaking:latency -- --out "$OUT/speaking-latency"
 run 08_admission_plan npx tsx --conditions=react-server scripts/admission-plan.ts --out "$OUT/admission"

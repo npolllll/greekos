@@ -1,4 +1,4 @@
-> **Актуальный статус — [STATUS_V8.md](STATUS_V8.md) (03.11.2026, v7).** Приёмка — [ACCEPTANCE.md](ACCEPTANCE.md). Предыдущие — [STATUS_V7.md](STATUS_V7.md) (v6.1), [STATUS_V6.md](STATUS_V6.md). Ниже — статус v5.4 от 29.10.2026 для истории.
+> **Актуальное состояние продукта — [PRODUCT_STATUS.md](PRODUCT_STATUS.md) (04.11.2026).** Предыдущий статус — [STATUS_V8.md](STATUS_V8.md) (03.11.2026, v7). Приёмка — [ACCEPTANCE.md](ACCEPTANCE.md). Предыдущие — [STATUS_V7.md](STATUS_V7.md) (v6.1), [STATUS_V6.md](STATUS_V6.md). Ниже — статус v5.4 от 29.10.2026 для истории.
 
 # Статус GreekOS — 29.10.2026 (v5.4 Voice & Audio, локально)
 

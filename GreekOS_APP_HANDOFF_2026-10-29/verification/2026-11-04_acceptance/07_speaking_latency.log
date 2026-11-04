@@ -1,0 +1,10 @@
+
+> greekos@1.0.0 speaking:latency
+> tsx --conditions=react-server scripts/speaking-latency.ts --out ../verification/2026-11-04_acceptance/speaking-latency
+
+warm-up of the opening: 7171 ms
+llm first=3893ms turn=8396ms | Θέλω ένα καφέ και ένα νερό, παρακαλώ. → Σας δίνουμε ένα μεγάλο καφέ και ένα νερό. Είναι δώρο. Πότε θέλετε να εσάς παραδώσουμε;
+llm first=2275ms turn=7366ms | Ναι, μεγάλο, ευχαριστώ. → Καταλαβαίνω. Θα μείνετε εδώ ή θα τα πάρετε μαζί σας;
+llm first=2259ms turn=8337ms | Θα μείνω εδώ. Περιμένω μια φίλη. → Εντάξει. Μπορείτε να καθίσετε στο τραπέζι δίπλα στο παράθυρο. Είμαστε έτοιμοι.
+{"scenario":"SC05","first_sentence_p50_ms":2275,"first_sentence_max_ms":3893,"turn_p50_ms":8337}
+07_speaking_latency exit 0

@@ -1,0 +1,40 @@
+{
+  "measured_at": "2026-11-04T09:48:30.909Z",
+  "scenario": "SC05",
+  "model": "gemma-4-E2B-it-Q4_K_M",
+  "machine": "Intel(R) Xeon(R) Processor @ 2.10GHz × 4, 16 GB, linux/x64",
+  "listen_ms": 6000,
+  "first_sentence_p50_ms": 2275,
+  "first_sentence_max_ms": 3893,
+  "turn_p50_ms": 8337,
+  "rows": [
+    {
+      "learner": "Θέλω ένα καφέ και ένα νερό, παρακαλώ.",
+      "reply": "Σας δίνουμε ένα μεγάλο καφέ και ένα νερό. Είναι δώρο. Πότε θέλετε να εσάς παραδώσουμε;",
+      "engine": "llm",
+      "first_sentence_ms": 3893,
+      "model_first_ms": 3858,
+      "turn_ms": 8396,
+      "node": "TWIST"
+    },
+    {
+      "learner": "Ναι, μεγάλο, ευχαριστώ.",
+      "reply": "Καταλαβαίνω. Θα μείνετε εδώ ή θα τα πάρετε μαζί σας;",
+      "engine": "llm",
+      "first_sentence_ms": 2275,
+      "model_first_ms": 2246,
+      "turn_ms": 7366,
+      "node": "NEGOTIATE"
+    },
+    {
+      "learner": "Θα μείνω εδώ. Περιμένω μια φίλη.",
+      "reply": "Εντάξει. Μπορείτε να καθίσετε στο τραπέζι δίπλα στο παράθυρο. Είμαστε έτοιμοι.",
+      "engine": "llm",
+      "first_sentence_ms": 2259,
+      "model_first_ms": 2236,
+      "turn_ms": 8337,
+      "node": "CLOSE"
+    }
+  ],
+  "note": "Время от отправки реплики ученика (после распознавания) до первого проверенного предложения ответа; без ASR и синтеза речи."
+}
