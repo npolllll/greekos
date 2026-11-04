@@ -17,3 +17,7 @@ artifacts/tmp/
 .scratch/
 __pycache__/
 .corpus-snapshot/
+
+# Local credentials and cloud deployment answers (secrets) stay on this computer
+.local-credentials/
+.deploy/
