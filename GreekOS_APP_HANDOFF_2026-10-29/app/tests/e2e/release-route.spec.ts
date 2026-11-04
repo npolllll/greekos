@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { rmSync } from 'node:fs';
 import { admin, makeUser, readState } from './fixtures';
 import { login } from './helpers';
 import { POLICY_RISKS } from '../../src/lib/admin/labels';
@@ -52,7 +53,7 @@ async function answerProbe(page: Page, list: Probe[]): Promise<{ result: 'answer
 test('owner releases a scope; an experienced learner without preview is placed by the diagnostic and studies the route', async ({ browser }) => {
   test.setTimeout(10 * 60_000);
   const db = admin();
-  const created: { policy: string | null; batch: string | null; decision: string | null } = { policy: null, batch: null, decision: null };
+  const created: { policy: string | null; batch: string | null; decision: string | null; report: string | null } = { policy: null, batch: null, decision: null, report: null };
   const learner = await makeUser('learner', false);
   const owner = await browser.newPage();
   await login(owner, readState().owner);
@@ -66,7 +67,9 @@ test('owner releases a scope; an experienced learner without preview is placed b
     }
     const qa = await owner.request.post('/api/admin/qa/batches', { data: { label: 'E2E: выпуск и маршрут' }, timeout: 180_000 });
     expect(qa.ok(), await qa.text()).toBe(true);
-    created.batch = (await qa.json()).batch_id ?? (await db.from('qa_batches').select('id').order('started_at', { ascending: false }).limit(1).single()).data!.id;
+    const qaRes = (await qa.json()) as { batch_id: string; report_path?: string };
+    created.batch = qaRes.batch_id;
+    created.report = qaRes.report_path ?? null;
 
     const diag = (await probes()).map((p) => p.item_id);
     const { data: a2 } = await db.from('items').select('item_id').eq('module', 'core').eq('level', 'A2');
@@ -144,6 +147,8 @@ test('owner releases a scope; an experienced learner without preview is placed b
       await db.from('qa_batches').delete().eq('id', created.batch);
     }
     if (created.policy) await db.from('publication_policies').delete().eq('id', created.policy);
+    // The batch's report files (written by the app server next to the real QA reports).
+    if (created.report) for (const f of [created.report, created.report.replace(/\.json$/, '.md')]) rmSync(f, { force: true });
     await db.auth.admin.deleteUser(learner.id);
     await owner.close();
   }
