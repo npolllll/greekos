@@ -28,6 +28,8 @@ export interface StreamJsonParams {
   signal?: AbortSignal;
   /** Conversation key for server-side prompt caching (local server KV slot). */
   cacheKey?: string;
+  /** Claude effort (cloud only). A live conversation turn is latency-bound: 'low' by default. */
+  effort?: 'low' | 'medium' | 'high';
   onText?: (chunk: string) => void;
 }
 
@@ -103,12 +105,24 @@ async function anthropicStream(p: StreamJsonParams, signal: AbortSignal, started
   let model = p.model ?? env.llmModelDialogue;
   const usage = { input: 0, output: 0 };
   const stream = await anthropic.beta.messages.create({
-    model, max_tokens: p.maxTokens, stream: true,
+    model,
+    // Current Claude models always think (adaptive) and thinking counts against max_tokens; the
+    // local cap bounds CPU time and is too small for it. The reply's length is set by the prompt
+    // and the schema; the turn's timeout still applies.
+    max_tokens: Math.max(p.maxTokens, 4096), stream: true,
+    // A safety-classifier decline (not expected for language practice) continues on the fallback
+    // model in the same stream instead of ending the learner's turn.
+    betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default',
+    // The scene's system prompt and the earlier turns are the same prefix on every turn.
+    cache_control: { type: 'ephemeral' },
     system: p.system, messages: p.messages,
-    output_config: { format: { type: 'json_schema', schema: p.schema } },
+    output_config: { format: { type: 'json_schema', schema: p.schema }, effort: p.effort ?? 'low' },
   }, { signal, timeout: p.timeoutMs });
   for await (const ev of stream) {
-    if (ev.type === 'message_start') { model = ev.message.model; usage.input = ev.message.usage?.input_tokens ?? 0; }
+    // After a fallback the stream goes on with the fallback model: text before and after the
+    // boundary is one continuous reply (the fallback model continues from the partial text).
+    if (ev.type === 'message_start') { model = ev.message.model; usage.input = (ev.message.usage?.input_tokens ?? 0) + (ev.message.usage?.cache_read_input_tokens ?? 0) + (ev.message.usage?.cache_creation_input_tokens ?? 0); }
+    else if (ev.type === 'content_block_start' && (ev.content_block as { type: string; to?: { model?: string } }).type === 'fallback') { model = (ev.content_block as { to?: { model?: string } }).to?.model ?? model; }
     else if (ev.type === 'content_block_delta' && ev.delta.type === 'text_delta') {
       first ??= Date.now() - started;
       text += ev.delta.text;

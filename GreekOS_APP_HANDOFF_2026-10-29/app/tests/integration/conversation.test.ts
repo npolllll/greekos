@@ -55,9 +55,18 @@ beforeAll(async () => {
         res.writeHead(200, { 'content-type': 'text/event-stream' });
         const ev = (type: string, data: unknown) => res.write(`event: ${type}\ndata: ${JSON.stringify(data)}\n\n`);
         ev('message_start', { type: 'message_start', message: { id: 'msg_1', type: 'message', role: 'assistant', model: body.model, content: [], stop_reason: null, usage: { input_tokens: 42, output_tokens: 0 } } });
-        ev('content_block_start', { type: 'content_block_start', index: 0, content_block: { type: 'text', text: '' } });
-        for (const p of pieces('{"reply_el":"Γεια σας! Τι θα θέλατε;"}')) ev('content_block_delta', { type: 'content_block_delta', index: 0, delta: { type: 'text_delta', text: p } });
-        ev('content_block_stop', { type: 'content_block_stop', index: 0 });
+        const text = (index: number, t: string) => {
+          ev('content_block_start', { type: 'content_block_start', index, content_block: { type: 'text', text: '' } });
+          for (const p of pieces(t)) ev('content_block_delta', { type: 'content_block_delta', index, delta: { type: 'text_delta', text: p } });
+          ev('content_block_stop', { type: 'content_block_stop', index });
+        };
+        if (body.system === 'S-FALLBACK') {
+          // Mid-stream decline: partial text, a `fallback` boundary block, the fallback model continues.
+          text(0, '{"reply_el":"Γεια σας! ');
+          ev('content_block_start', { type: 'content_block_start', index: 1, content_block: { type: 'fallback', from: { model: body.model }, to: { model: 'claude-opus-4-8' } } });
+          ev('content_block_stop', { type: 'content_block_stop', index: 1 });
+          text(2, 'Τι θα θέλατε;"}');
+        } else text(0, '{"reply_el":"Γεια σας! Τι θα θέλατε;"}');
         ev('message_delta', { type: 'message_delta', delta: { stop_reason: 'end_turn' }, usage: { output_tokens: 12 } });
         ev('message_stop', { type: 'message_stop' });
         res.end();
@@ -233,7 +242,15 @@ describe('conversation engine v2 (wire-protocol mocks)', () => {
       const req = requests.findLast((x) => x.path === '/v1/messages')!;
       // SDK 1.x sends the API key as a bearer token.
       expect(req.headers.authorization).toBe('Bearer test-key-not-real');
-      expect(req.body).toMatchObject({ model: 'claude-test', stream: true, system: 'S', output_config: { format: { type: 'json_schema' } } });
+      expect(req.body).toMatchObject({ model: 'claude-test', stream: true, system: 'S', output_config: { format: { type: 'json_schema' }, effort: 'low' }, fallbacks: 'default', cache_control: { type: 'ephemeral' } });
+      // Thinking counts against max_tokens: the cloud request leaves room beyond the local cap.
+      expect(req.body.max_tokens).toBeGreaterThanOrEqual(4096);
+      expect(String(req.headers['anthropic-beta'])).toContain('server-side-fallback-2026-07-01');
+
+      // A decline mid-reply continues on the fallback model in the same stream: one valid reply.
+      const f = await streamJson({ userId: null, operation: 'contract_test', model: 'claude-test', system: 'S-FALLBACK', messages: [{ role: 'user', content: 'U' }], schema: { type: 'object', properties: { reply_el: { type: 'string' } }, required: ['reply_el'], additionalProperties: false }, maxTokens: 50, timeoutMs: 10_000 });
+      expect(f.ok).toBe(true);
+      if (f.ok) { expect(JSON.parse(f.text)).toEqual({ reply_el: 'Γεια σας! Τι θα θέλατε;' }); expect(f.model).toBe('claude-opus-4-8'); }
     } finally {
       process.env.LLM_PROVIDER = 'openai_compatible';
       delete process.env.ANTHROPIC_API_KEY;
