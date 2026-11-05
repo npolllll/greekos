@@ -3,7 +3,7 @@
  * persisted here. Mock adapters are synthetic test transports and refuse to run in production.
  */
 import { env } from '../env.ts';
-import { assertBudget, COST, recordUsage } from './budget.ts';
+import { reserve, settle, speechPrice, recordUsage, type Reservation } from './budget.ts';
 import { buildWav, parseWav } from '../audio/wav.ts';
 import { localTranscribe, sayToWav, localTtsSupported, serviceTts } from './local-engines.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
@@ -64,9 +64,11 @@ async function timed<T>(fn: () => Promise<T>, ms: number): Promise<T> {
 export async function transcribe(wav: Uint8Array, userId: string | null): Promise<AsrResult> {
   const st = asrStatus();
   if (!st.configured) throw new ProviderUnavailableError('Распознавание речи не подключено.');
-  await assertBudget(userId);
   const info = parseWav(wav);
   const seconds = info ? info.durationMs / 1000 : 0;
+  const paid = st.provider === 'openai' || st.provider === 'azure';
+  const costUsd = paid ? seconds * speechPrice.asrPerSecond : 0;
+  const res0 = await reserve({ userId, provider: st.provider, operation: 'asr', estimateUsd: costUsd });
   const started = Date.now();
   let ok = false;
   try {
@@ -87,7 +89,7 @@ export async function transcribe(wav: Uint8Array, userId: string | null): Promis
     } else if (st.provider === 'azure') {
       const url = `${env.azureSttBase}/speech/recognition/conversation/cognitiveservices/v1?language=el-GR&format=detailed`;
       const res = await timed(() => fetch(url, { method: 'POST', headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey!, 'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000', Accept: 'application/json' }, body: wav as BodyInit }), 30_000);
-      if (!res.ok) throw new Error(`azure asr ${res.status}`);
+      if (!res.ok) throw azureError('asr', res.status);
       const json = (await res.json()) as { RecognitionStatus?: string; NBest?: Array<{ Display?: string; Confidence?: number }> };
       const best = json.NBest?.[0];
       result = { text: json.RecognitionStatus === 'Success' ? (best?.Display ?? '').trim() : '', confidence: best?.Confidence ?? null, provider: 'azure', model: 'speech-to-text-rest-short', durationMs: info?.durationMs ?? null, synthetic: false };
@@ -102,7 +104,8 @@ export async function transcribe(wav: Uint8Array, userId: string | null): Promis
     ok = true;
     return result;
   } finally {
-    await recordUsage({ userId, provider: st.provider, operation: 'asr', units: seconds, unitKind: 'seconds', costUsd: seconds * COST.asrPerSecond, ok, latencyMs: Date.now() - started }).catch(() => undefined);
+    await settle(res0, ok ? costUsd : 0);
+    await recordUsage({ userId, provider: st.provider, operation: 'asr', units: seconds, unitKind: 'seconds', costUsd: ok ? costUsd : 0, ok, latencyMs: Date.now() - started }).catch(() => undefined);
   }
 }
 
@@ -115,8 +118,9 @@ export async function synthesize(text: string, opts: { voice?: string; rate?: 's
   const st = ttsStatus();
   if (!st.configured) throw new ProviderUnavailableError('Синтез речи не подключён.');
   if (!text.trim()) throw new Error('empty TTS text');
-  await assertBudget(opts.userId);
   const voice = opts.voice ?? st.voices[0];
+  const ttsCost = st.provider === 'local' || st.provider === 'mock' ? 0 : text.length * speechPrice.ttsPerChar;
+  const ttsRes = await reserve({ userId: opts.userId, provider: st.provider, operation: opts.operation ?? 'tts', estimateUsd: ttsCost });
   const slow = opts.rate === 'slow';
   const started = Date.now();
   let ok = false;
@@ -140,7 +144,7 @@ export async function synthesize(text: string, opts: { voice?: string; rate?: 's
         headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey!, 'Content-Type': 'application/ssml+xml', 'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm', 'User-Agent': 'greekos' },
         body: ssml,
       }), 45_000);
-      if (!res.ok) throw new Error(`azure tts ${res.status}`);
+      if (!res.ok) throw azureError('tts', res.status);
       bytes = new Uint8Array(await res.arrayBuffer());
     } else if (st.provider === 'google') {
       model = 'google-cloud-tts';
@@ -173,7 +177,8 @@ export async function synthesize(text: string, opts: { voice?: string; rate?: 's
     ok = true;
     return { bytes, mime: 'audio/wav', provider: st.provider, model, voice, synthetic: true };
   } finally {
-    await recordUsage({ userId: opts.userId, provider: st.provider, operation: opts.operation ?? 'tts', units: text.length, unitKind: 'characters', costUsd: text.length * COST.ttsPerChar, ok, latencyMs: Date.now() - started }).catch(() => undefined);
+    await settle(ttsRes, ok ? ttsCost : 0);
+    await recordUsage({ userId: opts.userId, provider: st.provider, operation: opts.operation ?? 'tts', units: text.length, unitKind: 'characters', costUsd: ok ? ttsCost : 0, ok, latencyMs: Date.now() - started }).catch(() => undefined);
   }
 }
 
@@ -190,8 +195,12 @@ export async function synthesizeWithVoice(text: string, voice: CatalogVoice, opt
   const mult = voice.speed_profile?.[opts.speed ?? 'normal'] ?? 1;
   const started = Date.now();
   let ok = false;
+  // Cloud voices reserve their cost before the request (Azure F0 is free and passes without a reservation).
+  const voiceCost = voice.engine_kind === 'cloud' ? text.length * (voice.provider === 'azure' ? speechPrice.ttsPerChar : 15 / 1_000_000) : 0;
+  let voiceRes: Reservation | null = null;
   try {
     let bytes: Uint8Array;
+    if (voice.engine_kind === 'cloud') voiceRes = await reserve({ userId: opts.userId, provider: voice.provider, operation: opts.operation ?? 'tts_voice', estimateUsd: voiceCost });
     if (voice.provider === 'local_macos') {
       if (!env.localEnginesAllowed || !localTtsSupported()) throw new ProviderUnavailableError('Локальный голос доступен только в локальной среде macOS.');
       bytes = await sayToWav(text, voice.provider_voice_name, mult);
@@ -200,24 +209,21 @@ export async function synthesizeWithVoice(text: string, voice: CatalogVoice, opt
       bytes = (await serviceTts(voice.provider_voice_name, text, opts.speed ?? 'normal')).wav;
     } else if (voice.provider === 'azure') {
       if (!env.azureSpeechKey || !env.azureSpeechRegion) throw new ProviderUnavailableError('Azure Speech не подключён.');
-      await assertBudget(opts.userId);
       const pct = Math.round((mult - 1) * 100);
       // A multilingual voice (another locale) speaks Greek inside <lang xml:lang="el-GR">.
       const body = `<prosody rate="${pct >= 0 ? '+' : ''}${pct}%">${escapeXml(text)}</prosody>`;
       const greekNative = voice.provider_voice_name.startsWith('el-GR-');
       const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="el-GR"><voice name="${escapeXml(voice.provider_voice_name)}">${greekNative ? body : `<lang xml:lang="el-GR">${body}</lang>`}</voice></speak>`;
       const res = await fetch(`${env.azureTtsBase}/cognitiveservices/v1`, { method: 'POST', headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey, 'Content-Type': 'application/ssml+xml', 'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm', 'User-Agent': 'greekos' }, body: ssml, signal: AbortSignal.timeout(45_000) });
-      if (!res.ok) throw new Error(`azure tts ${res.status}`);
+      if (!res.ok) throw azureError('tts', res.status);
       bytes = new Uint8Array(await res.arrayBuffer());
     } else if (voice.provider === 'google') {
       if (!env.googleTtsKey) throw new ProviderUnavailableError('Google TTS не подключён.');
-      await assertBudget(opts.userId);
       const res = await fetch(`${env.googleTtsBase}/v1/text:synthesize?key=${encodeURIComponent(env.googleTtsKey)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ input: { text }, voice: { languageCode: 'el-GR', name: voice.provider_voice_name }, audioConfig: { audioEncoding: 'LINEAR16', sampleRateHertz: 24000, speakingRate: mult } }), signal: AbortSignal.timeout(45_000) });
       if (!res.ok) throw new Error(`google tts ${res.status}`);
       bytes = Uint8Array.from(Buffer.from(((await res.json()) as { audioContent?: string }).audioContent ?? '', 'base64'));
     } else if (voice.provider === 'openai') {
       if (!env.openaiKey) throw new ProviderUnavailableError('OpenAI не подключён.');
-      await assertBudget(opts.userId);
       const res = await fetch(`${env.openaiBase}/v1/audio/speech`, { method: 'POST', headers: { Authorization: `Bearer ${env.openaiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: env.openaiTtsModel, voice: voice.provider_voice_name, input: text, response_format: 'wav', speed: mult, instructions: 'Speak standard Modern Greek (el-GR) at a natural, moderate conversational pace. Read exactly the given text.' }), signal: AbortSignal.timeout(45_000) });
       if (!res.ok) throw new Error(`openai tts ${res.status}`);
       bytes = new Uint8Array(await res.arrayBuffer());
@@ -230,7 +236,16 @@ export async function synthesizeWithVoice(text: string, voice: CatalogVoice, opt
     return { bytes, mime: 'audio/wav', provider: voice.provider, model, voice: voice.voice_id, synthetic: true };
   } finally {
     if (voice.engine_kind === 'cloud') {
-      await recordUsage({ userId: opts.userId, provider: voice.provider, operation: opts.operation ?? 'tts_voice', units: text.length, unitKind: 'characters', costUsd: text.length * COST.ttsPerChar, ok, latencyMs: Date.now() - started }).catch(() => undefined);
+      if (voiceRes) await settle(voiceRes, ok ? voiceCost : 0);
+      await recordUsage({ userId: opts.userId, provider: voice.provider, operation: opts.operation ?? 'tts_voice', units: text.length, unitKind: 'characters', costUsd: ok ? voiceCost : 0, ok, latencyMs: Date.now() - started }).catch(() => undefined);
     }
   }
+}
+
+/** Azure F0 (free tier) answers 429 when its monthly quota or rate is exhausted: a named, non-billing outage. */
+function azureError(kind: 'tts' | 'asr', status: number): Error {
+  if (status === 429 || status === 403) return new ProviderUnavailableError(kind === 'tts'
+    ? 'Квота синтеза речи Azure на этот месяц исчерпана или превышена частота запросов — ответ показан текстом.'
+    : 'Квота распознавания речи Azure на этот месяц исчерпана или превышена частота запросов — напишите ответ текстом.');
+  return new Error(`azure ${kind} ${status}`);
 }

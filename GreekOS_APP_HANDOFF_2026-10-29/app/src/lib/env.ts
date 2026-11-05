@@ -40,8 +40,9 @@ export const env = {
   get llmCompatModel() { return opt('LLM_MODEL') ?? 'local-model'; },
   /** Per-call budget for a speaking turn / help request. A CPU-only local model may need more than a cloud one. */
   get llmTurnTimeoutMs() { return Number(opt('LLM_TURN_TIMEOUT_MS') ?? 25_000); },
-  get llmModelDialogue() { return opt('LLM_MODEL_DIALOGUE') ?? 'claude-opus-5-5'; },
-  get llmModelAssessor() { return opt('LLM_MODEL_ASSESSOR') ?? 'claude-opus-5-5'; },
+  // Budget (5–10 €/month for everything): the most economical current model for dialogue and assessment.
+  get llmModelDialogue() { return opt('LLM_MODEL_DIALOGUE') ?? 'claude-haiku-5-5'; },
+  get llmModelAssessor() { return opt('LLM_MODEL_ASSESSOR') ?? 'claude-haiku-5-5'; },
 
   get asrProvider() { return (opt('ASR_PROVIDER') ?? 'none') as 'openai' | 'azure' | 'local' | 'mock' | 'none'; },
   get ttsProvider() { return (opt('TTS_PROVIDER') ?? 'none') as 'openai' | 'azure' | 'google' | 'local' | 'mock' | 'none'; },
@@ -66,9 +67,23 @@ export const env = {
   get openaiBase() { return (opt('OPENAI_BASE_URL') ?? 'https://api.openai.com').replace(/\/$/, ''); },
   get googleTtsVoices() { return (opt('GOOGLE_TTS_VOICES') ?? 'el-GR-Wavenet-A,el-GR-Standard-B').split(',').map((s) => s.trim()); },
 
-  /** Cost guards (USD). Exceeding them blocks provider calls; they are estimates, not invoices. */
-  get dailyUserBudgetUsd() { return Number(opt('BUDGET_DAILY_USD_PER_USER') ?? '1.5'); },
-  get monthlyBudgetUsd() { return Number(opt('BUDGET_MONTHLY_USD') ?? '40'); },
+  /**
+   * Spending ceiling (EUR, all services together). Paid API calls are blocked once this month's spend
+   * reaches (BUDGET_MONTHLY_EUR_MAX − BUDGET_FIXED_EUR) × BUDGET_SAFETY_RATIO. USD list prices are
+   * converted with a conservative rate (1 USD = 1 EUR) and a tax multiplier (Greek VAT 24 %).
+   */
+  get budgetMonthlyEurMax() { return Number(opt('BUDGET_MONTHLY_EUR_MAX') ?? '10'); },
+  get budgetMonthlyEurTarget() { return Number(opt('BUDGET_MONTHLY_EUR_TARGET') ?? '5'); },
+  /** Monthly fixed infrastructure outside the per-call ledger (voice gateway machine, domain…). */
+  get budgetFixedEur() { return Number(opt('BUDGET_FIXED_EUR') ?? '5.5'); },
+  get budgetSafetyRatio() { return Math.min(1, Math.max(0, Number(opt('BUDGET_SAFETY_RATIO') ?? '0.8'))); },
+  get budgetDailyEurPerUser() { return Number(opt('BUDGET_DAILY_EUR_PER_USER') ?? '0.5'); },
+  get budgetUsdToEur() { return Number(opt('BUDGET_USD_TO_EUR') ?? '1'); },
+  get budgetTaxMultiplier() { return Number(opt('BUDGET_TAX_MULTIPLIER') ?? '1.24'); },
+  /** Azure Speech pricing tier: F0 (free, hard quota, no charges) or S0 (pay per use). */
+  get azureSpeechTier() { return (opt('AZURE_SPEECH_TIER') ?? 'F0').toUpperCase() === 'S0' ? 'S0' as const : 'F0' as const; },
+  get azureTtsUsdPerMillionChars() { return Number(opt('AZURE_TTS_USD_PER_MILLION_CHARS') ?? '16'); },
+  get azureSttUsdPerHour() { return Number(opt('AZURE_STT_USD_PER_HOUR') ?? '1'); },
   get audioRunBudgetUsd() { return Number(opt('AUDIO_RUN_BUDGET_USD') ?? '5'); },
   get cronSecret() { return opt('CRON_SECRET'); },
 };

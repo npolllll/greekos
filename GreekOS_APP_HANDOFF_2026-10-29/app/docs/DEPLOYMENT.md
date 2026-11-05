@@ -1,3 +1,5 @@
+> **Актуальный порядок развёртывания для владельца — `FINAL_DEPLOYMENT_GUIDE.md` в корне репозитория** (GitHub Actions, бесплатные тарифы, бюджет 10 €). Этот файл — технические подробности.
+
 # Развёртывание: Supabase + Vercel + Fly.io
 
 Рабочая система — три сервиса:
@@ -109,10 +111,10 @@ APP_URL=https://<домен> npx tsx scripts/create-owner.ts --email <ваш e-m
 
 | Назначение | Переменные | Где взять |
 |---|---|---|
-| AI-оценщик и диалог (Claude) | `ANTHROPIC_API_KEY`; модели по умолчанию `claude-opus-5-5` (`LLM_MODEL_DIALOGUE`, `LLM_MODEL_ASSESSOR`) | console.anthropic.com → API Keys |
+| AI-оценщик и диалог (Claude) | `ANTHROPIC_API_KEY`; модели по умолчанию `claude-haiku-5-5` (`LLM_MODEL_DIALOGUE`, `LLM_MODEL_ASSESSOR`) | console.anthropic.com → API Keys |
 | Распознавание речи el-GR | `ASR_PROVIDER=openai` + `OPENAI_API_KEY` **или** `ASR_PROVIDER=azure` + `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION` | platform.openai.com · portal.azure.com (Speech) |
 | Синтез речи el-GR | `TTS_PROVIDER=openai\|azure\|google` + ключ (`GOOGLE_TTS_API_KEY` для Google) и при желании `*_TTS_VOICES` | те же консоли; Google Cloud → Text-to-Speech API |
-| Лимиты расходов | `BUDGET_DAILY_USD_PER_USER`, `BUDGET_MONTHLY_USD`, `AUDIO_RUN_BUDGET_USD` | оценки, не счета |
+| Лимиты расходов (EUR) | `BUDGET_MONTHLY_EUR_MAX`, `BUDGET_FIXED_EUR`, `BUDGET_DAILY_EUR_PER_USER` — см. `FINAL_DEPLOYMENT_GUIDE.md` §7 | жёсткий лимитер с резервированием; не счета |
 
 Необязательные адреса сервисов (частные конечные точки, прокси): `AZURE_SPEECH_TTS_URL`,
 `AZURE_SPEECH_STT_URL`, `GOOGLE_TTS_URL`, `OPENAI_BASE_URL`. По умолчанию — публичные адреса

@@ -235,22 +235,28 @@ describe('conversation engine v2 (wire-protocol mocks)', () => {
     process.env.ANTHROPIC_BASE_URL = base;
     try {
       const chunks: string[] = [];
-      const r = await streamJson({ userId: null, operation: 'contract_test', model: 'claude-test', system: 'S', messages: [{ role: 'user', content: 'U' }], schema: { type: 'object', properties: { reply_el: { type: 'string' } }, required: ['reply_el'], additionalProperties: false }, maxTokens: 50, timeoutMs: 10_000, onText: (c) => chunks.push(c) });
+      const r = await streamJson({ userId: null, operation: 'contract_test', model: 'claude-haiku-5-5', system: 'S', messages: [{ role: 'user', content: 'U' }], schema: { type: 'object', properties: { reply_el: { type: 'string' } }, required: ['reply_el'], additionalProperties: false }, maxTokens: 50, timeoutMs: 10_000, onText: (c) => chunks.push(c) });
       expect(r.ok).toBe(true);
       if (r.ok) expect(JSON.parse(r.text)).toEqual({ reply_el: 'Γεια σας! Τι θα θέλατε;' });
       expect(chunks.length).toBeGreaterThan(1);
       const req = requests.findLast((x) => x.path === '/v1/messages')!;
       // SDK 1.x sends the API key as a bearer token.
       expect(req.headers.authorization).toBe('Bearer test-key-not-real');
-      expect(req.body).toMatchObject({ model: 'claude-test', stream: true, system: 'S', output_config: { format: { type: 'json_schema' }, effort: 'low' }, fallbacks: 'default', cache_control: { type: 'ephemeral' } });
+      expect(req.body).toMatchObject({ model: 'claude-haiku-5-5', stream: true, system: 'S', output_config: { format: { type: 'json_schema' }, effort: 'low' }, cache_control: { type: 'ephemeral' } });
+      // Haiku 5.5 (the budget default) has no server-side refusal fallback: neither field nor beta is sent.
+      expect(req.body.fallbacks).toBeUndefined();
+      expect(String(req.headers['anthropic-beta'] ?? '')).not.toContain('server-side-fallback');
       // Thinking counts against max_tokens: the cloud request leaves room beyond the local cap.
       expect(req.body.max_tokens).toBeGreaterThanOrEqual(4096);
-      expect(String(req.headers['anthropic-beta'])).toContain('server-side-fallback-2026-07-01');
 
       // A decline mid-reply continues on the fallback model in the same stream: one valid reply.
-      const f = await streamJson({ userId: null, operation: 'contract_test', model: 'claude-test', system: 'S-FALLBACK', messages: [{ role: 'user', content: 'U' }], schema: { type: 'object', properties: { reply_el: { type: 'string' } }, required: ['reply_el'], additionalProperties: false }, maxTokens: 50, timeoutMs: 10_000 });
+      // Models that support it (here Opus 5.5) ask for the server-side fallback.
+      const f = await streamJson({ userId: null, operation: 'contract_test', model: 'claude-opus-5-5', system: 'S-FALLBACK', messages: [{ role: 'user', content: 'U' }], schema: { type: 'object', properties: { reply_el: { type: 'string' } }, required: ['reply_el'], additionalProperties: false }, maxTokens: 50, timeoutMs: 10_000 });
       expect(f.ok).toBe(true);
       if (f.ok) { expect(JSON.parse(f.text)).toEqual({ reply_el: 'Γεια σας! Τι θα θέλατε;' }); expect(f.model).toBe('claude-opus-4-8'); }
+      const fr = requests.findLast((x) => x.path === '/v1/messages')!;
+      expect(fr.body).toMatchObject({ model: 'claude-opus-5-5', fallbacks: 'default' });
+      expect(String(fr.headers['anthropic-beta'])).toContain('server-side-fallback-2026-07-01');
     } finally {
       process.env.LLM_PROVIDER = 'openai_compatible';
       delete process.env.ANTHROPIC_API_KEY;

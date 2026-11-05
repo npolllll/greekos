@@ -6,22 +6,19 @@ import { asrStatus, ttsStatus } from '@/lib/providers/speech';
 import { env } from '@/lib/env';
 import { dateTimeRu } from '@/lib/admin/labels';
 import { ProviderCheck } from '../_components/ProviderCheck';
-import { isoDaysAgo, isoMonthStart } from '@/lib/admin/time';
+import { isoDaysAgo } from '@/lib/admin/time';
+import { budgetSummary } from '@/lib/providers/budget';
 
 export const metadata = { title: 'Провайдеры' };
 
-function sum(rows: Array<{ estimated_cost_usd: number | string }> | null) {
-  return (rows ?? []).reduce((a, r) => a + Number(r.estimated_cost_usd), 0);
-}
+const eur = (v: number) => `${v.toFixed(2).replace('.', ',')} €`;
 
 export default async function ProvidersPage() {
   await requireOwnerPage();
   const db = adminClient();
   const day = isoDaysAgo(1);
-  const monthStart = isoMonthStart();
-  const [{ data: today }, { data: month }, { data: lastCheck }, { data: failures }] = await Promise.all([
-    db.from('provider_usage').select('estimated_cost_usd').gte('created_at', day),
-    db.from('provider_usage').select('estimated_cost_usd, provider, operation').gte('created_at', monthStart),
+  const [budget, { data: lastCheck }, { data: failures }] = await Promise.all([
+    budgetSummary(),
     db.from('admin_audit_log').select('meta, occurred_at').eq('action', 'providers.check').order('occurred_at', { ascending: false }).limit(1).maybeSingle(),
     db.from('provider_usage').select('provider, operation, created_at').eq('ok', false).gte('created_at', day).order('created_at', { ascending: false }).limit(10),
   ]);
@@ -34,8 +31,6 @@ export default async function ProvidersPage() {
     tts.provider === 'local' ? listServiceVoices().catch(() => []) : Promise.resolve([]),
     info.local && env.llmBaseUrl ? fetch(`${env.llmBaseUrl.replace(/\/$/, '')}/health`, { signal: AbortSignal.timeout(1500), cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null) : Promise.resolve(null),
   ]);
-  const byProvider = new Map<string, number>();
-  for (const r of month ?? []) byProvider.set(r.provider, (byProvider.get(r.provider) ?? 0) + Number(r.estimated_cost_usd));
   const rows = [
     { name: 'LLM (диалог, AI-проверка)', ok: llm, detail: !llm ? 'ANTHROPIC_API_KEY или LLM_PROVIDER=openai_compatible + LLM_BASE_URL' : env.llmProvider === 'anthropic' ? `Anthropic · диалог ${env.llmModelDialogue} · оценка ${env.llmModelAssessor}` : `${info.label_ru}${info.local ? ` · ${env.llmBaseUrl}${llmHealth ? ` · сервер отвечает (${(llmHealth as { gpu?: string }).gpu ?? 'cpu'})` : ' · сервер НЕ отвечает'}` : ''}`, synthetic: false },
     { name: 'Распознавание речи (ASR)', ok: asr.configured, detail: !asr.configured ? 'ASR_PROVIDER=openai|azure + OPENAI_API_KEY или AZURE_SPEECH_KEY/AZURE_SPEECH_REGION' : asr.provider === 'local' ? `локальный Whisper (sherpa-onnx) · ${asrHealth ? `модели: ${asrHealth.available.join(', ')}` : 'сервис речи НЕ отвечает'} · только разработка` : asr.provider, synthetic: asr.synthetic },
@@ -58,9 +53,9 @@ export default async function ProvidersPage() {
         <ProviderCheck />
       </div>
       <div className="admin-top">
-        <div className="card admin-stat"><small className="quiet">Расходы за 24 часа (оценка)</small><div className="metric mono">${sum(today).toFixed(2)}</div><span className="tag gray">лимит на ученика ${env.dailyUserBudgetUsd}/день</span></div>
-        <div className="card admin-stat"><small className="quiet">Расходы за месяц (оценка)</small><div className="metric mono">${sum(month).toFixed(2)}</div><span className="tag gray">лимит ${env.monthlyBudgetUsd}/мес</span></div>
-        <div className="card admin-stat"><small className="quiet">По провайдерам</small><div className="small mt8">{[...byProvider.entries()].map(([p, v]) => <div key={p}>{p}: ${v.toFixed(2)}</div>)}{!byProvider.size ? '—' : null}</div></div>
+        <div className="card admin-stat" data-testid="budget-month"><small className="quiet">Платные API в этом месяце</small><div className="metric mono">{eur(budget.committedEur)}</div><span className={`tag ${budget.blocked ? 'gold' : 'gray'}`}>{budget.blocked ? 'лимит достигнут — платные запросы остановлены' : `осталось ${eur(budget.remainingEur)} из ${eur(budget.capEur)}`}</span></div>
+        <div className="card admin-stat"><small className="quiet">Всего с инфраструктурой (оценка)</small><div className="metric mono">{eur(budget.projectedTotalEur)}</div><span className="tag gray">цель {eur(budget.targetEur)} · максимум {eur(budget.maxEur)} (фикс. {eur(budget.fixedEur)})</span></div>
+        <div className="card admin-stat"><small className="quiet">По сервисам (резерв учитывается до ответа)</small><div className="small mt8">{budget.byProvider.map((r) => <div key={r.provider}>{r.provider}: {eur(r.eur)}</div>)}{!budget.byProvider.length ? 'платных вызовов не было' : null}{budget.inFlight ? <div className="tiny muted">в процессе: {budget.inFlight}</div> : null}</div><span className="tag gray">сброс {dateTimeRu(budget.resetsAt)}</span></div>
         <div className="card admin-stat"><small className="quiet">Сбои за 24 часа</small><div className="metric mono">{failures?.length ?? 0}</div><span className="tag gray">{(failures ?? []).slice(0, 2).map((f) => `${f.provider}:${f.operation}`).join(', ') || 'нет'}</span></div>
       </div>
     </div>

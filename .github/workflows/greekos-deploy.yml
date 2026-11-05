@@ -1,0 +1,84 @@
+# GreekOS — one-click production deployment (Supabase + Fly.io voice gateway + Vercel).
+# Run: GitHub → Actions → «GreekOS deploy» → Run workflow. Safe to re-run: finished steps are skipped,
+# the methodological revisions and settings are idempotent. Secrets come only from GitHub → Settings →
+# Secrets and variables → Actions (see FINAL_DEPLOYMENT_GUIDE.md); they are masked in the log.
+name: GreekOS deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      voice_gateway:
+        description: 'Live streaming conversation through the Fly.io gateway (yes/no)'
+        default: 'yes'
+        required: true
+      dry_run:
+        description: 'Only print the steps (1) or deploy (0)'
+        default: '0'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: greekos-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: GreekOS_APP_HANDOFF_2026-10-29/app
+    env:
+      NONINTERACTIVE: '1'
+      DRY_RUN: ${{ inputs.dry_run }}
+      VOICE_GATEWAY: ${{ inputs.voice_gateway }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      APP_URL: ${{ secrets.APP_URL }}
+      OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+      AZURE_SPEECH_REGION: ${{ vars.AZURE_SPEECH_REGION || 'westeurope' }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      SMTP_SENDER: ${{ secrets.SMTP_SENDER }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: GreekOS_APP_HANDOFF_2026-10-29/app/package-lock.json
+      - name: PostgreSQL 17 client (the corpus dump needs psql 17.6+)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -qq postgresql-client-17
+          psql --version
+      - run: npm ci --no-audit --no-fund
+      - name: Check that every required secret is present
+        run: |
+          missing=""
+          for v in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF SUPABASE_DB_PASSWORD DATABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY APP_URL OWNER_EMAIL ANTHROPIC_API_KEY AZURE_SPEECH_KEY SMTP_PASS SMTP_SENDER VERCEL_TOKEN; do
+            [ -n "${!v}" ] || missing="$missing $v"
+          done
+          [ "$VOICE_GATEWAY" != yes ] || [ -n "$FLY_API_TOKEN" ] || missing="$missing FLY_API_TOKEN"
+          [ -z "$missing" ] || { echo "::error::Missing GitHub secrets:$missing"; exit 1; }
+      - name: Deploy
+        run: bash scripts/deploy-cloud.sh
+      - name: Production check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: greekos-production-checks
+          path: GreekOS_APP_HANDOFF_2026-10-29/app/reports/production
+          if-no-files-found: ignore
+          retention-days: 30

@@ -56,7 +56,7 @@ cloud_env() {
     NEXT_PUBLIC_SUPABASE_ANON_KEY="$NEXT_PUBLIC_SUPABASE_ANON_KEY" SUPABASE_SERVICE_ROLE_KEY="$SUPABASE_SERVICE_ROLE_KEY" \
     DATABASE_URL="$DATABASE_URL" LLM_PROVIDER=anthropic ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" \
     ASR_PROVIDER=azure TTS_PROVIDER=azure AZURE_SPEECH_KEY="$AZURE_SPEECH_KEY" AZURE_SPEECH_REGION="$AZURE_SPEECH_REGION" \
-    VOICE_GATEWAY_SECRET="$VOICE_GATEWAY_SECRET" BUDGET_MONTHLY_USD="$BUDGET_MONTHLY_USD" BUDGET_DAILY_USD_PER_USER="$BUDGET_DAILY_USD_PER_USER" \
+    VOICE_GATEWAY_SECRET="$VOICE_GATEWAY_SECRET" BUDGET_MONTHLY_EUR_MAX="$BUDGET_MONTHLY_EUR_MAX" BUDGET_MONTHLY_EUR_TARGET="$BUDGET_MONTHLY_EUR_TARGET" BUDGET_FIXED_EUR="$BUDGET_FIXED_EUR" BUDGET_DAILY_EUR_PER_USER="$BUDGET_DAILY_EUR_PER_USER" AZURE_SPEECH_TIER="$AZURE_SPEECH_TIER" LLM_MODEL_DIALOGUE="$LLM_MODEL_DIALOGUE" LLM_MODEL_ASSESSOR="$LLM_MODEL_ASSESSOR" \
     AUDIO_RUN_BUDGET_USD="$AUDIO_RUN_BUDGET_USD" LOCAL_ASR_URL= LLM_BASE_URL= ALLOW_SYNTHETIC_PROVIDERS= ALLOW_LOCAL_VOICE_PLAYBACK_FOR_DEV= "$@"
 }
 sql() { [ "$DRY" = 1 ] && { echo 0; return; }; psql "$DATABASE_URL" -Atc "$1"; }
@@ -91,14 +91,33 @@ ask SMTP_PORT "SMTP: порт" 0 "465"
 ask SMTP_USER "SMTP: пользователь" 0 "resend"
 ask SMTP_PASS "SMTP: пароль (для Resend — API key)" 1
 ask SMTP_SENDER "SMTP: адрес отправителя на проверенном домене (например no-reply@ваш-домен)"
-ask FLY_APP "Fly.io: имя приложения голосового шлюза" 0 "greekos-voice-${SUPABASE_PROJECT_REF:0:8}"
-ask BUDGET_MONTHLY_USD "Лимит расходов на AI и голос в месяц, USD" 0 "40"
-ask BUDGET_DAILY_USD_PER_USER "Лимит в день на ученика, USD" 0 "1.5"
-ask AUDIO_RUN_BUDGET_USD "Лимит одной генерации аудио курса, USD" 0 "5"
-[ -n "${CRON_SECRET:-}" ] || remember CRON_SECRET "$(random_secret)"
-[ -n "${REGISTRATION_SALT:-}" ] || remember REGISTRATION_SALT "$(random_secret)"
-[ -n "${VOICE_GATEWAY_SECRET:-}" ] || remember VOICE_GATEWAY_SECRET "$(random_secret)"
-GATEWAY_URL="wss://$FLY_APP.fly.dev"
+# Live streaming conversation needs the voice gateway (Fly.io, ~0.3 €/month asleep between talks, no hard
+# provider cap). "no" keeps everything on Vercel: AI Speaking then runs in step mode (record → answer).
+ask VOICE_GATEWAY "Живой голосовой разговор через шлюз на Fly.io? (yes/no)" 0 "yes"
+[ "$VOICE_GATEWAY" = yes ] && ask FLY_APP "Fly.io: имя приложения голосового шлюза" 0 "greekos-voice-${SUPABASE_PROJECT_REF:0:8}"
+# Budget: target 5 €, absolute maximum 10 € a month for everything (see FINAL_DEPLOYMENT_GUIDE.md).
+ask BUDGET_MONTHLY_EUR_MAX "Абсолютный максимум расходов в месяц, EUR" 0 "10"
+ask BUDGET_MONTHLY_EUR_TARGET "Целевой расход в месяц, EUR" 0 "5"
+# Fixed costs outside the per-call ledger, at their WORST case so the total can never pass the maximum:
+# domain for the e-mail sender ≈ 0.85 €; Fly.io has no hard spending cap, so its machine is counted as if it
+# ran all month (512 MB shared CPU: $3.69 + VAT ≈ 4.6 €). Paid API calls then stop at (MAX − FIXED) × 0.8.
+FIXED_DEFAULT=1; [ "$VOICE_GATEWAY" = yes ] && FIXED_DEFAULT=5.5
+ask BUDGET_FIXED_EUR "Фиксированные расходы в месяц в худшем случае (домен, шлюз Fly.io), EUR" 0 "$FIXED_DEFAULT"
+ask BUDGET_DAILY_EUR_PER_USER "Лимит AI-функций в день на ученика, EUR" 0 "0.5"
+ask AZURE_SPEECH_TIER "Тариф Azure Speech: F0 (бесплатный, без начислений) или S0" 0 "F0"
+ask LLM_MODEL_DIALOGUE "Модель AI-разговора" 0 "claude-haiku-5-5"
+ask LLM_MODEL_ASSESSOR "Модель AI-проверки письма" 0 "claude-haiku-5-5"
+ask AUDIO_RUN_BUDGET_USD "Лимит одной генерации аудио курса, USD (на F0 расходов нет)" 0 "1"
+# Interactive runs keep random secrets in .deploy/cloud.env. A CI run (GitHub Actions) has no memory between
+# runs, so it derives the same values every time from the service-role key (HMAC; rotate that key → new values).
+new_secret() {
+  if [ "${NONINTERACTIVE:-0}" = 1 ]; then SEED="$SUPABASE_SERVICE_ROLE_KEY" node -e "console.log(require('crypto').createHmac('sha256', process.env.SEED).update('greekos:$1').digest('base64url').slice(0, 32))"
+  else random_secret; fi
+}
+[ -n "${CRON_SECRET:-}" ] || remember CRON_SECRET "$(new_secret cron)"
+[ -n "${REGISTRATION_SALT:-}" ] || remember REGISTRATION_SALT "$(new_secret registration)"
+[ -n "${VOICE_GATEWAY_SECRET:-}" ] || remember VOICE_GATEWAY_SECRET "$(new_secret voice-gateway)"
+GATEWAY_URL=""; [ "$VOICE_GATEWAY" = yes ] && GATEWAY_URL="wss://$FLY_APP.fly.dev"
 
 step "2/10 схема базы (миграции)"
 run npx supabase link --project-ref "$SUPABASE_PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
@@ -173,6 +192,7 @@ run cloud_env npm run audio -- cast
 run cloud_env npm run audio -- render-batch --budget-cap "$AUDIO_RUN_BUDGET_USD"
 
 step "8/10 голосовой шлюз на Fly.io (WebSocket, регион Франкфурт)"
+if [ "$VOICE_GATEWAY" = yes ]; then
 if [ "$DRY" != 1 ] && [ ! -x "$FLY" ]; then curl -fsSL https://fly.io/install.sh | sh; FLY="$HOME/.fly/bin/flyctl"; fi
 FT=(); [ -n "${FLY_API_TOKEN:-}" ] && FT=(--access-token "$FLY_API_TOKEN")
 if [ "$DRY" != 1 ] && ! "$FLY" auth whoami "${FT[@]}" >/dev/null 2>&1; then
@@ -185,14 +205,17 @@ gw_secrets() {
     "SUPABASE_SERVICE_ROLE_KEY=$SUPABASE_SERVICE_ROLE_KEY" "APP_URL=$APP_URL" "VOICE_GATEWAY_SECRET=$VOICE_GATEWAY_SECRET" \
     "LLM_PROVIDER=anthropic" "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY" "ASR_PROVIDER=azure" "TTS_PROVIDER=azure" \
     "AZURE_SPEECH_KEY=$AZURE_SPEECH_KEY" "AZURE_SPEECH_REGION=$AZURE_SPEECH_REGION" \
-    "BUDGET_MONTHLY_USD=$BUDGET_MONTHLY_USD" "BUDGET_DAILY_USD_PER_USER=$BUDGET_DAILY_USD_PER_USER"
+    "BUDGET_MONTHLY_EUR_MAX=$BUDGET_MONTHLY_EUR_MAX" "BUDGET_MONTHLY_EUR_TARGET=$BUDGET_MONTHLY_EUR_TARGET" "BUDGET_FIXED_EUR=$BUDGET_FIXED_EUR" \
+    "BUDGET_DAILY_EUR_PER_USER=$BUDGET_DAILY_EUR_PER_USER" "AZURE_SPEECH_TIER=$AZURE_SPEECH_TIER" "LLM_MODEL_DIALOGUE=$LLM_MODEL_DIALOGUE" "LLM_MODEL_ASSESSOR=$LLM_MODEL_ASSESSOR"
 }
 echo "+ flyctl secrets import --app $FLY_APP ← $(gw_secrets | cut -d= -f1 | tr '\n' ' ')"
 [ "$DRY" = 1 ] || gw_secrets | "$FLY" secrets import --app "$FLY_APP" --stage "${FT[@]}" >/dev/null
 # The app folder is the build context (the gateway imports src/); .dockerignore keeps secrets and data out.
-GW_DEPLOY=("$FLY" deploy "$PWD" --app "$FLY_APP" --config "$PWD/voice-gateway/fly.toml" --dockerfile "$PWD/voice-gateway/Dockerfile" "${FT[@]}")
+# --ha=false: exactly one machine (Fly creates two by default); it sleeps between conversations.
+GW_DEPLOY=("$FLY" deploy "$PWD" --app "$FLY_APP" --config "$PWD/voice-gateway/fly.toml" --dockerfile "$PWD/voice-gateway/Dockerfile" --ha=false "${FT[@]}")
 # Remote build on Fly's builders; if they are unreachable from this network, build with local Docker.
 run "${GW_DEPLOY[@]}" --remote-only || { command -v docker >/dev/null && run "${GW_DEPLOY[@]}" --local-only; }
+else echo "шлюз не разворачивается: AI-разговор работает в пошаговом режиме на Vercel"; fi
 
 step "9/10 Vercel: проект, переменные, развёртывание"
 VT=(); [ -n "${VERCEL_TOKEN:-}" ] && VT=(--token "$VERCEL_TOKEN")
@@ -200,9 +223,10 @@ if [ "$DRY" != 1 ] && ! npx --yes vercel whoami "${VT[@]}" >/dev/null 2>&1; then
   [ "${NONINTERACTIVE:-0}" = 1 ] && { echo "Vercel: нужен VERCEL_TOKEN" >&2; exit 2; }
   npx --yes vercel login
 fi
-run npx --yes vercel link --yes "${VT[@]}"
-VARS=(NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY APP_URL CRON_SECRET REGISTRATION_SALT ANTHROPIC_API_KEY AZURE_SPEECH_KEY AZURE_SPEECH_REGION VOICE_GATEWAY_SECRET BUDGET_MONTHLY_USD BUDGET_DAILY_USD_PER_USER AUDIO_RUN_BUDGET_USD)
-declare -A FIXED=([APP_ENV]=production [LLM_PROVIDER]=anthropic [ASR_PROVIDER]=azure [TTS_PROVIDER]=azure [NEXT_PUBLIC_VOICE_GATEWAY_URL]=$GATEWAY_URL)
+run npx --yes vercel link --yes --project "${VERCEL_PROJECT:-greekos}" "${VT[@]}"
+VARS=(NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY APP_URL CRON_SECRET REGISTRATION_SALT ANTHROPIC_API_KEY AZURE_SPEECH_KEY AZURE_SPEECH_REGION AZURE_SPEECH_TIER VOICE_GATEWAY_SECRET BUDGET_MONTHLY_EUR_MAX BUDGET_MONTHLY_EUR_TARGET BUDGET_FIXED_EUR BUDGET_DAILY_EUR_PER_USER LLM_MODEL_DIALOGUE LLM_MODEL_ASSESSOR AUDIO_RUN_BUDGET_USD)
+declare -A FIXED=([APP_ENV]=production [LLM_PROVIDER]=anthropic [ASR_PROVIDER]=azure [TTS_PROVIDER]=azure)
+[ -n "$GATEWAY_URL" ] && FIXED[NEXT_PUBLIC_VOICE_GATEWAY_URL]=$GATEWAY_URL
 set_var() {
   echo "+ vercel env add $1 production ← $(mask "$2")"
   [ "$DRY" = 1 ] && return 0
@@ -217,20 +241,21 @@ step "10/10 проверка работающей системы"
 if [ "$DRY" != 1 ]; then
   for i in $(seq 1 30); do curl -sf "$APP_URL/api/health" >/dev/null && break; sleep 5; done
   curl -sf "$APP_URL/api/health" && echo " ← приложение $APP_URL" || echo "Приложение не отвечает: проверьте домен (Vercel → Settings → Domains)."
-  curl -sf "https://$FLY_APP.fly.dev/health" && echo " ← голосовой шлюз $GATEWAY_URL" || echo "Шлюз не отвечает: $FLY logs --app $FLY_APP"
+  [ -z "$GATEWAY_URL" ] || { curl -sf "https://$FLY_APP.fly.dev/health" && echo " ← голосовой шлюз $GATEWAY_URL" || echo "Шлюз не отвечает: $FLY logs --app $FLY_APP"; }
 fi
 # A live conversation through the deployed gateway with the real providers (temporary test account).
 # Until the owner approves the Azure voices the tutor answers in text only, so this check reports
 # «every_turn_voiced: false» — repeat it after approval (same command).
-run cloud_env npx tsx --conditions=react-server scripts/voice-smoke.ts --gateway "$GATEWAY_URL" --turns 4 --out reports/production/voice-smoke \
+[ -z "$GATEWAY_URL" ] || run cloud_env npx tsx --conditions=react-server scripts/voice-smoke.ts --gateway "$GATEWAY_URL" --turns 4 --out reports/production/voice-smoke \
   || echo "Проверка живого разговора не пройдена полностью — отчёт в reports/production/voice-smoke; повторите после утверждения голосов."
 
 cat <<EOF
 
-Развёрнуто: $APP_URL (приложение) и $GATEWAY_URL (голосовой шлюз).
+Развёрнуто: $APP_URL (приложение); голосовой шлюз: ${GATEWAY_URL:-нет — AI-разговор в пошаговом режиме}.
 Осталось решить владельцу в GreekOS ($APP_URL, вход по письму-приглашению):
   • Админ → Политика выпуска → подписать; Админ → Выпуск → выборка (≤ 30) → «Принять решение о выпуске»
   • Админ → Голоса и кастинг → прослушать и утвердить голоса Azure; Админ → Аудио → прослушать, записать условия Azure
   • Админ → Ученики → «Регистрация учеников»: режим и число мест; ссылка для учеников: $APP_URL/register
-Резервная копия: bash scripts/backup-db.sh (раз в неделю и перед миграциями) или ежедневные копии Supabase Pro.
+Резервная копия: еженедельно GitHub Actions «GreekOS backup» (зашифрованный дамп) или bash scripts/backup-db.sh.
+Расходы: Админ → Провайдеры (лимит EUR, остаток, дата сброса).
 EOF

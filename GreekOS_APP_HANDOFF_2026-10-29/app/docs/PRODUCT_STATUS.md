@@ -1,3 +1,5 @@
+> Итоговое состояние и результаты приёмки — `FINAL_ACCEPTANCE.md` в корне репозитория; развёртывание — `FINAL_DEPLOYMENT_GUIDE.md`.
+
 # GreekOS — сверка с финальным мандатом (04.11.2026)
 
 Сверка с `GREEKOS_FINAL_PRODUCT_MANDATE.md` (корень репозитория), §10 — 12 критериев приёмки.
@@ -76,8 +78,7 @@ $3,69 в месяц и уже проверен в контейнере. Объе
 
 1. **Аккаунты и оплата**: Supabase (проект в регионе ЕС), Vercel, Fly.io, Resend (с подтверждённым
    доменом отправителя: DNS-записи SPF/DKIM у регистратора домена), Anthropic API, Azure Speech
-   (регион westeurope). Лимиты расходов: `BUDGET_MONTHLY_USD` (по умолчанию 40 $),
-   `BUDGET_DAILY_USD_PER_USER` (1,5 $), `AUDIO_RUN_BUDGET_USD` (5 $) и лимиты в консолях Anthropic и Azure.
+   (регион westeurope, тариф F0). Бюджет 5–10 € в месяц и порядок действий — `FINAL_DEPLOYMENT_GUIDE.md`.
 2. **Секреты — никогда не в чат.** Один из двух способов:
    - на своём компьютере: `bash scripts/deploy-cloud.sh` — спросит значения, сохранит их только у вас
      (`.deploy/cloud.env`, права 600) и выполнит все 10 шагов;

@@ -12,8 +12,8 @@
  */
 import Anthropic from '@anthropic-ai/sdk';
 import { env } from '../env.ts';
-import { assertBudget, COST, recordUsage } from './budget.ts';
-import { llmConfigured, isLocalLlm } from './llm.ts';
+import { reserve, settle, llmCostUsd, llmEstimateUsd, recordUsage, BudgetExceededError, type Reservation } from './budget.ts';
+import { llmConfigured, isLocalLlm, fallbackParams } from './llm.ts';
 
 export interface StreamJsonParams {
   userId: string | null;
@@ -34,7 +34,7 @@ export interface StreamJsonParams {
 }
 
 export type StreamJsonResult =
-  | { ok: true; text: string; model: string; firstTokenMs: number | null; totalMs: number; usage: { input: number; output: number } }
+  | { ok: true; text: string; model: string; firstTokenMs: number | null; totalMs: number; usage: { input: number; output: number; cacheWrite?: number; cacheRead?: number } }
   | { ok: false; reason: 'NOT_CONFIGURED' | 'TIMEOUT' | 'ABORTED' | 'PROVIDER_ERROR' | 'BUDGET_EXCEEDED' | 'TRUNCATED' | 'REFUSAL'; detail?: string; text: string; firstTokenMs: number | null; totalMs: number };
 
 let anthropic: Anthropic | null = null;
@@ -103,7 +103,7 @@ async function anthropicStream(p: StreamJsonParams, signal: AbortSignal, started
   let first: number | null = null;
   let stop: string | null = null;
   let model = p.model ?? env.llmModelDialogue;
-  const usage = { input: 0, output: 0 };
+  const usage = { input: 0, output: 0, cacheWrite: 0, cacheRead: 0 };
   const stream = await anthropic.beta.messages.create({
     model,
     // Current Claude models always think (adaptive) and thinking counts against max_tokens; the
@@ -112,7 +112,7 @@ async function anthropicStream(p: StreamJsonParams, signal: AbortSignal, started
     max_tokens: Math.max(p.maxTokens, 4096), stream: true,
     // A safety-classifier decline (not expected for language practice) continues on the fallback
     // model in the same stream instead of ending the learner's turn.
-    betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default',
+    ...fallbackParams(model),
     // The scene's system prompt and the earlier turns are the same prefix on every turn.
     cache_control: { type: 'ephemeral' },
     system: p.system, messages: p.messages,
@@ -121,7 +121,7 @@ async function anthropicStream(p: StreamJsonParams, signal: AbortSignal, started
   for await (const ev of stream) {
     // After a fallback the stream goes on with the fallback model: text before and after the
     // boundary is one continuous reply (the fallback model continues from the partial text).
-    if (ev.type === 'message_start') { model = ev.message.model; usage.input = (ev.message.usage?.input_tokens ?? 0) + (ev.message.usage?.cache_read_input_tokens ?? 0) + (ev.message.usage?.cache_creation_input_tokens ?? 0); }
+    if (ev.type === 'message_start') { model = ev.message.model; usage.input = ev.message.usage?.input_tokens ?? 0; usage.cacheRead = ev.message.usage?.cache_read_input_tokens ?? 0; usage.cacheWrite = ev.message.usage?.cache_creation_input_tokens ?? 0; }
     else if (ev.type === 'content_block_start' && (ev.content_block as { type: string; to?: { model?: string } }).type === 'fallback') { model = (ev.content_block as { to?: { model?: string } }).to?.model ?? model; }
     else if (ev.type === 'content_block_delta' && ev.delta.type === 'text_delta') {
       first ??= Date.now() - started;
@@ -138,7 +138,14 @@ async function anthropicStream(p: StreamJsonParams, signal: AbortSignal, started
 export async function streamJson(p: StreamJsonParams): Promise<StreamJsonResult> {
   const started = Date.now();
   if (!llmConfigured()) return { ok: false, reason: 'NOT_CONFIGURED', text: '', firstTokenMs: null, totalMs: 0 };
-  try { await assertBudget(p.userId); } catch (e) { return { ok: false, reason: 'BUDGET_EXCEEDED', detail: (e as Error).message, text: '', firstTokenMs: null, totalMs: 0 }; }
+  const anthModel = p.model ?? env.llmModelDialogue;
+  const estimateUsd = env.llmProvider === 'anthropic' ? llmEstimateUsd(anthModel, p.system.length + p.messages.reduce((a, m) => a + m.content.length, 0), Math.max(p.maxTokens, 4096)) : 0;
+  let res: Reservation;
+  try { res = await reserve({ userId: p.userId, provider: 'anthropic', operation: p.operation, estimateUsd }); }
+  catch (e) {
+    if (e instanceof BudgetExceededError) return { ok: false, reason: 'BUDGET_EXCEEDED', detail: e.message, text: '', firstTokenMs: null, totalMs: 0 };
+    throw e;
+  }
   const timeout = AbortSignal.timeout(p.timeoutMs);
   const signal = p.signal ? AbortSignal.any([p.signal, timeout]) : timeout;
   const anth = env.llmProvider === 'anthropic';
@@ -147,10 +154,14 @@ export async function streamJson(p: StreamJsonParams): Promise<StreamJsonResult>
   const onText = p.onText;
   const params = { ...p, onText: (c: string) => { firstMs ??= Date.now() - started; partial += c; onText?.(c); } };
   let ok = false;
-  let usage = { input: 0, output: 0 };
+  let completed = false;
+  let servedModel = anthModel;
+  let usage: { input: number; output: number; cacheWrite?: number; cacheRead?: number } = { input: 0, output: 0 };
   try {
     const r = anth ? await anthropicStream(params, signal, started) : await compatStream(params, signal, started);
     usage = r.usage;
+    servedModel = r.model;
+    completed = true;
     const totalMs = Date.now() - started;
     if (r.refusal) return { ok: false, reason: 'REFUSAL', text: r.text, firstTokenMs: r.first, totalMs };
     if (r.truncated) return { ok: false, reason: 'TRUNCATED', text: r.text, firstTokenMs: r.first, totalMs };
@@ -163,11 +174,13 @@ export async function streamJson(p: StreamJsonParams): Promise<StreamJsonResult>
     return { ok: false, reason: 'PROVIDER_ERROR', detail: (e as Error)?.message?.slice(0, 200), text: partial, firstTokenMs: firstMs, totalMs };
   } finally {
     const local = !anth && isLocalLlm();
+    // A stream cut short (barge-in, timeout, network) has no final usage: the worst case stays booked.
+    const costUsd = !anth ? 0 : completed ? llmCostUsd(servedModel, usage) : estimateUsd;
+    await settle(res, costUsd);
     await recordUsage({
       userId: p.userId, provider: anth ? 'anthropic' : local ? 'local_llm' : 'openai_compatible', operation: p.operation,
-      units: usage.input + usage.output, unitKind: 'tokens',
-      costUsd: anth ? usage.input * COST.llmPerInputToken + usage.output * COST.llmPerOutputToken : 0,
-      ok, latencyMs: Date.now() - started,
+      units: usage.input + (usage.cacheWrite ?? 0) + (usage.cacheRead ?? 0) + usage.output, unitKind: 'tokens',
+      costUsd, ok, latencyMs: Date.now() - started,
     }).catch(() => undefined);
   }
 }

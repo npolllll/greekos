@@ -2,7 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { betaZodOutputFormat } from '@anthropic-ai/sdk/helpers/beta/zod';
 import { toJSONSchema, type z } from 'zod';
 import { env } from '../env.ts';
-import { assertBudget, COST, recordUsage } from './budget.ts';
+import { reserve, settle, llmCostUsd, llmEstimateUsd, recordUsage, BudgetExceededError, type Reservation } from './budget.ts';
 
 let client: Anthropic | null = null;
 
@@ -82,14 +82,9 @@ export async function structuredCall<S extends z.ZodType>(params: {
   timeoutMs: number;
 }): Promise<StructuredResult<z.infer<S>>> {
   if (!llmConfigured()) return { ok: false, reason: 'NOT_CONFIGURED' };
-  try {
-    await assertBudget(params.userId);
-  } catch (e) {
-    return { ok: false, reason: 'BUDGET_EXCEEDED', detail: (e as Error).message };
-  }
   const started = Date.now();
   let ok = false;
-  let usage = { input_tokens: 0, output_tokens: 0 };
+  let usage = { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 };
   if (env.llmProvider === 'openai_compatible') {
     const r = await compatCall(params);
     ok = r.ok;
@@ -98,13 +93,20 @@ export async function structuredCall<S extends z.ZodType>(params: {
     if (!r.ok) return r;
     return { ok: true, data: r.data, model: r.model };
   }
+  let res: Reservation;
+  try {
+    res = await reserve({ userId: params.userId, provider: 'anthropic', operation: params.operation, estimateUsd: llmEstimateUsd(params.model, params.system.length + params.user.length, params.maxTokens) });
+  } catch (e) {
+    if (e instanceof BudgetExceededError) return { ok: false, reason: 'BUDGET_EXCEEDED', detail: e.message };
+    throw e;
+  }
+  let servedModel = params.model;
   try {
     const response = await getClient().beta.messages.parse(
       {
         model: params.model,
         max_tokens: params.maxTokens,
-        betas: ['server-side-fallback-2026-07-01'],
-        fallbacks: 'default',
+        ...fallbackParams(params.model),
         cache_control: { type: 'ephemeral' },
         system: params.system,
         messages: [{ role: 'user', content: params.user }],
@@ -112,7 +114,8 @@ export async function structuredCall<S extends z.ZodType>(params: {
       },
       { timeout: params.timeoutMs },
     );
-    usage = { input_tokens: response.usage.input_tokens ?? 0, output_tokens: response.usage.output_tokens ?? 0 };
+    servedModel = response.model ?? params.model;
+    usage = { input_tokens: response.usage.input_tokens ?? 0, output_tokens: response.usage.output_tokens ?? 0, cache_creation_input_tokens: response.usage.cache_creation_input_tokens ?? 0, cache_read_input_tokens: response.usage.cache_read_input_tokens ?? 0 };
     if (response.stop_reason === 'refusal') return { ok: false, reason: 'REFUSAL' };
     if (response.stop_reason === 'max_tokens') return { ok: false, reason: 'TRUNCATED' };
     if (!response.parsed_output) return { ok: false, reason: 'INVALID_OUTPUT' };
@@ -126,11 +129,19 @@ export async function structuredCall<S extends z.ZodType>(params: {
     if (e instanceof SyntaxError || (e as Error)?.name === 'ZodError') return { ok: false, reason: 'INVALID_OUTPUT' };
     return { ok: false, reason: 'PROVIDER_ERROR', detail: (e as Error)?.message?.slice(0, 200) };
   } finally {
+    // Actual cost from the response's usage; a failure before any usage settles at 0 (nothing billed).
+    const costUsd = llmCostUsd(servedModel, { input: usage.input_tokens, output: usage.output_tokens, cacheWrite: usage.cache_creation_input_tokens, cacheRead: usage.cache_read_input_tokens });
+    await settle(res, costUsd);
     await recordUsage({
       userId: params.userId, provider: 'anthropic', operation: params.operation,
-      units: usage.input_tokens + usage.output_tokens, unitKind: 'tokens',
-      costUsd: usage.input_tokens * COST.llmPerInputToken + usage.output_tokens * COST.llmPerOutputToken,
-      ok, latencyMs: Date.now() - started,
+      units: usage.input_tokens + usage.cache_creation_input_tokens + usage.cache_read_input_tokens + usage.output_tokens, unitKind: 'tokens',
+      costUsd, ok, latencyMs: Date.now() - started,
     }).catch(() => undefined);
   }
+}
+
+/** Server-side refusal fallback exists only for these models (Haiku has none); never sent otherwise. */
+const FALLBACK_MODELS = ['claude-fable-5-1', 'claude-opus-5-5', 'claude-opus-5', 'claude-sonnet-5-5'];
+export function fallbackParams(model: string): { betas?: string[]; fallbacks?: 'default' } {
+  return FALLBACK_MODELS.includes(model) ? { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' } : {};
 }

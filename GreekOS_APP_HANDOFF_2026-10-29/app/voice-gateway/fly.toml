@@ -6,10 +6,16 @@ primary_region = "fra"   # Frankfurt: next to Supabase EU and Azure West Europe
 [http_service]
   internal_port = 8080
   force_https = true
-  # A conversation must not wait for a cold start: one machine always runs.
-  auto_stop_machines = "off"
+  # Budget (≤ 10 €/month for everything): the machine sleeps when no conversation is open and starts on
+  # the next connection (a few seconds once; Fly bills running seconds and the stopped root disk).
+  auto_stop_machines = "stop"
   auto_start_machines = true
-  min_machines_running = 1
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "connections"   # a WebSocket conversation is one connection; idle = no open conversations
+    soft_limit = 20
+    hard_limit = 30
 
   [[http_service.checks]]
     grace_period = "20s"
