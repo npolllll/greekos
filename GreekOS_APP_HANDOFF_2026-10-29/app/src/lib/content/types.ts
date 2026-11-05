@@ -30,6 +30,11 @@ export interface ItemEnvelope {
     unlisted_answer: 'HOLD_FOR_REVIEW_NO_PENALTY';
   };
   release: { state: 'CONTENT_GATED'; learner_access: false; automatic_mastery: false; review_required: true };
+  /**
+   * Russian explanation of the right answer shown after an attempt (added by a recorded revision when the
+   * author's rationale is Greek-only). It reveals the key, so it is never part of a learner DTO.
+   */
+  answer_explanation_ru?: string | null;
 }
 
 export type ScoringStrategy =

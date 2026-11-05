@@ -12,7 +12,7 @@ afterAll(async () => { if (batchId) await admin.from('qa_batches').delete().eq('
 
 describe('lesson QA report', () => {
   it('covers every lesson with all dimensions and states that no human review took place', async () => {
-    const { count } = await admin.from('units').select('unit_id', { count: 'exact', head: true });
+    const { count } = await admin.from('units').select('unit_id', { count: 'exact', head: true }).not('unit_id', 'like', 'SYN-%');
     const rows = await buildLessonQa();
     expect(rows.length).toBe(count);
     for (const r of rows) {

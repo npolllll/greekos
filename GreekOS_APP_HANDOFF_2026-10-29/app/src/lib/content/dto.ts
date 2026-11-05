@@ -120,7 +120,7 @@ export function buildItemDTO(params: {
 }
 
 /** Defence in depth: assert a DTO carries no forbidden keys before it leaves the server. */
-const FORBIDDEN = ['answer', 'accepted_alternatives', 'model_response', 'original_payload', 'rationale', 'canonical_answers', 'accepted_variants', 'completed_text_reviewer_only', 'scoring', 'error_tags', 'source_claim_ids'];
+const FORBIDDEN = ['answer', 'accepted_alternatives', 'model_response', 'original_payload', 'rationale', 'answer_explanation_ru', 'canonical_answers', 'accepted_variants', 'completed_text_reviewer_only', 'scoring', 'error_tags', 'source_claim_ids'];
 export function assertNoLeak(value: unknown, path = '$'): void {
   if (Array.isArray(value)) { value.forEach((v, i) => assertNoLeak(v, `${path}[${i}]`)); return; }
   if (value && typeof value === 'object') {

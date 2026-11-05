@@ -162,6 +162,9 @@ if [ "$QA" = "0" ]; then
   run cloud_env npx tsx --conditions=react-server scripts/qa-autofix.ts
   run cloud_env npx tsx --conditions=react-server scripts/qa-engineering-fixes.ts
 else echo "пакет QA уже есть ($QA)"; fi
+# Methodological revisions (Russian explanations, prerequisite order, reading tasks): idempotent,
+# applied on every run so a redeploy brings an existing database up to the current corpus.
+run cloud_env npx tsx --conditions=react-server scripts/qa-content-revisions.ts
 
 step "7/10 голоса Azure: каталог, предложения кастинга, генерация 142 аудио (в пределах лимита)"
 run cloud_env npm run audio -- cast

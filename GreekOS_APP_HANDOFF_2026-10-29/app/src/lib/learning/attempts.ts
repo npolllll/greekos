@@ -6,7 +6,7 @@ import { loadItem, releaseMap, playableAudio, itemAccess, type ItemRow } from '.
 import { scoreDeterministic, type DeterministicScore } from '../scoring/score.ts';
 import { assessOpenResponse, type AiAssessment } from '../ai/assessor.ts';
 import { llmConfigured } from '../providers/llm.ts';
-import { taskKindFor, adapterFor, type Verdict } from '../content/types.ts';
+import { taskKindFor, adapterFor, type Verdict, type ItemEnvelope } from '../content/types.ts';
 import { localDateOf } from './calendar.ts';
 import { scheduleLadder, resolveReview, type ReviewRow } from './reviews.ts';
 import { refreshCompetencyState } from './state.ts';
@@ -34,8 +34,10 @@ export interface AttemptResult {
   error_kind: string | null;
   ai: { used: boolean; confidence: string | null; dimensions: unknown[]; improved_el: string | null; errors: unknown[] } | null;
   reveal: { key: string[]; model_response: string | null } | null;
-  /** Author's rationale from the canonical item (shown after answering, never in diagnostics/exams). */
+  /** Russian explanation (revision) or the author's rationale (shown after answering, never in diagnostics/exams). */
   explanation_ru: string | null;
+  /** The author's Greek note, shown under the Russian explanation at B1–B2 (reading practice). */
+  explanation_el: string | null;
   feedback_event_id: string | null;
   review: { outcome: string; interval_days: number } | null;
   scheduled_reviews: string[];
@@ -176,7 +178,7 @@ export async function submitAttempt(user: SessionUser, req: AttemptRequest): Pro
     attempt_id: attemptId, verdict, reliable, scorer: ai && ai.verdict !== 'ABSTAIN' && ai.verdict !== 'PENDING_REVIEW' ? 'ai_assessor' : det.scorer,
     feedback_ru: `${ai ? ai.feedbackRu : det.feedbackRu}${spokenTyped ? ' Устное задание выполнено письменно: это сохраняется как письменная практика и не засчитывается как говорение.' : ''}`, error_kind: det.errorKind,
     ai: ai ? { used: true, confidence: ai.confidence, dimensions: ai.dimensions, improved_el: ai.improvedEl, errors: ai.errors } : null,
-    reveal, explanation_ru: req.context === 'diagnostic' ? null : typeof item.envelope.original_payload?.rationale === 'string' ? (item.envelope.original_payload.rationale as string) : null,
+    reveal, ...explanationsFor(item.envelope, req.context === 'diagnostic'),
     feedback_event_id: (feedbackEvent?.id as string) ?? null, review: reviewOutcome,
     scheduled_reviews: newReviews.filter((r) => [7, 28].includes(r.interval_days as number)).map((r) => `D${r.interval_days}: ${r.due_local_date}`),
     mastery_counted: masteryCounted, preview,
@@ -226,4 +228,17 @@ export async function submitAttempt(user: SessionUser, req: AttemptRequest): Pro
     }
   }
   return result;
+}
+
+const CYRILLIC = /[А-Яа-яЁё]/g;
+
+/** Russian explanation first; the author's Greek-only note stays visible underneath at B1–B2. */
+export function explanationsFor(e: Pick<ItemEnvelope, 'answer_explanation_ru' | 'original_payload' | 'level'>, hidden: boolean): { explanation_ru: string | null; explanation_el: string | null } {
+  if (hidden) return { explanation_ru: null, explanation_el: null };
+  const rationale = typeof e.original_payload?.rationale === 'string' ? e.original_payload.rationale.trim() : '';
+  const ru = typeof e.answer_explanation_ru === 'string' && e.answer_explanation_ru.trim() ? e.answer_explanation_ru.trim() : null;
+  if (!ru) return { explanation_ru: rationale || null, explanation_el: null };
+  const letters = rationale.match(/\p{L}/gu)?.length ?? 0;
+  const greekOnly = !!rationale && (rationale.match(CYRILLIC)?.length ?? 0) < letters * 0.3;
+  return { explanation_ru: ru, explanation_el: greekOnly && (e.level === 'B1' || e.level === 'B2') ? rationale : null };
 }

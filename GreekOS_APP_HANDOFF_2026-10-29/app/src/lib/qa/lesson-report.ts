@@ -58,6 +58,14 @@ const dimensionOf = (checkId: string): DimensionId | null => {
 };
 const CYR = /[А-Яа-яЁё]/g;
 const cyrShare = (s: string) => { const letters = s.match(/\p{L}/gu)?.length ?? 0; return letters ? (s.match(CYR)?.length ?? 0) / letters : 0; };
+// Separates a single quoted sentence from connected input; short genres (a full notice of ~45 words) count.
+const MIN_READING_WORDS: Record<string, number> = { A1: 20, A2: 30, B1: 40, B2: 60 };
+const GREEK_WORD = /[\u0370-\u03ff\u1f00-\u1fff]+/gu;
+const greekWords = (i: { envelope: { prompt?: string; stimulus?: unknown } }) => {
+  const st = i.envelope.stimulus;
+  const text = `${typeof st === 'string' ? st : st && typeof st === 'object' ? Object.values(st as Record<string, unknown>).filter((v) => typeof v === 'string').join(' ') : ''} ${i.envelope.prompt ?? ''}`;
+  return text.match(GREEK_WORD)?.length ?? 0;
+};
 // Lesson stages as items declare them (items.section); each group must be present.
 const STAGES: Array<{ ru: string; sections: string[] }> = [
   { ru: 'управляемая практика', sections: ['guided_practice'] },
@@ -67,14 +75,15 @@ const STAGES: Array<{ ru: string; sections: string[] }> = [
 ];
 
 type UnitRow = { unit_id: string; level: string; title_ru: string; sort_key: number; current_hash: string; competency_ids: string[]; primary_competencies: string[]; teaching: Record<string, unknown> };
-type ItemRow = { item_id: string; unit_id: string; item_type: string; level: string | null; section: string | null; pool: string | null; requires_audio: boolean; scoring_strategy: string; competency_ids: string[]; audio_job_ids: string[]; error_tags: string[] | null; current_hash: string; envelope: { original_payload?: { rationale?: unknown } } };
+type ItemRow = { item_id: string; unit_id: string; item_type: string; level: string | null; section: string | null; pool: string | null; requires_audio: boolean; scoring_strategy: string; competency_ids: string[]; audio_job_ids: string[]; error_tags: string[] | null; current_hash: string; envelope: { prompt?: string; stimulus?: unknown; original_payload?: { rationale?: unknown }; answer_explanation_ru?: string | null } };
 type ResultRow = { batch_id: string; content_kind: string; content_id: string; content_hash: string; verdict: string };
 type IssueRow = { batch_id: string; content_kind: string; content_id: string; content_hash: string; check_id: string; severity: string; message_ru: string; status: string };
 
 export async function buildLessonQa(opts: { unitIds?: string[] } = {}): Promise<LessonQa[]> {
   const db = adminClient();
   const allUnits = await selectAll<UnitRow>((f, t) => db.from('units').select('unit_id, level, title_ru, sort_key, current_hash, competency_ids, primary_competencies, teaching').order('sort_key').range(f, t));
-  const units = opts.unitIds ? allUnits.filter((u) => opts.unitIds!.includes(u.unit_id)) : allUnits;
+  // Synthetic test fixtures (SYN-…) are never course lessons, as in the release scope.
+  const units = (opts.unitIds ? allUnits.filter((u) => opts.unitIds!.includes(u.unit_id)) : allUnits).filter((u) => !u.unit_id.startsWith('SYN-'));
   if (!units.length) return [];
   const unitIds = units.map((u) => u.unit_id);
   const items = await selectAll<ItemRow>((f, t) => db.from('items').select('item_id, unit_id, item_type, level, section, pool, requires_audio, scoring_strategy, competency_ids, audio_job_ids, error_tags, current_hash, envelope').in('unit_id', unitIds).order('item_id').range(f, t));
@@ -137,12 +146,24 @@ export async function buildLessonQa(opts: { unitIds?: string[] } = {}): Promise<
     const sections: Record<string, number> = {};
     for (const i of its) sections[i.section ?? 'без раздела'] = (sections[i.section ?? 'без раздела'] ?? 0) + 1;
     if (!its.length) flag('completeness', 'block', 'В уроке нет заданий.');
-    for (const st of STAGES) if (!st.sections.some((x) => sections[x])) flag('completeness', 'warn', `Нет этапа «${st.ru}».`);
+    // Reception counts when the plan names the task (reading_tasks / listening_tasks) even if its section is
+    // «guided practice»; a reading task must give connected input of the lesson's level, not one sentence.
+    const planned = new Set([...((t as { reading_tasks?: string[] }).reading_tasks ?? []), ...((t as { listening_tasks?: string[] }).listening_tasks ?? [])]);
+    const reception = its.filter((i) => ['reading', 'listening'].includes(i.section ?? '') || planned.has(i.item_id));
+    const listening = reception.filter((i) => i.section === 'listening' || i.requires_audio || i.audio_job_ids.length || ((t as { listening_tasks?: string[] }).listening_tasks ?? []).includes(i.item_id));
+    const longest = Math.max(0, ...reception.map((i) => greekWords(i)));
+    for (const st of STAGES) {
+      if (st.sections.includes('reading')) {
+        if (!reception.length) flag('completeness', 'warn', 'Нет этапа «восприятие (чтение или аудирование)».');
+        else if (!listening.length && longest < (MIN_READING_WORDS[u.level] ?? 40)) flag('completeness', 'warn', `Восприятие только по отдельным фразам: самый длинный греческий текст ${longest} слов (для ${u.level} нужен связный текст от ${MIN_READING_WORDS[u.level] ?? 40}).`);
+      } else if (!st.sections.some((x) => sections[x])) flag('completeness', 'warn', `Нет этапа «${st.ru}».`);
+    }
     const notChecked = itemRes.filter(({ r }) => !r).length + (unitRes ? 0 : 1);
     // Explanations: every scored, non-diagnostic item explains the right answer in Russian.
     const needExpl = its.filter((i) => i.pool !== 'diagnostic_holdout' && i.section !== 'diagnostic');
     const list = (xs: ItemRow[]) => `${xs.slice(0, 5).map((i) => i.item_id).join(', ')}${xs.length > 5 ? ` и ещё ${xs.length - 5}` : ''}`;
-    const rationale = (i: ItemRow) => (typeof i.envelope.original_payload?.rationale === 'string' ? i.envelope.original_payload.rationale.trim() : '');
+    // What the learner reads after answering: the Russian explanation revision, else the author's rationale.
+    const rationale = (i: ItemRow) => (i.envelope.answer_explanation_ru?.trim() || (typeof i.envelope.original_payload?.rationale === 'string' ? i.envelope.original_payload.rationale.trim() : ''));
     const noExpl = needExpl.filter((i) => !rationale(i));
     if (noExpl.length) flag('explanations', noExpl.length > needExpl.length / 4 ? 'block' : 'warn', `Нет объяснения: ${list(noExpl)}.`);
     const greekOnly = needExpl.filter((i) => rationale(i) && cyrShare(rationale(i)) < 0.3);
@@ -152,7 +173,8 @@ export async function buildLessonQa(opts: { unitIds?: string[] } = {}): Promise<
     const untagged = needExpl.filter((i) => !(i.error_tags ?? []).length && i.scoring_strategy !== 'REVIEW_REQUIRED');
     if (untagged.length) note('explanations', `${untagged.length} заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».`);
     const foreignTags = [...new Set(its.flatMap((i) => i.error_tags ?? []).filter((x) => taxonomy.size && !taxonomy.has(x)))];
-    if (foreignTags.length) flag('explanations', 'warn', `Теги ошибок не описаны в таксономии урока: ${foreignTags.slice(0, 4).join(', ')}.`);
+    // Tags are stored with errors but not shown to learners: a metadata mismatch, not a teaching defect.
+    if (foreignTags.length) note('explanations', `Метаданные: теги ошибок вне таксономии урока (ученику не показываются): ${foreignTags.slice(0, 4).join(', ')}.`);
     // CEFR fit: item levels agree with the lesson (level.* findings above cover text length).
     const offLevel = its.filter((i) => i.level && i.level !== u.level);
     if (offLevel.length) flag('cefr', 'warn', `Уровень задания не совпадает с уроком (${u.level}): ${offLevel.slice(0, 4).map((i) => `${i.item_id} ${i.level}`).join(', ')}.`);

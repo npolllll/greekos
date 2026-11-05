@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-04T21:42:49.967Z",
+ "generated_at": "2026-11-05T12:56:36.950Z",
  "kind": "DIGITAL_QA_NOT_HUMAN_REVIEW",
  "lessons": [
   {
@@ -8,7 +8,7 @@
    "title_ru": "Представиться и выбрать εσύ или εσείς",
    "sort_key": 101,
    "current_hash": "1032111bd579689cf53d87fcb8c1b726d1b2ac0096be2086c73e028122f7298c",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 17,
    "sections": {
@@ -116,7 +116,7 @@
    "title_ru": "Кто и кого: ο/τον, η/την, το/το",
    "sort_key": 102,
    "current_hash": "8997386ce543184553116324c2926d3b78ab670ea24cecfea9ec9bcc7152dafd",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -224,7 +224,7 @@
    "title_ru": "Количество и заказ: один предмет и несколько",
    "sort_key": 103,
    "current_hash": "30f83ea2861b2cf8b9b91881d1554403e8d5f98b1d42ef96d7e93dcd646fe726",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -332,7 +332,7 @@
    "title_ru": "Маршрут и положение: σε, από, με",
    "sort_key": 104,
    "current_hash": "b7ee74d3697a7d831c9edccde7ef5bd3a357181bce3fce9ad9423563ec27911e",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -440,7 +440,7 @@
    "title_ru": "Настоящее время: что я делаю и что делаем мы",
    "sort_key": 105,
    "current_hash": "1163844eadc08788727432ef0b0abc4325c768f7e300582c0e73df1bec0ddf67",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -548,7 +548,7 @@
    "title_ru": "Описать нужный предмет и попросить действие",
    "sort_key": 106,
    "current_hash": "2c7e5629151f692a2d528d9b9b13294a4f8b8237e07ce87b4a02b93afc5784b1",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -600,10 +600,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
       "9 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: GENDER_AGREEMENT, MORPHOLOGY_CASE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): GENDER_AGREEMENT, MORPHOLOGY_CASE."
      ]
     },
     {
@@ -657,7 +657,7 @@
    "title_ru": "Алфавит: от написания к чтению",
    "sort_key": 107,
    "current_hash": "849389e63add2b4cf26193ca445c2b41ae2aa9e6d7593be702ce22f687b4a4c0",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 22,
    "sections": {
@@ -765,7 +765,7 @@
    "title_ru": "Ударение, гласные и четыре непривычных согласных",
    "sort_key": 108,
    "current_hash": "4d47cebc64092148c7335584e516887ec0fefc91cabaf613c8a98d3f6beef56b",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 23,
    "sections": {
@@ -873,7 +873,7 @@
    "title_ru": "Добавить, противопоставить, объяснить: και, αλλά, γιατί",
    "sort_key": 109,
    "current_hash": "17c6efd1d895fe5aa1c85896463d01d98108aa224a85520c652b0b920626a6a1",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -900,7 +900,7 @@
     "info": 2
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -981,7 +981,7 @@
    "title_ru": "Не делаю и не делай: отрицательная реплика",
    "sort_key": 110,
    "current_hash": "7b32c1d0e50f2c26cd732bc2f60548122da026ace028bce3a4d672a58515cb4b",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -1089,7 +1089,7 @@
    "title_ru": "Мои вещи и нужное количество",
    "sort_key": 111,
    "current_hash": "a95058fa4ad5ba2d78741cf04d2f28b3e80330f1a084e09f0f81bcfc60cf69f6",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -1141,10 +1141,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
       "14 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: MORPHOLOGY_CASE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): MORPHOLOGY_CASE."
      ]
     },
     {
@@ -1198,8 +1198,8 @@
    "title_ru": "Знакомство, семья, учёба и интересы",
    "sort_key": 112,
    "current_hash": "4db5f9c5dc035a236073374ccaf8328d1702b5d7a9df36607dc70faf9d9b4cd1",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 19,
    "sections": {
     "diagnostic": 1,
@@ -1250,9 +1250,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Объяснение только на греческом (1 из 18): U-A1-012-I10. Для A1 допустимо, но русскоязычному ученику может быть непонятно.",
       "8 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее»."
      ]
     },
@@ -1307,7 +1306,7 @@
    "title_ru": "Дом, район, транспорт и обычный день",
    "sort_key": 113,
    "current_hash": "652576e6a8395f73cdae288571254380ac5227010c3dc5da6eed59d4536c1faa",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -1415,7 +1414,7 @@
    "title_ru": "Читаем объявления, расписания и сообщения",
    "sort_key": 114,
    "current_hash": "5ccb8c9c162e0b0c26be212977e7c6a94092894b45fe839e708f5ff621a265d4",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -1523,7 +1522,7 @@
    "title_ru": "Заполняем карточку и пишем короткую записку",
    "sort_key": 115,
    "current_hash": "f3347c84720f84ea4e49afa826405c0c7900d6056e48319772c307a08e33a812",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -1575,10 +1574,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
       "7 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: CLITICS."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): CLITICS."
      ]
     },
     {
@@ -1632,7 +1631,7 @@
    "title_ru": "Знакомство и простая покупка: спросить, уточнить, завершить",
    "sort_key": 116,
    "current_hash": "41d5d6a4d67f22473addcf1bdd24d00c77bb810eb0e67244fa8c4162b3cd6d40",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -1659,7 +1658,7 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -1736,7 +1735,7 @@
    "title_ru": "Короткое описание себя и привычного дня",
    "sort_key": 117,
    "current_hash": "4acf8f7a56a649c615dd3b4d4274c694f277464bb46497732d016d751f098203",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -1763,7 +1762,7 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -1840,7 +1839,7 @@
    "title_ru": "Передать другу время и место встречи",
    "sort_key": 118,
    "current_hash": "3f7fd1faab0cca4b782f6df65f4ae67fef57fb03603e2db8f13632db28005d2c",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -1944,8 +1943,8 @@
    "title_ru": "Понять знакомый вопрос и ответить по существу",
    "sort_key": 119,
    "current_hash": "05428d6a65954916f8bfbc28e347aa16968a9bec9522d5b3808b3804ec738e64",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 15,
    "sections": {
     "diagnostic": 1,
@@ -1993,10 +1992,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "Объяснение только на греческом (1 из 14): U-A1-019-I02. Для A1 допустимо, но русскоязычному ученику может быть непонятно."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "cefr",
@@ -2047,7 +2044,7 @@
    "title_ru": "Числа, время и простые объявления",
    "sort_key": 120,
    "current_hash": "e1bf134269f2c1dcff392a3825002eb9a8635a319679f0428b2bc65be26db226",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 14,
    "sections": {
@@ -2147,7 +2144,7 @@
    "title_ru": "Одно завершённое событие: ενεργητικός αόριστος",
    "sort_key": 201,
    "current_hash": "f39f7193ff3d003c976194a5efaa83170aa29f3e9cd3bb4182b19cedcbc62317",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 17,
    "sections": {
@@ -2255,7 +2252,7 @@
    "title_ru": "Планы и просьбы: θα и να с совершенной основой",
    "sort_key": 202,
    "current_hash": "4df871cdd1591fe968599038602bd7b45eeac6f317d5e93557d7c072822f0de3",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -2282,7 +2279,7 @@
     "info": 2
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -2363,7 +2360,7 @@
    "title_ru": "Кому принадлежит вещь: родительный",
    "sort_key": 203,
    "current_hash": "3fd734ee13247fc8d2cf258e704aa7bf1c5dcb59b51f792e29dcdaf1a27037a2",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -2471,7 +2468,7 @@
    "title_ru": "Сравнить два варианта жилья",
    "sort_key": 204,
    "current_hash": "7339a54567e1c4b1e49ed71ad29f02e57775c6adddc2c0b85aab052b3890b314",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -2579,7 +2576,7 @@
    "title_ru": "Объектные клитики и короткие инструкции",
    "sort_key": 205,
    "current_hash": "449dfc69cfd8fb9d5eb214aa2c8da2ce7c556e0f1517d9cbe7dce531cc9b4856",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -2631,10 +2628,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
       "9 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: ORTHOGRAPHY_ACCENT, CLITICS, VERB_ASPECT."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): ORTHOGRAPHY_ACCENT, CLITICS, VERB_ASPECT."
      ]
     },
     {
@@ -2688,8 +2685,8 @@
    "title_ru": "Настоящее: εργάζομαι и έρχομαι",
    "sort_key": 206,
    "current_hash": "a2b8b91353d217acc371435c480c20fb6276640cc7660426155a22161b0228f1",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 22,
    "sections": {
     "diagnostic": 1,
@@ -2715,7 +2712,7 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -2740,9 +2737,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Объяснение только на греческом (1 из 21): U-A2-006-I08. Для A2 допустимо, но русскоязычному ученику может быть непонятно.",
       "16 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее»."
      ]
     },
@@ -2797,7 +2793,7 @@
    "title_ru": "Что сообщают, когда, почему и при каком условии",
    "sort_key": 207,
    "current_hash": "bf4400bc00daefb9bb65ace468d91ceffb41d89fd20b43b5df01764742a0ab0e",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -2905,7 +2901,7 @@
    "title_ru": "Прошлое: фон, привычка и событие целиком",
    "sort_key": 208,
    "current_hash": "7dfc8b22acc765b273212c2b8fca1b0c1e79005206f47b20f3c938becc33b7a1",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -2932,7 +2928,7 @@
     "info": 2
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -3013,7 +3009,7 @@
    "title_ru": "Кто-нибудь, никто и ничего: искать информацию без ложного отрицания",
    "sort_key": 209,
    "current_hash": "5c8d530197c3ebb9f56a3c3615404e49c96fbed0e3744cb3d33044d54dc16082",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -3040,7 +3036,7 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -3065,10 +3061,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
       "8 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: MORPHOLOGY_CASE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): MORPHOLOGY_CASE."
      ]
     },
     {
@@ -3122,7 +3118,7 @@
    "title_ru": "Как часто, насколько и какой именно: наречия и που",
    "sort_key": 210,
    "current_hash": "ae479d71c4625dd2078ae5673b30d4ebcc8bfb1c8eeb9a9f632fa2019b0e4ab3",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -3230,7 +3226,7 @@
    "title_ru": "Жильё, услуги и поездки: понять цену и исправить бронирование",
    "sort_key": 211,
    "current_hash": "5654fccfa229dcd111fab353889874dba70a03acbee8d2a0d5bd2871cddd5c25",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -3338,7 +3334,7 @@
    "title_ru": "Учёба, работа и встречи: сообщить ограничение и согласовать новый план",
    "sort_key": 212,
    "current_hash": "d0813427262b6c763eae153eb2d95a1a93a9bac7b369da448f9086ac852e2798",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -3446,7 +3442,7 @@
    "title_ru": "Уточнить сбой и завершить бытовой обмен",
    "sort_key": 213,
    "current_hash": "2a5eb2ec0a1142dcdeda16262f12dfdb490221ce412e8f32772e45fb05a35765",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -3552,7 +3548,7 @@
    "title_ru": "Рассказать об опыте, плане и предпочтении",
    "sort_key": 214,
    "current_hash": "28246a68c28d7b4705727e2f52f88aa105e4e8c5729246263dbf61d96ca01f2f",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -3579,7 +3575,7 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -3658,7 +3654,7 @@
    "title_ru": "Написать личное письмо и понятный запрос",
    "sort_key": 215,
    "current_hash": "d7a82cdff51c7a6376c5bb3b66db8bafe5c1d7f767a5584f75bb465b23fdf8fb",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -3764,7 +3760,7 @@
    "title_ru": "Ударение, границы слов и вопросительная интонация",
    "sort_key": 216,
    "current_hash": "f1b336b97bcc8fde8045cca1bb363ea0110ca94c4cfff16b62a8a0e2f09e970b",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 17,
    "sections": {
@@ -3786,17 +3782,15 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -3813,9 +3807,9 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Теги ошибок не описаны в таксономии урока: ORTHOGRAPHY_ACCENT, PRONUNCIATION_CANDIDATE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): ORTHOGRAPHY_ACCENT, PRONUNCIATION_CANDIDATE."
      ]
     },
     {
@@ -3867,7 +3861,7 @@
    "title_ru": "Бытовой диалог: запрос, альтернатива и итог",
    "sort_key": 217,
    "current_hash": "3a22488a3d8063c3037bf5fe1ce3aadaccae1d26f21fef233adc6461c47e5e99",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 13,
    "sections": {
@@ -3968,7 +3962,7 @@
    "title_ru": "Сообщения и инструкции: порядок, условие, следующий шаг",
    "sort_key": 218,
    "current_hash": "3cb44a0d9bb2404e6310a188e928dd7ec763c637f1a79b4520b4c2927f5e70c1",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 13,
    "sections": {
@@ -3992,7 +3986,7 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -4068,19 +4062,20 @@
    "level": "A2",
    "title_ru": "Передать другому человеку условия короткого объявления",
    "sort_key": 219,
-   "current_hash": "884d56e7ddd0a2569668764371fca45b5cd5dfd9d44e0e350b2a088107a0d9a8",
+   "current_hash": "040f3024bc0a6dbd2ad764ad053246f73320140a54decba5a2c8fb5ef2481bb4",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 12,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 13,
    "sections": {
     "diagnostic": 1,
     "guided_practice": 5,
     "active_recall": 1,
     "writing": 3,
-    "speaking": 2
+    "speaking": 2,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 12,
+    "PASS": 13,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -4092,17 +4087,15 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -4170,18 +4163,19 @@
    "level": "A2",
    "title_ru": "Приглашение, отказ, смягчённая просьба и исправление",
    "sort_key": 220,
-   "current_hash": "fbcd81e145b77e2753fc76117ec4f11c08d1903e125a5c433e858e0579450634",
+   "current_hash": "12a84c39e32a0e4b57718870c429ab3990b43b6501fcbedc976e97dd3fd1e268",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 11,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 12,
    "sections": {
     "writing": 2,
     "guided_practice": 5,
     "active_recall": 2,
-    "speaking": 2
+    "speaking": 2,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 11,
+    "PASS": 12,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -4200,10 +4194,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -4274,7 +4266,7 @@
    "title_ru": "Что будет уже сделано к сроку: συντελεσμένος μέλλοντας",
    "sort_key": 301,
    "current_hash": "3a4e2d4f441f4ebc5733cedd140b0927ced4573d72c2157a0e611ec98b3aff05",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 17,
    "sections": {
@@ -4382,7 +4374,7 @@
    "title_ru": "Фон и событие: παρατατικός и αόριστος",
    "sort_key": 302,
    "current_hash": "690f5a19a037d7e3ec2b858241dd5ad2c4bb58edc6048f2c4263cedc9e030788",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -4490,7 +4482,7 @@
    "title_ru": "Передать сообщение и вопрос: ότι, αν, πότε",
    "sort_key": 303,
    "current_hash": "dc8cbe52e55290f3092e793d53d3aa0715ace882bd0f4e2dcfd59659131a579f",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -4517,7 +4509,7 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -4598,7 +4590,7 @@
    "title_ru": "Кому и что: двойные клитики",
    "sort_key": 304,
    "current_hash": "008b452418c64fdf540c9a1a493107cabb56d47235a426978d10ace3f87886bc",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -4706,7 +4698,7 @@
    "title_ru": "Родительный множественного: формы и связи",
    "sort_key": 305,
    "current_hash": "b4122018d230fae401dfd422be7c4976f1ffbc545eb52130d1b437d517bb168f",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -4758,10 +4750,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
       "11 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: MORPHOLOGY_CASE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): MORPHOLOGY_CASE."
      ]
     },
     {
@@ -4815,7 +4807,7 @@
    "title_ru": "Реальное условие и план действий",
    "sort_key": 306,
    "current_hash": "afb90e5971bd628e7d14e9ae86bbe9310bca86229f5c23b11297daf69ecfed5b",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -4918,124 +4910,13 @@
    "top_issues": []
   },
   {
-   "unit_id": "U-B1-007",
-   "level": "B1",
-   "title_ru": "Связное письмо: опыт, причина и запрос",
-   "sort_key": 307,
-   "current_hash": "eee039511377687ccc20d5ae5903ccb2e7467c0056802888c22710852c0739b8",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 16,
-   "sections": {
-    "diagnostic": 1,
-    "guided_practice": 3,
-    "active_recall": 2,
-    "reading": 2,
-    "listening": 2,
-    "writing": 1,
-    "speaking": 1,
-    "transfer": 1,
-    "retention": 3
-   },
-   "verdicts": {
-    "PASS": 16,
-    "NEEDS_REVIEW": 0,
-    "FAIL": 0,
-    "ABSTAIN": 0,
-    "NOT_CHECKED": 0
-   },
-   "open_issues": {
-    "blocking": 0,
-    "warning": 0,
-    "info": 0
-   },
-   "owner_sample": {
-    "ok": 0,
-    "issue": 0
-   },
-   "dimensions": [
-    {
-     "id": "completeness",
-     "title_ru": "Полнота и структура",
-     "status": "ok",
-     "notes": []
-    },
-    {
-     "id": "language",
-     "title_ru": "Греческий: орфография и норма",
-     "status": "ok",
-     "notes": []
-    },
-    {
-     "id": "answers",
-     "title_ru": "Ответы и ключи",
-     "status": "ok",
-     "notes": []
-    },
-    {
-     "id": "explanations",
-     "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "10 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: PRAGMATICS_REGISTER."
-     ]
-    },
-    {
-     "id": "cefr",
-     "title_ru": "Соответствие уровню CEFR",
-     "status": "ok",
-     "notes": []
-    },
-    {
-     "id": "logic",
-     "title_ru": "Логика обучения",
-     "status": "warn",
-     "notes": [
-      "Предпосылки вводятся не раньше этого урока: B1-G10."
-     ]
-    },
-    {
-     "id": "theory",
-     "title_ru": "Теория на русском",
-     "status": "ok",
-     "notes": []
-    },
-    {
-     "id": "rights",
-     "title_ru": "Права на материал",
-     "status": "ok",
-     "notes": []
-    },
-    {
-     "id": "audio",
-     "title_ru": "Аудио",
-     "status": "not_done",
-     "notes": [
-      "2 заданий на слух; аудио готово к выпуску: 0 из 1. Без него эти задания остаются закрытыми, урок проходится без них."
-     ]
-    },
-    {
-     "id": "human",
-     "title_ru": "Проверка преподавателем / носителем",
-     "status": "not_done",
-     "notes": [
-      "Не проводилась. Все оценки выше — автоматические."
-     ]
-    }
-   ],
-   "summary": "READY_FOR_OWNER",
-   "summary_ru": "Цифровая проверка без блокирующих замечаний — можно принимать решение о выпуске",
-   "top_issues": []
-  },
-  {
    "unit_id": "U-B1-008",
    "level": "B1",
    "title_ru": "Объясняем причину, цель и результат",
-   "sort_key": 308,
+   "sort_key": 307,
    "current_hash": "8f566fbde9f3f2d4af116b85bd9109694179e3c7108c4a2d37975b7aca010ba4",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 22,
    "sections": {
     "diagnostic": 1,
@@ -5086,10 +4967,118 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Объяснение только на греческом (1 из 21): U-B1-008-I16. Для B1 допустимо, но русскоязычному ученику может быть непонятно.",
       "16 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее»."
+     ]
+    },
+    {
+     "id": "cefr",
+     "title_ru": "Соответствие уровню CEFR",
+     "status": "ok",
+     "notes": []
+    },
+    {
+     "id": "logic",
+     "title_ru": "Логика обучения",
+     "status": "ok",
+     "notes": []
+    },
+    {
+     "id": "theory",
+     "title_ru": "Теория на русском",
+     "status": "ok",
+     "notes": []
+    },
+    {
+     "id": "rights",
+     "title_ru": "Права на материал",
+     "status": "ok",
+     "notes": []
+    },
+    {
+     "id": "audio",
+     "title_ru": "Аудио",
+     "status": "not_done",
+     "notes": [
+      "2 заданий на слух; аудио готово к выпуску: 0 из 1. Без него эти задания остаются закрытыми, урок проходится без них."
+     ]
+    },
+    {
+     "id": "human",
+     "title_ru": "Проверка преподавателем / носителем",
+     "status": "not_done",
+     "notes": [
+      "Не проводилась. Все оценки выше — автоматические."
+     ]
+    }
+   ],
+   "summary": "READY_FOR_OWNER",
+   "summary_ru": "Цифровая проверка без блокирующих замечаний — можно принимать решение о выпуске",
+   "top_issues": []
+  },
+  {
+   "unit_id": "U-B1-007",
+   "level": "B1",
+   "title_ru": "Связное письмо: опыт, причина и запрос",
+   "sort_key": 308,
+   "current_hash": "eee039511377687ccc20d5ae5903ccb2e7467c0056802888c22710852c0739b8",
+   "released": true,
+   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "items_total": 16,
+   "sections": {
+    "diagnostic": 1,
+    "guided_practice": 3,
+    "active_recall": 2,
+    "reading": 2,
+    "listening": 2,
+    "writing": 1,
+    "speaking": 1,
+    "transfer": 1,
+    "retention": 3
+   },
+   "verdicts": {
+    "PASS": 16,
+    "NEEDS_REVIEW": 0,
+    "FAIL": 0,
+    "ABSTAIN": 0,
+    "NOT_CHECKED": 0
+   },
+   "open_issues": {
+    "blocking": 0,
+    "warning": 0,
+    "info": 0
+   },
+   "owner_sample": {
+    "ok": 3,
+    "issue": 0
+   },
+   "dimensions": [
+    {
+     "id": "completeness",
+     "title_ru": "Полнота и структура",
+     "status": "ok",
+     "notes": []
+    },
+    {
+     "id": "language",
+     "title_ru": "Греческий: орфография и норма",
+     "status": "ok",
+     "notes": []
+    },
+    {
+     "id": "answers",
+     "title_ru": "Ответы и ключи",
+     "status": "ok",
+     "notes": []
+    },
+    {
+     "id": "explanations",
+     "title_ru": "Объяснения ошибок",
+     "status": "ok",
+     "notes": [
+      "10 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): PRAGMATICS_REGISTER."
      ]
     },
     {
@@ -5143,8 +5132,8 @@
    "title_ru": "Перфект и плюсквамперфект: результат и более раннее событие",
    "sort_key": 309,
    "current_hash": "19f7bb08c83a4f5b3c95a2f03c73de0bf437f585a47dd3d83f3ae2ddb817bda7",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 22,
    "sections": {
     "diagnostic": 1,
@@ -5195,11 +5184,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Объяснение только на греческом (2 из 21): U-B1-009-I03, U-B1-009-I07. Для B1 допустимо, но русскоязычному ученику может быть непонятно.",
       "15 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: CLITICS, SYNTAX."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): CLITICS, SYNTAX."
      ]
     },
     {
@@ -5253,7 +5241,7 @@
    "title_ru": "Одевался, оделся, было решено: медиопассивное прошедшее",
    "sort_key": 310,
    "current_hash": "cf8fbcb0eb083bdda76f20594e4b06e8da03ae2952b9d7dd15624ef6a98684a6",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -5361,7 +5349,7 @@
    "title_ru": "Два действия одного человека и состояние результата",
    "sort_key": 311,
    "current_hash": "f9d480777697d4e174943a2b440244914552f50c4fb59e5ad64cecc9a180d1f6",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -5413,10 +5401,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
       "9 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: MORPHOLOGY_CASE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): MORPHOLOGY_CASE."
      ]
     },
     {
@@ -5470,7 +5458,7 @@
    "title_ru": "Уточнить, о ком речь: που и узнавание ο οποίος",
    "sort_key": 312,
    "current_hash": "4d5cf76875b1c6018a65de95f74885d644cf36f41fdddad54f5268d73677d713",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -5497,7 +5485,7 @@
     "info": 2
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -5578,7 +5566,7 @@
    "title_ru": "Сначала, после и до момента: πριν, αφού, μέχρι",
    "sort_key": 313,
    "current_hash": "cba183deb74f1396731fc1fa2f88aea1cbcc4b461d1088dac4187128a6f3638e",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -5686,7 +5674,7 @@
    "title_ru": "Семьи слов: узнавание формы и проверка значения",
    "sort_key": 314,
    "current_hash": "153b69aaa01360540dcb610d534d9d5ca7c83644c482461cf419aa773c0546e3",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -5739,9 +5727,9 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Теги ошибок не описаны в таксономии урока: VERB_ASPECT."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): VERB_ASPECT."
      ]
     },
     {
@@ -5795,7 +5783,7 @@
    "title_ru": "Учёба, работа, технологии и услуги: точный запрос",
    "sort_key": 315,
    "current_hash": "889cac7ddda39a07418e32b591e433587648b03bf77ddc728fd4eaf6dd801617",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -5823,7 +5811,7 @@
     "info": 2
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
@@ -5848,9 +5836,9 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Теги ошибок не описаны в таксономии урока: VERB_ASPECT."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): VERB_ASPECT."
      ]
     },
     {
@@ -5904,7 +5892,7 @@
    "title_ru": "Сочетаемость и перифраза: продолжить разговор без нужного слова",
    "sort_key": 316,
    "current_hash": "6f44a87de262b8546396ae17572f2ded9deee214b9e5ec841906d1b6f7ac89cc",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -6011,8 +5999,8 @@
    "title_ru": "Читать статью и сообщение: факт, условие и неизвестное",
    "sort_key": 317,
    "current_hash": "0417c6db39897ef8923959635c0b5f523108a585bb949f4b3376bc8683054475",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 20,
    "sections": {
     "diagnostic": 1,
@@ -6064,10 +6052,9 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Объяснение только на греческом (1 из 19): U-B1-017-I02. Для B1 допустимо, но русскоязычному ученику может быть непонятно.",
-      "Теги ошибок не описаны в таксономии урока: SYNTAX."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): SYNTAX."
      ]
     },
     {
@@ -6121,7 +6108,7 @@
    "title_ru": "Главная мысль и существенные детали развёрнутого сообщения",
    "sort_key": 318,
    "current_hash": "01e8163b9e718bfedd0225b576dd731d40a09f817d498c052706de320d26ddd1",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 12,
    "sections": {
@@ -6221,7 +6208,7 @@
    "title_ru": "Рассказ и интервью: последовательность, намерение, изменение мнения",
    "sort_key": 319,
    "current_hash": "d09cf699bcc627d07dcaf56d7466b2b87f4123db2699068ae7166364986724ab",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 12,
    "sections": {
@@ -6320,19 +6307,20 @@
    "level": "B1",
    "title_ru": "Связный рассказ, мнение и краткое обоснование",
    "sort_key": 320,
-   "current_hash": "0b6b1ebb5e0e6df02ae46ac9ba723c24027c57cf47d68e478a6bc5bf30dde9c5",
+   "current_hash": "6a64287499cf547f51242648b892b05ef5b58ac07759aa5438ad05d7d75b70d9",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 11,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 12,
    "sections": {
     "diagnostic": 1,
     "guided_practice": 4,
     "active_recall": 1,
     "speaking": 4,
-    "writing": 1
+    "writing": 1,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 11,
+    "PASS": 12,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -6351,10 +6339,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -6425,7 +6411,7 @@
    "title_ru": "Фразовое ударение, ритм, связная речь и разборчивость",
    "sort_key": 321,
    "current_hash": "b3a5fa8cec0554af51bf259f5152287e8732a474ec61804a2de9f4c95773b1c4",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 11,
    "sections": {
@@ -6453,10 +6439,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -6526,17 +6510,18 @@
    "level": "B1",
    "title_ru": "Неподготовленный разговор и решение неожиданности",
    "sort_key": 322,
-   "current_hash": "d821b1d715ca8d0a5256d36b057577123e7bcfa5d218b1252af38542e706bd91",
+   "current_hash": "90dbe1cd09a41801945ffc9af2eaa1be3b681a8c68280a4692c138e8ef929ef0",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 12,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 13,
    "sections": {
     "speaking": 4,
     "guided_practice": 6,
-    "active_recall": 2
+    "active_recall": 2,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 12,
+    "PASS": 13,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -6555,10 +6540,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -6629,7 +6612,7 @@
    "title_ru": "Суммировать практическую информацию для другого человека",
    "sort_key": 323,
    "current_hash": "c8949ec5122ac8f165ae36d3400825b2ba0409a7944a10c6abed3e162a589595",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 11,
    "sections": {
@@ -6730,17 +6713,18 @@
    "level": "B1",
    "title_ru": "Взять слово, уточнить, вежливо возразить и восстановить понимание",
    "sort_key": 324,
-   "current_hash": "69e8687007ae684d530b36f43c72abf9912ae31aa7edbc4f7acd074ea333c1da",
+   "current_hash": "3363237726a8984d5bae546a5517320d63ecc2bd33f171afbe0eb32de96b1ab7",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 12,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 13,
    "sections": {
     "speaking": 4,
     "guided_practice": 7,
-    "active_recall": 1
+    "active_recall": 1,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 12,
+    "PASS": 13,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -6752,17 +6736,15 @@
     "info": 0
    },
    "owner_sample": {
-    "ok": 0,
+    "ok": 1,
     "issue": 0
    },
    "dimensions": [
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -6833,7 +6815,7 @@
    "title_ru": "Статья для городской газеты: тезис, возражение и предложение",
    "sort_key": 401,
    "current_hash": "02849046ebf0d4844fd6f30481f0c76ef4a14a7abfa443edc6b6464f1af13b5c",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 17,
    "sections": {
@@ -6941,7 +6923,7 @@
    "title_ru": "Особые именные модели: διεθνής, γεγονός, προϊόν",
    "sort_key": 402,
    "current_hash": "37136c9fcfcb982695197128c2e241a60fbac6cfcfc491cce91c3bdc89bd3d03",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -6993,10 +6975,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
       "7 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: GENDER_AGREEMENT, MORPHOLOGY_CASE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): GENDER_AGREEMENT, MORPHOLOGY_CASE."
      ]
     },
     {
@@ -7050,7 +7032,7 @@
    "title_ru": "Нереальность сейчас и в прошлом",
    "sort_key": 403,
    "current_hash": "44b0907faeb5d4cad813c2fd03d93024e2d1dafad81acb3f743308f8c1822263",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -7158,8 +7140,8 @@
    "title_ru": "Сравнение с оговорками: περισσότερο, καλύτερα, όσο…τόσο",
    "sort_key": 404,
    "current_hash": "9079ef937b3cc93fb63976f9f1700686b04ebc3288c06ed21538067baf854e2b",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 16,
    "sections": {
     "diagnostic": 1,
@@ -7210,11 +7192,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Объяснение только на греческом (1 из 15): U-B2-004-I07. Для B2 допустимо, но русскоязычному ученику может быть непонятно.",
       "10 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: GENDER_AGREEMENT, MORPHOLOGY_CASE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): GENDER_AGREEMENT, MORPHOLOGY_CASE."
      ]
     },
     {
@@ -7268,8 +7249,8 @@
    "title_ru": "Формальные связи: предлоги и управление",
    "sort_key": 405,
    "current_hash": "b96bf68a575ee64fbb7738623e91aa2697902e8e24b0d3021ce2ebdb01161f21",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 22,
    "sections": {
     "diagnostic": 1,
@@ -7320,11 +7301,10 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Объяснение только на греческом (2 из 21): U-B2-005-I02, U-B2-005-I07. Для B2 допустимо, но русскоязычному ученику может быть непонятно.",
       "13 заданий с ключом без тега типичной ошибки: разбор есть, в тетради ошибок они группируются как «прочее».",
-      "Теги ошибок не описаны в таксономии урока: MORPHOLOGY_CASE."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): MORPHOLOGY_CASE."
      ]
     },
     {
@@ -7378,7 +7358,7 @@
    "title_ru": "Редактируем сообщение: действие, результат, голос и намерение",
    "sort_key": 406,
    "current_hash": "e105df291bc4f0c5e2720b85c7c181c116befa3b69a45819abca802f268e31ef",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 19,
    "sections": {
@@ -7486,7 +7466,7 @@
    "title_ru": "Сжать сообщение и сохранить факты: причастные конструкции",
    "sort_key": 407,
    "current_hash": "3348fd063543de3051a4242b4eb3032ef7ad226de2c5e345911c69d7277599ec",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -7592,7 +7572,7 @@
    "title_ru": "Кто именно и что сообщил: сложные относительные и изъяснительные связи",
    "sort_key": 408,
    "current_hash": "8a4bbe6dbd1ff2aa170d5c2f66021410fd934115e7dfab8f9ecae330c70552f9",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -7697,19 +7677,20 @@
    "level": "B2",
    "title_ru": "Производные, сложные слова и лексико-грамматическая сочетаемость",
    "sort_key": 409,
-   "current_hash": "6c87220834732a101e328fac7eaf615aba1cb33cdc4d3782fa95b846e987a920",
+   "current_hash": "8d4c4afb348e9e8b9172fee604deda378b2e314f89991aff817a3a1e90922551",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 13,
+   "checked_at": "2026-11-05T12:42:52.088+00:00",
+   "items_total": 14,
    "sections": {
     "без раздела": 1,
     "guided_practice": 7,
     "active_recall": 2,
     "writing": 2,
-    "speaking": 1
+    "speaking": 1,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 13,
+    "PASS": 14,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -7728,10 +7709,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -7802,7 +7781,7 @@
    "title_ru": "Общество, среда, медиа, экономика повседневности, культура",
    "sort_key": 410,
    "current_hash": "d365a668d10368b4d23b3278dc8e79abce35e0b3334d257b962a29a46dfd02da",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 20,
    "sections": {
@@ -7832,10 +7811,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -7905,18 +7882,19 @@
    "level": "B2",
    "title_ru": "Редактирование: лишние элементы, согласование, вид, связность",
    "sort_key": 411,
-   "current_hash": "ca84ffcaabe4e1d61659d1cb7b64fcb091ab6701f633a3052f9a184b0f23fe4c",
+   "current_hash": "cfc72a9ce47c8041f186d1dc91005d1bf6c3c3e0320b9ab4c176d012d356774b",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 12,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 13,
    "sections": {
     "без раздела": 1,
     "guided_practice": 7,
     "active_recall": 1,
-    "writing": 3
+    "writing": 3,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 12,
+    "PASS": 13,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -7935,10 +7913,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -8009,7 +7985,7 @@
    "title_ru": "Развёрнутая стандартная речь обычного темпа",
    "sort_key": 412,
    "current_hash": "0ccbe91492870858957d57f7e001fa6b9f04af6bbc9e9471bc5c8f6d54f1c9a5",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 12,
    "sections": {
@@ -8109,18 +8085,19 @@
    "level": "B2",
    "title_ru": "Развёрнутое объяснение и сопоставление преимуществ/недостатков",
    "sort_key": 413,
-   "current_hash": "3d498756e5e8d16cf5d188b7cfdc54e97ff81a120ebf34845da6f79633e719e9",
+   "current_hash": "5ff156379e26b9bf9c5a01a115a2cf967c314a6d60457e28ae92a351390ce399",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 11,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 12,
    "sections": {
     "speaking": 3,
     "guided_practice": 6,
     "active_recall": 1,
-    "writing": 1
+    "writing": 1,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 11,
+    "PASS": 12,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -8139,10 +8116,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -8212,19 +8187,20 @@
    "level": "B2",
    "title_ru": "Коллокации, синонимы, оттенки и устойчивые выражения",
    "sort_key": 414,
-   "current_hash": "056bfb4f660db4b5fe4fcb2595238ace10e7ebb884062340ae07c369b94ee161",
+   "current_hash": "8325cfd6a90fcb4acbd4dafbdbcf5d319192549700ec96a26cc8c813170a00a1",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 18,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 19,
    "sections": {
     "без раздела": 1,
     "guided_practice": 9,
     "active_recall": 2,
     "speaking": 3,
-    "writing": 3
+    "writing": 3,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 18,
+    "PASS": 19,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -8243,10 +8219,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -8263,9 +8237,9 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Теги ошибок не описаны в таксономии урока: VOCAB_SELECTION, CONTENT_OMISSION, PRAGMATICS_REGISTER."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): VOCAB_SELECTION, CONTENT_OMISSION, PRAGMATICS_REGISTER."
      ]
     },
     {
@@ -8319,7 +8293,7 @@
    "title_ru": "Обсуждение нескольких говорящих и извлечение заметок",
    "sort_key": 415,
    "current_hash": "db6bdc657c13b275d29cf908665449198ff9854348381ac5460aec460d9c247a",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 12,
    "sections": {
@@ -8421,7 +8395,7 @@
    "title_ru": "Понятность, просодия и самокоррекция в спонтанной речи",
    "sort_key": 416,
    "current_hash": "900926ad36027ad99a9c08ff0f5f55360cf5ab3d34d49391f22321807c67888c",
-   "released": false,
+   "released": true,
    "checked_at": "2026-11-04T13:47:47.7+00:00",
    "items_total": 16,
    "sections": {
@@ -8468,9 +8442,9 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
+     "status": "ok",
      "notes": [
-      "Теги ошибок не описаны в таксономии урока: CONTENT_OMISSION."
+      "Метаданные: теги ошибок вне таксономии урока (ученику не показываются): CONTENT_OMISSION."
      ]
     },
     {
@@ -8524,8 +8498,8 @@
    "title_ru": "Статьи, аргументированные тексты, подробные инструкции",
    "sort_key": 417,
    "current_hash": "de7ca1a0e0f24bb8de9e898a597aa3343833a44dacfd5fa4aa04beb30d203b3d",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 12,
    "sections": {
     "reading": 2,
@@ -8571,10 +8545,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "Объяснение только на греческом (9 из 12): U-B2-017-I01, U-B2-017-I02, U-B2-017-I03, U-B2-017-I04, U-B2-017-I05 и ещё 4. Для B2 допустимо, но русскоязычному ученику может быть непонятно."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "cefr",
@@ -8626,18 +8598,19 @@
    "level": "B2",
    "title_ru": "Спонтанная дискуссия, аргументация и согласование решения",
    "sort_key": 418,
-   "current_hash": "1ac13b09075808d9df9083e4cc33da560f109e758c9a1ea16d2f4d8d9e1d0357",
+   "current_hash": "964b9f97f330c50f1e70ef844f8ffb539c91a28baf0f4ae4e315751db8502945",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 12,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 13,
    "sections": {
     "speaking": 3,
     "guided_practice": 6,
     "active_recall": 2,
-    "writing": 1
+    "writing": 1,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 12,
+    "PASS": 13,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -8656,10 +8629,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -8676,10 +8647,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "Объяснение только на греческом (6 из 12): U-B2-018-I01, U-B2-018-I02, U-B2-018-I05, U-B2-018-I09, U-B2-018-I11 и ещё 1. Для B2 допустимо, но русскоязычному ученику может быть непонятно."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "cefr",
@@ -8731,19 +8700,20 @@
    "level": "B2",
    "title_ru": "Порядок слов, тематизация, эмфаза и выбор регистра",
    "sort_key": 419,
-   "current_hash": "ee4cb170eb15b08059b0e0c8c10aad1ad00448fba910752ea1add45257c3f54d",
+   "current_hash": "848996b09ed60458f37ce9efeb9d30ce9fefcdbccc58d7f26f4702db6663754f",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 12,
+   "checked_at": "2026-11-05T12:42:32.958+00:00",
+   "items_total": 13,
    "sections": {
     "без раздела": 1,
     "guided_practice": 6,
     "active_recall": 2,
     "writing": 2,
-    "retention": 1
+    "retention": 1,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 12,
+    "PASS": 13,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -8762,10 +8732,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -8782,10 +8750,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "Объяснение только на греческом (5 из 12): U-B2-019-I01, U-B2-019-I02, U-B2-019-I03, U-B2-019-I04, U-B2-019-I12. Для B2 допустимо, но русскоязычному ученику может быть непонятно."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "cefr",
@@ -8838,8 +8804,8 @@
    "title_ru": "Синтез нескольких источников и объяснение для конкретного адресата",
    "sort_key": 420,
    "current_hash": "fcfdc867619c36037888c76001ff56ea0ed01ef82cd9f763106a79db66b4b565",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:33:52.153+00:00",
    "items_total": 11,
    "sections": {
     "reading": 1,
@@ -8885,10 +8851,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "Объяснение только на греческом (7 из 11): U-B2-020-I01, U-B2-020-I02, U-B2-020-I03, U-B2-020-I04, U-B2-020-I05 и ещё 2. Для B2 допустимо, но русскоязычному ученику может быть непонятно."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "cefr",
@@ -8940,18 +8904,19 @@
    "level": "B2",
    "title_ru": "Вежливое несогласие, дистанция, смена регистра и переговоры",
    "sort_key": 421,
-   "current_hash": "fd75315ab8c3adaf50231805ee4f613406dc48a383c856c19a628ff8c5862fac",
+   "current_hash": "c2dba535fcd1684bf1c6f81f2636736e6296e10196738023adc8a63e718e6fed",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 12,
+   "checked_at": "2026-11-05T12:45:19.087+00:00",
+   "items_total": 13,
    "sections": {
     "speaking": 3,
     "guided_practice": 6,
     "active_recall": 2,
-    "writing": 1
+    "writing": 1,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 12,
+    "PASS": 13,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -8970,10 +8935,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -8990,10 +8953,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "Объяснение только на греческом (5 из 12): U-B2-021-I02, U-B2-021-I04, U-B2-021-I06, U-B2-021-I07, U-B2-021-I10. Для B2 допустимо, но русскоязычному ученику может быть непонятно."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "cefr",
@@ -9046,8 +9007,8 @@
    "title_ru": "Сжатие и связность: пропуски фраз и резюме",
    "sort_key": 422,
    "current_hash": "a08d7bd75e052d1a95447d3566e4f45577d9d90a9eaadf7c5ac822b068e5fc20",
-   "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
+   "released": true,
+   "checked_at": "2026-11-05T12:45:19.087+00:00",
    "items_total": 11,
    "sections": {
     "без раздела": 1,
@@ -9094,10 +9055,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "Объяснение только на греческом (10 из 11): U-B2-022-I01, U-B2-022-I02, U-B2-022-I03, U-B2-022-I04, U-B2-022-I05 и ещё 5. Для B2 допустимо, но русскоязычному ученику может быть непонятно."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "cefr",
@@ -9149,17 +9108,18 @@
    "level": "B2",
    "title_ru": "Личное и официальное письмо с обоснованием",
    "sort_key": 423,
-   "current_hash": "bf96fcdaf973b77c28eeaa703adea48cd2fb5371f461abf0d8523f7bd7647a76",
+   "current_hash": "3207f36a74331ae621c8233f8cc97b8c4dbae3c8c5d4495b914052f76241a3e9",
    "released": false,
-   "checked_at": "2026-11-04T13:47:47.7+00:00",
-   "items_total": 12,
+   "checked_at": "2026-11-05T12:45:19.087+00:00",
+   "items_total": 13,
    "sections": {
     "writing": 4,
     "guided_practice": 6,
-    "active_recall": 2
+    "active_recall": 2,
+    "reading": 1
    },
    "verdicts": {
-    "PASS": 12,
+    "PASS": 13,
     "NEEDS_REVIEW": 0,
     "FAIL": 0,
     "ABSTAIN": 0,
@@ -9178,10 +9138,8 @@
     {
      "id": "completeness",
      "title_ru": "Полнота и структура",
-     "status": "warn",
-     "notes": [
-      "Нет этапа «восприятие (чтение или аудирование)»."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "language",
@@ -9198,10 +9156,8 @@
     {
      "id": "explanations",
      "title_ru": "Объяснения ошибок",
-     "status": "warn",
-     "notes": [
-      "Объяснение только на греческом (7 из 12): U-B2-023-I01, U-B2-023-I02, U-B2-023-I05, U-B2-023-I07, U-B2-023-I08 и ещё 2. Для B2 допустимо, но русскоязычному ученику может быть непонятно."
-     ]
+     "status": "ok",
+     "notes": []
     },
     {
      "id": "cefr",

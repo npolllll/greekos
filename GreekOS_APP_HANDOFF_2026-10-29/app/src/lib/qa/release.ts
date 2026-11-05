@@ -57,11 +57,12 @@ export const ItemPatch = z.object({
     answer: z.array(z.string().min(1).max(500)).max(12).optional(),
     accepted_alternatives: z.array(z.string().min(1).max(500)).max(40).optional(),
     model_response: z.string().max(6000).nullable().optional(),
+    answer_explanation_ru: z.string().min(20).max(2000).optional(),
   }).strict(),
 }).strict();
 
 /** Applies an owner correction as a NEW immutable revision; active releases of the old hash are revoked. */
-export async function patchItem(actor: PatchActor, input: z.infer<typeof ItemPatch>) {
+export async function patchItem(actor: PatchActor, input: z.infer<typeof ItemPatch>, opts: { runQa?: boolean } = {}) {
   const db = adminClient();
   const { data: row } = await db.from('items').select('item_id, module, envelope, current_hash').eq('item_id', input.item_id).maybeSingle();
   if (!row) throw new HttpError(404, 'NOT_FOUND', 'Задание не найдено');
@@ -75,6 +76,7 @@ export async function patchItem(actor: PatchActor, input: z.infer<typeof ItemPat
     ...(input.changes.answer !== undefined ? { answer: input.changes.answer } : {}),
     ...(input.changes.accepted_alternatives !== undefined ? { accepted_alternatives: input.changes.accepted_alternatives } : {}),
     ...(input.changes.model_response !== undefined ? { model_response: input.changes.model_response } : {}),
+    ...(input.changes.answer_explanation_ru !== undefined ? { answer_explanation_ru: input.changes.answer_explanation_ru } : {}),
   };
   const hash = contentHash(next);
   if (hash === row.current_hash) throw new HttpError(422, 'NO_CHANGE', 'Изменений нет.');
@@ -87,7 +89,8 @@ export async function patchItem(actor: PatchActor, input: z.infer<typeof ItemPat
   const { count } = await db.from('content_releases').update({ revoked_at: new Date().toISOString(), revoked_reason: 'CONTENT_PATCHED: допуск относился к прежней ревизии' }, { count: 'exact' }).eq('content_kind', 'item').eq('content_id', row.item_id).is('revoked_at', null);
   if (input.issue_id) await db.from('qa_issues').update({ status: 'fixed', resolved_by: actorId(actor), resolved_at: new Date().toISOString(), resolution_note: `Исправлено ревизией ${hash.slice(0, 12)}${'system' in actor ? ` (${actor.system})` : ''}: ${input.reason}` }).eq('id', input.issue_id);
   await audit(actorId(actor), 'content.patch', { id: row.item_id }, { base_hash: row.current_hash, new_hash: hash, revoked_releases: count ?? 0, ...('system' in actor ? { system_actor: actor.system } : {}) });
-  const qa = await runQaBatch({ actorId: actorId(actor), label: `Повторная проверка после правки ${row.item_id}`, scope: { kind: 'items', ids: [row.item_id] } });
+  // Bulk revisions re-check once at the end (one QA batch instead of one per item).
+  const qa = opts.runQa === false ? null : await runQaBatch({ actorId: actorId(actor), label: `Повторная проверка после правки ${row.item_id}`, scope: { kind: 'items', ids: [row.item_id] } });
   return { ok: true, new_hash: hash, revoked_releases: count ?? 0, qa };
 }
 

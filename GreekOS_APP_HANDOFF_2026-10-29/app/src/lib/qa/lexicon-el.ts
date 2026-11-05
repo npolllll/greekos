@@ -10,6 +10,8 @@ export const LEXICON_ADDITIONS: Record<string, 'standard' | 'colloquial' | 'abbr
   προσβασιμότητα: 'standard', // accessibility
   χρήστρια: 'standard', // feminine of χρήστης
   χρονογραμμή: 'standard', // timeline
+  φιλαναγνωσία: 'standard', // love of reading (φίλος + ανάγνωση), standard in Greek education
+  φιλαναγνωσίας: 'standard', // genitive of φιλαναγνωσία
   εθνοτική: 'standard', // ethnic (εθνοτικός)
   πευκόμελο: 'standard', // pine honey
   πευκόμελου: 'standard',

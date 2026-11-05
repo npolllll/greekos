@@ -26,6 +26,7 @@ export interface AttemptResultClient {
   ai: { used: boolean; confidence: string | null; dimensions: Array<{ criterion_id: string; label_ru: string; level: string; note_ru: string }>; improved_el: string | null; errors: Array<{ quote: string; correction_el: string; explanation_ru: string }> } | null;
   reveal: { key: string[]; model_response: string | null } | null;
   explanation_ru?: string | null;
+  explanation_el?: string | null;
   feedback_event_id: string | null;
   review: { outcome: string; interval_days: number } | null;
   scheduled_reviews: string[];
@@ -235,6 +236,7 @@ export function ItemPlayer(props: {
             <b>{v.cls === 'good' ? <VerdictMark ok /> : v.cls === 'bad' ? <VerdictMark /> : null}{v.title}{result.replayed ? ' (повторная отправка не создала дубль)' : ''}</b>
             {result.feedback_ru}
             {result.explanation_ru ? <div className="mt8" style={{ color: 'var(--ink-2)' }}><b style={{ display: 'inline', fontSize: 13 }}>Почему: </b>{result.explanation_ru}</div> : null}
+            {result.explanation_el ? <div className="mt8 small" style={{ color: 'var(--ink-3, var(--ink-2))' }}><b style={{ display: 'inline', fontSize: 12 }}>Пояснение автора по-гречески: </b><span lang="el">{result.explanation_el}</span></div> : null}
             {result.ai?.used ? <div className="mt8"><span className="ai-label">AI-проверка по критериям · не преподаватель{result.ai.confidence ? ` · уверенность: ${result.ai.confidence === 'high' ? 'высокая' : result.ai.confidence === 'medium' ? 'средняя' : 'низкая'}` : ''}</span></div> : null}
             {result.ai?.dimensions?.length ? <ul className="criteria">{result.ai.dimensions.map((d) => <li key={d.criterion_id}><b>{d.label_ru}</b>: {LEVEL_RU[d.level] ?? d.level}. {d.note_ru}</li>)}</ul> : null}
             {result.ai?.errors?.length ? <ul className="criteria">{result.ai.errors.map((e, i) => <li key={i}><span lang="el">«{e.quote}» → <b>{e.correction_el}</b></span> — {e.explanation_ru}</li>)}</ul> : null}

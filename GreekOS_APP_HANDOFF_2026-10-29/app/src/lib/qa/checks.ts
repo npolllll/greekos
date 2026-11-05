@@ -130,6 +130,8 @@ export function greekFields(e: ItemEnvelope): Array<{ field: string; text: strin
   (e.answer ?? []).forEach((a, i) => push(`answer[${i}]`, a));
   (e.accepted_alternatives ?? []).forEach((a, i) => push(`accepted_alternatives[${i}]`, a));
   push('model_response', typeof e.model_response === 'string' ? e.model_response : null);
+  // Russian explanation: only its quoted Greek words are checked (orthography skips non-Greek words).
+  push('answer_explanation_ru', e.answer_explanation_ru ?? null);
   return out;
 }
 
