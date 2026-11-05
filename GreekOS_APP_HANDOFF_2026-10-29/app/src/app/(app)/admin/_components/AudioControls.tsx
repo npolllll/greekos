@@ -1,0 +1,168 @@
+'use client';
+import { Icon } from '@/components/Icon';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export function AudioRender({ audioId, planHash, configured, defaultCap }: { audioId: string; planHash: string; configured: boolean; defaultCap: number }) {
+  const router = useRouter();
+  const [cap, setCap] = useState(defaultCap);
+  const [ack, setAck] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  if (!configured) return <p className="small quiet mt8">Генерация недоступна: для ролей этого задания нет утверждённого кастинга или подходящего голоса (см. «Голоса и кастинг»).</p>;
+  async function run() {
+    setBusy(true); setMsg(null);
+    const res = await fetch('/api/admin/audio/render', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ audio_id: audioId, approved_plan_hash: planHash, budget_cap_usd: cap }) });
+    const j = await res.json().catch(() => ({}));
+    setBusy(false);
+    if (!res.ok) return setMsg({ ok: false, text: j.message ?? 'Генерация не выполнена' });
+    setMsg({ ok: true, text: j.status === 'REUSED' ? 'Этот план уже был сгенерирован — файл переиспользован.' : `Готово: ${j.render_status ?? j.job_status}` });
+    router.refresh();
+  }
+  return (
+    <div className="inline-form mt16">
+      <div className="field"><label htmlFor="cap">Лимит расходов на запуск, USD</label><input id="cap" type="number" min={0.01} max={100} step={0.5} value={cap} onChange={(e) => setCap(Number(e.target.value))} /></div>
+      <div className="check-list"><label><input type="checkbox" checked={ack} onChange={(e) => setAck(e.target.checked)} />Я утверждаю этот план (хеш плана выше) и понимаю, что результат — синтезированная речь, не запись носителя.</label></div>
+      <button type="button" className="btn" disabled={!ack || busy} onClick={run}>{busy ? 'Генерирую… (может занять минуты)' : 'Сгенерировать'}</button>
+      {msg ? <span className={msg.ok ? 'msg-ok' : 'error-text'} role="status">{msg.text}</span> : null}
+    </div>
+  );
+}
+
+export function RightsForm({ assetId, provider }: { assetId: string; provider: string }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [prov, setProv] = useState(provider);
+  const [url, setUrl] = useState('');
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [scope, setScope] = useState('Синтезированная речь для учебной платформы; показ приглашённым ученикам');
+  const [msg, setMsg] = useState<string | null>(null);
+  async function save() {
+    const res = await fetch('/api/admin/audio/rights', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ asset_id: assetId, provider: prov, terms_url: url, checked_on: date, scope_ru: scope }) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) return setMsg(j.message ?? 'Не сохранено');
+    setOpen(false);
+    router.refresh();
+  }
+  if (!open) return <button type="button" className="btn flat" onClick={() => setOpen(true)}>Записать условия провайдера</button>;
+  return (
+    <div className="inline-form" style={{ width: '100%' }}>
+      <div className="field"><label>Провайдер</label><input value={prov} onChange={(e) => setProv(e.target.value)} /></div>
+      <div className="field"><label>Ссылка на условия использования</label><input type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" /></div>
+      <div className="field"><label>Дата проверки</label><input type="date" value={date} onChange={(e) => setDate(e.target.value)} /></div>
+      <div className="field"><label>Охват использования</label><input value={scope} onChange={(e) => setScope(e.target.value)} /></div>
+      <div className="row"><button type="button" className="btn outline" onClick={save}>Сохранить</button><button type="button" className="btn outline" onClick={() => setOpen(false)}>Отмена</button></div>
+      {msg ? <span className="error-text">{msg}</span> : null}
+    </div>
+  );
+}
+
+export function AssetPlayer({ assetId }: { assetId: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  async function load() {
+    const r = await fetch(`/api/media/audio/${assetId}`);
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) return setErr(j.message ?? 'Недоступно');
+    setUrl(j.url);
+  }
+  return url ? <audio controls src={url} style={{ width: '100%' }}><track kind="captions" /></audio> : <span><button type="button" className="text-link" onClick={load} title="Подписанная ссылка действует 5 минут"><Icon name="play" size={13} /> Прослушать</button>{err ? <span className="error-text"> {err}</span> : null}</span>;
+}
+
+/** Owner listening verdict on one exact file (v6): required before any audio release. */
+export function ListenVerdict({ assetId, current }: { assetId: string; current: { decision: 'OK' | 'ISSUE'; at: string; note: string | null } | null }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  async function send(decision: 'OK' | 'ISSUE') {
+    const note = decision === 'ISSUE' ? window.prompt('Что слышно не так и где? (например: «Α:» искажено ударение в «έρχεσαι», 0:07)') : null;
+    if (decision === 'ISSUE' && !note) return;
+    setBusy(true); setErr(null);
+    const r = await fetch('/api/admin/qa/audio', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'listen', asset_id: assetId, decision, note: note ?? undefined }) });
+    const j = await r.json().catch(() => ({}));
+    setBusy(false);
+    if (!r.ok) return setErr(j.message ?? 'Не сохранено');
+    router.refresh();
+  }
+  return (
+    <span className="row" style={{ gap: 8 }}>
+      {current ? <span className={`tag ${current.decision === 'OK' ? 'green' : ''}`}>{current.decision === 'OK' ? 'прослушано владельцем: ОК' : `проблема: ${current.note ?? ''}`}</span> : <span className="tag gray">владелец не слушал</span>}
+      <button type="button" className="btn small outline" disabled={busy} onClick={() => send('OK')}>Прослушано — ОК</button>
+      <button type="button" className="btn small flat" disabled={busy} onClick={() => send('ISSUE')}>Есть проблема</button>
+      {err ? <span className="error-text" role="alert">{err}</span> : null}
+    </span>
+  );
+}
+
+/** Release decision for audio under the signed digital policy (v6); shows why a file is not eligible. */
+export function AudioReleaseButton({ assetIds, blockers, label, policyActive }: { assetIds: string[]; blockers: string[]; label: string; policyActive: boolean }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const reasons = [...(policyActive ? [] : ['цифровая политика выпуска не подписана']), ...blockers];
+  async function release() {
+    if (!window.confirm(`Выпустить ${assetIds.length} аудиофайл(ов) ученикам по цифровой политике? Ученики увидят пометку «синтезированный голос, цифровая проверка, не проверено носителем».`)) return;
+    setBusy(true); setMsg(null);
+    const r = await fetch('/api/admin/qa/audio', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'release', asset_ids: assetIds }) });
+    const j = await r.json().catch(() => ({}));
+    setBusy(false);
+    if (!r.ok) return setMsg({ ok: false, text: j.message ?? 'Решение не принято' });
+    setMsg({ ok: true, text: `Выпущено: ${j.released}${j.already_released ? `, уже было: ${j.already_released}` : ''}` });
+    router.refresh();
+  }
+  return (
+    <span className="stack" style={{ gap: 4 }}>
+      <button type="button" className="btn small" disabled={busy || reasons.length > 0 || !assetIds.length} onClick={release}>{busy ? 'Выпускаю…' : label}</button>
+      {reasons.length ? <span className="tiny quiet">Пока нельзя: {reasons.join('; ')}.</span> : null}
+      {msg ? <span className={msg.ok ? 'msg-ok' : 'error-text'} role="status">{msg.text}</span> : null}
+    </span>
+  );
+}
+
+/**
+ * Import of a finished recording (studio, voice actor, external TTS) for this job. The owner states
+ * who speaks each role; the file then goes through the same digital QA as a local render.
+ */
+export function ImportAudioForm({ audioId, roles }: { audioId: string; roles: string[] }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [provider, setProvider] = useState('');
+  const [voices, setVoices] = useState<Record<string, string>>({});
+  const [pres, setPres] = useState<Record<string, 'female' | 'male'>>({});
+  const [note, setNote] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  async function send() {
+    if (!file) return setMsg('Выберите WAV-файл.');
+    setBusy(true); setMsg(null);
+    const fd = new FormData();
+    fd.set('file', file);
+    fd.set('meta', JSON.stringify({ audio_id: audioId, provider, voices, presentations: Object.keys(pres).length ? pres : undefined, note: note || null }));
+    const res = await fetch('/api/admin/audio/import', { method: 'POST', body: fd });
+    const j = await res.json().catch(() => ({}));
+    setBusy(false);
+    if (!res.ok) return setMsg(j.message ?? 'Импорт не удался');
+    setMsg(`Импортировано: ${j.digital_status === 'AUDIO_VERIFIED_DIGITAL' ? 'цифровая проверка пройдена' : j.digital_status === 'BLOCKED' ? 'технический брак' : 'нужен разбор'}${j.roundtrip ? ` (CER фонет. ${j.roundtrip.cer_phonetic})` : ''}.`);
+    setOpen(false);
+    router.refresh();
+  }
+  if (!open) return <button type="button" className="btn flat" onClick={() => setOpen(true)}>Импорт готового файла</button>;
+  const speakers = roles.length ? roles : ['__narrator__'];
+  return (
+    <div className="inline-form" style={{ width: '100%' }}>
+      <p className="tiny quiet" style={{ margin: 0 }}>WAV от студии, актёра или внешнего синтеза. Файл пройдёт технический QA и сверку распознаванием с текстом задания. Права остаются «ожидают условий», пока вы их не запишете.</p>
+      <div className="field"><label htmlFor={`imp-file-${audioId}`}>Файл (WAV, PCM)</label><input id={`imp-file-${audioId}`} type="file" accept="audio/wav,audio/x-wav,.wav" onChange={(e) => setFile(e.target.files?.[0] ?? null)} /></div>
+      <div className="field"><label htmlFor={`imp-prov-${audioId}`}>Кто сделал запись</label><input id={`imp-prov-${audioId}`} value={provider} onChange={(e) => setProvider(e.target.value)} placeholder="Студия / провайдер / актёр" /></div>
+      {speakers.map((r) => (
+        <div className="row" key={r} style={{ gap: 8, flexWrap: 'wrap' }}>
+          <div className="field" style={{ flex: 1, minWidth: 160 }}><label htmlFor={`imp-v-${r}`}>{r === '__narrator__' ? 'Диктор' : r}: голос</label><input id={`imp-v-${r}`} value={voices[r] ?? ''} onChange={(e) => setVoices({ ...voices, [r]: e.target.value })} /></div>
+          <div className="field"><label htmlFor={`imp-p-${r}`}>Голос</label><select id={`imp-p-${r}`} value={pres[r] ?? ''} onChange={(e) => setPres({ ...pres, [r]: e.target.value as 'female' | 'male' })}><option value="">—</option><option value="female">женский</option><option value="male">мужской</option></select></div>
+        </div>
+      ))}
+      <div className="field"><label htmlFor={`imp-note-${audioId}`}>Примечание</label><input id={`imp-note-${audioId}`} value={note} onChange={(e) => setNote(e.target.value)} /></div>
+      <div className="row"><button type="button" className="btn" disabled={busy || provider.trim().length < 2} onClick={send}>{busy ? 'Проверяю файл…' : 'Импортировать и проверить'}</button><button type="button" className="btn outline" onClick={() => setOpen(false)}>Отмена</button></div>
+      {msg ? <span className="small" role="status">{msg}</span> : null}
+    </div>
+  );
+}

@@ -1,0 +1,7 @@
+Pixel WCAG AA contrast — text colour vs the rendered background (03.11.2026, final)
+== phone 390 (/, /course, /lesson/U-A1-007, /speaking, /errors, /exams)
+text runs checked: 309 below AA: 0
+== desktop 1440 (/, /course, /lesson/U-A1-007, /progress, /speaking, /errors, /exams, /writing, 404)
+text runs checked: 1073 below AA: 0
+== admin 1440 (/admin, audio, learners, voices, qa, qa/release, content)
+text runs checked: 1078 below AA: 0

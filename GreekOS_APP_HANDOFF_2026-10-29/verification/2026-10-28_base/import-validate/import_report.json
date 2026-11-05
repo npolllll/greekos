@@ -1,0 +1,36 @@
+{
+  "tool": "greekos-import/1.0.0",
+  "input_hashes": {
+    "HANDOFF_IMPORT/items.json": "37bed3468e189de0de5d357e38779761ea927af5644796d4279c5a3e5250ef47",
+    "HANDOFF_IMPORT/units.json": "15a5abdc338d951c9d38e14972c2fa9e1397f43c1c357264554440ecad39a646",
+    "HANDOFF_IMPORT/item.schema.json": "388acf8842c0974fd8012f5d69ba87d8563699c5a8405f6e7d913ce7c420c71b",
+    "HANDOFF_IMPORT/competencies.json": "224fd07cbb3490e502488ae8f500fbf3a866b29f721565239fdc920a04373015",
+    "HANDOFF_IMPORT/external_competencies.json": "a16bf2c5843c642a09d6513b2213d3853dfe4688d744619b1744d728b50e9367",
+    "HANDOFF_IMPORT/source_claims.json": "35d604ab7372a7fe9584f09f732e00be0434ebf540426770a1f07288481d6021",
+    "HANDOFF_IMPORT/audio_jobs.json": "0578042f8eb9a9202f1da02afdb81714891350ac923b0505822c585f51fc2ea1",
+    "HANDOFF_IMPORT/rubric_index.json": "8ca1678c85549ce1a101ec9f019854f2b2830af70f54fb0e3336147cba0ff3c1",
+    "HANDOFF_IMPORT/object_index.json": "990b9f95ae20eb44e5160077e2586ac7f7f1560d049ccfd24603b905c9855af4",
+    "HANDOFF_IMPORT/speaking_scenarios.json": "7d234a7ce98fe607a839bbe4ae734cc1240b50db61324606477ef6d5a73120d3",
+    "HANDOFF_IMPORT/exams.json": "76e2984c5824b80e843a58ceeb1d1c6f76a1e373f1c5174571bb906f2a1548e7",
+    "CONTRACTS/IMPLEMENTATION.json": "7dbded263ff3c0a78435a1d8b5dd069c09cc7782b19f5d31be19ddaca2f035c1"
+  },
+  "root_label": "GreekOS_CLAUDE_UPLOAD_READY",
+  "checks": 22886,
+  "problems": 0,
+  "counts": {
+    "items": 1843,
+    "units": 87,
+    "core_competencies": 96,
+    "external_competencies": 71,
+    "source_claims": 2676,
+    "audio_jobs": 142,
+    "rubrics": 91,
+    "objects": 172,
+    "scenarios": 44,
+    "exam_components": 15,
+    "rg_expressions": 12,
+    "pegp_packets": 8
+  },
+  "problems_detail": [],
+  "status": "VALIDATED_ONLY"
+}

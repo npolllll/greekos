@@ -1,0 +1,9 @@
+5:project_id = "greekos-verify"
+10:port = 56321
+34:port = 56322
+36:shadow_port = 56320
+48:port = 56329
+98:port = 56323
+109:port = 56324
+347:# project_id = "my-firebase-project"
+392:port = 56327

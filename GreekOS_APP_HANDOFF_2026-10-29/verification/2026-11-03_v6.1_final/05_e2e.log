@@ -1,0 +1,36 @@
+
+Running 29 tests using 1 worker
+
+  ✓   1 [desktop-1440] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (19.0s)
+  ✓   2 [desktop-1440] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (5.6s)
+  ✓   3 [desktop-1440] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (8.3s)
+  ✓   4 [desktop-1440] › tests/e2e/journey.spec.ts:81:1 › owner sees gated corpus honestly and can open the admin panel (6.1s)
+  ✓   5 [desktop-1440] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (42.6s)
+  ✓   6 [desktop-1440] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (25.5s)
+  ✓   7 [desktop-1440] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (8.2s)
+  ✓   8 [desktop-1440] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (4.1s)
+  ✓   9 [desktop-1440] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (3.0s)
+  ✓  10 [tablet-768] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (28.4s)
+  ✓  11 [tablet-768] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (23.7s)
+  ✓  12 [tablet-768] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (5.7s)
+  ✓  13 [tablet-768] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (5.5s)
+  ✓  14 [tablet-768] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (2.7s)
+  ✓  15 [voice-stream] › tests/e2e/voice-stream.spec.ts:21:1 › live streaming conversation in the browser (1.1m)
+  ✓  16 [mobile-390] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (32.3s)
+  ✓  17 [mobile-390] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (5.7s)
+  ✓  18 [mobile-390] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (8.1s)
+  ✓  19 [mobile-390] › tests/e2e/journey.spec.ts:81:1 › owner sees gated corpus honestly and can open the admin panel (4.7s)
+  ✓  20 [mobile-390] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (37.5s)
+  ✓  21 [mobile-390] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (28.1s)
+  ✓  22 [mobile-390] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (6.6s)
+  ✓  23 [mobile-390] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (4.5s)
+  ✓  24 [mobile-390] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (4.9s)
+  ✓  25 [mobile-320] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (31.3s)
+  ✓  26 [mobile-320] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (24.3s)
+  ✓  27 [mobile-320] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (6.6s)
+  ✓  28 [mobile-320] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (4.3s)
+  ✓  29 [mobile-320] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (2.8s)
+
+  29 passed (7.8m)
+e2e exit 0
+ALLDONE

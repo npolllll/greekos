@@ -1,0 +1,13 @@
+
+> greekos@1.0.0 local:doctor
+> tsx --conditions=react-server scripts/local-doctor.ts
+
+Машина: Intel(R) Xeon(R) Processor @ 2.10GHz × 4, 16 ГБ, linux/x64
+✓ База Supabase: http://127.0.0.1:55321
+✓ Модель: gemma-4-E2B-it-Q4_K_M · бэкенд cpu · потоков 3 · слотов 4 · KV-кэш переиспользуется · flash attention выкл
+✓ Квалификация модели для разговора: пройдена (34 случаев, 2026-11-03)
+✓ Речь: ASR small на cpu · TTS на cpu · голоса: coqui-el-css10, mbrola-gr2, mbrola-gr1
+✓ Голосовой шлюз: greekos-voice.v1, сессий 0
+
+Задержку на этой машине измеряет: npm run speaking:latency (сцена SC05, отчёт в reports/v7/speaking-latency).
+00_local_doctor exit 0

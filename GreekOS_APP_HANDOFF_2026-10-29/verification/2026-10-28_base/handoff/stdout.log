@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "checks": 19366,
+  "errors": [],
+  "inventory": {
+    "date": "2026-10-26",
+    "source_zip_sha256": "d43d30dfb479291e77c64424d11c11798a275ae62fd53b733a0ce4b560058afd",
+    "source_entries": 4896,
+    "units": 87,
+    "core_course_items": 1443,
+    "diagnostics": 24,
+    "normalized_items": 1843,
+    "by_module": {
+      "core": 1467,
+      "keg_b2": 213,
+      "pegp": 103,
+      "real_greek": 60
+    },
+    "core_competencies": 96,
+    "external_competencies": 71,
+    "exam_forms": 3,
+    "exam_components": 15,
+    "exam_targets": 213,
+    "speaking_scenarios": 44,
+    "real_greek_expressions": 12,
+    "outstanding_audio_jobs": 142,
+    "actual_audio_files": 0,
+    "human_verified": 0,
+    "error_tag_decisions_preserved": 42,
+    "unresolved_tags": 1031,
+    "mapping_corrections": 20,
+    "canonical_academic_files_changed": 0
+  },
+  "input_hashes": {
+    "HANDOFF_IMPORT/items.json": "37bed3468e189de0de5d357e38779761ea927af5644796d4279c5a3e5250ef47",
+    "HANDOFF_IMPORT/units.json": "15a5abdc338d951c9d38e14972c2fa9e1397f43c1c357264554440ecad39a646",
+    "HANDOFF_IMPORT/item.schema.json": "388acf8842c0974fd8012f5d69ba87d8563699c5a8405f6e7d913ce7c420c71b",
+    "CONTRACTS/IMPLEMENTATION.json": "7dbded263ff3c0a78435a1d8b5dd069c09cc7782b19f5d31be19ddaca2f035c1"
+  },
+  "executed_command": "python3 TOOLS/verify_handoff.py --output <disposable-output-directory>",
+  "python": "3.12.6 (v3.12.6:a4a2d2b0d85, Sep  6 2024, 16:08:03) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "sqlite": "3.45.3",
+  "scope": "JSON Schema, physical references/hashes, exam components, DAG, cleanSQLiteimport and negative policy fixtures. NOT Supabase/RLS, deployed API/voice, independent teacher or exhaustive language/source review."
+}

@@ -1,0 +1,10 @@
+
+ RUN  v4.1.12 /home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app
+
+
+ Test Files  10 passed (10)
+      Tests  86 passed | 16 skipped (102)
+   Start at  22:40:53
+   Duration  1.55s (transform 1.08s, setup 0ms, import 2.50s, tests 430ms, environment 1ms)
+
+exit 0

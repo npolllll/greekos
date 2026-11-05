@@ -1,0 +1,51 @@
+
+> greekos@1.0.0 test:e2e
+> playwright test
+
+
+Running 41 tests using 1 worker
+
+  ✓   1 [desktop-1440] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (20.4s)
+  ✓   2 [desktop-1440] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (4.2s)
+  ✓   3 [desktop-1440] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (10.1s)
+  ✓   4 [desktop-1440] › tests/e2e/journey.spec.ts:81:1 › owner sees gated corpus honestly and can open the admin panel (5.0s)
+  ✓   5 [desktop-1440] › tests/e2e/product.spec.ts:38:3 › product on the real corpus (owner preview) › every item type opens in its player and returns a verdict (42.5s)
+  ✓   6 [desktop-1440] › tests/e2e/product.spec.ts:61:3 › product on the real corpus (owner preview) › route A0 → B2: a lesson of every level opens with its stages (19.4s)
+  ✓   7 [desktop-1440] › tests/e2e/product.spec.ts:76:3 › product on the real corpus (owner preview) › exam: a reading component in practice mode is answered and submitted (DEV-PREVIEW tester) (8.2s)
+  ✓   8 [desktop-1440] › tests/e2e/product.spec.ts:102:3 › product on the real corpus (owner preview) › owner admin screens open with real data (13.6s)
+  ✓   9 [desktop-1440] › tests/e2e/product.spec.ts:118:3 › product on the real corpus (owner preview) › an unknown address shows the GreekOS page, not the framework 404 (3.3s)
+  ✓  10 [desktop-1440] › tests/e2e/registration.spec.ts:35:1 › a visitor registers with the owner's code, confirms the e-mail and starts from the alphabet (18.2s)
+  ✓  11 [desktop-1440] › tests/e2e/registration.spec.ts:102:1 › closed registration: the login page offers no sign-up and the API refuses (1.5s)
+  ✓  12 [desktop-1440] › tests/e2e/release-route.spec.ts:53:1 › owner releases a scope; an experienced learner without preview is placed by the diagnostic and studies the route (1.1m)
+  ✓  13 [desktop-1440] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (43.8s)
+  ✓  14 [desktop-1440] › tests/e2e/responsive.spec.ts:24:1 › public screens (sign-in, registration): no horizontal scroll and no serious axe violations (4.8s)
+  ✓  15 [desktop-1440] › tests/e2e/responsive.spec.ts:36:1 › owner admin screens: no horizontal scroll (26.5s)
+  ✓  16 [desktop-1440] › tests/e2e/responsive.spec.ts:48:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (9.8s)
+  ✓  17 [desktop-1440] › tests/e2e/responsive.spec.ts:66:1 › keyboard: skip link and visible focus (5.7s)
+  ✓  18 [desktop-1440] › tests/e2e/responsive.spec.ts:82:1 › reduced motion preference disables animations (4.6s)
+  ✓  19 [tablet-768] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (32.7s)
+  ✓  20 [tablet-768] › tests/e2e/responsive.spec.ts:24:1 › public screens (sign-in, registration): no horizontal scroll and no serious axe violations (4.3s)
+  ✓  21 [tablet-768] › tests/e2e/responsive.spec.ts:36:1 › owner admin screens: no horizontal scroll (23.7s)
+  ✓  22 [tablet-768] › tests/e2e/responsive.spec.ts:48:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (10.1s)
+  ✓  23 [tablet-768] › tests/e2e/responsive.spec.ts:66:1 › keyboard: skip link and visible focus (4.8s)
+  ✓  24 [tablet-768] › tests/e2e/responsive.spec.ts:82:1 › reduced motion preference disables animations (4.1s)
+  ✓  25 [voice-stream] › tests/e2e/voice-stream.spec.ts:21:1 › live streaming conversation in the browser (1.5m)
+  ✓  26 [mobile-390] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (34.4s)
+  ✓  27 [mobile-390] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (6.9s)
+  ✓  28 [mobile-390] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (16.7s)
+  ✓  29 [mobile-390] › tests/e2e/journey.spec.ts:81:1 › owner sees gated corpus honestly and can open the admin panel (7.2s)
+  ✓  30 [mobile-390] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (46.3s)
+  ✓  31 [mobile-390] › tests/e2e/responsive.spec.ts:24:1 › public screens (sign-in, registration): no horizontal scroll and no serious axe violations (4.9s)
+  ✓  32 [mobile-390] › tests/e2e/responsive.spec.ts:36:1 › owner admin screens: no horizontal scroll (27.8s)
+  ✓  33 [mobile-390] › tests/e2e/responsive.spec.ts:48:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (7.6s)
+  ✓  34 [mobile-390] › tests/e2e/responsive.spec.ts:66:1 › keyboard: skip link and visible focus (10.3s)
+  ✓  35 [mobile-390] › tests/e2e/responsive.spec.ts:82:1 › reduced motion preference disables animations (4.0s)
+  ✓  36 [mobile-320] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (34.6s)
+  ✓  37 [mobile-320] › tests/e2e/responsive.spec.ts:24:1 › public screens (sign-in, registration): no horizontal scroll and no serious axe violations (4.3s)
+  ✓  38 [mobile-320] › tests/e2e/responsive.spec.ts:36:1 › owner admin screens: no horizontal scroll (24.2s)
+  ✓  39 [mobile-320] › tests/e2e/responsive.spec.ts:48:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (6.9s)
+  ✓  40 [mobile-320] › tests/e2e/responsive.spec.ts:66:1 › keyboard: skip link and visible focus (9.7s)
+  ✓  41 [mobile-320] › tests/e2e/responsive.spec.ts:82:1 › reduced motion preference disables animations (3.3s)
+
+  41 passed (12.3m)
+05_e2e_full_rerun exit 0

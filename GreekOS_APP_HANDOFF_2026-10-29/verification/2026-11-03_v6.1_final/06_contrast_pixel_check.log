@@ -1,0 +1,9 @@
+Pixel WCAG contrast after the mobile layout fixes and the count pill (03.11.2026)
+== mobile 390 (/, /course, /course?level=A1, /alphabet, /lesson/U-A1-007, /speaking)
+text runs checked: 337 below AA: 0
+== desktop 1440 (/, /alphabet, /course, /lesson/U-A1-007, /progress, /speaking)
+text runs checked: 817 below AA: 0
+== admin 1440 (/admin, /admin/audio, /admin/learners, /admin/voices, /admin/qa)
+text runs checked: 799 below AA: 0
+
+Before the fix (mobile /speaking): 2 of 341 flagged — «44 сценариев» on the bare scene (4.27, real; now a glass pill) and a «Голосом» button half under the fixed bottom nav (measurement artefact: the visible part is white on #be5120, 4.79).

@@ -1,0 +1,1068 @@
+{
+  "generated_at": "2026-10-29T02:59:46.959Z",
+  "label": "SYNTHETIC_TEST_CLIPS — local engines; not live learner speech; cloud providers NOT_TESTED",
+  "environment": {
+    "platform": "darwin 23.0.0",
+    "cpus": "Apple M1 Pro",
+    "cores": 10,
+    "asr": "local openai-whisper small (stream final)",
+    "tts": "local macOS Мелина (compact)",
+    "dialogue": "scripted_fallback (LLM not connected)",
+    "transport": "local WebSocket gateway"
+  },
+  "slo_pilot": {
+    "p50_ms": 1500,
+    "p95_ms": 3500,
+    "definition": "end of learner speech → first audible AI audio"
+  },
+  "turns": 27,
+  "end_of_speech_to_first_audio_ms": {
+    "p50": 3052,
+    "p95": 3919,
+    "max": 4171,
+    "note": "client-side: last voiced sample sent → first audio chunk received (+ ~50 ms browser scheduling not included)"
+  },
+  "components_ms": {
+    "vad_hangover_ms": {
+      "p50": 900,
+      "p95": 1300
+    },
+    "asr_final_ms": {
+      "p50": 1383,
+      "p95": 2831
+    },
+    "dialogue_ms": {
+      "p50": 66,
+      "p95": 103
+    },
+    "tts_first_audio_ms": {
+      "p50": 1917,
+      "p95": 3198
+    },
+    "end_of_speech_to_audio_ms": {
+      "p50": 3073,
+      "p95": 4098
+    }
+  },
+  "by_class": {
+    "clean": {
+      "turns": 9,
+      "latency_p50": 2993,
+      "latency_p95": 4171,
+      "wer_mean": 0.132,
+      "needs_confirmation": 0,
+      "split_utterances": 0
+    },
+    "quiet_noise": {
+      "turns": 9,
+      "latency_p50": 3169,
+      "latency_p95": 3919,
+      "wer_mean": 0.416,
+      "needs_confirmation": 9,
+      "split_utterances": 0
+    },
+    "hesitant": {
+      "turns": 9,
+      "latency_p50": 2524,
+      "latency_p95": 3354,
+      "wer_mean": 0.132,
+      "needs_confirmation": 0,
+      "split_utterances": 0
+    }
+  },
+  "rows": [
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "clean",
+      "turn": 1,
+      "reference": "Θέλω ένα κιλό μήλα. Πόσο κάνουν;",
+      "transcript": "Θέλω ένα κυλόμιλα πόσο κάνουν.",
+      "confidence": 0.6819263298453427,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.3333,
+      "cer": 0.1,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "κιλο",
+          "μηλα"
+        ],
+        "inserted": [
+          "κυλομιλα"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2767,
+      "gateway": {
+        "speech_ms": 2160,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": 2509,
+        "asr_final_ms": 1142,
+        "dialogue_ms": 36,
+        "tts_first_audio_ms": 1486,
+        "playback_start_ms": 1487,
+        "end_of_speech_to_audio_ms": 2787,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "clean",
+      "turn": 2,
+      "reference": "Ναι, μισό κιλό αχλάδια, παρακαλώ.",
+      "transcript": "Ναι, μισόκυλο αχλάδια, παρακαλώ.",
+      "confidence": 0.7220701175077588,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.4,
+      "cer": 0.0667,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "μισο",
+          "κιλο"
+        ],
+        "inserted": [
+          "μισοκυλο"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2993,
+      "gateway": {
+        "speech_ms": 2560,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": 2298,
+        "asr_final_ms": 1297,
+        "dialogue_ms": 63,
+        "tts_first_audio_ms": 1672,
+        "playback_start_ms": 1672,
+        "end_of_speech_to_audio_ms": 2972,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "clean",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Μπορείτε να επαναλάβετε την ώρα.",
+      "confidence": 0.794116767807558,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2821,
+      "gateway": {
+        "speech_ms": 1920,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": null,
+        "asr_final_ms": 1156,
+        "dialogue_ms": 37,
+        "tts_first_audio_ms": 1500,
+        "playback_start_ms": 1500,
+        "end_of_speech_to_audio_ms": 2800,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "quiet_noise",
+      "turn": 1,
+      "reference": "Θέλω ένα κιλό μήλα. Πόσο κάνουν;",
+      "transcript": "Θέλω ένα κυλόνιλα, πόσο κάνουν.",
+      "confidence": 0.6488927953575894,
+      "needs_confirmation": true,
+      "confirm_reason": "noisy_audio",
+      "split_into_finals": 1,
+      "wer": 0.3333,
+      "cer": 0.1333,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "κιλο",
+          "μηλα"
+        ],
+        "inserted": [
+          "κυλονιλα"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3188,
+      "gateway": {
+        "speech_ms": 1660,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": 2328,
+        "asr_final_ms": 1262,
+        "dialogue_ms": 103,
+        "tts_first_audio_ms": 1986,
+        "playback_start_ms": 1988,
+        "end_of_speech_to_audio_ms": 3288,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "quiet_noise",
+      "turn": 2,
+      "reference": "Ναι, μισό κιλό αχλάδια, παρακαλώ.",
+      "transcript": "Ναι, μισό χιλό αγγλάδια, παρακαλώ.",
+      "confidence": 0.660586002374763,
+      "needs_confirmation": true,
+      "confirm_reason": "noisy_audio",
+      "split_into_finals": 1,
+      "wer": 0.4,
+      "cer": 0.1,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "κιλο",
+          "αχλαδια"
+        ],
+        "inserted": [
+          "χιλο",
+          "αγγλαδια"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3156,
+      "gateway": {
+        "speech_ms": 1800,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": 2344,
+        "asr_final_ms": 1280,
+        "dialogue_ms": 74,
+        "tts_first_audio_ms": 1917,
+        "playback_start_ms": 1918,
+        "end_of_speech_to_audio_ms": 3218,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "quiet_noise",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Βορύθενα δε κοναλάβες δε την ώρα.",
+      "confidence": 0.3848756111700659,
+      "needs_confirmation": true,
+      "confirm_reason": "low_confidence",
+      "split_into_finals": 1,
+      "wer": 0.8,
+      "cer": 0.4194,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "μπορειτε",
+          "να",
+          "επαναλαβετε"
+        ],
+        "inserted": [
+          "βορυθενα",
+          "δε",
+          "κοναλαβεσ",
+          "δε"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3163,
+      "gateway": {
+        "speech_ms": 1320,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": 2756,
+        "asr_final_ms": 1383,
+        "dialogue_ms": 81,
+        "tts_first_audio_ms": 1962,
+        "playback_start_ms": 1962,
+        "end_of_speech_to_audio_ms": 3262,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "hesitant",
+      "turn": 1,
+      "reference": "Θέλω ένα κιλό μήλα. Πόσο κάνουν;",
+      "transcript": "Θέλω ένα κυλόμιλα. Πόσο κάνουν.",
+      "confidence": 0.6778168937597682,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.3333,
+      "cer": 0.1,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "κιλο",
+          "μηλα"
+        ],
+        "inserted": [
+          "κυλομιλα"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3354,
+      "gateway": {
+        "speech_ms": 2100,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": 2888,
+        "asr_final_ms": 2006,
+        "dialogue_ms": 60,
+        "tts_first_audio_ms": 2068,
+        "playback_start_ms": 2069,
+        "end_of_speech_to_audio_ms": 3369,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "hesitant",
+      "turn": 2,
+      "reference": "Ναι, μισό κιλό αχλάδια, παρακαλώ.",
+      "transcript": "Ναι. Μισόκυλο αχλάδια. Παρακαλώ.",
+      "confidence": 0.6885192159050784,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.4,
+      "cer": 0.0667,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "μισο",
+          "κιλο"
+        ],
+        "inserted": [
+          "μισοκυλο"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2822,
+      "gateway": {
+        "speech_ms": 2380,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": 2490,
+        "asr_final_ms": 1429,
+        "dialogue_ms": 71,
+        "tts_first_audio_ms": 1501,
+        "playback_start_ms": 1501,
+        "end_of_speech_to_audio_ms": 2801,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC01",
+      "level": "A1",
+      "class": "hesitant",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Μπορείτε να επαναλάβετε την ώρα.",
+      "confidence": 0.7992226405298106,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2524,
+      "gateway": {
+        "speech_ms": 1940,
+        "vad_hangover_ms": 1300,
+        "asr_partial_first_ms": 3046,
+        "asr_final_ms": 1133,
+        "dialogue_ms": 68,
+        "tts_first_audio_ms": 1201,
+        "playback_start_ms": 1202,
+        "end_of_speech_to_audio_ms": 2502,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "clean",
+      "turn": 1,
+      "reference": "Στο ράφι η τιμή ήταν τρία ευρώ, αλλά πλήρωσα τέσσερα.",
+      "transcript": "Στοράφη η τιμή ήταν 3 ευρώ, αλλά πλήρωσα 4.",
+      "confidence": 0.7822243945853437,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.2,
+      "cer": 0.0476,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "στο",
+          "ραφι",
+          "τρια",
+          "τεσσερα"
+        ],
+        "inserted": [
+          "στοραφη",
+          "3",
+          "4"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3690,
+      "gateway": {
+        "speech_ms": 3200,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2261,
+        "asr_final_ms": 2396,
+        "dialogue_ms": 72,
+        "tts_first_audio_ms": 2767,
+        "playback_start_ms": 2768,
+        "end_of_speech_to_audio_ms": 3668,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "clean",
+      "turn": 2,
+      "reference": "Ναι, ας ελέγξουμε τον κωδικό και το μέγεθος πριν αποφασίσουμε.",
+      "transcript": "Ναι, ας ελέγξουμε τον κοδικό και το μέγεθος πριν αποφασίσουμε.",
+      "confidence": 0.854031825350172,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.1,
+      "cer": 0.0167,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "κωδικο"
+        ],
+        "inserted": [
+          "κοδικο"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3547,
+      "gateway": {
+        "speech_ms": 3660,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2279,
+        "asr_final_ms": 2267,
+        "dialogue_ms": 48,
+        "tts_first_audio_ms": 2626,
+        "playback_start_ms": 2627,
+        "end_of_speech_to_audio_ms": 3527,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "clean",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Μπορείτε να επαναλάβετε την ώρα.",
+      "confidence": 0.7776241062099903,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2662,
+      "gateway": {
+        "speech_ms": 1940,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": null,
+        "asr_final_ms": 1386,
+        "dialogue_ms": 39,
+        "tts_first_audio_ms": 1741,
+        "playback_start_ms": 1742,
+        "end_of_speech_to_audio_ms": 2642,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "quiet_noise",
+      "turn": 1,
+      "reference": "Στο ράφι η τιμή ήταν τρία ευρώ, αλλά πλήρωσα τέσσερα.",
+      "transcript": "Στοράθι οι τιμήροι ήταν 3 ευρώ, αλλά πλήρωσα 4.",
+      "confidence": 0.6052875200725863,
+      "needs_confirmation": true,
+      "confirm_reason": "noisy_audio",
+      "split_into_finals": 1,
+      "wer": 0.4,
+      "cer": 0.1667,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "στο",
+          "ραφι",
+          "η",
+          "τιμη",
+          "τρια",
+          "τεσσερα"
+        ],
+        "inserted": [
+          "στοραθι",
+          "οι",
+          "τιμηροι",
+          "3",
+          "4"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3162,
+      "gateway": {
+        "speech_ms": 2260,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2158,
+        "asr_final_ms": 1337,
+        "dialogue_ms": 80,
+        "tts_first_audio_ms": 2319,
+        "playback_start_ms": 2320,
+        "end_of_speech_to_audio_ms": 3220,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "quiet_noise",
+      "turn": 2,
+      "reference": "Ναι, ας ελέγξουμε τον κωδικό και το μέγεθος πριν αποφασίσουμε.",
+      "transcript": "Ναι, ας ελέμψουμε τον κοδικό και το μέγετος πριν αποφασίσουμε.",
+      "confidence": 0.8207663307371658,
+      "needs_confirmation": true,
+      "confirm_reason": "noisy_audio",
+      "split_into_finals": 1,
+      "wer": 0.3,
+      "cer": 0.0667,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "ελεγξουμε",
+          "κωδικο",
+          "μεγεθοσ"
+        ],
+        "inserted": [
+          "ελεμψουμε",
+          "κοδικο",
+          "μεγετοσ"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3298,
+      "gateway": {
+        "speech_ms": 2320,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2221,
+        "asr_final_ms": 2352,
+        "dialogue_ms": 51,
+        "tts_first_audio_ms": 2417,
+        "playback_start_ms": 2418,
+        "end_of_speech_to_audio_ms": 3318,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "quiet_noise",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Μπροστά.",
+      "confidence": 0.36287775915668713,
+      "needs_confirmation": true,
+      "confirm_reason": "low_confidence",
+      "split_into_finals": 1,
+      "wer": 1,
+      "cer": 0.8387,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "μπορειτε",
+          "να",
+          "επαναλαβετε",
+          "την",
+          "ωρα"
+        ],
+        "inserted": [
+          "μπροστα"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3200,
+      "gateway": {
+        "speech_ms": 1340,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2281,
+        "asr_final_ms": 924,
+        "dialogue_ms": 114,
+        "tts_first_audio_ms": 2436,
+        "playback_start_ms": 2437,
+        "end_of_speech_to_audio_ms": 3337,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "hesitant",
+      "turn": 1,
+      "reference": "Στο ράφι η τιμή ήταν τρία ευρώ, αλλά πλήρωσα τέσσερα.",
+      "transcript": "Στοράφη η τιμή ήταν 3 ευρώ, αλλά πλήρωσα 4.",
+      "confidence": 0.7376339568728822,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.2,
+      "cer": 0.0476,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "στο",
+          "ραφι",
+          "τρια",
+          "τεσσερα"
+        ],
+        "inserted": [
+          "στοραφη",
+          "3",
+          "4"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2246,
+      "gateway": {
+        "speech_ms": 3100,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2321,
+        "asr_final_ms": 1334,
+        "dialogue_ms": 29,
+        "tts_first_audio_ms": 1364,
+        "playback_start_ms": 1366,
+        "end_of_speech_to_audio_ms": 2266,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "hesitant",
+      "turn": 2,
+      "reference": "Ναι, ας ελέγξουμε τον κωδικό και το μέγεθος πριν αποφασίσουμε.",
+      "transcript": "Ναι. Ας ελέγξουμε τον κοδικό και το μέγεθος πριν αποφασίσουμε.",
+      "confidence": 0.88607184533833,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.1,
+      "cer": 0.0167,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "κωδικο"
+        ],
+        "inserted": [
+          "κοδικο"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2361,
+      "gateway": {
+        "speech_ms": 3640,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 1946,
+        "asr_final_ms": 1395,
+        "dialogue_ms": 43,
+        "tts_first_audio_ms": 1439,
+        "playback_start_ms": 1440,
+        "end_of_speech_to_audio_ms": 2340,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC02",
+      "level": "B1",
+      "class": "hesitant",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Μπορείτε να επαναλάβετε την ώρα.",
+      "confidence": 0.7705990807081489,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 1970,
+      "gateway": {
+        "speech_ms": 1900,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2635,
+        "asr_final_ms": 1018,
+        "dialogue_ms": 32,
+        "tts_first_audio_ms": 1050,
+        "playback_start_ms": 1051,
+        "end_of_speech_to_audio_ms": 1951,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "clean",
+      "turn": 1,
+      "reference": "Παραγγείλαμε έξι μερίδες, από τις οποίες δύο χωρίς κρέας, αλλά όλες έχουν κρέας.",
+      "transcript": "Παραγγύλαμε 6 ημερίδες, από τις οποίες δύο χωρίς κρέας, αλλά όλες έχουν κρέας.",
+      "confidence": 0.8648649741659208,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.1538,
+      "cer": 0.0411,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "παραγγειλαμε",
+          "εξι",
+          "μεριδεσ"
+        ],
+        "inserted": [
+          "παραγγυλαμε",
+          "6",
+          "ημεριδεσ"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 4171,
+      "gateway": {
+        "speech_ms": 4900,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2263,
+        "asr_final_ms": 2831,
+        "dialogue_ms": 66,
+        "tts_first_audio_ms": 3250,
+        "playback_start_ms": 3251,
+        "end_of_speech_to_audio_ms": 4151,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "clean",
+      "turn": 2,
+      "reference": "Καταλαβαίνω. Μπορούμε στο μεταξύ να έχουμε κάτι απλό για τα δύο άτομα;",
+      "transcript": "Καταλαβαίνω, μπορούμε στο μεταξύ να έχουμε κάτι απλό για τα δύο άτομα.",
+      "confidence": 0.8761967634029536,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3052,
+      "gateway": {
+        "speech_ms": 4100,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2566,
+        "asr_final_ms": 1782,
+        "dialogue_ms": 79,
+        "tts_first_audio_ms": 2173,
+        "playback_start_ms": 2173,
+        "end_of_speech_to_audio_ms": 3073,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "clean",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Μπορείτε να επαναλάβετε την ώρα.",
+      "confidence": 0.7702419438054134,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2527,
+      "gateway": {
+        "speech_ms": 1920,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": null,
+        "asr_final_ms": 1234,
+        "dialogue_ms": 52,
+        "tts_first_audio_ms": 1606,
+        "playback_start_ms": 1606,
+        "end_of_speech_to_audio_ms": 2506,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "quiet_noise",
+      "turn": 1,
+      "reference": "Παραγγείλαμε έξι μερίδες, από τις οποίες δύο χωρίς κρέας, αλλά όλες έχουν κρέας.",
+      "transcript": "Παραγγύλαμε 6 ημερίδες, από τις οποίες δύο χωρίς τρέας, αλλά όλες έχουν τρέας.",
+      "confidence": 0.7871652901564414,
+      "needs_confirmation": true,
+      "confirm_reason": "noisy_audio",
+      "split_into_finals": 1,
+      "wer": 0.3077,
+      "cer": 0.0685,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "παραγγειλαμε",
+          "εξι",
+          "μεριδεσ",
+          "κρεασ",
+          "κρεασ"
+        ],
+        "inserted": [
+          "παραγγυλαμε",
+          "6",
+          "ημεριδεσ",
+          "τρεασ",
+          "τρεασ"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3919,
+      "gateway": {
+        "speech_ms": 3500,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2427,
+        "asr_final_ms": 3111,
+        "dialogue_ms": 79,
+        "tts_first_audio_ms": 3198,
+        "playback_start_ms": 3198,
+        "end_of_speech_to_audio_ms": 4098,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "quiet_noise",
+      "turn": 2,
+      "reference": "Καταλαβαίνω. Μπορούμε στο μεταξύ να έχουμε κάτι απλό για τα δύο άτομα;",
+      "transcript": "Καταλαβαίνω, μπορούμε στο μεταξύ να έχουμε κάτι απλό για τα δύο άτομα.",
+      "confidence": 0.8582154193612342,
+      "needs_confirmation": true,
+      "confirm_reason": "noisy_audio",
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3126,
+      "gateway": {
+        "speech_ms": 2860,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2214,
+        "asr_final_ms": 2004,
+        "dialogue_ms": 83,
+        "tts_first_audio_ms": 2324,
+        "playback_start_ms": 2324,
+        "end_of_speech_to_audio_ms": 3224,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "quiet_noise",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Μπορείτε να επαναλάζετε την ώρα.",
+      "confidence": 0.7069470930470184,
+      "needs_confirmation": true,
+      "confirm_reason": "noisy_audio",
+      "split_into_finals": 1,
+      "wer": 0.2,
+      "cer": 0.0323,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "επαναλαβετε"
+        ],
+        "inserted": [
+          "επαναλαζετε"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 3169,
+      "gateway": {
+        "speech_ms": 1340,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": null,
+        "asr_final_ms": 1160,
+        "dialogue_ms": 89,
+        "tts_first_audio_ms": 2409,
+        "playback_start_ms": 2409,
+        "end_of_speech_to_audio_ms": 3309,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "hesitant",
+      "turn": 1,
+      "reference": "Παραγγείλαμε έξι μερίδες, από τις οποίες δύο χωρίς κρέας, αλλά όλες έχουν κρέας.",
+      "transcript": "Παραγγύλαμε 6 ημερίδες. Από τις οποίες 2 χωρίς κρέας. Αλλά όλες έχουν κρέας.",
+      "confidence": 0.7949004115188225,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0.1538,
+      "cer": 0.0411,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [
+          "παραγγειλαμε",
+          "εξι",
+          "μεριδεσ",
+          "δυο"
+        ],
+        "inserted": [
+          "παραγγυλαμε",
+          "6",
+          "ημεριδεσ",
+          "2"
+        ],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2729,
+      "gateway": {
+        "speech_ms": 4820,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2751,
+        "asr_final_ms": 1775,
+        "dialogue_ms": 71,
+        "tts_first_audio_ms": 1847,
+        "playback_start_ms": 1848,
+        "end_of_speech_to_audio_ms": 2748,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "hesitant",
+      "turn": 2,
+      "reference": "Καταλαβαίνω. Μπορούμε στο μεταξύ να έχουμε κάτι απλό για τα δύο άτομα;",
+      "transcript": "Καταλαβαίνω. Μπορούμε στο μεταξύ να έχουμε κάτι απλό για τα δύο άτομα.",
+      "confidence": 0.856350621163797,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2552,
+      "gateway": {
+        "speech_ms": 4060,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": 2734,
+        "asr_final_ms": 1586,
+        "dialogue_ms": 45,
+        "tts_first_audio_ms": 1633,
+        "playback_start_ms": 1634,
+        "end_of_speech_to_audio_ms": 2534,
+        "interrupted": false
+      }
+    },
+    {
+      "scenario": "SC04",
+      "level": "B2",
+      "class": "hesitant",
+      "turn": 3,
+      "reference": "Μπορείτε να επαναλάβετε την ώρα;",
+      "transcript": "Μπορείτε να επαναλάβετε την ώρα.",
+      "confidence": 0.7915664616133958,
+      "needs_confirmation": false,
+      "confirm_reason": null,
+      "split_into_finals": 1,
+      "wer": 0,
+      "cer": 0,
+      "accent_mismatches": [],
+      "diff": {
+        "missing": [],
+        "inserted": [],
+        "repeated": []
+      },
+      "client_end_of_speech_to_first_chunk_ms": 2046,
+      "gateway": {
+        "speech_ms": 1940,
+        "vad_hangover_ms": 900,
+        "asr_partial_first_ms": null,
+        "asr_final_ms": 1079,
+        "dialogue_ms": 44,
+        "tts_first_audio_ms": 1124,
+        "playback_start_ms": 1125,
+        "end_of_speech_to_audio_ms": 2025,
+        "interrupted": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+
+> greekos@1.0.0 lint
+> eslint .
+
+02_lint exit 0

@@ -1,0 +1,12 @@
+{
+  "out": "../verification/2026-11-04_acceptance/admission",
+  "totals": {
+    "ready": 1645,
+    "text_ready_audio_pending": 177,
+    "blocked": 20,
+    "issue_review": 1
+  },
+  "policy_signed": false,
+  "units": 87
+}
+08_admission_plan exit 0

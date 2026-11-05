@@ -1,0 +1,17 @@
+{
+  "batch_id": "9019e803-71a9-43ff-8c79-2511767563f4",
+  "totals": {
+    "objects": 1978,
+    "items": 1843,
+    "units": 87,
+    "scenarios": 48,
+    "issues_stored": 321,
+    "PASS": 1858,
+    "NEEDS_REVIEW": 94,
+    "FAIL": 26,
+    "ABSTAIN": 0
+  },
+  "report_sha256": "546b2883d7d08b4b74c1d53b2cc1c96c6d9654061efd458b55d8775a60f997f0",
+  "report_path": "/home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/verification/2026-10-30_v6/clean_stack/QA_BATCH_9019e803-71a9-43ff-8c79-2511767563f4.json",
+  "ms": 5439
+}

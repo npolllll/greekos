@@ -1,0 +1,272 @@
+
+> greekos@1.0.0 build
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 83ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 20.2s
+  Running TypeScript ...
+  Finished TypeScript in 29.5s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/45) ...
+  Generating static pages using 3 workers (11/45) 
+  Generating static pages using 3 workers (22/45) 
+  Generating static pages using 3 workers (33/45) 
+✓ Generating static pages using 3 workers (45/45) in 705ms
+Turbopack build encountered 4 warnings:
+./src/lib/qa/run.ts:251:171
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m249 |[0m ...
+  [90m250 |[0m ...
+[33m[1m>[0m [90m251 |[0m ...a256: sha, report_path: path.replace(resolve([32m'.'[0m) + [32m'/'[0m, [32m''[0m) }).eq([32m'id'[0m, batch.id);
+  [90m    |[0m                                         [33m[1m^^^^^^^^^^^^[0m
+  [90m252 |[0m ...
+  [90m253 |[0m ...
+  [90m254 |[0m ...ge.slice([35m0[0m, [35m300[0m) } }).eq([32m'id'[0m, batch.id);
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  App Route:
+    ./src/lib/qa/run.ts
+    ./src/app/api/admin/qa/batches/route.ts
+
+  Server Component:
+    ./src/lib/qa/run.ts
+    ./src/lib/qa/release.ts
+    ./src/app/(app)/admin/qa/release/page.tsx
+
+
+./src/lib/speaking/qualification.ts:27:18
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m25 |[0m [36mexport[0m [36mfunction[0m qualificationOf(model: string | [36mnull[0m | [36mundefined[0m): [33mQualification[0m | [36mnull[0m {
+  [90m26 |[0m   [36mconst[0m [33mFILE[0m = file();
+[33m[1m>[0m [90m27 |[0m   [36mif[0m (!model || !existsSync([33mFILE[0m)) [36mreturn[0m [36mnull[0m;
+  [90m   |[0m                  [33m[1m^^^^^^^^^^^^^^^^[0m
+  [90m28 |[0m   [36mtry[0m {
+  [90m29 |[0m     [36mconst[0m all = [33mJSON[0m.parse(readFileSync([33mFILE[0m, [32m'utf8'[0m)) [36mas[0m [33mRecord[0m<string, [33mQualification[0m>;
+  [90m30 |[0m     [36mreturn[0m all[model] ?? [36mnull[0m;
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: fs.existsSync(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/qa/run.ts
+    ./src/app/api/admin/qa/batches/route.ts
+
+  #2 [App Route]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/speaking/service.ts
+    ./src/app/api/speaking/route.ts
+
+  #3 [Server Component]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/speaking/service.ts
+    ./src/app/(app)/speaking/[sessionId]/page.tsx
+
+
+./src/lib/speaking/qualification.ts:29:28
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m27 |[0m   [36mif[0m (!model || !existsSync([33mFILE[0m)) [36mreturn[0m [36mnull[0m;
+  [90m28 |[0m   [36mtry[0m {
+[33m[1m>[0m [90m29 |[0m     [36mconst[0m all = [33mJSON[0m.parse(readFileSync([33mFILE[0m, [32m'utf8'[0m)) [36mas[0m [33mRecord[0m<string, [33mQualification[0m>;
+  [90m   |[0m                            [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m30 |[0m     [36mreturn[0m all[model] ?? [36mnull[0m;
+  [90m31 |[0m   } [36mcatch[0m {
+  [90m32 |[0m     [36mreturn[0m [36mnull[0m;
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: fs.readFileSync(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/qa/run.ts
+    ./src/app/api/admin/qa/batches/route.ts
+
+  #2 [App Route]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/speaking/service.ts
+    ./src/app/api/speaking/route.ts
+
+  #3 [Server Component]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/speaking/service.ts
+    ./src/app/(app)/speaking/[sessionId]/page.tsx
+
+
+./src/lib/speaking/qualification.ts:23:20
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m21 |[0m ...
+  [90m22 |[0m ...
+[33m[1m>[0m [90m23 |[0m ...resolve(process.env.[33mLLM_QUALIFICATION_FILE[0m ?? [32m'local-services/llm/qualification.json'[0m);
+  [90m   |[0m    [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m24 |[0m ...
+  [90m25 |[0m ...lificationOf(model: string | [36mnull[0m | [36mundefined[0m): [33mQualification[0m | [36mnull[0m {
+  [90m26 |[0m ...();
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/qa/run.ts
+    ./src/app/api/admin/qa/batches/route.ts
+
+  #2 [App Route]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/speaking/service.ts
+    ./src/app/api/speaking/route.ts
+
+  #3 [Server Component]:
+    ./src/lib/speaking/qualification.ts
+    ./src/lib/speaking/service.ts
+    ./src/app/(app)/speaking/[sessionId]/page.tsx
+
+
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /admin
+├ ƒ /admin/audio
+├ ƒ /admin/audio/[audioId]
+├ ƒ /admin/consents
+├ ƒ /admin/content
+├ ƒ /admin/content/units/[unitId]
+├ ƒ /admin/exams
+├ ƒ /admin/exams/[formId]
+├ ƒ /admin/learners
+├ ƒ /admin/learners/[id]
+├ ƒ /admin/learners/[id]/sessions/[sessionId]
+├ ƒ /admin/policy
+├ ƒ /admin/preview
+├ ƒ /admin/providers
+├ ƒ /admin/qa
+├ ƒ /admin/qa/item/[id]
+├ ƒ /admin/qa/release
+├ ƒ /admin/reviews
+├ ƒ /admin/voices
+├ ƒ /alphabet
+├ ƒ /api/activity
+├ ƒ /api/admin/appeals
+├ ƒ /api/admin/audio/import
+├ ƒ /api/admin/audio/render
+├ ƒ /api/admin/audio/rights
+├ ƒ /api/admin/dev-preview
+├ ƒ /api/admin/invite
+├ ƒ /api/admin/learners/[id]/deactivate
+├ ƒ /api/admin/learners/[id]/delete
+├ ƒ /api/admin/learners/[id]/export
+├ ƒ /api/admin/learners/[id]/link
+├ ƒ /api/admin/learners/[id]/reactivate
+├ ƒ /api/admin/learners/[id]/role
+├ ƒ /api/admin/learners/[id]/route
+├ ƒ /api/admin/policy
+├ ƒ /api/admin/policy/revoke
+├ ƒ /api/admin/providers/check
+├ ƒ /api/admin/qa
+├ ƒ /api/admin/qa/audio
+├ ƒ /api/admin/qa/batches
+├ ƒ /api/admin/qa/decision
+├ ƒ /api/admin/qa/issues
+├ ƒ /api/admin/qa/patch
+├ ƒ /api/admin/qa/sample
+├ ƒ /api/admin/registration
+├ ƒ /api/admin/releases
+├ ƒ /api/admin/releases/revoke
+├ ƒ /api/admin/reviews
+├ ƒ /api/admin/voices
+├ ƒ /api/admin/voices/sample
+├ ƒ /api/appeals
+├ ƒ /api/attempts
+├ ƒ /api/auth/register
+├ ƒ /api/consents
+├ ƒ /api/cron/retention
+├ ƒ /api/diagnostic
+├ ƒ /api/exams/attempts/[attemptId]
+├ ƒ /api/exams/attempts/[attemptId]/audio
+├ ƒ /api/exams/autosave
+├ ƒ /api/exams/preview-score
+├ ƒ /api/exams/start
+├ ƒ /api/exams/submit
+├ ƒ /api/feedback/[attemptId]/context
+├ ƒ /api/health
+├ ƒ /api/lessons/complete
+├ ƒ /api/lessons/start
+├ ƒ /api/me/activate
+├ ƒ /api/me/delete
+├ ƒ /api/me/export
+├ ƒ /api/me/onboarding
+├ ƒ /api/me/preferences
+├ ƒ /api/me/schedule
+├ ƒ /api/media/audio/[assetId]
+├ ƒ /api/speaking
+├ ƒ /api/speaking/stream-token
+├ ƒ /api/speech/say
+├ ƒ /api/speech/transcribe
+├ ƒ /auth/confirm
+├ ƒ /auth/set-password
+├ ƒ /course
+├ ƒ /diagnostic
+├ ƒ /errors
+├ ƒ /exams
+├ ƒ /exams/[componentId]
+├ ƒ /exams/results/[attemptId]
+├ ƒ /lesson/[unitId]
+├ ƒ /listening
+├ ƒ /login
+├ ƒ /pegp
+├ ƒ /pegp/[topic]
+├ ƒ /practice
+├ ƒ /practice/[itemId]
+├ ƒ /progress
+├ ƒ /real-greek
+├ ƒ /real-greek/[expressionId]
+├ ƒ /register
+├ ƒ /search
+├ ƒ /settings
+├ ƒ /speaking
+├ ƒ /speaking/[sessionId]
+├ ƒ /welcome
+└ ƒ /writing
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+09_build exit 0

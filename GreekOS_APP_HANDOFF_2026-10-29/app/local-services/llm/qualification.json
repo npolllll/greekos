@@ -1,0 +1,112 @@
+{
+  "gemma-4-E4B-it-Q4_K_M": {
+    "model": "gemma-4-E4B-it-Q4_K_M",
+    "suite": "greekos-speaking-eval/1",
+    "engine": "greekos-conversation/2.0",
+    "evaluated_at": "2026-11-02T16:32:40.291Z",
+    "cases": 25,
+    "passed": false,
+    "feedback_passed": true,
+    "metrics": {
+      "reply_ok": 1,
+      "stage_ok": 0.6363636363636364,
+      "echo_violations": 0,
+      "russian_or_latin": 0,
+      "question_ok": 0.6666666666666666,
+      "length_ok": 1,
+      "memory_ok": 0,
+      "no_hint_ok": 1,
+      "feedback_precision": 0.75,
+      "feedback_recall": 0.5,
+      "first_sentence_p50_ms": 6813,
+      "first_sentence_p95_ms": 10525,
+      "turn_p50_ms": 10528,
+      "feedback_p50_ms": 13263
+    },
+    "thresholds": {
+      "reply_ok": 0.9,
+      "stage_ok": 0.7,
+      "echo_violations": 0,
+      "russian_or_latin": 0,
+      "feedback_precision": 0.75,
+      "feedback_recall": 0.5,
+      "question_ok": 0.75
+    },
+    "note_ru": "Автоматическая проверка набором GreekOS (разметка разработчика по грамматике). Не экспертная и не носительская оценка.",
+    "invalidated_reason": "Измерено с дефектом переиспользования KV-кэша (контекст Gemma портился). Нужен повторный прогон: npm run speaking:eval с этой моделью."
+  },
+  "gemma-4-12b-it-Q4_K_M": {
+    "model": "gemma-4-12b-it-Q4_K_M",
+    "suite": "greekos-speaking-eval/1",
+    "engine": "greekos-conversation/2.0",
+    "evaluated_at": "2026-11-02T21:17:02.312Z",
+    "cases": 25,
+    "passed": false,
+    "feedback_passed": false,
+    "metrics": {
+      "reply_ok": 0,
+      "stage_ok": 0.9545454545454546,
+      "echo_violations": 0,
+      "russian_or_latin": 0,
+      "question_ok": 0,
+      "length_ok": 1,
+      "memory_ok": 1,
+      "no_hint_ok": 1,
+      "feedback_precision": 1,
+      "feedback_recall": 0,
+      "first_sentence_p50_ms": 0,
+      "first_sentence_p95_ms": 0,
+      "turn_p50_ms": 7,
+      "feedback_p50_ms": 7
+    },
+    "thresholds": {
+      "reply_ok": 0.9,
+      "stage_ok": 0.7,
+      "echo_violations": 0,
+      "russian_or_latin": 0,
+      "feedback_precision": 0.75,
+      "feedback_recall": 0.5,
+      "question_ok": 0.75
+    },
+    "note_ru": "Автоматическая проверка набором GreekOS (разметка разработчика по грамматике). Не экспертная и не носительская оценка.",
+    "invalidated_reason": "Измерено с дефектом переиспользования KV-кэша (контекст Gemma портился). Нужен повторный прогон: npm run speaking:eval с этой моделью."
+  },
+  "gemma-4-E2B-it-Q4_K_M": {
+    "model": "gemma-4-E2B-it-Q4_K_M",
+    "suite": "greekos-speaking-eval/2",
+    "engine": "greekos-conversation/2.0",
+    "evaluated_at": "2026-11-03T04:11:29.672Z",
+    "cases": 34,
+    "passed": true,
+    "feedback_passed": true,
+    "metrics": {
+      "reply_ok": 0.9117647058823529,
+      "stage_ok": 0.9545454545454546,
+      "echo_violations": 0,
+      "russian_or_latin": 0,
+      "question_ok": 1,
+      "length_ok": 1,
+      "memory_ok": 0,
+      "no_hint_ok": 1,
+      "feedback_precision": 1,
+      "feedback_recall": 0.6363636363636364,
+      "shown_precision": 1,
+      "shown_recall": 0.9090909090909091,
+      "first_sentence_p50_ms": 4148,
+      "first_sentence_p95_ms": 8477,
+      "turn_p50_ms": 8042,
+      "feedback_p50_ms": 15317
+    },
+    "thresholds": {
+      "reply_ok": 0.9,
+      "stage_ok": 0.7,
+      "echo_violations": 0,
+      "russian_or_latin": 0,
+      "feedback_precision": 0.75,
+      "feedback_recall": 0.5,
+      "question_ok": 0.75
+    },
+    "report": "reports/v7/speaking-eval/gemma-4-E2B-it-Q4_K_M.md",
+    "note_ru": "Автоматическая проверка набором GreekOS (разметка разработчика по грамматике). Не экспертная и не носительская оценка."
+  }
+}

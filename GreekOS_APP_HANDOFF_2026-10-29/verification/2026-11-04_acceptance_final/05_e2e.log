@@ -1,0 +1,98 @@
+
+> greekos@1.0.0 test:e2e
+> playwright test
+
+
+Running 46 tests using 1 worker
+
+  ✓   1 [desktop-1440] › tests/e2e/acceptance.spec.ts:145:3 › final acceptance on the real corpus › 1. owner: policy, sample and one decision release the whole admissible package (1.3m)
+  ✓   2 [desktop-1440] › tests/e2e/acceptance.spec.ts:186:3 › final acceptance on the real corpus › 2. learner A from zero: alphabet, real lesson, explained error, completion, return and progress (1.0m)
+  ✓   3 [desktop-1440] › tests/e2e/acceptance.spec.ts:221:3 › final acceptance on the real corpus › 3. learner B with experience: diagnostic → a different route (B1), no data of A (1.0m)
+  ✓   4 [desktop-1440] › tests/e2e/acceptance.spec.ts:264:3 › final acceptance on the real corpus › 4. later lessons and every section work for an ordinary learner (43.6s)
+  ✓   5 [desktop-1440] › tests/e2e/acceptance.spec.ts:295:3 › final acceptance on the real corpus › 5. owner: sees both learners, disables B, rolls the release back (1.3m)
+  ✓   6 [desktop-1440] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (23.2s)
+  ✓   7 [desktop-1440] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (7.5s)
+  ✓   8 [desktop-1440] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (8.3s)
+  ✓   9 [desktop-1440] › tests/e2e/journey.spec.ts:82:1 › owner sees gated corpus honestly and can open the admin panel (8.6s)
+  ✓  10 [desktop-1440] › tests/e2e/product.spec.ts:38:3 › product on the real corpus (owner preview) › every item type opens in its player and returns a verdict (54.4s)
+  ✓  11 [desktop-1440] › tests/e2e/product.spec.ts:61:3 › product on the real corpus (owner preview) › route A0 → B2: a lesson of every level opens with its stages (22.9s)
+  ✓  12 [desktop-1440] › tests/e2e/product.spec.ts:76:3 › product on the real corpus (owner preview) › exam: a reading component in practice mode is answered and submitted (DEV-PREVIEW tester) (15.7s)
+  ✓  13 [desktop-1440] › tests/e2e/product.spec.ts:102:3 › product on the real corpus (owner preview) › owner admin screens open with real data (26.8s)
+  ✓  14 [desktop-1440] › tests/e2e/product.spec.ts:118:3 › product on the real corpus (owner preview) › an unknown address shows the GreekOS page, not the framework 404 (13.5s)
+  ✓  15 [desktop-1440] › tests/e2e/registration.spec.ts:35:1 › a visitor registers with the owner's code, confirms the e-mail and starts from the alphabet (23.7s)
+  ✓  16 [desktop-1440] › tests/e2e/registration.spec.ts:103:1 › closed registration: the login page offers no sign-up and the API refuses (1.8s)
+  ✓  17 [desktop-1440] › tests/e2e/release-route.spec.ts:53:1 › owner releases a scope; an experienced learner without preview is placed by the diagnostic and studies the route (1.4m)
+  ✓  18 [desktop-1440] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (1.0m)
+  ✓  19 [desktop-1440] › tests/e2e/responsive.spec.ts:24:1 › public screens (sign-in, registration): no horizontal scroll and no serious axe violations (5.4s)
+  ✓  20 [desktop-1440] › tests/e2e/responsive.spec.ts:36:1 › owner admin screens: no horizontal scroll (43.0s)
+  ✓  21 [desktop-1440] › tests/e2e/responsive.spec.ts:48:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (9.4s)
+  ✓  22 [desktop-1440] › tests/e2e/responsive.spec.ts:66:1 › keyboard: skip link and visible focus (12.3s)
+  ✓  23 [desktop-1440] › tests/e2e/responsive.spec.ts:82:1 › reduced motion preference disables animations (5.2s)
+  ✓  24 [tablet-768] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (37.7s)
+  ✓  25 [tablet-768] › tests/e2e/responsive.spec.ts:24:1 › public screens (sign-in, registration): no horizontal scroll and no serious axe violations (4.8s)
+  ✓  26 [tablet-768] › tests/e2e/responsive.spec.ts:36:1 › owner admin screens: no horizontal scroll (33.7s)
+  ✓  27 [tablet-768] › tests/e2e/responsive.spec.ts:48:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (9.3s)
+  ✓  28 [tablet-768] › tests/e2e/responsive.spec.ts:66:1 › keyboard: skip link and visible focus (7.0s)
+  ✓  29 [tablet-768] › tests/e2e/responsive.spec.ts:82:1 › reduced motion preference disables animations (10.0s)
+  ✘  30 [voice-stream] › tests/e2e/voice-stream.spec.ts:21:1 › live streaming conversation in the browser (2.2m)
+  ✓  31 [mobile-390] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (26.1s)
+  ✓  32 [mobile-390] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (5.9s)
+  ✓  33 [mobile-390] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (12.8s)
+  ✓  34 [mobile-390] › tests/e2e/journey.spec.ts:82:1 › owner sees gated corpus honestly and can open the admin panel (6.7s)
+  ✓  35 [mobile-390] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (51.5s)
+  ✓  36 [mobile-390] › tests/e2e/responsive.spec.ts:24:1 › public screens (sign-in, registration): no horizontal scroll and no serious axe violations (6.5s)
+  ✓  37 [mobile-390] › tests/e2e/responsive.spec.ts:36:1 › owner admin screens: no horizontal scroll (32.6s)
+  ✓  38 [mobile-390] › tests/e2e/responsive.spec.ts:48:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (12.9s)
+  ✓  39 [mobile-390] › tests/e2e/responsive.spec.ts:66:1 › keyboard: skip link and visible focus (8.3s)
+  ✓  40 [mobile-390] › tests/e2e/responsive.spec.ts:82:1 › reduced motion preference disables animations (4.6s)
+  ✓  41 [mobile-320] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (40.8s)
+  ✓  42 [mobile-320] › tests/e2e/responsive.spec.ts:24:1 › public screens (sign-in, registration): no horizontal scroll and no serious axe violations (5.4s)
+  ✓  43 [mobile-320] › tests/e2e/responsive.spec.ts:36:1 › owner admin screens: no horizontal scroll (33.3s)
+  ✓  44 [mobile-320] › tests/e2e/responsive.spec.ts:48:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (8.3s)
+  ✓  45 [mobile-320] › tests/e2e/responsive.spec.ts:66:1 › keyboard: skip link and visible focus (13.7s)
+  ✓  46 [mobile-320] › tests/e2e/responsive.spec.ts:82:1 › reduced motion preference disables animations (5.6s)
+
+
+  1) [voice-stream] › tests/e2e/voice-stream.spec.ts:21:1 › live streaming conversation in the browser 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.bubble.my:not(.draft)').first().or(getByRole('button', { name: 'Да, отправить' }))
+    Expected: visible
+    Timeout: 120000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('.bubble.my:not(.draft)').first().or(getByRole('button', { name: 'Да, отправить' })) with timeout 120000ms
+      - waiting for locator('.bubble.my:not(.draft)').first().or(getByRole('button', { name: 'Да, отправить' }))
+
+
+      40 |   const learnerBubble = page.locator('.bubble.my:not(.draft)').first();
+      41 |   const confirm = page.getByRole('button', { name: 'Да, отправить' });
+    > 42 |   await expect(learnerBubble.or(confirm)).toBeVisible({ timeout: TURN_MS });
+         |                                           ^
+      43 |   if (await confirm.isVisible()) await confirm.click();
+      44 |   await expect(learnerBubble).toBeVisible({ timeout: TURN_MS });
+      45 |   await expect.poll(() => page.locator('.bubble.greek').count(), { timeout: TURN_MS }).toBeGreaterThanOrEqual(2);
+        at /home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app/tests/e2e/voice-stream.spec.ts:42:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/voice-stream-live-streaming-conversation-in-the-browser-voice-stream/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/voice-stream-live-streaming-conversation-in-the-browser-voice-stream/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/voice-stream-live-streaming-conversation-in-the-browser-voice-stream/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/voice-stream-live-streaming-conversation-in-the-browser-voice-stream/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  Slow test file: [desktop-1440] › tests/e2e/acceptance.spec.ts (5.4m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 failed
+    [voice-stream] › tests/e2e/voice-stream.spec.ts:21:1 › live streaming conversation in the browser 
+  45 passed (21.3m)
+05_e2e exit 1

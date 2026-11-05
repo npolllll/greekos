@@ -1,0 +1,9 @@
+{
+  "name": "greekos-local-llm",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "GreekOS local OpenAI-compatible LLM server (development only, 127.0.0.1) on node-llama-cpp",
+  "scripts": { "start": "node server.mjs" },
+  "dependencies": { "node-llama-cpp": "3.22.2" }
+}

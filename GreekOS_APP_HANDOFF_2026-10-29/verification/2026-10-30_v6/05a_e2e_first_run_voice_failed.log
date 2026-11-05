@@ -1,0 +1,75 @@
+
+Running 29 tests using 1 worker
+
+  ✓   1 [desktop-1440] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (26.4s)
+  ✓   2 [desktop-1440] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (5.2s)
+  ✓   3 [desktop-1440] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (15.7s)
+  ✓   4 [desktop-1440] › tests/e2e/journey.spec.ts:81:1 › owner sees gated corpus honestly and can open the admin panel (6.9s)
+  ✓   5 [desktop-1440] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (59.1s)
+  ✓   6 [desktop-1440] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (38.8s)
+  ✓   7 [desktop-1440] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (8.1s)
+  ✓   8 [desktop-1440] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (5.1s)
+  ✓   9 [desktop-1440] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (5.4s)
+  ✓  10 [tablet-768] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (33.0s)
+  ✓  11 [tablet-768] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (25.1s)
+  ✓  12 [tablet-768] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (8.9s)
+  ✓  13 [tablet-768] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (5.1s)
+  ✓  14 [tablet-768] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (3.3s)
+  ✘  15 [voice-stream] › tests/e2e/voice-stream.spec.ts:17:1 › live streaming conversation in the browser (1.1m)
+  ✓  16 [mobile-390] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (33.7s)
+  ✓  17 [mobile-390] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (5.8s)
+  ✓  18 [mobile-390] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (7.9s)
+  ✓  19 [mobile-390] › tests/e2e/journey.spec.ts:81:1 › owner sees gated corpus honestly and can open the admin panel (7.4s)
+  ✓  20 [mobile-390] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (42.8s)
+  ✓  21 [mobile-390] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (35.1s)
+  ✓  22 [mobile-390] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (9.4s)
+  ✓  23 [mobile-390] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (6.0s)
+  ✓  24 [mobile-390] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (6.6s)
+  ✓  25 [mobile-320] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (49.7s)
+  ✓  26 [mobile-320] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (29.8s)
+  ✓  27 [mobile-320] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (9.5s)
+  ✓  28 [mobile-320] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (5.2s)
+  ✓  29 [mobile-320] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (3.5s)
+
+
+  1) [voice-stream] › tests/e2e/voice-stream.spec.ts:17:1 › live streaming conversation in the browser 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.bubble.my:not(.draft)').first()
+    Expected: visible
+    Timeout: 30000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" locator('.bubble.my:not(.draft)').first() with timeout 30000ms
+      - waiting for locator('.bubble.my:not(.draft)').first()
+
+
+      37 |   await expect(learnerBubble.or(confirm)).toBeVisible({ timeout: 45_000 });
+      38 |   if (await confirm.isVisible()) await confirm.click();
+    > 39 |   await expect(learnerBubble).toBeVisible({ timeout: 30_000 });
+         |                               ^
+      40 |   await expect.poll(() => page.locator('.bubble.greek').count(), { timeout: 30_000 }).toBeGreaterThanOrEqual(2);
+      41 |
+      42 |   // Indicator follows the measured level (style variable set from real audio, not a CSS loop).
+        at /home/user/greekos/GreekOS_APP_HANDOFF_2026-10-29/app/tests/e2e/voice-stream.spec.ts:39:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/voice-stream-live-streaming-conversation-in-the-browser-voice-stream/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/voice-stream-live-streaming-conversation-in-the-browser-voice-stream/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/voice-stream-live-streaming-conversation-in-the-browser-voice-stream/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/voice-stream-live-streaming-conversation-in-the-browser-voice-stream/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [voice-stream] › tests/e2e/voice-stream.spec.ts:17:1 › live streaming conversation in the browser 
+  28 passed (9.6m)
+exit 1

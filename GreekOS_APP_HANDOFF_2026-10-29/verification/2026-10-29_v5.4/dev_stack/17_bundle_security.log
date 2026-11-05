@@ -1,0 +1,8 @@
+
+> greekos@1.0.0 security:bundle
+> tsx scripts/check-bundle.ts
+
+{
+  "scanned_files": 44,
+  "findings": []
+}

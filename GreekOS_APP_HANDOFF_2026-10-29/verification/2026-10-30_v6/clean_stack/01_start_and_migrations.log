@@ -1,0 +1,81 @@
+v0.100.0: Pulling from supabase/postgres-meta
+2026.10.19-sha-b375769: Pulling from supabase/studio
+c8706a120d79: Pulling fs layer
+7fd1ebe418b5: Pulling fs layer
+f0400f4b55b0: Pulling fs layer
+d22c69a95cf4: Pulling fs layer
+2cfab517365c: Pulling fs layer
+a8de9fa05220: Pulling fs layer
+3d7229f68518: Pulling fs layer
+86db7dae1346: Pulling fs layer
+ae5d6c6b373f: Pulling fs layer
+6de2243f7511: Pulling fs layer
+f0400f4b55b0: Pulling fs layer
+7fd1ebe418b5: Pulling fs layer
+21c291b59dab: Pulling fs layer
+d22c69a95cf4: Pulling fs layer
+2cfab517365c: Pulling fs layer
+a8de9fa05220: Pulling fs layer
+1aead86d619d: Pulling fs layer
+b11fcad29b50: Pulling fs layer
+fb0b6b9da364: Pulling fs layer
+c8706a120d79: Download complete
+a8de9fa05220: Download complete
+a8de9fa05220: Download complete
+2cfab517365c: Download complete
+2cfab517365c: Download complete
+86db7dae1346: Download complete
+3d7229f68518: Download complete
+6de2243f7511: Download complete
+d22c69a95cf4: Download complete
+d22c69a95cf4: Download complete
+f0400f4b55b0: Download complete
+ae5d6c6b373f: Download complete
+f0400f4b55b0: Download complete
+fb0b6b9da364: Download complete
+7fd1ebe418b5: Download complete
+7fd1ebe418b5: Download complete
+b11fcad29b50: Download complete
+44136fa355b3: Already exists
+44136fa355b3: Already exists
+f1b6bcd7648d: Download complete
+63a700fbe94d: Download complete
+7fd1ebe418b5: Pull complete
+f0400f4b55b0: Pull complete
+1aead86d619d: Download complete
+21c291b59dab: Download complete
+d22c69a95cf4: Pull complete
+2cfab517365c: Pull complete
+a8de9fa05220: Pull complete
+86db7dae1346: Pull complete
+3d7229f68518: Pull complete
+ae5d6c6b373f: Pull complete
+c8706a120d79: Pull complete
+6de2243f7511: Pull complete
+Digest: sha256:145325b7e39f8ef4931d6e8cfd3f6f4d655de09d72a2ccc96d9513542c2202bd
+Status: Downloaded newer image for mirror.gcr.io/supabase/postgres-meta:v0.100.0
+mirror.gcr.io/supabase/postgres-meta:v0.100.0
+1aead86d619d: Pull complete
+fb0b6b9da364: Pull complete
+b11fcad29b50: Pull complete
+21c291b59dab: Pull complete
+Digest: sha256:7ffd263c9e13b254f2c97b716ff9bccf404b29cbe7886e6652a776b066a9840f
+Status: Downloaded newer image for mirror.gcr.io/supabase/studio:2026.10.19-sha-b375769
+mirror.gcr.io/supabase/studio:2026.10.19-sha-b375769
+Starting database...
+Initialising schema...
+Seeding globals from roles.sql...
+Applying migration 20261028000001_content_schema.sql...
+Applying migration 20261028000002_learner_schema.sql...
+Applying migration 20261028000003_security_rls.sql...
+Applying migration 20261028000004_commit_functions.sql...
+Applying migration 20261028000201_exams.sql...
+Applying migration 20261028000301_synthetic_guards.sql...
+Applying migration 20261029000401_voice_audio_v54.sql...
+Applying migration 20261029000402_voice_stream.sql...
+Applying migration 20261029000403_exam_audio_plays.sql...
+Applying migration 20261030000501_v6_local_completion.sql...
+Applying migration 20261030000502_tts_phrase_cache.sql...
+Applying migration 20261030000503_patches_units_audio_qa.sql...
+Seeding data from supabase/seed.sql...
+{"DB_URL":"postgresql://postgres:postgres@127.0.0.1:56322/postgres","API_URL":"http://127.0.0.1:56321","REST_URL":"http://127.0.0.1:56321/rest/v1","GRAPHQL_URL":"http://127.0.0.1:56321/graphql/v1","MCP_URL":"http://127.0.0.1:56321/mcp","STUDIO_URL":"http://127.0.0.1:56323","PUBLISHABLE_KEY":"sb_publishable_<redacted>","SECRET_KEY":"sb_secret_<redacted>","JWT_SECRET":"<redacted>","ANON_KEY":"<redacted-local-jwt>","SERVICE_ROLE_KEY":"<redacted-local-jwt>","MAILPIT_URL":"http://127.0.0.1:56324","INBUCKET_URL":"http://127.0.0.1:56324","STORAGE_S3_URL":"http://127.0.0.1:56321/storage/v1/s3","S3_PROTOCOL_ACCESS_KEY_ID":"<redacted>","S3_PROTOCOL_ACCESS_KEY_SECRET":"<redacted>","S3_PROTOCOL_REGION":"local","message":""}

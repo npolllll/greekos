@@ -1,0 +1,87 @@
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { admin } from './helpers';
+import { renderJob, planJob, loadCastingContext } from '@/lib/audio/pipeline';
+import { syncLocalVoices, proposeCastVoices, proposeJobCasting } from '@/lib/voice/catalog';
+import { normalizeAudioJob } from '@/lib/admin/audio';
+import { localAsrHealth } from '@/lib/providers/local-engines';
+
+/**
+ * Audio pipeline against the real local database and storage. Real Greek speech comes from the macOS
+ * System Voice (development rights only) or, on Linux, from the GreekOS speech service (Coqui VITS,
+ * rights pending the owner's record); the mock transport is checked separately.
+ */
+const created: string[] = [];
+// Rendering supersedes the job's current local asset; the test restores it so local data is unchanged.
+const restore: { assets: string[]; status: Record<string, unknown> | null } = { assets: [], status: null };
+const isMac = process.platform === 'darwin';
+const canRender = isMac || (process.platform === 'linux' && !!(await localAsrHealth())?.voices?.length);
+
+beforeAll(async () => {
+  process.env.APP_ENV = 'local';
+  if (canRender) {
+    await syncLocalVoices();
+    await proposeCastVoices();
+    await proposeJobCasting();
+  }
+});
+
+afterAll(async () => {
+  if (restore.assets.length) await admin.from('audio_assets').update({ invalidated_at: null, invalidated_reason: null }).in('id', restore.assets);
+  if (restore.status) await admin.from('audio_job_render_status').upsert(restore.status);
+  for (const id of created) {
+    const { data } = await admin.from('audio_assets').select('object_path, master_object_path').eq('id', id).single();
+    await admin.storage.from('course-audio').remove([data?.object_path, data?.master_object_path].filter(Boolean) as string[]);
+    await admin.from('digital_qa_runs').delete().eq('content_id', id);
+    await admin.from('audio_job_render_status').update({ last_asset_id: null }).eq('last_asset_id', id).neq('audio_id', 'U-A1-019-AUD01');
+    await admin.from('audio_assets').delete().eq('id', id);
+  }
+});
+
+const loadJob = async (id: string) => {
+  const { data } = await admin.from('audio_jobs').select('audio_id, script_hash, text_el, segments, payload').eq('audio_id', id).single();
+  return normalizeAudioJob(data as never);
+};
+
+describe('digital audio pipeline', () => {
+  it.skipIf(!canRender)('renders a narrator job with a real local Greek voice, measured and stored, never distributable', async () => {
+    const job = await loadJob('U-A1-019-AUD01');
+    restore.assets = ((await admin.from('audio_assets').select('id').eq('audio_id', job.audio_id).is('invalidated_at', null)).data ?? []).map((a) => a.id);
+    restore.status = (await admin.from('audio_job_render_status').select('*').eq('audio_id', job.audio_id).maybeSingle()).data;
+    const ctx = await loadCastingContext();
+    const p = planJob(job, ctx);
+    expect(p.ok).toBe(true);
+    const r = await renderJob(job, { actorId: null, budgetCapUsd: 0, ctx, force: true });
+    expect(r.status).toBe('RENDERED');
+    created.push(r.asset_id!);
+    const { data: a } = await admin.from('audio_assets').select('*').eq('id', r.asset_id!).single();
+    expect(a.provider).toBe(isMac ? 'local_macos' : 'local_coqui');
+    expect(a.technical_status).toBe('TECHNICAL_PASS');
+    expect(a.duration_ms).toBeGreaterThan(300);
+    // Neither is distributable: the macOS voice is personal-use only; Coqui waits for the owner's rights record.
+    expect(a.rights_status).toBe(isMac ? 'DEV_LOCAL_ONLY' : 'RIGHTS_PENDING');
+    expect(a.cast_approved).toBe(false);
+    expect(a.master_sha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(['DIGITAL_REVIEWED', 'LINGUISTIC_QA_PENDING']).toContain(a.render_status);
+    const { data: file } = await admin.storage.from('course-audio').download(a.object_path);
+    expect(new Uint8Array(await file!.arrayBuffer()).slice(0, 4)).toEqual(new Uint8Array([82, 73, 70, 70]));
+    const forced = await admin.from('audio_assets').update({ render_status: 'RELEASE_ELIGIBLE' }).eq('id', r.asset_id!);
+    expect(forced.error?.message).toMatch(/release_eligible_requirements/);
+  }, 600_000);
+
+  it.skipIf(!canRender)('a dialogue needing two distinct female voices is blocked with a reason, never voiced by one voice twice', async () => {
+    // Άννα and Λένα are both female; one female voice exists locally (Coqui and Piper share the CSS10 speaker).
+    const r = await renderJob(await loadJob('U-A1-002-AUD01'), { actorId: null, budgetCapUsd: 0 });
+    expect(r.status).toBe('BLOCKED');
+    expect(r.job_status).toBe('BLOCKED_NO_SUITABLE_VOICE');
+    const { data } = await admin.from('audio_job_render_status').select('status, reason').eq('audio_id', 'U-A1-002-AUD01').single();
+    expect(data!.status).toBe('BLOCKED_NO_SUITABLE_VOICE');
+  });
+
+  it('mock transport can never become publishable audio (DB guard)', async () => {
+    const { data, error } = await admin.from('audio_assets').insert({
+      audio_id: 'U-A1-019-AUD01', script_hash: 'x', idempotency_key: `mock-${Date.now()}`, provider: 'mock', voice_map: {}, render_status: 'DIGITAL_REVIEWED', digital_status: 'PENDING',
+    }).select('id');
+    expect(data ?? []).toEqual([]);
+    expect(error?.message).toMatch(/audio_assets_mock_never_verified/);
+  });
+});

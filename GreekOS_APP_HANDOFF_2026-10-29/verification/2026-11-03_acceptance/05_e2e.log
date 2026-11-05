@@ -1,0 +1,44 @@
+
+> greekos@1.0.0 test:e2e
+> playwright test
+
+
+Running 34 tests using 1 worker
+
+  ✓   1 [desktop-1440] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (24.1s)
+  ✓   2 [desktop-1440] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (5.3s)
+  ✓   3 [desktop-1440] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (9.1s)
+  ✓   4 [desktop-1440] › tests/e2e/journey.spec.ts:81:1 › owner sees gated corpus honestly and can open the admin panel (5.0s)
+  ✓   5 [desktop-1440] › tests/e2e/product.spec.ts:38:3 › product on the real corpus (owner preview) › every item type opens in its player and returns a verdict (44.7s)
+  ✓   6 [desktop-1440] › tests/e2e/product.spec.ts:61:3 › product on the real corpus (owner preview) › route A0 → B2: a lesson of every level opens with its stages (19.8s)
+  ✓   7 [desktop-1440] › tests/e2e/product.spec.ts:76:3 › product on the real corpus (owner preview) › exam: a reading component in practice mode is answered and submitted (DEV-PREVIEW tester) (9.9s)
+  ✓   8 [desktop-1440] › tests/e2e/product.spec.ts:102:3 › product on the real corpus (owner preview) › owner admin screens open with real data (16.1s)
+  ✓   9 [desktop-1440] › tests/e2e/product.spec.ts:118:3 › product on the real corpus (owner preview) › an unknown address shows the GreekOS page, not the framework 404 (4.0s)
+  ✓  10 [desktop-1440] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (48.0s)
+  ✓  11 [desktop-1440] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (31.0s)
+  ✓  12 [desktop-1440] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (9.3s)
+  ✓  13 [desktop-1440] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (8.1s)
+  ✓  14 [desktop-1440] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (5.1s)
+  ✓  15 [tablet-768] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (31.9s)
+  ✓  16 [tablet-768] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (27.6s)
+  ✓  17 [tablet-768] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (8.4s)
+  ✓  18 [tablet-768] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (6.5s)
+  ✓  19 [tablet-768] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (7.2s)
+  ✓  20 [voice-stream] › tests/e2e/voice-stream.spec.ts:21:1 › live streaming conversation in the browser (1.9m)
+  ✓  21 [mobile-390] › tests/e2e/journey.spec.ts:15:1 › from-zero learner: lesson, feedback, context card and realtime sync (34.5s)
+  ✓  22 [mobile-390] › tests/e2e/journey.spec.ts:62:1 › learner cannot open the owner admin panel (7.2s)
+  ✓  23 [mobile-390] › tests/e2e/journey.spec.ts:69:1 › new learner without enrollment is sent to onboarding, chooses "from zero" (10.2s)
+  ✓  24 [mobile-390] › tests/e2e/journey.spec.ts:81:1 › owner sees gated corpus honestly and can open the admin panel (10.8s)
+  ✓  25 [mobile-390] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (45.4s)
+  ✓  26 [mobile-390] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (31.4s)
+  ✓  27 [mobile-390] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (8.6s)
+  ✓  28 [mobile-390] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (6.6s)
+  ✓  29 [mobile-390] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (8.2s)
+  ✓  30 [mobile-320] › tests/e2e/responsive.spec.ts:8:1 › learner screens: no horizontal scroll and no serious axe violations (33.0s)
+  ✓  31 [mobile-320] › tests/e2e/responsive.spec.ts:24:1 › owner admin screens: no horizontal scroll (22.8s)
+  ✓  32 [mobile-320] › tests/e2e/responsive.spec.ts:36:1 › speaking screens (live voice UI v5.4): no horizontal scroll, accessible controls (8.3s)
+  ✓  33 [mobile-320] › tests/e2e/responsive.spec.ts:54:1 › keyboard: skip link and visible focus (6.8s)
+  ✓  34 [mobile-320] › tests/e2e/responsive.spec.ts:70:1 › reduced motion preference disables animations (4.3s)
+
+  34 passed (11.4m)
+05_e2e exit 0

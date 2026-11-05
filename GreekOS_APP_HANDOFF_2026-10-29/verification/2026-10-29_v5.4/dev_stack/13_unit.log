@@ -1,0 +1,13 @@
+
+> greekos@1.0.0 test
+> vitest run --project unit
+
+
+ RUN  v4.1.12 /Users/piratantoha/Новая папка/Nik/greekos
+
+
+ Test Files  7 passed (7)
+      Tests  98 passed (98)
+   Start at  06:28:33
+   Duration  515ms (transform 548ms, setup 0ms, import 1.04s, tests 136ms, environment 0ms)
+

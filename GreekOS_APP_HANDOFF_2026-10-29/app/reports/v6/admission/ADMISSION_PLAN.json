@@ -1,0 +1,1275 @@
+{
+  "generated_at": "2026-11-02T22:40:47.072Z",
+  "qa_batch": {
+    "id": "104b2d6e-757b-454a-b228-ecf81421d899",
+    "label": "Полный прогон v6 (финальные правила)",
+    "started_at": "2026-10-30T01:29:47.149839+00:00",
+    "report_sha256": "638e9e29bd17b8422abb44218a5e7d9152c968ec69b312f5d18593f0e525b559"
+  },
+  "policy_signed": false,
+  "totals": {
+    "ready": 1562,
+    "text_ready_audio_pending": 174,
+    "issue_review": 87,
+    "blocked": 20
+  },
+  "by_module": [
+    [
+      "core",
+      {
+        "ready": 1293,
+        "text_ready_audio_pending": 115,
+        "issue_review": 59
+      }
+    ],
+    [
+      "keg_b2",
+      {
+        "text_ready_audio_pending": 59,
+        "issue_review": 12,
+        "ready": 142
+      }
+    ],
+    [
+      "pegp",
+      {
+        "ready": 72,
+        "issue_review": 11,
+        "blocked": 20
+      }
+    ],
+    [
+      "real_greek",
+      {
+        "ready": 55,
+        "issue_review": 5
+      }
+    ]
+  ],
+  "by_level": [
+    [
+      "A1",
+      {
+        "ready": 327,
+        "text_ready_audio_pending": 23,
+        "issue_review": 22
+      }
+    ],
+    [
+      "A2",
+      {
+        "ready": 328,
+        "text_ready_audio_pending": 17,
+        "issue_review": 6
+      }
+    ],
+    [
+      "B1",
+      {
+        "ready": 354,
+        "issue_review": 13,
+        "text_ready_audio_pending": 35
+      }
+    ],
+    [
+      "B2",
+      {
+        "ready": 284,
+        "text_ready_audio_pending": 40,
+        "issue_review": 18
+      }
+    ],
+    [
+      "keg_b2",
+      {
+        "text_ready_audio_pending": 59,
+        "issue_review": 12,
+        "ready": 142
+      }
+    ],
+    [
+      "pegp",
+      {
+        "ready": 72,
+        "issue_review": 11,
+        "blocked": 20
+      }
+    ],
+    [
+      "real_greek",
+      {
+        "ready": 55,
+        "issue_review": 5
+      }
+    ]
+  ],
+  "units": [
+    {
+      "unit_id": "U-A1-001",
+      "level": "A1",
+      "title": "Представиться и выбрать εσύ или εσείς",
+      "unit_state": "ready",
+      "items": 17,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-002",
+      "level": "A1",
+      "title": "Кто и кого: ο/τον, η/την, το/το",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 12,
+      "audio_pending": 2,
+      "review": 4,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-003",
+      "level": "A1",
+      "title": "Количество и заказ: один предмет и несколько",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-004",
+      "level": "A1",
+      "title": "Маршрут и положение: σε, από, με",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-005",
+      "level": "A1",
+      "title": "Настоящее время: что я делаю и что делаем мы",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 15,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-006",
+      "level": "A1",
+      "title": "Описать нужный предмет и попросить действие",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 12,
+      "audio_pending": 2,
+      "review": 4,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-007",
+      "level": "A1",
+      "title": "Алфавит: от написания к чтению",
+      "unit_state": "issue_review",
+      "items": 22,
+      "admissible_items": 21,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-008",
+      "level": "A1",
+      "title": "Ударение, гласные и четыре непривычных согласных",
+      "unit_state": "ready",
+      "items": 23,
+      "admissible_items": 20,
+      "audio_pending": 2,
+      "review": 3,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-009",
+      "level": "A1",
+      "title": "Добавить, противопоставить, объяснить: και, αλλά, γιατί",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 18,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-010",
+      "level": "A1",
+      "title": "Не делаю и не делай: отрицательная реплика",
+      "unit_state": "stale_qa",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-011",
+      "level": "A1",
+      "title": "Мои вещи и нужное количество",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-012",
+      "level": "A1",
+      "title": "Знакомство, семья, учёба и интересы",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 17,
+      "audio_pending": 0,
+      "review": 2,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-013",
+      "level": "A1",
+      "title": "Дом, район, транспорт и обычный день",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-014",
+      "level": "A1",
+      "title": "Читаем объявления, расписания и сообщения",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 17,
+      "audio_pending": 0,
+      "review": 2,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-015",
+      "level": "A1",
+      "title": "Заполняем карточку и пишем короткую записку",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 18,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-016",
+      "level": "A1",
+      "title": "Знакомство и простая покупка: спросить, уточнить, завершить",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 20,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-017",
+      "level": "A1",
+      "title": "Короткое описание себя и привычного дня",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 20,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-018",
+      "level": "A1",
+      "title": "Передать другу время и место встречи",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 18,
+      "audio_pending": 0,
+      "review": 2,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-019",
+      "level": "A1",
+      "title": "Понять знакомый вопрос и ответить по существу",
+      "unit_state": "ready",
+      "items": 15,
+      "admissible_items": 15,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A1-020",
+      "level": "A1",
+      "title": "Числа, время и простые объявления",
+      "unit_state": "ready",
+      "items": 14,
+      "admissible_items": 14,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-001",
+      "level": "A2",
+      "title": "Одно завершённое событие: ενεργητικός αόριστος",
+      "unit_state": "ready",
+      "items": 17,
+      "admissible_items": 17,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-002",
+      "level": "A2",
+      "title": "Планы и просьбы: θα и να с совершенной основой",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-003",
+      "level": "A2",
+      "title": "Кому принадлежит вещь: родительный",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-004",
+      "level": "A2",
+      "title": "Сравнить два варианта жилья",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 15,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-005",
+      "level": "A2",
+      "title": "Объектные клитики и короткие инструкции",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-006",
+      "level": "A2",
+      "title": "Настоящее: εργάζομαι и έρχομαι",
+      "unit_state": "ready",
+      "items": 22,
+      "admissible_items": 22,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-007",
+      "level": "A2",
+      "title": "Что сообщают, когда, почему и при каком условии",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-008",
+      "level": "A2",
+      "title": "Прошлое: фон, привычка и событие целиком",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 18,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-009",
+      "level": "A2",
+      "title": "Кто-нибудь, никто и ничего: искать информацию без ложного отрицания",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-010",
+      "level": "A2",
+      "title": "Как часто, насколько и какой именно: наречия и που",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-011",
+      "level": "A2",
+      "title": "Жильё, услуги и поездки: понять цену и исправить бронирование",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-012",
+      "level": "A2",
+      "title": "Учёба, работа и встречи: сообщить ограничение и согласовать новый план",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-013",
+      "level": "A2",
+      "title": "Уточнить сбой и завершить бытовой обмен",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 20,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-014",
+      "level": "A2",
+      "title": "Рассказать об опыте, плане и предпочтении",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 20,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-015",
+      "level": "A2",
+      "title": "Написать личное письмо и понятный запрос",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 19,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-016",
+      "level": "A2",
+      "title": "Ударение, границы слов и вопросительная интонация",
+      "unit_state": "issue_review",
+      "items": 17,
+      "admissible_items": 16,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-017",
+      "level": "A2",
+      "title": "Бытовой диалог: запрос, альтернатива и итог",
+      "unit_state": "ready",
+      "items": 13,
+      "admissible_items": 13,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-018",
+      "level": "A2",
+      "title": "Сообщения и инструкции: порядок, условие, следующий шаг",
+      "unit_state": "ready",
+      "items": 13,
+      "admissible_items": 13,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-019",
+      "level": "A2",
+      "title": "Передать другому человеку условия короткого объявления",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 11,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-A2-020",
+      "level": "A2",
+      "title": "Приглашение, отказ, смягчённая просьба и исправление",
+      "unit_state": "ready",
+      "items": 11,
+      "admissible_items": 10,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-001",
+      "level": "B1",
+      "title": "Что будет уже сделано к сроку: συντελεσμένος μέλλοντας",
+      "unit_state": "ready",
+      "items": 17,
+      "admissible_items": 17,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-002",
+      "level": "B1",
+      "title": "Фон и событие: παρατατικός и αόριστος",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 15,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-003",
+      "level": "B1",
+      "title": "Передать сообщение и вопрос: ότι, αν, πότε",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 15,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-004",
+      "level": "B1",
+      "title": "Кому и что: двойные клитики",
+      "unit_state": "issue_review",
+      "items": 16,
+      "admissible_items": 14,
+      "audio_pending": 2,
+      "review": 2,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-005",
+      "level": "B1",
+      "title": "Родительный множественного: формы и связи",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-006",
+      "level": "B1",
+      "title": "Реальное условие и план действий",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-007",
+      "level": "B1",
+      "title": "Связное письмо: опыт, причина и запрос",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 13,
+      "audio_pending": 1,
+      "review": 3,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-008",
+      "level": "B1",
+      "title": "Объясняем причину, цель и результат",
+      "unit_state": "ready",
+      "items": 22,
+      "admissible_items": 22,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-009",
+      "level": "B1",
+      "title": "Перфект и плюсквамперфект: результат и более раннее событие",
+      "unit_state": "ready",
+      "items": 22,
+      "admissible_items": 21,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-010",
+      "level": "B1",
+      "title": "Одевался, оделся, было решено: медиопассивное прошедшее",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-011",
+      "level": "B1",
+      "title": "Два действия одного человека и состояние результата",
+      "unit_state": "stale_qa",
+      "items": 19,
+      "admissible_items": 17,
+      "audio_pending": 2,
+      "review": 2,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-012",
+      "level": "B1",
+      "title": "Уточнить, о ком речь: που и узнавание ο οποίος",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-013",
+      "level": "B1",
+      "title": "Сначала, после и до момента: πριν, αφού, μέχρι",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-014",
+      "level": "B1",
+      "title": "Семьи слов: узнавание формы и проверка значения",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 19,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-015",
+      "level": "B1",
+      "title": "Учёба, работа, технологии и услуги: точный запрос",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 20,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-016",
+      "level": "B1",
+      "title": "Сочетаемость и перифраза: продолжить разговор без нужного слова",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 20,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-017",
+      "level": "B1",
+      "title": "Читать статью и сообщение: факт, условие и неизвестное",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 20,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-018",
+      "level": "B1",
+      "title": "Главная мысль и существенные детали развёрнутого сообщения",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-019",
+      "level": "B1",
+      "title": "Рассказ и интервью: последовательность, намерение, изменение мнения",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-020",
+      "level": "B1",
+      "title": "Связный рассказ, мнение и краткое обоснование",
+      "unit_state": "ready",
+      "items": 11,
+      "admissible_items": 11,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-021",
+      "level": "B1",
+      "title": "Фразовое ударение, ритм, связная речь и разборчивость",
+      "unit_state": "ready",
+      "items": 11,
+      "admissible_items": 11,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-022",
+      "level": "B1",
+      "title": "Неподготовленный разговор и решение неожиданности",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-023",
+      "level": "B1",
+      "title": "Суммировать практическую информацию для другого человека",
+      "unit_state": "ready",
+      "items": 11,
+      "admissible_items": 11,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B1-024",
+      "level": "B1",
+      "title": "Взять слово, уточнить, вежливо возразить и восстановить понимание",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 11,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-001",
+      "level": "B2",
+      "title": "Статья для городской газеты: тезис, возражение и предложение",
+      "unit_state": "ready",
+      "items": 17,
+      "admissible_items": 14,
+      "audio_pending": 2,
+      "review": 3,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-002",
+      "level": "B2",
+      "title": "Особые именные модели: διεθνής, γεγονός, προϊόν",
+      "unit_state": "issue_review",
+      "items": 16,
+      "admissible_items": 14,
+      "audio_pending": 2,
+      "review": 2,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-003",
+      "level": "B2",
+      "title": "Нереальность сейчас и в прошлом",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 15,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-004",
+      "level": "B2",
+      "title": "Сравнение с оговорками: περισσότερο, καλύτερα, όσο…τόσο",
+      "unit_state": "ready",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-005",
+      "level": "B2",
+      "title": "Формальные связи: предлоги и управление",
+      "unit_state": "ready",
+      "items": 22,
+      "admissible_items": 21,
+      "audio_pending": 2,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-006",
+      "level": "B2",
+      "title": "Редактируем сообщение: действие, результат, голос и намерение",
+      "unit_state": "ready",
+      "items": 19,
+      "admissible_items": 19,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-007",
+      "level": "B2",
+      "title": "Сжать сообщение и сохранить факты: причастные конструкции",
+      "unit_state": "issue_review",
+      "items": 20,
+      "admissible_items": 20,
+      "audio_pending": 2,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-008",
+      "level": "B2",
+      "title": "Кто именно и что сообщил: сложные относительные и изъяснительные связи",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 18,
+      "audio_pending": 2,
+      "review": 2,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-009",
+      "level": "B2",
+      "title": "Производные, сложные слова и лексико-грамматическая сочетаемость",
+      "unit_state": "ready",
+      "items": 13,
+      "admissible_items": 12,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-010",
+      "level": "B2",
+      "title": "Общество, среда, медиа, экономика повседневности, культура",
+      "unit_state": "ready",
+      "items": 20,
+      "admissible_items": 16,
+      "audio_pending": 0,
+      "review": 4,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-011",
+      "level": "B2",
+      "title": "Редактирование: лишние элементы, согласование, вид, связность",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-012",
+      "level": "B2",
+      "title": "Развёрнутая стандартная речь обычного темпа",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 10,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-013",
+      "level": "B2",
+      "title": "Развёрнутое объяснение и сопоставление преимуществ/недостатков",
+      "unit_state": "ready",
+      "items": 11,
+      "admissible_items": 11,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-014",
+      "level": "B2",
+      "title": "Коллокации, синонимы, оттенки и устойчивые выражения",
+      "unit_state": "ready",
+      "items": 18,
+      "admissible_items": 18,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-015",
+      "level": "B2",
+      "title": "Обсуждение нескольких говорящих и извлечение заметок",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 9,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-016",
+      "level": "B2",
+      "title": "Понятность, просодия и самокоррекция в спонтанной речи",
+      "unit_state": "issue_review",
+      "items": 16,
+      "admissible_items": 16,
+      "audio_pending": 5,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-017",
+      "level": "B2",
+      "title": "Статьи, аргументированные тексты, подробные инструкции",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-018",
+      "level": "B2",
+      "title": "Спонтанная дискуссия, аргументация и согласование решения",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 11,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-019",
+      "level": "B2",
+      "title": "Порядок слов, тематизация, эмфаза и выбор регистра",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 10,
+      "audio_pending": 0,
+      "review": 2,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-020",
+      "level": "B2",
+      "title": "Синтез нескольких источников и объяснение для конкретного адресата",
+      "unit_state": "ready",
+      "items": 11,
+      "admissible_items": 10,
+      "audio_pending": 0,
+      "review": 1,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-021",
+      "level": "B2",
+      "title": "Вежливое несогласие, дистанция, смена регистра и переговоры",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-022",
+      "level": "B2",
+      "title": "Сжатие и связность: пропуски фраз и резюме",
+      "unit_state": "ready",
+      "items": 11,
+      "admissible_items": 11,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    },
+    {
+      "unit_id": "U-B2-023",
+      "level": "B2",
+      "title": "Личное и официальное письмо с обоснованием",
+      "unit_state": "ready",
+      "items": 12,
+      "admissible_items": 12,
+      "audio_pending": 0,
+      "review": 0,
+      "blocked": 0,
+      "blockers": []
+    }
+  ],
+  "blocked_items": [
+    {
+      "item_id": "PEGP-LANG-P04-01",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P04-02",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P04-03",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P04-04",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P04-05",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P04-06",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P04-07",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P04-08",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P05-01",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P05-02",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P05-03",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P05-04",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P05-05",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P05-06",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P05-07",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P05-08",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P06-01",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P06-02",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P06-03",
+      "blockers": [
+        "rights.license"
+      ]
+    },
+    {
+      "item_id": "PEGP-LANG-P06-04",
+      "blockers": [
+        "rights.license"
+      ]
+    }
+  ],
+  "note": "План ничего не выпускает. Допуск: владелец подписывает цифровую политику и принимает решение по пакету QA в админке; HUMAN_* статусы не присваиваются."
+}

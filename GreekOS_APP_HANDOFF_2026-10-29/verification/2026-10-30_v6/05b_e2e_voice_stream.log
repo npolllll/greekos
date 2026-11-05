@@ -1,0 +1,7 @@
+
+Running 1 test using 1 worker
+
+  ✓  1 [voice-stream] › tests/e2e/voice-stream.spec.ts:21:1 › live streaming conversation in the browser (1.9m)
+
+  1 passed (1.9m)
+exit 0
