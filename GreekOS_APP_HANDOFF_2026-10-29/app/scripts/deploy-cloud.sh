@@ -85,12 +85,6 @@ ask OWNER_NAME "Имя владельца" 0 "Владелец"
 ask ANTHROPIC_API_KEY "Anthropic API key (console.anthropic.com → API Keys)" 1
 ask AZURE_SPEECH_KEY "Azure Speech key (portal.azure.com → Speech → Keys)" 1
 ask AZURE_SPEECH_REGION "Azure Speech region" 0 "westeurope"
-# E-mail (confirmation, password reset, registration). Resend by default; any SMTP service works.
-ask SMTP_HOST "SMTP: сервер" 0 "smtp.resend.com"
-ask SMTP_PORT "SMTP: порт" 0 "465"
-ask SMTP_USER "SMTP: пользователь" 0 "resend"
-ask SMTP_PASS "SMTP: пароль (для Resend — API key)" 1
-ask SMTP_SENDER "SMTP: адрес отправителя на проверенном домене (например no-reply@ваш-домен)"
 # Live streaming conversation needs the voice gateway (Fly.io, ~0.3 €/month asleep between talks, no hard
 # provider cap). "no" keeps everything on Vercel: AI Speaking then runs in step mode (record → answer).
 ask VOICE_GATEWAY "Живой голосовой разговор через шлюз на Fly.io? (yes/no)" 0 "yes"
