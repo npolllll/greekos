@@ -140,12 +140,12 @@ minimum_password_length = 10
 email_sent = 60
 
 [auth.email]
-enable_signup = true
+enable_signup = false
 double_confirm_changes = true
 enable_confirmations = false
 
 [auth.email.smtp]
-enabled = true
+enabled = false
 host = "$SMTP_HOST"
 port = $SMTP_PORT
 user = "$SMTP_USER"
