@@ -156,7 +156,7 @@ content_path = "./supabase/templates/recovery.html"
 subject = "Вход в GreekOS"
 content_path = "./supabase/templates/magic_link.html"
 TOML
-run env SMTP_PASS="$SMTP_PASS" SUPABASE_YES=1 npx supabase config push --workdir "$CLOUD" --project-ref "$SUPABASE_PROJECT_REF"
+run env SUPABASE_YES=1 npx supabase config push --workdir "$CLOUD" --project-ref "$SUPABASE_PROJECT_REF"
 
 step "4/10 учебный корпус (только в пустую базу)"
 ITEMS=$(sql "select count(*) from public.items")
