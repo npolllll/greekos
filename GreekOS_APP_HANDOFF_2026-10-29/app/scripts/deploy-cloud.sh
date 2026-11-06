@@ -144,15 +144,6 @@ enable_signup = false
 double_confirm_changes = true
 enable_confirmations = false
 
-[auth.email.smtp]
-enabled = false
-host = "$SMTP_HOST"
-port = $SMTP_PORT
-user = "$SMTP_USER"
-pass = "env(SMTP_PASS)"
-admin_email = "$SMTP_SENDER"
-sender_name = "GreekOS"
-
 [auth.email.template.invite]
 subject = "GreekOS — ссылка для входа в курс"
 content_path = "./supabase/templates/invite.html"
