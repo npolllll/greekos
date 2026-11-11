@@ -36,7 +36,7 @@ if (existing) {
   userId = data.user.id;
   console.log('Invitation e-mail sent.');
 }
-await db.from('profiles').upsert({ user_id: userId, display_name: name, email, timezone: tz, active: true, lifecycle_state: pwFile ? 'activated' : 'invited', invited_at: new Date().toISOString() });
+await db.from('profiles').upsert({ user_id: userId, display_name: name, email, timezone: tz, active: true, lifecycle_state: existing || pwFile ? 'activated' : 'invited', invited_at: new Date().toISOString() });
 await db.from('role_assignments').upsert({ user_id: userId, role: 'owner_admin' });
 await db.from('preferences').upsert({ user_id: userId });
 await db.from('admin_audit_log').insert({ actor_id: null, action: 'owner.bootstrap', target_user_id: userId, meta: { via: 'scripts/create-owner.ts' } });
