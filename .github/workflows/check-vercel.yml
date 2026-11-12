@@ -1,0 +1,29 @@
+
+name: Check Vercel connection
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify Vercel authentication
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN is missing"
+            exit 1
+          fi
+
+          npx --yes vercel whoami --token "$VERCEL_TOKEN" >/dev/null || {
+            echo "::error::Vercel authentication failed"
+            exit 1
+          }
+
+          echo "SUCCESS: Vercel authentication works"
