@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Verify Vercel authentication
+      - name: Verify Vercel authentication and project access
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
@@ -25,10 +25,12 @@ jobs:
             echo "::error::Vercel authentication failed"
             exit 1
           }
-npx --yes vercel project inspect greekos-course \
-  --scope masha-7f7d \
-  --token "$VERCEL_TOKEN" >/dev/null || {
-  echo "::error::Cannot access greekos-course"
-  exit 1
-}
-          echo "SUCCESS: Vercel authentication works"
+
+          npx --yes vercel project inspect greekos-course \
+            --scope masha-7f7d \
+            --token "$VERCEL_TOKEN" >/dev/null || {
+            echo "::error::Cannot access greekos-course"
+            exit 1
+          }
+
+          echo "SUCCESS: Vercel authentication and project access work"
