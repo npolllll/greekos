@@ -137,18 +137,6 @@ email_sent = 60
 enable_signup = false
 double_confirm_changes = true
 enable_confirmations = false
-
-[auth.email.template.invite]
-subject = "GreekOS — ссылка для входа в курс"
-content_path = "./supabase/templates/invite.html"
-
-[auth.email.template.recovery]
-subject = "Восстановление доступа к GreekOS"
-content_path = "./supabase/templates/recovery.html"
-
-[auth.email.template.magic_link]
-subject = "Вход в GreekOS"
-content_path = "./supabase/templates/magic_link.html"
 TOML
 run env SUPABASE_YES=1 npx supabase config push --workdir "$CLOUD" --project-ref "$SUPABASE_PROJECT_REF"
 
