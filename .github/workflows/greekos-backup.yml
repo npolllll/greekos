@@ -1,7 +1,11 @@
-# GreekOS — weekly encrypted database backup (the Supabase free plan has no automatic backups).
-# The dump (learners, progress, releases, content; audio file list with SHA-256) is encrypted with
-# BACKUP_PASSPHRASE before it leaves the runner and is kept as a private workflow artifact for 90 days.
-# Restore: download the artifact, `gpg -d file.gpg > file.dump`, then see docs/OPERATIONS.md.
+# GreekOS — weekly encrypted database backup with a restore test (the Supabase free plan has no backups).
+# 1. pg_dump of learners, progress, releases, QA and content (+ audio file list with SHA-256, exact row
+#    counts per table), encrypted with AES-256 (gpg) before it is stored as a private artifact (90 days).
+# 2. The encrypted file is decrypted again and restored into a fresh local Supabase on the runner; every
+#    table's row count must equal the backup's. A backup that cannot be restored fails the run.
+# Key: the BACKUP_PASSPHRASE secret if set; otherwise derived from the SUPABASE_DB_PASSWORD secret
+# (HMAC-SHA256, label «greekos-backup-v1»). Whoever holds the DB password can read the database anyway,
+# so the derived key adds no new secret to keep. Restore by hand: docs/OPERATIONS.md → «Восстановление».
 name: GreekOS backup
 
 on:
@@ -12,37 +16,69 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: greekos-backup
+  cancel-in-progress: false
+
 jobs:
   backup:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: GreekOS_APP_HANDOFF_2026-10-29/app
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
-      - name: Secrets present
+      - name: Encryption key
         run: |
-          [ -n "$DATABASE_URL" ] && [ -n "$BACKUP_PASSPHRASE" ] || { echo "::error::Set DATABASE_URL and BACKUP_PASSPHRASE secrets"; exit 1; }
+          [ -n "$DATABASE_URL" ] || { echo "::error::Set the DATABASE_URL secret"; exit 1; }
+          if [ -n "$BACKUP_PASSPHRASE" ]; then key="$BACKUP_PASSPHRASE"; src="BACKUP_PASSPHRASE"
+          else
+            [ -n "$SUPABASE_DB_PASSWORD" ] || { echo "::error::Set BACKUP_PASSPHRASE or SUPABASE_DB_PASSWORD"; exit 1; }
+            key=$(printf 'greekos-backup-v1' | openssl dgst -sha256 -hmac "$SUPABASE_DB_PASSWORD" -binary | base64 | tr -d '\n=')
+            src="derived from SUPABASE_DB_PASSWORD (greekos-backup-v1)"
+          fi
+          echo "::add-mask::$key"
+          echo "GPG_KEY=$key" >> "$GITHUB_ENV"
+          echo "key: $src"
+          echo "KEY_SOURCE=$src" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: GreekOS_APP_HANDOFF_2026-10-29/app/package-lock.json
       - name: PostgreSQL 17 client
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq postgresql-common
           sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
           sudo apt-get install -y -qq postgresql-client-17
+      - run: npm ci --no-audit --no-fund
       - name: Dump and encrypt
         run: |
           bash scripts/backup-db.sh backups
           for f in backups/*; do
-            gpg --batch --yes --pinentry-mode loopback --passphrase "$BACKUP_PASSPHRASE" --symmetric --cipher-algo AES256 -o "$f.gpg" "$f"
+            gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_KEY" --symmetric --cipher-algo AES256 -o "$f.gpg" "$f"
             shred -u "$f"
           done
+          printf 'GreekOS backup %s\nkey: %s\nrestore: docs/OPERATIONS.md\n' "$(date -u +%FT%TZ)" "$KEY_SOURCE" > backups/README.txt
           ls -la backups
       - uses: actions/upload-artifact@v4
         with:
           name: greekos-backup-${{ github.run_id }}
-          path: GreekOS_APP_HANDOFF_2026-10-29/app/backups/*.gpg
+          path: |
+            GreekOS_APP_HANDOFF_2026-10-29/app/backups/*.gpg
+            GreekOS_APP_HANDOFF_2026-10-29/app/backups/README.txt
           retention-days: 90
+      - name: Restore test (decrypt the stored files, restore into a fresh database, compare row counts)
+        run: |
+          mkdir -p /tmp/restore
+          for f in backups/*.dump.gpg backups/*.counts.tsv.gpg backups/*.migrations.txt.gpg; do
+            gpg --batch --yes --pinentry-mode loopback --passphrase "$GPG_KEY" -d -o "/tmp/restore/$(basename "${f%.gpg}")" "$f"
+          done
+          bash scripts/ops/restore-test.sh /tmp/restore/*.dump /tmp/restore/*.counts.tsv /tmp/restore/*.migrations.txt
+          shred -u /tmp/restore/*

@@ -16,6 +16,29 @@ const BLOCKER_RU: Record<string, string> = {
   ACTUAL_AUDIO_AND_LISTENING_QA: 'реальное аудио и проверка аудирования',
 };
 
+// Catalog values are stored in English in the source data; learners see them in Russian.
+const AREA_RU: Record<string, string> = { culture: 'культура', history: 'история', geography: 'география', institutions: 'институты' };
+const PHRASE_RU: Record<string, string> = {
+  'one short text': 'один короткий текст',
+  'Complete reading route': 'полный маршрут по чтению',
+  'Original listening scripts/items with rights-cleared actual media': 'оригинальные тексты и задания на аудирование с настоящими записями и урегулированными правами',
+  'Full written production with rubrics': 'полноценное письмо с критериями оценки',
+  'Full spoken production/interactions with rubrics': 'полноценная устная речь и диалог с критериями оценки',
+};
+function arrangementRu(v: string): string {
+  return v.split(';').map((x) => x.trim()).map((x) => {
+    if (x === 'pair') return 'в паре';
+    const n = x.match(/^(\d+)\s+(activities|examiners)$/);
+    if (n) return n[2] === 'activities' ? `${n[1]} задания` : `${n[1]} экзаменатора`;
+    return x;
+  }).join(', ');
+}
+/** «2026/11-observed-2026-10-14» → «2026/11 (сведения на 14.10.2026)». */
+function bankRu(v: string): string {
+  const m = v.match(/^(.*?)-observed-(\d{4})-(\d{2})-(\d{2})$/);
+  return m ? `${m[1]} (сведения на ${m[4]}.${m[3]}.${m[2]})` : v;
+}
+
 export default async function PegpPage() {
   const u = await requireLearner();
   const o = await pegpOverview(u);
@@ -25,7 +48,7 @@ export default async function PegpPage() {
     <section className="screen active">
       <div className="screen-head">
         <div><div className="eyebrow">GreekOS / ΠΕΓΠ</div><h1 className="screen-title">ΠΕΓΠ — гражданство</h1><p className="screen-sub">Отдельный маршрут: факты о Греции и язык для экзамена на гражданство. Не ΚΕΓ B2 и не уровень CEFR.</p></div>
-        <span className="pill"><span className="dot" /> Банк {m.source_version?.split(';')[0] ?? '—'}</span>
+        <span className="pill"><span className="dot" /> Банк {m.source_version ? bankRu(m.source_version.split(';')[0]) : '—'}</span>
       </div>
       <div className="banner warn"><Icon name="alert" /><span><strong>Правила и банк вопросов меняются.</strong> Каждый выпуск действует для конкретной сессии/даты; устаревший допуск закрывает задание. Это не юридическая консультация и не актуальные условия допуска к экзамену.</span></div>
       <div className="banner info"><Icon name="info" /><span>Факт и язык оцениваются раздельно; ошибка ударения ≠ неверный гражданский факт.</span></div>
@@ -46,7 +69,7 @@ export default async function PegpPage() {
               <span className={`tag ${t.available ? 'green' : 'gray'}`}>доступно {t.available} из {t.mapped}</span>
               {t.expired ? <span className="tag">допуск истёк: {t.expired}</span> : null}
             </div>
-            <small className="quiet">{[...new Set(t.packets.map((p) => p.bank_version).filter(Boolean))].map((b) => `банк ${b}`).join(', ') || 'версия банка не указана'}{t.packets.find((p) => p.date)?.date ? ` · снимок ${t.packets.find((p) => p.date)!.date}` : ''}</small>
+            <small className="quiet">{[...new Set(t.packets.map((p) => p.bank_version).filter(Boolean))].map((b) => `банк ${bankRu(String(b))}`).join(', ') || 'версия банка не указана'}{t.packets.find((p) => p.date)?.date ? ` · снимок ${t.packets.find((p) => p.date)!.date}` : ''}</small>
           </Link>
         ))}
       </div>
@@ -55,18 +78,18 @@ export default async function PegpPage() {
         <div className="card cardpad">
           <div className="card-title" style={{ marginBottom: 8 }}><Icon name="school" /> Формат обычного письменного пути</div>
           <dl className="kv">
-            <dt>Вопросы на знания</dt><dd>{w.knowledge_questions ?? '—'} {w.knowledge_distribution ? `(${Object.entries(w.knowledge_distribution).map(([k, v]) => `${k}: ${v}`).join(', ')})` : ''}</dd>
+            <dt>Вопросы на знания</dt><dd>{w.knowledge_questions ?? '—'} {w.knowledge_distribution ? `(${Object.entries(w.knowledge_distribution).map(([k, v]) => `${AREA_RU[k] ?? k}: ${v}`).join(', ')})` : ''}</dd>
             <dt>Чтение</dt><dd>{w.reading_questions ?? '—'} вопросов</dd>
-            <dt>Письмо</dt><dd>{w.writing ?? '—'}</dd>
+            <dt>Письмо</dt><dd>{w.writing ? PHRASE_RU[w.writing] ?? w.writing : '—'}</dd>
             <dt>Аудирование</dt><dd>{w.listening_questions ?? '—'} вопросов{w.listening_minutes ? `, ${w.listening_minutes} мин` : ''}</dd>
-            <dt>Говорение</dt><dd>{w.speaking_minutes ? `${w.speaking_minutes} мин` : '—'}{w.speaking_arrangement ? ` · ${w.speaking_arrangement}` : ''}</dd>
+            <dt>Говорение</dt><dd>{w.speaking_minutes ? `${w.speaking_minutes} мин` : '—'}{w.speaking_arrangement ? ` · ${arrangementRu(w.speaking_arrangement)}` : ''}</dd>
             <dt>Условия</dt><dd>{w.pass_conditions ? `знания ≥ ${w.pass_conditions.knowledge_at_least}, язык ≥ ${w.pass_conditions.language_at_least}, всего ≥ ${w.pass_conditions.total_at_least}${w.pass_conditions.all_conditions_required ? ', все условия обязательны' : ''}` : '—'}</dd>
           </dl>
           <p className="tiny muted mt8">Сведения из каталога проекта на дату снимка; актуальность официальных правил отдельно не перепроверялась.</p>
         </div>
         <div className="card cardpad">
           <div className="card-title" style={{ marginBottom: 8 }}><Icon name="lock" /> Что ещё не готово</div>
-          <ul className="criteria">{(m.blockers ?? []).map((b) => <li key={b}>{BLOCKER_RU[b] ?? b}</li>)}{o.catalog.remaining_language.map((r) => <li key={r}>{r}</li>)}</ul>
+          <ul className="criteria">{(m.blockers ?? []).map((b) => <li key={b}>{BLOCKER_RU[b] ?? b}</li>)}{o.catalog.remaining_language.map((r) => <li key={r}>{PHRASE_RU[r] ?? r}</li>)}</ul>
         </div>
       </div>
 

@@ -20,13 +20,13 @@ export default async function ReleasePage({ searchParams }: { searchParams: Prom
   await requireOwnerPage();
   const sp = await searchParams;
   const db = adminClient();
-  const [{ data: batch }, { data: units }, policy, { data: decisions }] = await Promise.all([
-    db.from('qa_batches').select('id, label, finished_at, report_sha256, scope').eq('status', 'COMPLETED').order('started_at', { ascending: false }).limit(20),
+  const [{ data: latestFull }, { data: units }, policy, { data: decisions }] = await Promise.all([
+    db.from('qa_batches').select('id, label, finished_at, report_sha256, scope').eq('status', 'COMPLETED').eq('scope->>kind', 'all').order('started_at', { ascending: false }).limit(1).maybeSingle(),
     db.from('units').select('unit_id, level, title_ru, sort_key').order('sort_key'),
     activePolicy(),
     db.from('release_decisions').select('id, scope, risk_acceptance, sample_size, counts, note, decided_at, revoked_at, revoked_reason, batch_id').order('decided_at', { ascending: false }).limit(20),
   ]);
-  const full = (batch ?? []).find((b) => (b.scope as { kind?: string }).kind === 'all');
+  const full = latestFull ?? undefined;
   // Default: the whole admissible package — one procedure for the owner; narrower scopes stay available.
   const scope = sp.unit ? { kind: 'unit' as const, ids: [sp.unit] } : sp.level ? { kind: 'level' as const, level: sp.level as 'A1' } : sp.module ? { kind: 'module' as const, module: sp.module as 'core' } : { kind: 'all' as const };
   const isAll = scope.kind === 'all';

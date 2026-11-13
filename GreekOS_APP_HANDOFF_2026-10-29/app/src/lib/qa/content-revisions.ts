@@ -226,3 +226,78 @@ export async function applyReadingItems(): Promise<Array<{ item_id: string; stat
   if (touched.size) await runQaBatch({ actorId: null, label: `Повторная проверка после добавления заданий на чтение (${touched.size} уроков)`, scope: { kind: 'unit', ids: [...touched] } });
   return out;
 }
+
+/**
+ * Wording of task instructions (13.11.2026): English words and a technical abbreviation in Russian
+ * instructions shown to learners («stimulus», «ASR», «concessive link»), and a missing space in
+ * U-B2-016-I02. Meaning, keys and options are unchanged. Prepared with AI, not reviewed by a teacher.
+ */
+const RG_Q05_BEFORE = 'D7 и D28 проводятся отдельно, без карточки и моделей. Прочитайте только stimulus своего дня: объясните смысл выражения, назовите конкретную текстовую подсказку и дайте уместную нейтральную реплику. Не приписывайте услышанную интонацию отсутствующему звуку.';
+const RG_Q05_AFTER = 'D7 и D28 выполняются отдельно, без карточки и образцов. Прочитайте только текст своего дня: объясните смысл выражения, назовите подсказку в тексте, на которую вы опираетесь, и предложите уместную нейтральную реплику. Интонацию не додумывайте: звука в этом задании нет.';
+
+export const PROMPT_REVISIONS: Array<{ item_id: string; before: string; after: string }> = [
+  ...Array.from({ length: 12 }, (_, i) => ({ item_id: `RG-${String(i + 1).padStart(4, '0')}-Q05`, before: RG_Q05_BEFORE, after: RG_Q05_AFTER })),
+  { item_id: 'U-A2-016-I12', before: 'ASR показал «εγραψα» без ударения. Можно ли сразу признать ошибку произношения? Объясните следующий шаг.', after: 'Распознавание речи показало «εγραψα» без ударения. Можно ли сразу признать ошибку произношения? Объясните следующий шаг.' },
+  { item_id: 'U-B2-016-I02', before: 'ASR записал50вместо15. Что делать до вывода об ошибке произношения?', after: 'Распознавание речи записало «50» вместо «15». Что нужно сделать, прежде чем делать вывод об ошибке произношения?' },
+  { item_id: 'U-B2-016-I16', before: 'Самостоятельно предложите план встречи двух групп с разным расписанием. Партнёр после первого предложения меняет одно ограничение; уточните его и обновите план. Слушатель без вашего конспекта фиксирует окончательные время, место и условие. Не оценивайте произношение по ASR.', after: 'Самостоятельно предложите план встречи двух групп с разным расписанием. Партнёр после первого предложения меняет одно ограничение; уточните его и обновите план. Слушатель без вашего конспекта фиксирует окончательные время, место и условие. Не оценивайте произношение по автоматическому распознаванию речи.' },
+  { item_id: 'U-B2-001-I02', before: 'Συμπληρώστε με concessive link: ___ ο χώρος είναι μικρός, χωρά ένα παγκάκι.', after: 'Вставьте уступительный союз («хотя»): ___ ο χώρος είναι μικρός, χωρά ένα παγκάκι.' },
+];
+
+export async function applyPromptRevisions(): Promise<Array<{ item_id: string; status: RevisionStatus; new_hash?: string }>> {
+  const db = adminClient();
+  const out: Array<{ item_id: string; status: RevisionStatus; new_hash?: string }> = [];
+  for (const r of PROMPT_REVISIONS) {
+    const { data: it } = await db.from('items').select('item_id, envelope, current_hash').eq('item_id', r.item_id).maybeSingle();
+    if (!it) { out.push({ item_id: r.item_id, status: 'missing' }); continue; }
+    const prompt = (it.envelope as { prompt?: string }).prompt;
+    if (prompt === r.after) { out.push({ item_id: r.item_id, status: 'already' }); continue; }
+    if (prompt !== r.before) { out.push({ item_id: r.item_id, status: 'changed_since' }); continue; }
+    const p = await patchItem({ system: CONTENT_REVISION_ACTOR }, {
+      item_id: r.item_id, base_hash: it.current_hash, changes: { prompt: r.after },
+      reason: 'Формулировка задания: английские слова и сокращения в русской инструкции заменены русскими (смысл, ключи и варианты не менялись). Подготовлено с помощью AI, не проверено преподавателем.',
+    }, { runQa: false });
+    out.push({ item_id: r.item_id, status: 'applied', new_hash: p.new_hash });
+  }
+  const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
+  if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после правки формулировок (${applied.length})`, scope: { kind: 'items', ids: applied } });
+  return out;
+}
+
+/**
+ * ΚΕΓ B2 listening L01, «who says what»: each statement of rows 1–4 is true for TWO speakers and the row
+ * is split into two tasks with the same prompt, each keyed to one speaker. A learner who named the other
+ * correct speaker was marked wrong. Each task now accepts both correct speakers and says that the two
+ * tasks of the row ask for different speakers. Keys only widened to what the recording supports.
+ */
+const PAIR_NOTE = ' (Так говорят двое: в двух заданиях с этой фразой укажите разных говорящих.)';
+export const EXAM_PAIR_REVISIONS: Array<{ item_id: string; prompt: string; answer: string; partner: string }> = [
+  { item_id: 'KEG-B2-L01-A01', prompt: 'Προτιμά τη συνάντηση το απόγευμα.', answer: 'Άννα', partner: 'Μάνος' },
+  { item_id: 'KEG-B2-L01-A02', prompt: 'Προτιμά τη συνάντηση το απόγευμα.', answer: 'Μάνος', partner: 'Άννα' },
+  { item_id: 'KEG-B2-L01-A03', prompt: 'Προτιμά να γίνει η γιορτή στην αίθουσα.', answer: 'Άννα', partner: 'Ελένη' },
+  { item_id: 'KEG-B2-L01-A04', prompt: 'Προτιμά να γίνει η γιορτή στην αίθουσα.', answer: 'Ελένη', partner: 'Άννα' },
+  { item_id: 'KEG-B2-L01-A05', prompt: 'Υποστηρίζει ξεχωριστή δραστηριότητα για παιδιά.', answer: 'Άννα', partner: 'Ελένη' },
+  { item_id: 'KEG-B2-L01-A06', prompt: 'Υποστηρίζει ξεχωριστή δραστηριότητα για παιδιά.', answer: 'Ελένη', partner: 'Άννα' },
+  { item_id: 'KEG-B2-L01-A07', prompt: 'Υποστηρίζει την προαιρετική οικονομική συνεισφορά.', answer: 'Άννα', partner: 'Μάνος' },
+  { item_id: 'KEG-B2-L01-A08', prompt: 'Υποστηρίζει την προαιρετική οικονομική συνεισφορά.', answer: 'Μάνος', partner: 'Άννα' },
+];
+
+export async function applyExamPairRevisions(): Promise<Array<{ item_id: string; status: RevisionStatus; new_hash?: string }>> {
+  const db = adminClient();
+  const out: Array<{ item_id: string; status: RevisionStatus; new_hash?: string }> = [];
+  for (const r of EXAM_PAIR_REVISIONS) {
+    const { data: it } = await db.from('items').select('item_id, envelope, current_hash').eq('item_id', r.item_id).maybeSingle();
+    if (!it) { out.push({ item_id: r.item_id, status: 'missing' }); continue; }
+    const env = it.envelope as { prompt?: string; answer?: unknown[]; accepted_alternatives?: unknown[] };
+    const after = r.prompt + PAIR_NOTE;
+    if (env.prompt === after && (env.accepted_alternatives ?? []).includes(r.partner)) { out.push({ item_id: r.item_id, status: 'already' }); continue; }
+    if (env.prompt !== r.prompt || JSON.stringify(env.answer) !== JSON.stringify([r.answer])) { out.push({ item_id: r.item_id, status: 'changed_since' }); continue; }
+    const p = await patchItem({ system: CONTENT_REVISION_ACTOR }, {
+      item_id: r.item_id, base_hash: it.current_hash, changes: { prompt: after, accepted_alternatives: [r.partner] },
+      reason: 'Ключ задания «кто это говорит»: фразу говорят два участника записи, задание принимало только одного. Принимаются оба верных говорящих; в инструкции сказано, что в двух заданиях строки нужны разные. Подготовлено с помощью AI, не проверено экзаменатором.',
+    }, { runQa: false });
+    out.push({ item_id: r.item_id, status: 'applied', new_hash: p.new_hash });
+  }
+  const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
+  if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после правки ключей ΚΕΓ L01 (${applied.length})`, scope: { kind: 'items', ids: applied } });
+  return out;
+}

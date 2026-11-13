@@ -102,10 +102,12 @@ export async function settle(r: Reservation, actualUsd: number | null): Promise<
   await Promise.resolve(adminClient().rpc('budget_settle', { p_id: r.id, p_actual: Number(usdToEur(Math.max(0, actualUsd ?? 0)).toFixed(6)) })).catch(() => undefined);
 }
 
-export async function recordUsage(r: { userId: string | null; provider: string; operation: string; units: number; unitKind: string; costUsd: number; ok: boolean; latencyMs: number }) {
+/** One row per paid-provider call. `detail` keeps why a call failed (provider status and message, no keys). */
+export async function recordUsage(r: { userId: string | null; provider: string; operation: string; units: number; unitKind: string; costUsd: number; ok: boolean; latencyMs: number; detail?: string | null }) {
   await adminClient().from('provider_usage').insert({
     user_id: r.userId, provider: r.provider, operation: r.operation, units: r.units, unit_kind: r.unitKind,
     estimated_cost_usd: Number(r.costUsd.toFixed(6)), ok: r.ok, latency_ms: Math.round(r.latencyMs),
+    error_detail: r.ok ? null : (r.detail ?? null)?.slice(0, 300) ?? null,
   });
 }
 

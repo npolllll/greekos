@@ -2,6 +2,11 @@ import type { RgPayload } from '@/lib/modules/display';
 import { CATEGORY_RU, CURRENTNESS_RU, metaRu, attestationLabel, prosodyLabel, regionLabel, registerLabel, riskWarnings } from '@/lib/modules/display';
 
 /** Required Real Greek display: register, context, neutral equivalent, region, attestation, prosody, risk. */
+/** Source metadata is stored in English in the corpus; the card shows it in Russian. */
+function sourceRu(v: string): string {
+  return v.replace(/\bdictionary\b/gi, 'словарь').replace(/\bentry\b/gi, 'статья').replace(/\bedition\b/gi, 'издание').replace(/\bonline\b/gi, 'онлайн').replace(/\bundated\b/gi, 'без даты').replace(/\bpage\b/gi, 'с.');
+}
+
 export function RgDetail({ p, full }: { p: RgPayload; full?: boolean }) {
   const risks = riskWarnings(p);
   const prosody = prosodyLabel(p);
@@ -37,7 +42,7 @@ export function RgDetail({ p, full }: { p: RgPayload; full?: boolean }) {
             {p.source_evidence.map((s, i) => (
               <li key={i}>
                 {s.url && /^https:\/\//.test(s.url) ? <a href={s.url} target="_blank" rel="noreferrer noopener">{s.source_id ?? 'источник'}</a> : s.source_id ?? 'источник'}
-                {s.specific_section ? ` · ${s.specific_section}` : ''}{s.publication_date ? ` · ${s.publication_date}` : ' · дата неизвестна'}{s.checked_on ? ` · проверено ${s.checked_on}` : ''}
+                {s.specific_section ? ` · ${sourceRu(s.specific_section)}` : ''}{s.publication_date && !/undated/i.test(s.publication_date) ? ` · ${sourceRu(s.publication_date)}` : ' · без даты'}{s.checked_on ? ` · проверено ${s.checked_on}` : ''}
                 {s.limitations ? <div className="tiny muted">Ограничения: {metaRu(s.limitations)}</div> : null}
               </li>
             ))}

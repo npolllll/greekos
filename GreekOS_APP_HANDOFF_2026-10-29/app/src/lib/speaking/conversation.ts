@@ -122,7 +122,7 @@ export function systemPrompt(p: { scenario: ConversationTurnInput['scenario']; m
   ].filter(Boolean).join('\n\n');
 }
 
-function turnSchema(allowed: string[], withHint: boolean) {
+export function turnSchema(allowed: string[], withHint: boolean) {
   // The stage comes first (a few tokens) so the reply is written for the branch the model chose.
   const props: Record<string, unknown> = {
     stage: { type: 'string', enum: allowed },
@@ -130,7 +130,8 @@ function turnSchema(allowed: string[], withHint: boolean) {
     intent: { type: 'string', enum: [...INTENTS] },
   };
   if (withHint) props.hint_ru = { anyOf: [{ type: 'string' }, { type: 'null' }] };
-  props.facts = { type: 'array', items: { type: 'string' }, maxItems: 2 };
+  // «0–2 facts» is enforced below: the API's schema subset has no maxItems (see anthropicJsonSchema).
+  props.facts = { type: 'array', items: { type: 'string' } };
   return { type: 'object', properties: props, required: Object.keys(props), additionalProperties: false };
 }
 
@@ -139,7 +140,7 @@ const TurnOut = z.object({
   stage: z.string(),
   intent: z.enum(INTENTS),
   hint_ru: z.string().nullable().optional(),
-  facts: z.array(z.string()).max(4).default([]),
+  facts: z.array(z.string()).default([]),
 });
 
 /** Messages: only what the learner actually heard counts as context (interrupted turns are truncated upstream). */
@@ -279,7 +280,7 @@ export async function conversationTurn(input: ConversationTurnInput): Promise<Co
     if (loops > maxRepairs && nodeById(s, 'RETRY')) target = 'RETRY';
   }
   const targetNode = nodeById(s, target) ?? node;
-  const facts = (out?.facts ?? []).map((f) => f.trim().slice(0, 90)).filter((f) => f.length > 3 && !/\p{Script=Greek}{12,}/u.test(f));
+  const facts = (out?.facts ?? []).map((f) => f.trim().slice(0, 90)).filter((f) => f.length > 3 && !/\p{Script=Greek}{12,}/u.test(f)).slice(0, 2);
   return {
     nextNode: targetNode.node_id, assistantEl: spoken.join(' '), engine: 'llm', engineDetail: model, generated: true,
     intent: out?.intent ?? (rejected ? 'guard_truncated' : 'unparsed'), hintRu: withHint ? out?.hint_ru?.trim() || null : null,

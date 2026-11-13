@@ -22,4 +22,13 @@ pg_dump "$DATABASE_URL" --format=custom --no-owner --no-privileges \
   --schema=public --schema=auth --schema=storage \
   --exclude-table-data='storage.objects' --file="$OUT/greekos-$STAMP.dump"
 psql "$DATABASE_URL" -AtF $'\t' -c "select object_path, byte_length, sha256 from public.audio_assets where invalidated_at is null order by object_path" > "$OUT/greekos-$STAMP.audio.tsv"
+# Schema version of the backup (a restore applies exactly these migrations before the data).
+psql "$DATABASE_URL" -At -c "select version from supabase_migrations.schema_migrations order by 1" > "$OUT/greekos-$STAMP.migrations.txt"
+# Exact row counts of every table in the dump: the restore test compares them after restoring.
+psql "$DATABASE_URL" -AtF $'\t' -v ON_ERROR_STOP=1 > "$OUT/greekos-$STAMP.counts.tsv" <<'SQL'
+select format('select %L, count(*) from %I.%I', n.nspname || '.' || c.relname, n.nspname, c.relname)
+from pg_class c join pg_namespace n on n.oid = c.relnamespace
+where c.relkind = 'r' and n.nspname in ('public', 'auth') and c.relname not like 'schema_migrations%'
+order by 1 \gexec
+SQL
 pg_restore --list "$OUT/greekos-$STAMP.dump" | grep -c 'TABLE DATA' | xargs -I{} echo "OK: $OUT/greekos-$STAMP.dump ({} tables with data), $(wc -l < "$OUT/greekos-$STAMP.audio.tsv") audio files listed"

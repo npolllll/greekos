@@ -288,7 +288,7 @@ export async function learnerTurn(user: SessionUser, b: { session_id: string; te
     ...(opts.assistantTurnId ? { turn_id: opts.assistantTurnId } : {}),
     session_id: s.session_id, user_id: user.userId, seq: assistantSeq, speaker: 'assistant', node_id: d.nextNode, text_el: d.assistantEl,
     transcript_confirmed: true, idempotency_key: `${b.idempotency_key}:a`, intent: d.generated ? 'generated' : 'authored',
-    help_used: d.hintRu ? [`hint:${d.hintRu}`] : [], engine: dbEngine, gen_first_ms: d.firstMs, gen_total_ms: d.totalMs,
+    help_used: d.hintRu ? [`hint:${d.hintRu}`] : [], engine: dbEngine, engine_reason: reason?.slice(0, 300) ?? null, gen_first_ms: d.firstMs, gen_total_ms: d.totalMs,
   });
   if (ains.error && ains.error.code !== '23505') throw ains.error;
   const newMemory = d.facts.length ? mergeMemory(memory, d.facts) : memory;

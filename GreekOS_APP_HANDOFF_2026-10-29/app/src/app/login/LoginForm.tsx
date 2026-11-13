@@ -34,7 +34,7 @@ export function LoginForm() {
     router.refresh();
   }
 
-  if (sent) return <div className="banner ok mt16">Если такой аккаунт существует, мы отправили письмо со ссылкой для нового пароля.</div>;
+  if (sent) return <div className="banner ok mt16">Если такой аккаунт существует, мы отправили письмо со ссылкой для нового пароля. Письма нет — попросите у владельца курса новую ссылку для входа.</div>;
 
   return (
     <form onSubmit={submit} noValidate>
@@ -47,7 +47,7 @@ export function LoginForm() {
           <label htmlFor="password">Пароль</label>
           <input id="password" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-      ) : null}
+      ) : <p className="small quiet">Самый быстрый способ — попросить у владельца курса новую ссылку для входа: по ней вы сразу зададите новый пароль. Можно также запросить письмо на свой e-mail.</p>}
       {error ? <p className="error-text" role="alert">{error}</p> : null}
       <button className="btn" type="submit" disabled={busy} style={{ width: '100%', marginTop: 6 }}>{busy ? 'Подождите…' : mode === 'password' ? 'Войти' : 'Отправить ссылку'}</button>
       <button type="button" className="text-link mt16" onClick={() => { setMode(mode === 'password' ? 'reset' : 'password'); setError(null); }}>

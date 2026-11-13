@@ -237,7 +237,7 @@ export async function runQaBatch(opts: { actorId: string | null; label: string; 
     const report = {
       batch_id: batch.id, label: opts.label, tool_version: QA_TOOL_VERSION, generated_at: new Date().toISOString(), scope,
       dictionary: spell.dictionary ? { engine: 'hunspell', path: spell.dictionary, unique_greek_words: words.size, unknown_words: spell.unknown?.size ?? null } : { engine: null, note: 'hunspell el_GR не найден — проверка словарём ABSTAIN' },
-      totals: { objects: results.length, items: items.length, units: scopedUnits.length, scenarios: scenarios.length, issues_stored: issueRows.length, ...counts },
+      totals: { objects: results.length, items: items.length, units: scopedUnits.length, scenarios: scenarios.length, issues_stored: issueRows.length, spelling_checked: spell.unknown ? 1 : 0, ...counts },
       by_check: CHECKS.map((c) => ({ ...c, ...(byCheck[c.id] ?? { blocking: 0, warning: 0, info: 0, objects: 0 }) })),
       not_performed: ['Независимая экспертиза преподавателем, экзаменатором или носителем языка', 'Проверка смысла и прагматики свободным текстом (нужен LLM-провайдер или человек)', 'Акустическая оценка аудио слушателем'],
     };

@@ -79,7 +79,7 @@ ask NEXT_PUBLIC_SUPABASE_ANON_KEY "Supabase: anon / publishable key (Settings �
 ask SUPABASE_SERVICE_ROLE_KEY "Supabase: service_role / secret key (Settings → API)" 1
 ask DATABASE_URL "Supabase: строка подключения Session pooler (Connect → Session pooler, с паролем)" 1
 ask APP_URL "Адрес приложения (например https://greekos.vercel.app или ваш домен)"
-APP_URL=${APP_URL%/}
+APP_URL=$(printf '%s' "$APP_URL" | tr -d '[:space:]'); APP_URL=${APP_URL%/}
 ask OWNER_EMAIL "E-mail владельца"
 ask OWNER_NAME "Имя владельца" 0 "Владелец"
 ask ANTHROPIC_API_KEY "Anthropic API key (console.anthropic.com → API Keys)" 1
@@ -117,7 +117,7 @@ step "2/10 схема базы (миграции)"
 run npx supabase link --project-ref "$SUPABASE_PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
 run npx supabase db push --password "$SUPABASE_DB_PASSWORD"
 
-step "3/10 вход и письма: адрес сайта, шаблоны, SMTP, регистрация только через GreekOS"
+step "3/10 вход: адрес сайта, ссылки, прямая регистрация в Supabase выключена"
 # A minimal config with only the auth settings: `config push` leaves everything it does not declare.
 CLOUD=.deploy/supabase-cloud
 mkdir -p "$CLOUD/supabase/templates" && cp supabase/templates/*.html "$CLOUD/supabase/templates/"
@@ -148,15 +148,24 @@ step "5/10 владелец (письмо со ссылкой для парол�
 run cloud_env npx tsx scripts/create-owner.ts --email "$OWNER_EMAIL" --name "$OWNER_NAME"
 
 step "6/10 цифровой QA корпуса и записанные исправления (как локально)"
-QA=$(sql "select count(*) from public.qa_batches where status = 'COMPLETED'")
-if [ "$QA" = "0" ]; then
-  run cloud_env npx tsx scripts/qa-batch.ts
+# Spelling needs hunspell with the el_GR dictionary (GitHub Actions installs it; locally: brew/apt).
+if command -v hunspell >/dev/null && { [ -f /usr/share/hunspell/el_GR.dic ] || [ -n "${HUNSPELL_EL_DICT:-}" ]; }; then echo "орфография: hunspell el_GR"
+else echo "ВНИМАНИЕ: нет hunspell el_GR — орфография не проверяется, все объекты получат NEEDS_REVIEW"; fi
+FULL=$(sql "select count(*) from public.qa_batches where status = 'COMPLETED' and scope->>'kind' = 'all'")
+if [ "$FULL" = "0" ]; then
+  # First deployment: the recorded technical fixes of the imported corpus (one time).
+  run cloud_env npx tsx scripts/qa-batch.ts --label "Первый полный прогон"
   run cloud_env npx tsx --conditions=react-server scripts/qa-autofix.ts
   run cloud_env npx tsx --conditions=react-server scripts/qa-engineering-fixes.ts
-else echo "пакет QA уже есть ($QA)"; fi
-# Methodological revisions (Russian explanations, prerequisite order, reading tasks): idempotent,
+fi
+# Methodological revisions (Russian explanations, prerequisite order, reading tasks, wording): idempotent,
 # applied on every run so a redeploy brings an existing database up to the current corpus.
 run cloud_env npx tsx --conditions=react-server scripts/qa-content-revisions.ts
+# Releases are bound to the hashes a FULL run checked. A new full run whenever content changed after the
+# last one, or the last one ran without the spelling dictionary (otherwise revised objects read as STALE).
+STALE=$(sql "select (select coalesce(max(started_at), 'epoch') from public.qa_batches where status = 'COMPLETED' and scope->>'kind' = 'all' and coalesce((counts->>'spelling_checked')::int, 0) = 1) < (select coalesce(max(created_at), 'epoch') from public.content_revisions)")
+if [ "$STALE" = "t" ] || [ "$DRY" = 1 ]; then run cloud_env npx tsx scripts/qa-batch.ts --label "Полный прогон после развёртывания $(date -u +%F)"
+else echo "полный прогон актуален: контент после него не менялся"; fi
 
 step "7/10 голоса Azure: каталог, предложения кастинга, генерация 142 аудио (в пределах лимита)"
 run cloud_env npm run audio -- cast
@@ -212,8 +221,11 @@ run npx --yes vercel deploy --prod --yes "${VT[@]}"
 
 step "10/10 проверка работающей системы"
 if [ "$DRY" != 1 ]; then
-  for i in $(seq 1 30); do curl -sf "$APP_URL/api/health" >/dev/null && break; sleep 5; done
-  curl -sf "$APP_URL/api/health" && echo " ← приложение $APP_URL" || echo "Приложение не отвечает: проверьте домен (Vercel → Settings → Domains)."
+  code=000
+  for i in $(seq 1 30); do code=$(curl -sS -L -o /dev/null -w '%{http_code}' --max-time 20 "$APP_URL/api/health" 2>/tmp/health.err || true); [ "$code" = 200 ] && break; sleep 5; done
+  if [ "$code" = 200 ]; then echo "приложение отвечает: /api/health → 200"
+  else echo "::error::/api/health → HTTP $code $(tr -d '\n' < /tmp/health.err | head -c 200). Проверьте домен (Vercel → Settings → Domains) и секрет APP_URL."; exit 1; fi
+  for path in /login /register; do echo "$path → $(curl -sS -L -o /dev/null -w '%{http_code}' --max-time 20 "$APP_URL$path")"; done
   [ -z "$GATEWAY_URL" ] || { curl -sf "https://$FLY_APP.fly.dev/health" && echo " ← голосовой шлюз $GATEWAY_URL" || echo "Шлюз не отвечает: $FLY logs --app $FLY_APP"; }
 fi
 # A live conversation through the deployed gateway with the real providers (temporary test account).
@@ -225,10 +237,10 @@ fi
 cat <<EOF
 
 Развёрнуто: $APP_URL (приложение); голосовой шлюз: ${GATEWAY_URL:-нет — AI-разговор в пошаговом режиме}.
-Осталось решить владельцу в GreekOS ($APP_URL, вход по письму-приглашению):
+Осталось решить владельцу в GreekOS ($APP_URL):
   • Админ → Политика выпуска → подписать; Админ → Выпуск → выборка (≤ 30) → «Принять решение о выпуске»
   • Админ → Голоса и кастинг → прослушать и утвердить голоса Azure; Админ → Аудио → прослушать, записать условия Azure
-  • Админ → Ученики → «Регистрация учеников»: режим и число мест; ссылка для учеников: $APP_URL/register
+  • Ученики: Админ → Ученики → «Добавить ученика» → одноразовая ссылка (регистрация закрыта, почта не нужна)
 Резервная копия: еженедельно GitHub Actions «GreekOS backup» (зашифрованный дамп) или bash scripts/backup-db.sh.
 Расходы: Админ → Провайдеры (лимит EUR, остаток, дата сброса).
 EOF

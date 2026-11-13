@@ -1,4 +1,4 @@
-# GreekOS — one-click production deployment (Supabase + Fly.io voice gateway + Vercel).
+# GreekOS — one-click production deployment (Supabase + Vercel; optional Fly.io voice gateway).
 # Run: GitHub → Actions → «GreekOS deploy» → Run workflow. Safe to re-run: finished steps are skipped,
 # the methodological revisions and settings are idempotent. Secrets come only from GitHub → Settings →
 # Secrets and variables → Actions (see FINAL_DEPLOYMENT_GUIDE.md); they are masked in the log.
@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
     inputs:
       voice_gateway:
-        description: 'Live streaming conversation through the Fly.io gateway (yes/no)'
-        default: 'yes'
+        description: 'Live streaming conversation through the Fly.io gateway (yes/no; Fly is a paid service)'
+        default: 'no'
         required: true
       dry_run:
         description: 'Only print the steps (1) or deploy (0)'
@@ -45,8 +45,6 @@ jobs:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
       AZURE_SPEECH_REGION: ${{ vars.AZURE_SPEECH_REGION || 'westeurope' }}
-      SMTP_PASS: ${{ secrets.SMTP_PASS }}
-      SMTP_SENDER: ${{ secrets.SMTP_SENDER }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
     steps:
@@ -61,8 +59,9 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq postgresql-common
           sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
-          sudo apt-get install -y -qq postgresql-client-17
+          sudo apt-get install -y -qq postgresql-client-17 hunspell hunspell-el
           psql --version
+          test -f /usr/share/hunspell/el_GR.dic && echo "hunspell el_GR: ok"
       - run: npm ci --no-audit --no-fund
       - name: Check that every required secret is present
         run: |
