@@ -3,6 +3,7 @@ import { requireOwnerPage } from '@/lib/auth';
 import { adminClient } from '@/lib/supabase/admin';
 import { dateTimeRu } from '@/lib/admin/labels';
 import { nowMs } from '@/lib/admin/time';
+import { AUDIT_ACTION_RU } from '@/lib/admin/audit-labels';
 
 export const metadata = { title: 'Согласия и аудит' };
 
@@ -54,7 +55,7 @@ export default async function ConsentsPage({ searchParams }: { searchParams: Pro
         </nav>
         <div className="table-wrap mt8"><table className="data-table">
           <thead><tr><th>Время</th><th>Кто</th><th>Действие</th><th>Объект</th><th>Детали (без секретов и транскриптов)</th></tr></thead>
-          <tbody>{(log ?? []).map((e) => <tr key={e.event_id}><td>{dateTimeRu(e.occurred_at)}</td><td>{name(e.actor_id)}</td><td className="code">{e.action}</td><td>{e.target_user_id ? name(e.target_user_id) : e.target_id ?? '—'}</td><td className="tiny">{safeMeta(e.meta as Record<string, unknown>)}</td></tr>)}</tbody>
+          <tbody>{(log ?? []).map((e) => <tr key={e.event_id}><td>{dateTimeRu(e.occurred_at)}</td><td>{name(e.actor_id)}</td><td>{AUDIT_ACTION_RU[e.action] ?? e.action}<div className="tiny muted code">{e.action}</div></td><td>{e.target_user_id ? name(e.target_user_id) : e.target_id ?? '—'}</td><td className="tiny">{safeMeta(e.meta as Record<string, unknown>)}</td></tr>)}</tbody>
         </table></div>
         <p className="tiny muted">Журнал только дополняется: изменение и удаление записей запрещены на уровне базы данных.</p>
       </div>

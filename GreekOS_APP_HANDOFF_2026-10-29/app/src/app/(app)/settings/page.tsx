@@ -5,6 +5,7 @@ import { ENTRY_RU } from '@/lib/page';
 import { asrStatus, ttsStatus } from '@/lib/providers/speech';
 import { llmConfigured } from '@/lib/providers/llm';
 import { SettingsClient } from './SettingsClient';
+import { ChangePassword } from './ChangePassword';
 import { Icon } from '@/components/Icon';
 
 export const metadata = { title: 'Настройки и приватность' };
@@ -19,7 +20,7 @@ export default async function SettingsPage() {
   ]);
   return (
     <section className="screen active">
-      <div className="screen-head"><div><div className="eyebrow">GreekOS / Настройки</div><h1 className="screen-title">Настройки и приватность</h1><p className="screen-sub">{u.profile.display_name} · {u.email} · {u.profile.entry_path ? ENTRY_RU[u.profile.entry_path] : 'путь не выбран'} · {u.profile.timezone}</p></div></div>
+      <div className="screen-head"><div><div className="eyebrow">GreekOS / Настройки</div><h1 className="screen-title">Настройки и приватность</h1><p className="screen-sub">{u.profile.display_name} · {u.email} · {u.profile.entry_path ? ENTRY_RU[u.profile.entry_path] : 'путь не выбран'} · {u.profile.timezone === 'Europe/Athens' ? 'время по Афинам' : `часовой пояс ${u.profile.timezone}`}</p></div></div>
       <div className="prog-grid">
         <div className="card cardpad">
           <div className="card-title"><Icon name="shield" /> Что видит владелец</div>
@@ -33,6 +34,7 @@ export default async function SettingsPage() {
             <li>Сервисы: AI-собеседник {llmConfigured() ? 'подключён' : 'не подключён'}; распознавание речи — {asrStatus().configured ? (asrStatus().provider === 'local' ? 'локально на устройстве (режим разработки)' : 'облачный сервис') : 'не подключено'}; синтез — {ttsStatus().configured ? (ttsStatus().provider === 'local' ? 'локально на устройстве (режим разработки)' : 'облачный сервис') : 'не подключён'}.</li>
           </ul>
         </div>
+        <ChangePassword email={u.email ?? ''} />
         <SettingsClient
           consents={(consents ?? []).map((c) => ({ ...c }))}
           enrollment={enr ? { daily_minutes: enr.daily_minutes, days_per_week: enr.days_per_week, exam_date: enr.exam_date, start_date: enr.start_date, end_date: enr.end_date, goal: enr.goal ?? null } : null}
