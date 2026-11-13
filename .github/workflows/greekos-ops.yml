@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: 'one or more, comma-separated: db-state, llm-diagnose, restore-test, acceptance'
+        description: 'one or more, comma-separated: db-state, llm-diagnose, restore-test, acceptance, e2e'
         default: 'db-state'
         required: true
   push:
@@ -26,7 +26,7 @@ concurrency:
 jobs:
   ops:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: GreekOS_APP_HANDOFF_2026-10-29/app
@@ -54,7 +54,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -88,6 +88,11 @@ jobs:
         run: |
           npx playwright install --with-deps chromium
           npx tsx scripts/ops/acceptance.ts
+      - name: e2e (disposable copy of the system on this runner, no production service)
+        if: contains(steps.task.outputs.tasks, ',e2e,')
+        run: |
+          sudo apt-get install -y -qq hunspell hunspell-el
+          bash scripts/ops/e2e-local.sh
       - name: Report
         if: always()
         uses: actions/upload-artifact@v4

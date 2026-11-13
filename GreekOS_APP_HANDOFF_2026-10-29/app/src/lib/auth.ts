@@ -1,4 +1,5 @@
 import 'server-only';
+import { cache } from 'react';
 import { redirect } from 'next/navigation';
 import { NextResponse } from 'next/server';
 import { serverClient } from './supabase/server.ts';
@@ -11,12 +12,14 @@ export { HttpError, type Profile, type SessionUser } from './session-user.ts';
  * Resolve the acting user from the verified session (auth server check, not a client field).
  * Deactivated or unknown profiles are treated as signed out.
  */
-export async function getSessionUser(): Promise<SessionUser | null> {
+// One verification per request: the layout and the page of the same render share the result
+// (React cache is scoped to one server request; route handlers call it once anyway).
+export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
   const supabase = await serverClient();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) return null;
   return loadSessionUser(data.user.id, data.user.email ?? null);
-}
+});
 
 export async function requireUser(): Promise<SessionUser> {
   const u = await getSessionUser();

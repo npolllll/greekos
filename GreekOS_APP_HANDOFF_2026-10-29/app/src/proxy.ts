@@ -15,10 +15,13 @@ export async function proxy(request: NextRequest) {
       },
     },
   });
-  const { data } = await supabase.auth.getUser();
+  // getClaims verifies the access token (locally with the project's signing keys when available) and
+  // refreshes an expired session; pages and APIs still verify the user with the auth server.
+  const { data } = await supabase.auth.getClaims();
+  const signedIn = !!data?.claims?.sub;
   const path = request.nextUrl.pathname;
   const isPublic = path.startsWith('/login') || path.startsWith('/register') || path.startsWith('/auth') || path.startsWith('/api/cron') || path.startsWith('/api/health');
-  if (!data.user && !isPublic && !path.startsWith('/api/')) {
+  if (!signedIn && !isPublic && !path.startsWith('/api/')) {
     // On the host the browser used (not the server's bind host): the session cookie lives there.
     return NextResponse.redirect(`${requestOrigin(request)}/login`);
   }
