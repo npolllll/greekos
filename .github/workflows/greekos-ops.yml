@@ -42,6 +42,8 @@ jobs:
       AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
       AZURE_SPEECH_REGION: ${{ vars.AZURE_SPEECH_REGION || 'westeurope' }}
       BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+      OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+      ACCEPT_SPEAKING: ${{ vars.ACCEPT_SPEAKING || '1' }}
     steps:
       - uses: actions/checkout@v4
       - name: Task
