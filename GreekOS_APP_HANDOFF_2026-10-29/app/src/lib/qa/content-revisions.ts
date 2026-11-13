@@ -350,6 +350,7 @@ export async function applySpacingRevisions(): Promise<{ applied: number; ids: s
 type ReviewPatch =
   | { op: 'set'; field: 'prompt' | 'model_response' | 'answer_explanation_ru'; current: string | null; new: string }
   | { op: 'add_accepted'; values: string[] }
+  | { op: 'remove_accepted'; values: string[] }
   | { op: 'set_answer'; current: string[]; new: string[] }
   | { op: 'set_options'; current: string[]; new: string[] };
 export interface ReviewFix { id: string; reason_ru: string; patches: ReviewPatch[] }
@@ -376,6 +377,11 @@ export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<
         const add = p.values.filter((v) => !keys.has(v));
         if (!add.length) { done += 1; continue; }
         changes.accepted_alternatives = [...(changes.accepted_alternatives ?? have), ...add];
+      } else if (p.op === 'remove_accepted') {
+        const have = (changes.accepted_alternatives ?? (env.accepted_alternatives ?? []).filter((x): x is string => typeof x === 'string'));
+        const kept = have.filter((x) => !p.values.includes(x));
+        if (kept.length === have.length) { done += 1; continue; }
+        changes.accepted_alternatives = kept;
       } else if (p.op === 'set_answer') {
         if (JSON.stringify(env.answer) === JSON.stringify(p.new)) { done += 1; continue; }
         if (JSON.stringify(env.answer) !== JSON.stringify(p.current)) { stale = true; continue; }
