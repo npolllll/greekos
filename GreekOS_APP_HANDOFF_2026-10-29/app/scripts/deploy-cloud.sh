@@ -196,11 +196,19 @@ declare -A FIXED=([APP_ENV]=production [LLM_PROVIDER]=anthropic [ASR_PROVIDER]=a
 set_var() {
   echo "+ vercel env add $1 production ← $(mask "$2")"
   [ "$DRY" = 1 ] && return 0
+  # Public values (NEXT_PUBLIC_*, inlined into the browser bundle) are plain configuration; Vercel CLI 65
+  # stores new variables as secrets by default and skipped NEXT_PUBLIC_SUPABASE_ANON_KEY without an error.
+  local type=(); [[ $1 == NEXT_PUBLIC_* || $1 == APP_URL || $1 == APP_ENV ]] && type=(--type config)
   npx --yes vercel env rm "$1" production --yes "${VT[@]}" >/dev/null 2>&1 || true
-  printf '%s' "$2" | npx --yes vercel env add "$1" production "${VT[@]}" >/dev/null
+  printf '%s' "$2" | npx --yes vercel env add "$1" production "${type[@]}" "${VT[@]}" 2>&1 | grep -iE "error|warn" || true
 }
 for k in "${VARS[@]}"; do set_var "$k" "${!k}"; done
 for k in "${!FIXED[@]}"; do set_var "$k" "${FIXED[$k]}"; done
+if [ "$DRY" != 1 ]; then
+  have=$(npx --yes vercel env ls production "${VT[@]}" 2>/dev/null | awk '{print $1}')
+  for k in "${VARS[@]}" "${!FIXED[@]}"; do grep -qx "$k" <<<"$have" || { echo "Vercel: переменная $k не сохранилась — развёртывание остановлено" >&2; exit 1; }; done
+  echo "переменные Vercel: все ${#VARS[@]}+${#FIXED[@]} на месте"
+fi
 run npx --yes vercel deploy --prod --yes "${VT[@]}"
 
 step "10/10 проверка работающей системы"
