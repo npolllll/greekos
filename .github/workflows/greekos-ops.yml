@@ -1,0 +1,90 @@
+# GreekOS — operations tasks that need the production secrets but change nothing for learners:
+# provider diagnostics, a read-only state report, the backup restore test, production acceptance.
+# Run: Actions → «GreekOS ops» → Run workflow → task. A maintenance branch can also request a task by
+# committing its name to GreekOS_APP_HANDOFF_2026-10-29/app/ops/request (first line).
+# Every task prints counts and statuses only: no keys, no e-mails, no learner content.
+name: GreekOS ops
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'db-state | llm-diagnose | restore-test | acceptance'
+        default: 'db-state'
+        required: true
+  push:
+    branches: ['claude/**']
+    paths: ['GreekOS_APP_HANDOFF_2026-10-29/app/ops/request']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: greekos-ops
+  cancel-in-progress: false
+
+jobs:
+  ops:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: GreekOS_APP_HANDOFF_2026-10-29/app
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      APP_URL: ${{ secrets.APP_URL }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+      AZURE_SPEECH_REGION: ${{ vars.AZURE_SPEECH_REGION || 'westeurope' }}
+      BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Task
+        id: task
+        env:
+          INPUT_TASK: ${{ inputs.task }}
+        run: |
+          t="${INPUT_TASK:-}"
+          [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
+          case "$t" in db-state|llm-diagnose|restore-test|acceptance) ;; *) echo "::error::unknown task '$t'"; exit 1;; esac
+          echo "task=$t" >> "$GITHUB_OUTPUT"
+          echo "Task: $t"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: GreekOS_APP_HANDOFF_2026-10-29/app/package-lock.json
+      - name: PostgreSQL 17 client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -qq postgresql-client-17
+      - run: npm ci --no-audit --no-fund
+      - name: db-state
+        if: steps.task.outputs.task == 'db-state'
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/db-state.sql
+      - name: llm-diagnose
+        if: steps.task.outputs.task == 'llm-diagnose'
+        run: node scripts/ops/llm-diagnose.mjs
+      - name: restore-test
+        if: steps.task.outputs.task == 'restore-test'
+        run: bash scripts/ops/restore-test.sh
+      - name: acceptance
+        if: steps.task.outputs.task == 'acceptance'
+        run: |
+          npx playwright install --with-deps chromium
+          npx tsx scripts/ops/acceptance.ts
+      - name: Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: greekos-ops-${{ steps.task.outputs.task }}-${{ github.run_id }}
+          path: GreekOS_APP_HANDOFF_2026-10-29/app/reports/ops
+          if-no-files-found: ignore
+          retention-days: 30
