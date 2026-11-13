@@ -36,3 +36,14 @@ describe('structured output schema sent to Anthropic', () => {
     expect(thinkingOff('claude-fable-5-2')).toEqual({});
   });
 });
+
+describe('restoring spaces around numbers in task text', async () => {
+  const { restoreNumberSpacing } = await import('@/lib/qa/content-revisions');
+  it('separates words from numbers in Russian and Greek', () => {
+    expect(restoreNumberSpacing('День7: Напишите80–110слов')).toBe('День 7: Напишите 80–110 слов');
+    expect(restoreNumberSpacing('στις20:00 και θέμα48')).toBe('στις 20:00 και θέμα 48');
+  });
+  it('keeps Greek ordinals, Latin codes and times intact', () => {
+    for (const t of ['του 19ου αιώνα', 'της 28ης Οκτωβρίου', 'ο 1ος όροφος', 'D7 и D28', 'A1–B2', '18:00–19:30']) expect(restoreNumberSpacing(t)).toBe(t);
+  });
+});

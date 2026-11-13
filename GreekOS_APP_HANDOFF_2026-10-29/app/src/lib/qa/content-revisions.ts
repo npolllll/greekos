@@ -7,7 +7,7 @@
  * Each revision is idempotent and guarded: it applies only while the item still has the exact text it
  * was written against, so a later edit by the owner is never overwritten.
  */
-import { adminClient } from '../supabase/admin.ts';
+import { adminClient, selectAll } from '../supabase/admin.ts';
 import { patchItem } from './release.ts';
 import { audit } from '../audit.ts';
 import { contentHash, sha256Hex, stableStringify } from '../content/stable-json.ts';
@@ -300,4 +300,43 @@ export async function applyExamPairRevisions(): Promise<Array<{ item_id: string;
   const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
   if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после правки ключей ΚΕΓ L01 (${applied.length})`, scope: { kind: 'items', ids: applied } });
   return out;
+}
+
+/**
+ * Lost spaces around numbers in task instructions and model answers (an import artefact: «День7:»,
+ * «Напишите80–110слов», «στις20:00», «θέμα48»). A space is restored between a Cyrillic or Greek letter and a
+ * digit; Greek ordinal endings stay attached («19ου», «28ης», «1ος»). Keys and options are not touched;
+ * error-correction tasks are skipped (their text may be wrong on purpose).
+ */
+const CY = 'А-Яа-яЁё';
+const GR = 'Α-Ωα-ωΆ-Ώά-ώϊϋΐΰ';
+const GREEK_ORDINAL = '(?:ος|ου|ού|ης|ής|η|ή|ο|ό|ων|ών|α|ες|ους|οι|ός|ον)(?![Α-Ωα-ωά-ώ])';
+export function restoreNumberSpacing(t: string): string {
+  return t
+    .replace(new RegExp(`([${CY}])(\\d)`, 'g'), '$1 $2')
+    .replace(new RegExp(`(\\d)([${CY}])`, 'g'), '$1 $2')
+    .replace(new RegExp(`([${GR}])(\\d)`, 'g'), '$1 $2')
+    .replace(new RegExp(`(\\d)(?!${GREEK_ORDINAL})([${GR}])`, 'g'), '$1 $2');
+}
+
+export async function applySpacingRevisions(): Promise<{ applied: number; ids: string[] }> {
+  const db = adminClient();
+  const items = await selectAll<{ item_id: string; item_type: string; envelope: { prompt?: string; model_response?: string | null }; current_hash: string }>((f, t) => db.from('items').select('item_id, item_type, envelope, current_hash').order('item_id').range(f, t));
+  const ids: string[] = [];
+  for (const it of items) {
+    if (it.item_type === 'error_correction') continue;
+    const changes: { prompt?: string; model_response?: string } = {};
+    const p = it.envelope.prompt;
+    if (typeof p === 'string' && restoreNumberSpacing(p) !== p) changes.prompt = restoreNumberSpacing(p);
+    const m = it.envelope.model_response;
+    if (typeof m === 'string' && restoreNumberSpacing(m) !== m) changes.model_response = restoreNumberSpacing(m);
+    if (!Object.keys(changes).length) continue;
+    await patchItem({ system: CONTENT_REVISION_ACTOR }, {
+      item_id: it.item_id, base_hash: it.current_hash, changes,
+      reason: 'Формулировка: восстановлены пробелы вокруг чисел («День 7:», «στις 20:00»); смысл, ключи и варианты не менялись.',
+    }, { runQa: false });
+    ids.push(it.item_id);
+  }
+  if (ids.length) await runQaBatch({ actorId: null, label: `Повторная проверка после восстановления пробелов (${ids.length})`, scope: { kind: 'items', ids } });
+  return { applied: ids.length, ids };
 }
