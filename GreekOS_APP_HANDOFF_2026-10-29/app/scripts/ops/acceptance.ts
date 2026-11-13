@@ -206,7 +206,7 @@ async function main() {
       }
       const adminApi = await (aPage as unknown as Page).request.get(`${APP}/api/admin/learners/${bId}/export`);
       check('isolation.learner_cannot_call_admin_api', adminApi.status() === 401 || adminApi.status() === 403, `HTTP ${adminApi.status()}`);
-      await ca.auth.signOut(); await cb.auth.signOut();
+      await ca.auth.signOut({ scope: 'local' }); await cb.auth.signOut({ scope: 'local' });
     });
 
     await step('learner.relogin', async () => {
