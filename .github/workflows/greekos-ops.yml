@@ -44,6 +44,7 @@ jobs:
       AZURE_SPEECH_REGION: ${{ vars.AZURE_SPEECH_REGION || 'westeurope' }}
       BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
       OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       ACCEPT_SPEAKING: ${{ vars.ACCEPT_SPEAKING || '1' }}
     steps:
       - uses: actions/checkout@v4
@@ -55,7 +56,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -76,6 +77,26 @@ jobs:
       - name: auth-config (sign-in settings of the Supabase project)
         if: contains(steps.task.outputs.tasks, ',auth-config,')
         run: bash scripts/ops/auth-config.sh
+      - name: vercel-logs (runtime errors of the current production deployment)
+        if: contains(steps.task.outputs.tasks, ',vercel-logs,')
+        working-directory: .
+        run: |
+          npx --yes vercel link --yes --project greekos-course --token "$VERCEL_TOKEN" >/dev/null 2>&1
+          npx --yes vercel ls greekos-course --token "$VERCEL_TOKEN" 2>&1 | head -12
+          DEP=$(npx --yes vercel inspect "$APP_URL" --token "$VERCEL_TOKEN" 2>&1 | grep -oE 'greekos-course-[a-z0-9]+-[a-z0-9-]+\.vercel\.app' | head -1)
+          echo "current production deployment: $DEP"
+          npx --yes vercel inspect "$DEP" --token "$VERCEL_TOKEN" 2>&1 | grep -iE "status|target|region|created|root" | head -10 || true
+          ( sleep 8; for p in /api/health /login; do curl -s -o /dev/null -w "$p %{http_code}\n" "$APP_URL$p"; done ) &
+          timeout 45 npx --yes vercel logs "$DEP" --token "$VERCEL_TOKEN" 2>&1 | grep -v "^$" | head -80 || true
+          npx --yes vercel env ls production --token "$VERCEL_TOKEN" 2>&1 | awk '{print $1}' | head -40
+      - name: vercel-rollback (back to the previous production deployment)
+        if: contains(steps.task.outputs.tasks, ',vercel-rollback,')
+        working-directory: .
+        run: |
+          npx --yes vercel link --yes --project greekos-course --token "$VERCEL_TOKEN" >/dev/null 2>&1
+          npx --yes vercel rollback --yes --token "$VERCEL_TOKEN" 2>&1 | tail -5
+          sleep 10
+          for p in /api/health /login; do curl -s -o /dev/null -w "$p %{http_code}\n" "$APP_URL$p"; done
       - name: db-state
         if: contains(steps.task.outputs.tasks, ',db-state,')
         run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/db-state.sql
