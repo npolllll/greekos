@@ -20,7 +20,8 @@ export interface Qualification {
   note_ru?: string;
 }
 
-const file = () => resolve(process.env.LLM_QUALIFICATION_FILE ?? 'local-services/llm/qualification.json');
+// Read at runtime only (local development); not part of the deployed bundle.
+const file = () => resolve(/* turbopackIgnore: true */ process.cwd(), process.env.LLM_QUALIFICATION_FILE ?? 'local-services/llm/qualification.json');
 
 export function qualificationOf(model: string | null | undefined): Qualification | null {
   const FILE = file();
