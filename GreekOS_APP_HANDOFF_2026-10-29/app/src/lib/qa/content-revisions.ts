@@ -340,3 +340,61 @@ export async function applySpacingRevisions(): Promise<{ applied: number; ids: s
   if (ids.length) await runQaBatch({ actorId: null, label: `Повторная проверка после восстановления пробелов (${ids.length})`, scope: { kind: 'items', ids } });
   return { applied: ids.length, ids };
 }
+
+/**
+ * AI review of the corpus, 13.11.2026: every task was read by an AI reviewer per level/module and every
+ * finding was checked by a second, independent AI reviewer; only accepted fixes are recorded in
+ * data/ai-review-2026-11-13.json. This is not a teacher's or examiner's review and is never recorded as one.
+ * A fix applies only while the field still holds exactly the reviewed text.
+ */
+type ReviewPatch =
+  | { op: 'set'; field: 'prompt' | 'model_response' | 'answer_explanation_ru'; current: string | null; new: string }
+  | { op: 'add_accepted'; values: string[] }
+  | { op: 'set_answer'; current: string[]; new: string[] }
+  | { op: 'set_options'; current: string[]; new: string[] };
+export interface ReviewFix { id: string; reason_ru: string; patches: ReviewPatch[] }
+
+export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<{ item_id: string; status: RevisionStatus }>> {
+  const db = adminClient();
+  const out: Array<{ item_id: string; status: RevisionStatus }> = [];
+  for (const f of fixes) {
+    const { data: it } = await db.from('items').select('item_id, envelope, current_hash').eq('item_id', f.id).maybeSingle();
+    if (!it) { out.push({ item_id: f.id, status: 'missing' }); continue; }
+    const env = it.envelope as { prompt?: string; model_response?: string | null; answer_explanation_ru?: string; answer?: unknown[]; options?: unknown; accepted_alternatives?: unknown[] };
+    const changes: { prompt?: string; model_response?: string; answer_explanation_ru?: string; answer?: string[]; options?: string[]; accepted_alternatives?: string[] } = {};
+    let stale = false;
+    let done = 0;
+    for (const p of f.patches) {
+      if (p.op === 'set') {
+        const now = (env[p.field] ?? null) as string | null;
+        if (now === p.new) { done += 1; continue; }
+        if (p.field === 'answer_explanation_ru' ? (now !== null && now !== p.current) : now !== p.current) { stale = true; continue; }
+        changes[p.field] = p.new;
+      } else if (p.op === 'add_accepted') {
+        const have = (env.accepted_alternatives ?? []).filter((x): x is string => typeof x === 'string');
+        const keys = new Set([...have, ...(env.answer ?? []).filter((x): x is string => typeof x === 'string')]);
+        const add = p.values.filter((v) => !keys.has(v));
+        if (!add.length) { done += 1; continue; }
+        changes.accepted_alternatives = [...(changes.accepted_alternatives ?? have), ...add];
+      } else if (p.op === 'set_answer') {
+        if (JSON.stringify(env.answer) === JSON.stringify(p.new)) { done += 1; continue; }
+        if (JSON.stringify(env.answer) !== JSON.stringify(p.current)) { stale = true; continue; }
+        changes.answer = p.new;
+      } else if (p.op === 'set_options') {
+        if (JSON.stringify(env.options) === JSON.stringify(p.new)) { done += 1; continue; }
+        if (JSON.stringify(env.options) !== JSON.stringify(p.current) || p.new.length !== p.current.length) { stale = true; continue; }
+        changes.options = p.new;
+      }
+    }
+    if (!Object.keys(changes).length) { out.push({ item_id: f.id, status: stale ? 'changed_since' : 'already' }); continue; }
+    await patchItem({ system: CONTENT_REVISION_ACTOR }, {
+      item_id: f.id, base_hash: it.current_hash, changes,
+      reason: `AI-рецензия 13.11.2026 (две независимые AI-проверки, не преподаватель): ${f.reason_ru}`.slice(0, 1000),
+    }, { runQa: false });
+    out.push({ item_id: f.id, status: stale ? 'changed_since' : 'applied' });
+    void done;
+  }
+  const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
+  if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после AI-рецензии (${applied.length})`, scope: { kind: 'items', ids: applied } });
+  return out;
+}

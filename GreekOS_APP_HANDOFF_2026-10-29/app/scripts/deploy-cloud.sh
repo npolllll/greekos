@@ -117,28 +117,8 @@ step "2/10 схема базы (миграции)"
 run npx supabase link --project-ref "$SUPABASE_PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
 run npx supabase db push --password "$SUPABASE_DB_PASSWORD"
 
-step "3/10 вход: адрес сайта, ссылки, прямая регистрация в Supabase выключена"
-# A minimal config with only the auth settings: `config push` leaves everything it does not declare.
-CLOUD=.deploy/supabase-cloud
-mkdir -p "$CLOUD/supabase/templates" && cp supabase/templates/*.html "$CLOUD/supabase/templates/"
-cat > "$CLOUD/supabase/config.toml" <<TOML
-project_id = "greekos"
-
-[auth]
-site_url = "$APP_URL"
-additional_redirect_urls = ["$APP_URL/**"]
-enable_signup = false
-minimum_password_length = 10
-
-[auth.rate_limit]
-email_sent = 60
-
-[auth.email]
-enable_signup = false
-double_confirm_changes = true
-enable_confirmations = false
-TOML
-run env SUPABASE_YES=1 npx supabase config push --workdir "$CLOUD" --project-ref "$SUPABASE_PROJECT_REF"
+step "3/10 вход: адрес сайта, ссылки, прямая регистрация в Supabase выключена, вход по e-mail включён"
+run env APP_URL="$APP_URL" SUPABASE_PROJECT_REF="$SUPABASE_PROJECT_REF" DRY_RUN="$DRY" bash scripts/ops/auth-config.sh
 
 step "4/10 учебный корпус (только в пустую базу)"
 ITEMS=$(sql "select count(*) from public.items")

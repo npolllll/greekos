@@ -55,7 +55,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -73,6 +73,9 @@ jobs:
           sudo apt-get install -y -qq postgresql-client-17
           echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
       - run: npm ci --no-audit --no-fund
+      - name: auth-config (sign-in settings of the Supabase project)
+        if: contains(steps.task.outputs.tasks, ',auth-config,')
+        run: bash scripts/ops/auth-config.sh
       - name: db-state
         if: contains(steps.task.outputs.tasks, ',db-state,')
         run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/db-state.sql
