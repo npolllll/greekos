@@ -52,11 +52,13 @@ grep 'error:' .restore-errors.log | sed -E 's/(VALUES|DETAIL).*//' | sort | uniq
 
 echo "== compare row counts with the backup"
 mismatch=0; tables=0; rows=0
-while IFS=$'\t' read -r table expected; do
+while IFS=$'\t' read -r table before after; do
   [ -n "$table" ] || continue
+  after=${after:-$before}
   got=$(psql "$SUPER" -X -qAt -c "select count(*) from ${table}" 2>/dev/null || echo "missing")
-  tables=$((tables + 1)); rows=$((rows + ${expected:-0}))
-  if [ "$got" != "$expected" ]; then mismatch=$((mismatch + 1)); echo "MISMATCH $table: backup $expected, restored $got"; fi
+  tables=$((tables + 1)); rows=$((rows + ${got//[^0-9]/0}))
+  if [ "$got" != "$before" ] && [ "$got" != "$after" ]; then mismatch=$((mismatch + 1)); echo "MISMATCH $table: before dump $before, after dump $after, restored $got"
+  elif [ "$before" != "$after" ]; then echo "changed while the dump ran (ok): $table $before → $after, restored $got"; fi
 done < "$COUNTS"
 npx --yes supabase stop --no-backup >/dev/null 2>&1 || true
 rm -rf .restore-test

@@ -191,21 +191,21 @@ export async function scopeStatus(batchId: string, scope: Scope) {
   const ids = objs.map((o) => o.content_id);
   const results: Array<{ content_kind: string; content_id: string; content_hash: string; verdict: string }> = [];
   const issues: Array<{ id: string; content_id: string; check_id: string; severity: string; status: string; message_ru: string; field: string | null }> = [];
-  for (let i = 0; i < ids.length; i += 200) {
-    const [{ data: r }, { data: is }] = await Promise.all([
-      db.from('qa_item_results').select('content_kind, content_id, content_hash, verdict').eq('batch_id', batchId).in('content_id', ids.slice(i, i + 200)),
-      db.from('qa_issues').select('id, content_id, check_id, severity, status, message_ru, field').eq('batch_id', batchId).in('content_id', ids.slice(i, i + 200)).in('severity', ['blocking', 'warning']),
-    ]);
-    results.push(...(r ?? []));
-    issues.push(...(is ?? []));
-  }
+  // All chunks at once (≈ 2000 objects → 10 chunks × 2 queries): sequential round trips made the
+  // release page take seconds.
+  const chunks: string[][] = [];
+  for (let i = 0; i < ids.length; i += 200) chunks.push(ids.slice(i, i + 200));
+  const parts = await Promise.all(chunks.map((chunk) => Promise.all([
+    db.from('qa_item_results').select('content_kind, content_id, content_hash, verdict').eq('batch_id', batchId).in('content_id', chunk),
+    db.from('qa_issues').select('id, content_id, check_id, severity, status, message_ru, field').eq('batch_id', batchId).in('content_id', chunk).in('severity', ['blocking', 'warning']),
+  ])));
+  for (const [{ data: r }, { data: is }] of parts) { results.push(...(r ?? [])); issues.push(...(is ?? [])); }
   // Later per-object re-checks (after a patch) live in newer batches: use the newest result per hash.
   const newer: Array<{ content_id: string; content_hash: string }> = [];
   const missingIds = ids.filter((id) => !results.some((r) => r.content_id === id));
-  for (let i = 0; i < missingIds.length; i += 300) {
-    const { data } = await db.from('qa_item_results').select('batch_id, content_id, content_hash, verdict, qa_batches!inner(started_at, status)').in('content_id', missingIds.slice(i, i + 300)).eq('qa_batches.status', 'COMPLETED');
-    newer.push(...(data ?? []));
-  }
+  const missingChunks: string[][] = [];
+  for (let i = 0; i < missingIds.length; i += 300) missingChunks.push(missingIds.slice(i, i + 300));
+  for (const { data } of await Promise.all(missingChunks.map((chunk) => db.from('qa_item_results').select('batch_id, content_id, content_hash, verdict, qa_batches!inner(started_at, status)').in('content_id', chunk).eq('qa_batches.status', 'COMPLETED')))) newer.push(...(data ?? []));
   const byId = new Map(results.map((r) => [r.content_id, r]));
   const evaluated = objs.map((o) => {
     const res = byId.get(o.content_id);
