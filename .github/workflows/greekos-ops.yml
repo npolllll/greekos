@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: 'db-state | llm-diagnose | restore-test | acceptance'
+        description: 'one or more, comma-separated: db-state, llm-diagnose, restore-test, acceptance'
         default: 'db-state'
         required: true
   push:
@@ -51,9 +51,12 @@ jobs:
         run: |
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
-          case "$t" in db-state|llm-diagnose|restore-test|acceptance) ;; *) echo "::error::unknown task '$t'"; exit 1;; esac
-          echo "task=$t" >> "$GITHUB_OUTPUT"
-          echo "Task: $t"
+          for x in ${t//,/ }; do
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+          done
+          echo "tasks=,$t," >> "$GITHUB_OUTPUT"
+          echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
+          echo "Tasks: $t"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -67,16 +70,18 @@ jobs:
           sudo apt-get install -y -qq postgresql-client-17
       - run: npm ci --no-audit --no-fund
       - name: db-state
-        if: steps.task.outputs.task == 'db-state'
+        if: contains(steps.task.outputs.tasks, ',db-state,')
         run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/db-state.sql
       - name: llm-diagnose
-        if: steps.task.outputs.task == 'llm-diagnose'
+        if: contains(steps.task.outputs.tasks, ',llm-diagnose,')
         run: node scripts/ops/llm-diagnose.mjs
+        env:
+          LLM_DIAG_CASES: ${{ vars.LLM_DIAG_CASES || 'A,C,D,E' }}
       - name: restore-test
-        if: steps.task.outputs.task == 'restore-test'
+        if: contains(steps.task.outputs.tasks, ',restore-test,')
         run: bash scripts/ops/restore-test.sh
       - name: acceptance
-        if: steps.task.outputs.task == 'acceptance'
+        if: contains(steps.task.outputs.tasks, ',acceptance,')
         run: |
           npx playwright install --with-deps chromium
           npx tsx scripts/ops/acceptance.ts
@@ -84,7 +89,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: greekos-ops-${{ steps.task.outputs.task }}-${{ github.run_id }}
+          name: greekos-ops-${{ steps.task.outputs.name }}-${{ github.run_id }}
           path: GreekOS_APP_HANDOFF_2026-10-29/app/reports/ops
           if-no-files-found: ignore
           retention-days: 30

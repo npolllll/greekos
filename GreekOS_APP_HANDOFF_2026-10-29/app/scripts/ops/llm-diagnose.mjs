@@ -5,6 +5,7 @@
 // Cost: A is rejected before generation (no charge) if the schema is the cause; B is one short turn
 // of the dialogue model (≈ 0.0005 USD). Never prints the key.
 import Anthropic from '@anthropic-ai/sdk';
+import { betaJSONSchemaOutputFormat } from '@anthropic-ai/sdk/helpers/beta/json-schema';
 
 const model = process.env.LLM_MODEL_DIALOGUE || 'claude-haiku-5-5';
 const key = process.env.ANTHROPIC_API_KEY;
@@ -32,13 +33,14 @@ const messages = [
   { role: 'user', content: 'Сейчас этап N1. Выбери stage: N2 — ученик назвал товар. Слова ученика: «Θέλω δύο μπουκάλι νερό.»' },
 ];
 
-async function run(label, withMaxItems) {
+async function run(label, withMaxItems, opts = {}) {
   const started = Date.now();
   let first = null; let text = ''; let usage = {}; let stop = null; let served = model;
   try {
     const stream = await client.beta.messages.create({
       model, max_tokens: 4096, stream: true, cache_control: { type: 'ephemeral' }, system, messages,
-      output_config: { format: { type: 'json_schema', schema: schema(withMaxItems) }, effort: 'low' },
+      ...(opts.thinking ? { thinking: opts.thinking } : {}),
+      output_config: { format: { type: 'json_schema', schema: opts.transform ? betaJSONSchemaOutputFormat(schema(withMaxItems)).schema : schema(withMaxItems) }, effort: 'low' },
     }, { timeout: 25_000 });
     for await (const ev of stream) {
       if (ev.type === 'message_start') { served = ev.message.model; usage = { ...ev.message.usage }; }
@@ -53,5 +55,10 @@ async function run(label, withMaxItems) {
   }
 }
 
-await run('A_production_schema_maxItems_2', true);
-await run('B_same_schema_without_maxItems', false);
+const which = (process.env.LLM_DIAG_CASES || 'A,B').split(',');
+if (which.includes('A')) await run('A_production_schema_maxItems_2', true);
+if (which.includes('B')) await run('B_same_schema_without_maxItems', false);
+// The fix: the SDK's own transform moves unsupported constraints into the description.
+if (which.includes('C')) await run('C_sdk_transformed_schema_adaptive_thinking', true, { transform: true });
+if (which.includes('D')) await run('D_sdk_transformed_schema_thinking_disabled', true, { transform: true, thinking: { type: 'disabled' } });
+if (which.includes('E')) await run('E_repeat_D_for_latency', true, { transform: true, thinking: { type: 'disabled' } });
