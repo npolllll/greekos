@@ -60,6 +60,7 @@ jobs:
           sudo apt-get install -y -qq postgresql-common
           sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
           sudo apt-get install -y -qq postgresql-client-17 hunspell hunspell-el
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
           psql --version
           test -f /usr/share/hunspell/el_GR.dic && echo "hunspell el_GR: ok"
       - run: npm ci --no-audit --no-fund

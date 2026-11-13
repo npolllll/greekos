@@ -8,10 +8,10 @@ import { login } from './helpers';
  * the same screens a person uses — no DEV-PREVIEW, no synthetic lesson:
  *  1. the owner signs the digital policy, reviews the sample and releases the whole admissible
  *     package with one decision (Admin → Выпуск);
- *  2. learner A registers by e-mail, starts from zero with the alphabet, does the real alphabet
+ *  2. learner A gets the owner's one-time link (registration is closed), starts from zero with the alphabet, does the real alphabet
  *     lesson, gets an explained error, completes the lesson, signs out and back in, and sees the
  *     lesson completed, the error and the D-reviews on the home screen;
- *  3. learner B registers separately with experience, takes the diagnostic, gets a different route
+ *  3. learner B gets a separate link, says they have experience, takes the diagnostic, gets a different route
  *     (B1) and none of A's data;
  *  4. later lessons A1–B2, AI Speaking, Real Greek, ΠΕΓΠ and the exam trainer work for A;
  *  5. the owner sees both learners, disables B (B loses access) and rolls the release back
@@ -19,37 +19,26 @@ import { login } from './helpers';
  * Everything created here is removed afterwards; an existing owner policy is never touched.
  */
 
-const MAILPIT = process.env.MAILPIT_URL ?? 'http://127.0.0.1:55324';
 const PASSWORD = 'Ellinika-2026!';
 const run = randomUUID().slice(0, 6);
 const A = { email: `acc-a-${run}@greekos.test`, name: 'Анна Тестовая' };
 const B = { email: `acc-b-${run}@greekos.test`, name: 'Борис Тестовый' };
 const state: { policy: string | null; decision: string | null; batch: string | null; settings: Record<string, unknown> | null; ownerId: string | null } = { policy: null, decision: null, batch: null, settings: null, ownerId: null };
 
-async function linkFor(email: string): Promise<string> {
-  for (let i = 0; i < 60; i++) {
-    const r = await fetch(`${MAILPIT}/api/v1/search?query=${encodeURIComponent(`to:${email}`)}`).then((x) => x.json()).catch(() => null);
-    const id = r?.messages?.[0]?.ID;
-    if (id) {
-      const m = await fetch(`${MAILPIT}/api/v1/message/${id}`).then((x) => x.json());
-      const href = /href="([^"]*\/auth\/confirm[^"]*)"/.exec(String(m.HTML).replace(/&amp;/g, '&'))?.[1];
-      if (href) return href;
-    }
-    await new Promise((res) => setTimeout(res, 500));
-  }
-  throw new Error(`no e-mail for ${email}`);
-}
-
-/** Self-registration by e-mail link, up to the onboarding screen. Returns the page on the link's origin. */
+/**
+ * Access as in production (registration closed, no e-mail): the owner adds the learner and gets a
+ * one-time link; the learner opens it, sets a password and reaches onboarding.
+ */
 async function register(browser: Browser, who: { email: string; name: string }): Promise<Page> {
+  const ownerCtx = await browser.newContext();
+  const owner = await ownerCtx.newPage();
+  await login(owner, readState().owner);
+  const r = await owner.request.post('/api/admin/invite', { data: { email: who.email, display_name: who.name, entry_path: 'unsure', delivery: 'link', confirmed: true } });
+  expect(r.ok(), await r.text()).toBe(true);
+  const { link } = await r.json() as { link: string };
+  await ownerCtx.close();
   const page = await (await browser.newContext()).newPage();
-  await page.goto('/register');
-  await page.getByLabel('Как к вам обращаться').fill(who.name);
-  await page.getByLabel('E-mail').fill(who.email);
-  await page.locator('.consent-row input').check();
-  await page.getByRole('button', { name: 'Получить письмо для входа' }).click();
-  await expect(page.getByText('Проверьте почту.')).toBeVisible();
-  await page.goto(await linkFor(who.email));
+  await page.goto(link);
   await page.waitForURL(/\/auth\/set-password/);
   await page.getByLabel('Новый пароль').fill(PASSWORD);
   await page.getByLabel('Повторите пароль').fill(PASSWORD);
@@ -124,8 +113,7 @@ test.describe.serial('final acceptance on the real corpus', () => {
   test.beforeAll(async () => {
     const db = admin();
     state.settings = (await db.from('platform_settings').select('*').eq('id', true).single()).data;
-    await db.from('platform_settings').update({ registration_mode: 'open', max_learners: 50 }).eq('id', true);
-    await db.from('registration_attempts').delete().gte('created_at', new Date(Date.now() - 3_600_000).toISOString());
+    await db.from('platform_settings').update({ max_learners: 50 }).eq('id', true);
     state.ownerId = readState().owner.id;
   });
 
@@ -139,7 +127,7 @@ test.describe.serial('final acceptance on the real corpus', () => {
     if (state.policy) await db.from('publication_policies').delete().eq('id', state.policy);
     const { data: users } = await db.from('profiles').select('user_id').in('email', [A.email, B.email]);
     for (const u of users ?? []) await db.auth.admin.deleteUser(u.user_id);
-    if (state.settings) await db.from('platform_settings').update({ registration_mode: state.settings.registration_mode, registration_code_hash: state.settings.registration_code_hash, max_learners: state.settings.max_learners }).eq('id', true);
+    if (state.settings) await db.from('platform_settings').update({ max_learners: state.settings.max_learners }).eq('id', true);
   });
 
   test('1. owner: policy, sample and one decision release the whole admissible package', async ({ page }) => {
