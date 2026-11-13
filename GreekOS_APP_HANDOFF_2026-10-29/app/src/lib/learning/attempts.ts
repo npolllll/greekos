@@ -237,7 +237,10 @@ export function explanationsFor(e: Pick<ItemEnvelope, 'answer_explanation_ru' | 
   if (hidden) return { explanation_ru: null, explanation_el: null };
   const rationale = typeof e.original_payload?.rationale === 'string' ? e.original_payload.rationale.trim() : '';
   const ru = typeof e.answer_explanation_ru === 'string' && e.answer_explanation_ru.trim() ? e.answer_explanation_ru.trim() : null;
-  if (!ru) return { explanation_ru: rationale || null, explanation_el: null };
+  // An author's note written in English (editor notes of part of the exam bank) is not learner feedback.
+  const latin = rationale.match(/[A-Za-z]/g)?.length ?? 0;
+  const englishNote = !!rationale && latin > (rationale.match(/\p{L}/gu)?.length ?? 0) * 0.5;
+  if (!ru) return { explanation_ru: englishNote ? null : rationale || null, explanation_el: null };
   const letters = rationale.match(/\p{L}/gu)?.length ?? 0;
   const greekOnly = !!rationale && (rationale.match(CYRILLIC)?.length ?? 0) < letters * 0.3;
   return { explanation_ru: ru, explanation_el: greekOnly && (e.level === 'B1' || e.level === 'B2') ? rationale : null };

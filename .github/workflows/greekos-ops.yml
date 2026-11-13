@@ -56,7 +56,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -89,6 +89,9 @@ jobs:
           ( sleep 8; for p in /api/health /login; do curl -s -o /dev/null -w "$p %{http_code}\n" "$APP_URL$p"; done ) &
           timeout 45 npx --yes vercel logs "$DEP" --token "$VERCEL_TOKEN" 2>&1 | grep -v "^$" | head -80 || true
           npx --yes vercel env ls production --token "$VERCEL_TOKEN" 2>&1 | awk '{print $1}' | head -40
+      - name: vercel-redeploy (restore lost variables, rebuild production)
+        if: contains(steps.task.outputs.tasks, ',vercel-redeploy,')
+        run: bash scripts/ops/vercel-env-redeploy.sh
       - name: vercel-rollback (back to the previous production deployment)
         if: contains(steps.task.outputs.tasks, ',vercel-rollback,')
         working-directory: .
