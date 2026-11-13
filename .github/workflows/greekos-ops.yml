@@ -20,7 +20,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: greekos-ops
+  # One run per requested task list: the disposable e2e copy and production checks do not wait for each other.
+  group: greekos-ops-${{ inputs.task || github.sha }}
   cancel-in-progress: false
 
 jobs:
