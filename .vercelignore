@@ -1,0 +1,17 @@
+# Vercel builds only the app (project setting Root Directory = GreekOS_APP_HANDOFF_2026-10-29/app).
+# Everything else in the repository, and every local or secret file, stays out of the upload.
+/*
+!/GreekOS_APP_HANDOFF_2026-10-29
+/GreekOS_APP_HANDOFF_2026-10-29/*
+!/GreekOS_APP_HANDOFF_2026-10-29/app
+/GreekOS_APP_HANDOFF_2026-10-29/app/node_modules
+/GreekOS_APP_HANDOFF_2026-10-29/app/.next
+/GreekOS_APP_HANDOFF_2026-10-29/app/.env*
+!/GreekOS_APP_HANDOFF_2026-10-29/app/.env.example
+/GreekOS_APP_HANDOFF_2026-10-29/app/.deploy
+/GreekOS_APP_HANDOFF_2026-10-29/app/.scratch
+/GreekOS_APP_HANDOFF_2026-10-29/app/tests
+/GreekOS_APP_HANDOFF_2026-10-29/app/test-results
+/GreekOS_APP_HANDOFF_2026-10-29/app/playwright-report
+/GreekOS_APP_HANDOFF_2026-10-29/app/local-services
+/GreekOS_APP_HANDOFF_2026-10-29/app/backups

@@ -201,6 +201,10 @@ else echo "шлюз не разворачивается: AI-разговор р�
 
 step "9/10 Vercel: проект, переменные, развёртывание"
 VT=(); [ -n "${VERCEL_TOKEN:-}" ] && VT=(--token "$VERCEL_TOKEN")
+# The Vercel project builds from the repository root with Root Directory = this app folder: link and deploy
+# from the root (.vercelignore there uploads only the app, never local or secret files).
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || (cd ../.. && pwd))
+VT+=(--cwd "$ROOT")
 if [ "$DRY" != 1 ] && ! npx --yes vercel whoami "${VT[@]}" >/dev/null 2>&1; then
   [ "${NONINTERACTIVE:-0}" = 1 ] && { echo "Vercel: нужен VERCEL_TOKEN" >&2; exit 2; }
   npx --yes vercel login
