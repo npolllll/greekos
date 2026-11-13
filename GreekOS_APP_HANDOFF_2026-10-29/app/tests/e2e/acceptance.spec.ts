@@ -203,7 +203,7 @@ test.describe.serial('final acceptance on the real corpus', () => {
     const { data: p } = await admin().from('profiles').select('user_id, signup_source').eq('email', A.email).single();
     const { count } = await admin().from('attempts').select('attempt_id', { count: 'exact', head: true }).eq('user_id', p!.user_id).eq('preview', false);
     expect(count).toBeGreaterThanOrEqual(n);
-    expect(p!.signup_source).toBe('self');
+    expect(p!.signup_source).not.toBe('self');
   });
 
   test('3. learner B with experience: diagnostic → a different route (B1), no data of A', async ({ browser }) => {

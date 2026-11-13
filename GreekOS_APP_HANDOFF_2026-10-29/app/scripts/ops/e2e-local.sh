@@ -36,6 +36,10 @@ npx tsx --conditions=react-server scripts/qa-engineering-fixes.ts > "$OUT/qa-eng
 npx tsx --conditions=react-server scripts/qa-content-revisions.ts | tee "$OUT/content-revisions.json"
 npx tsx scripts/qa-batch.ts --label "e2e: полный прогон после правок" | tee "$OUT/qa-final.json"
 
+# The product suite reads the corpus snapshot (git-ignored locally): export it from the loaded database.
+mkdir -p .corpus-snapshot/HANDOFF_IMPORT
+psql "$DB" -X -At -c "select json_agg(envelope order by item_id) from public.items where module <> 'synthetic_fixture'" > .corpus-snapshot/HANDOFF_IMPORT/items.json
+
 echo "== production build and server"
 npx next build > "$OUT/build.log" 2>&1 || { tail -40 "$OUT/build.log"; exit 1; }
 (npx next start -p 3210 > "$OUT/server.log" 2>&1 &)
