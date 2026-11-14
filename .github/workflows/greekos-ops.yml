@@ -58,7 +58,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa|release-readiness) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -108,6 +108,9 @@ jobs:
       - name: qa-fails (failing objects of the latest full QA batch)
         if: contains(steps.task.outputs.tasks, ',qa-fails,')
         run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/qa-fails.sql
+      - name: release-readiness (what a release would open; what waits for the owner)
+        if: contains(steps.task.outputs.tasks, ',release-readiness,')
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/release-readiness.sql
       - name: vercel-info (Git link, Fluid compute, region, recent deployments)
         if: contains(steps.task.outputs.tasks, ',vercel-info,')
         run: bash scripts/ops/vercel-info.sh
