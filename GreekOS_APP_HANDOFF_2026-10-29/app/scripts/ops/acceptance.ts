@@ -163,7 +163,7 @@ async function main() {
       check('access.owner_login_one_time_link', /\/admin/.test(owner.url()));
       await shot(owner, 'owner-admin');
     });
-    if (!owner) throw new Error('no owner session');
+    if (!owner && !ONLY.length) throw new Error('no owner session');
     const op = owner as Page;
 
     let linkA = '', linkB = '';
