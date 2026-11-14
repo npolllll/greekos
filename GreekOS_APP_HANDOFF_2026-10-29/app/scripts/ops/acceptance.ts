@@ -21,6 +21,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { WebSocket as NodeWebSocket } from 'ws';
 
 const APP = (process.env.APP_URL ?? '').trim().replace(/\/$/, '');
 const SUPA = `https://${(process.env.SUPABASE_PROJECT_REF ?? '').trim()}.supabase.co`;
@@ -39,7 +40,10 @@ function check(id: string, ok: boolean | null, detail = '') {
   report.checks.push({ id, ok, detail });
   console.log(`${ok === null ? 'SKIP' : ok ? 'PASS' : 'FAIL'} ${id}${detail ? ` — ${detail}` : ''}`);
 }
+// ACCEPT_STEPS=speaking.mobile (comma-separated) runs only those steps, e.g. to re-check one area.
+const ONLY = (process.env.ACCEPT_STEPS ?? '').split(',').map((x) => x.trim()).filter(Boolean);
 async function step(id: string, fn: () => Promise<void>) {
+  if (ONLY.length && !ONLY.some((o) => id === o || id.startsWith(`${o}.`))) return;
   try { await fn(); } catch (e) { check(id, false, `исключение: ${(e as Error).message.split('\n')[0].slice(0, 300)}`); }
 }
 const shot = (p: Page, name: string) => p.screenshot({ path: `${OUT}/${name}.png`, fullPage: false }).catch(() => undefined);
@@ -346,8 +350,43 @@ async function main() {
         const assistantCount = () => page.locator('.msg:not(.mine) .bubble.greek').count();
         // Live mode over the app's own WebSocket.
         const sockets: string[] = [];
-        page.on('websocket', (w) => sockets.push(w.url()));
+        const frames: string[] = [];
+        const t00 = Date.now();
+        const at = () => `${((Date.now() - t00) / 1000).toFixed(1)} с`;
+        const pageLog: string[] = [];
+        page.on('console', (m) => { if (['error', 'warning'].includes(m.type()) && pageLog.length < 20) pageLog.push(`${m.type()}: ${m.text().slice(0, 200)}`); });
+        page.on('pageerror', (e) => { if (pageLog.length < 20) pageLog.push(`pageerror: ${e.message.slice(0, 200)}`); });
+        page.on('websocket', (w) => {
+          sockets.push(w.url());
+          if (!w.url().includes('/api/voice/stream')) return;
+          const note = (dir: string, payload: string | Buffer) => {
+            if (frames.length >= 40) return;
+            if (typeof payload !== 'string') { if (!frames.some((f) => f.includes(`${dir} binary`))) frames.push(`${at()} ${dir} binary ${payload.length} B`); return; }
+            frames.push(`${at()} ${dir} ${payload.replace(/"token":"[^"]+"/, '"token":"…"').slice(0, 240)}`);
+          };
+          w.on('framesent', (f) => note('→', f.payload));
+          w.on('framereceived', (f) => note('←', f.payload));
+          w.on('socketerror', (e) => frames.push(`${at()} socket error ${String(e).slice(0, 120)}`));
+          w.on('close', () => frames.push(`${at()} closed`));
+        });
         const liveSid = await open('stream_local_gateway');
+        // Protocol check without the browser: a token for this session, then auth over the app's WebSocket.
+        {
+          const tr = await page.request.post(`${APP}/api/speaking/stream-token`, { data: { session_id: liveSid } });
+          const tok = await tr.json().catch(() => ({})) as { token?: string; url?: string; message?: string };
+          const got: string[] = [];
+          if (tok.token && tok.url) {
+            await new Promise<void>((done) => {
+              const w = new NodeWebSocket(tok.url!, { headers: { origin: APP } });
+              const end = setTimeout(() => { w.close(); done(); }, 12_000);
+              w.on('open', () => { got.push('open'); w.send(JSON.stringify({ type: 'auth', token: tok.token, input_source: 'synthetic_test_clip', speed: 'normal' })); });
+              w.on('message', (d, bin) => { if (!bin && got.length < 8) got.push(String(d).slice(0, 160)); if (!bin && String(d).includes('"ready"')) { clearTimeout(end); w.close(); done(); } });
+              w.on('close', (code, reason) => { got.push(`close ${code} ${String(reason)}`); clearTimeout(end); done(); });
+              w.on('error', (e) => { got.push(`error ${e.message}`); });
+            });
+          }
+          check('speaking.mobile.live_protocol_ready', got.some((g) => g.includes('"ready"')), tok.token ? got.map((g) => g.slice(0, 90)).join(' · ') : `токен: HTTP ${tr.status()} ${tok.message ?? ''}`);
+        }
         const startBtn = page.getByRole('button', { name: 'Начать разговор' });
         if (await startBtn.count()) {
           const before = await assistantCount();
@@ -363,9 +402,12 @@ async function main() {
           }, 60_000);
           const replied = heard && await waitFor(async () => (await assistantCount()) > before, 60_000);
           const shown = replied ? (await page.locator('.msg:not(.mine) .bubble.greek').last().innerText()).split('\n')[0].slice(0, 120) : '';
+          const statusNow = await page.locator('.voice-stage .status-live').innerText().catch(() => '—');
+          const errorsNow = (await page.locator('.voice-stage .error-text, [role="alert"]').allInnerTexts().catch(() => [])).join(' | ').slice(0, 300);
+          pageLog.push(`статус: ${statusNow}${errorsNow ? `; ошибки: ${errorsNow}` : ''}`);
           check('speaking.mobile.live_turn', replied, replied ? `${Math.round((Date.now() - t0) / 100) / 10} с от начала до ответа${confirmed ? ' (с подтверждением транскрипта)' : ''}: «${shown}»` : heard ? 'реплика распознана, ответа нет' : 'реплика не распознана');
           const { data: lt } = await db.from('speaking_turns').select('speaker, engine_kind, input_source').eq('session_id', liveSid).order('created_at');
-          report.speaking.push({ mode: 'live_mobile', turns: lt });
+          report.speaking.push({ mode: 'live_mobile', turns: [], db_turns: lt, frames, page: pageLog });
           await page.getByRole('button', { name: 'Остановить' }).click().catch(() => undefined);
         } else check('speaking.mobile.live_connects', false, 'нет кнопки «Начать разговор» (живой режим недоступен)');
         // Step mode: record → transcript → reply.
@@ -375,7 +417,7 @@ async function main() {
         await page.waitForTimeout(6500);
         await page.getByRole('button', { name: 'Остановить запись' }).click();
         const tr = await waitFor(async () => (await page.getByRole('button', { name: 'Да, отправить' }).count()) > 0, 40_000);
-        const said = tr ? await page.locator('.voice-answer, .transcript, [data-transcript]').first().innerText().catch(() => '') : '';
+        const said = tr ? await page.getByRole('button', { name: 'Да, отправить' }).first().locator('xpath=ancestor::*[contains(@class,"card") or contains(@class,"confirm") or contains(@class,"transcript")][1]').innerText().catch(() => '') : '';
         if (tr) await page.getByRole('button', { name: 'Да, отправить' }).first().click();
         const replied = tr && await waitFor(async () => (await assistantCount()) > before, 60_000);
         check('speaking.mobile.step_turn', replied, tr ? (replied ? `распознано и отвечено${said ? `: «${said.split('\n')[0].slice(0, 80)}»` : ''}` : 'транскрипт есть, ответа нет') : 'транскрипта нет');
@@ -408,7 +450,8 @@ async function main() {
     writeFileSync(`${OUT}/acceptance.json`, JSON.stringify(report, null, 1));
     const failed = report.checks.filter((c) => c.ok === false);
     console.log(`\n${report.checks.length - failed.length}/${report.checks.length} проверок пройдено`);
-    for (const s of report.speaking as Array<{ level: string; turns: Array<{ learner: string; reply: string | null; engine: string; reason: string | null; ms: number }> }>) {
+    for (const s of report.speaking as Array<{ level?: string; mode?: string; turns: Array<{ learner: string; reply: string | null; engine: string; reason: string | null; ms: number }>; frames?: string[]; page?: string[] }>) {
+      if (!s.level) { console.log(`\n== Speaking ${s.mode}`); for (const f of s.frames ?? []) console.log(`  ${f}`); for (const l of s.page ?? []) console.log(`  page: ${l}`); continue; }
       console.log(`\n== Speaking ${s.level}`);
       for (const t of s.turns) console.log(`  ученик: ${t.learner}\n  AI [${t.engine}${t.reason ? `: ${t.reason}` : ''}, ${t.ms} мс]: ${t.reply}`);
     }

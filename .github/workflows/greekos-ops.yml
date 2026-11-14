@@ -58,7 +58,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa|release-readiness) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa|release-readiness|acceptance-speaking) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -126,7 +126,9 @@ jobs:
         if: contains(steps.task.outputs.tasks, ',restore-test,')
         run: bash scripts/ops/restore-test.sh
       - name: acceptance
-        if: contains(steps.task.outputs.tasks, ',acceptance,')
+        if: contains(steps.task.outputs.tasks, ',acceptance,') || contains(steps.task.outputs.tasks, ',acceptance-speaking,')
+        env:
+          ACCEPT_STEPS: ${{ contains(steps.task.outputs.tasks, ',acceptance-speaking,') && 'speaking.mobile' || '' }}
         run: |
           npx playwright install --with-deps chromium
           npx tsx scripts/ops/acceptance.ts
