@@ -42,6 +42,8 @@ jobs:
         run: npx tsc --noEmit -p .
       - name: Lint
         run: npx eslint src scripts --max-warnings 0
+      - name: Corpus snapshot for the unit tests (from the content dump in the repository)
+        run: node scripts/corpus-snapshot-from-dump.mjs
       - name: Unit tests
         run: npx vitest run tests/unit
       - name: Production build
