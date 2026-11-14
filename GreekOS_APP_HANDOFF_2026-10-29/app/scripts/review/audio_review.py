@@ -144,10 +144,13 @@ def resample16k(wav_bytes):
     return open('/tmp/greekos-16k.wav', 'rb').read()
 
 def whisper_asr(wav_bytes, detect=False):
+    """Independent recogniser. Audio goes in as a 16 kHz float array (no container decoding)."""
     m = whisper()
     if not m: return None
     with open('/tmp/greekos-w.wav', 'wb') as f: f.write(wav_bytes)
-    segs, info = m.transcribe('/tmp/greekos-w.wav', language=None if detect else 'el', beam_size=1, vad_filter=False)
+    snd = parselmouth.Sound('/tmp/greekos-w.wav').resample(16000)
+    audio = snd.values[0].astype(np.float32)
+    segs, info = m.transcribe(audio, language=None if detect else 'el', beam_size=1, vad_filter=False)
     text = ' '.join(s.text.strip() for s in segs)
     return {'text': text, 'language': info.language, 'language_probability': round(float(info.language_probability), 3)}
 
@@ -174,7 +177,7 @@ def assets():
             if isinstance(rt.get('segments'), list):
                 res['stored_failed_segments'] = [{k: s.get(k) for k in ('index', 'speaker', 'reference', 'hypothesis', 'wer', 'pass', 'accent_mismatches') if k in s} for s in rt['segments'] if s.get('pass') is False][:6]
             if time.time() - t0 < 2400:
-                w = whisper_asr(resample16k(wav))
+                w = whisper_asr(wav)
                 if w:
                     res['whisper'] = {'wer': wer(ref, w['text']), 'wer_accent_insensitive': wer_bare(ref, w['text']), 'stress_mismatches': stress_mismatches(ref, w['text'])[:8], 'text': w['text'][:400]}
         except Exception as e:  # noqa: BLE001
