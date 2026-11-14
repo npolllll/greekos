@@ -177,7 +177,7 @@ echo "+ flyctl secrets import --app $FLY_APP ← $(gw_secrets | cut -d= -f1 | tr
 GW_DEPLOY=("$FLY" deploy "$PWD" --app "$FLY_APP" --config "$PWD/voice-gateway/fly.toml" --dockerfile "$PWD/voice-gateway/Dockerfile" --ha=false "${FT[@]}")
 # Remote build on Fly's builders; if they are unreachable from this network, build with local Docker.
 run "${GW_DEPLOY[@]}" --remote-only || { command -v docker >/dev/null && run "${GW_DEPLOY[@]}" --local-only; }
-else echo "шлюз не разворачивается: AI-разговор работает в пошаговом режиме на Vercel"; fi
+else echo "отдельный шлюз не нужен: живой голосовой режим работает в самом приложении (/api/voice/stream на Vercel)"; fi
 
 step "9/10 Vercel: проект, переменные, развёртывание"
 VT=(); [ -n "${VERCEL_TOKEN:-}" ] && VT=(--token "$VERCEL_TOKEN")
@@ -231,7 +231,7 @@ fi
 
 cat <<EOF
 
-Развёрнуто: $APP_URL (приложение); голосовой шлюз: ${GATEWAY_URL:-нет — AI-разговор в пошаговом режиме}.
+Развёрнуто: $APP_URL (приложение); живой голосовой режим: ${GATEWAY_URL:-в приложении, /api/voice/stream}.
 Осталось решить владельцу в GreekOS ($APP_URL):
   • Админ → Политика выпуска → подписать; Админ → Выпуск → выборка (≤ 30) → «Принять решение о выпуске»
   • Админ → Голоса и кастинг → прослушать и утвердить голоса Azure; Админ → Аудио → прослушать, записать условия Azure
