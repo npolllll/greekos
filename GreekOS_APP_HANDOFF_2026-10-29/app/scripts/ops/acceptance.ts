@@ -164,7 +164,7 @@ async function main() {
       await shot(owner, 'owner-admin');
     });
     if (!owner && !ONLY.length) throw new Error('no owner session');
-    const op = owner as Page;
+    const op = owner as unknown as Page;
 
     let linkA = '', linkB = '';
     await step('access.invite', async () => {
