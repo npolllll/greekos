@@ -1,0 +1,21 @@
+/** Russian names of audit journal events (owner admin «Согласия и аудит»). The code stays visible small. */
+export const AUDIT_ACTION_RU: Record<string, string> = {
+  'appeal.resolved': 'оспаривание решено', 'audio.imported': 'аудио импортировано', 'audio.owner_listened': 'владелец прослушал аудио',
+  'audio.release_decision': 'решение о выпуске аудио', 'audio.render': 'аудио сгенерировано', 'audio.render_batch': 'пакетная генерация аудио',
+  'audio.rights_recorded': 'записаны условия провайдера', 'consent.granted': 'согласие дано', 'consent.revoked': 'согласие отозвано',
+  'content.add_item': 'добавлено задание', 'content.patch': 'правка контента', 'content.release': 'выпуск материала',
+  'content.release_decision': 'решение о выпуске', 'content.release_decision.revoke': 'откат решения о выпуске', 'content.reorder': 'изменён порядок уроков',
+  'content.revoke': 'материал отозван', 'dev_preview.create_tester': 'создан тестовый аккаунт', 'dev_preview.grant': 'выдан предпросмотр',
+  'dev_preview.revoke': 'предпросмотр отозван', 'exam.editor_viewed': 'просмотр экзамена редактором', 'learner.deactivated': 'ученик отключён',
+  'learner.deleted_by_owner': 'данные ученика удалены владельцем', 'learner.export': 'экспорт своих данных', 'learner.export_by_owner': 'экспорт данных ученика',
+  'learner.invited': 'ученик добавлен', 'learner.link_generated': 'выдана новая ссылка', 'learner.onboarded': 'онбординг пройден',
+  'learner.reactivated': 'доступ восстановлен', 'learner.route_changed': 'маршрут изменён', 'learner.self_delete': 'ученик удалил свои данные',
+  'learner.self_registered': 'самостоятельная регистрация (до 13.11.2026)', 'policy.revoked': 'политика отозвана', 'policy.signed': 'политика подписана',
+  'profile.activated': 'аккаунт активирован', 'providers.check': 'проверка провайдеров', 'qa.linguistic': 'лингвистическая AI-проверка',
+  'qa.sample_review': 'выборочная проверка', 'qa.issue.false_positive': 'замечание: ложное', 'qa.issue.accepted_risk': 'замечание: риск принят',
+  'qa.issue.reopen': 'замечание открыто снова', 'registration.settings': 'настройки доступа', 'review.decided': 'проверка ответа',
+  'review.viewed': 'просмотр ответа', 'role.owner_granted': 'выдана роль владельца', 'role.owner_removed': 'снята роль владельца',
+  'transcript.denied': 'доступ к записи отклонён', 'transcript.viewed': 'просмотр записи', 'voices.approve': 'голос утверждён',
+  'voices.cast_role_approve': 'роль голоса утверждена', 'voices.cast_role_set': 'назначен голос роли', 'voices.job_casting_approve': 'кастинг аудио утверждён',
+  'voices.job_casting_set': 'кастинг аудио изменён', 'voices.sample': 'прослушан образец голоса', 'voices.sync': 'каталог голосов обновлён',
+};

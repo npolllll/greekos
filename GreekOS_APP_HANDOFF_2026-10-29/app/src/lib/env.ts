@@ -1,4 +1,6 @@
 /** Server-side configuration. Secrets never leave the server; NEXT_PUBLIC_* are the only browser values. */
+import { createHmac } from 'node:crypto';
+
 function opt(name: string): string | undefined {
   const v = process.env[name];
   return v && v.trim() ? v.trim() : undefined;
@@ -50,7 +52,21 @@ export const env = {
   get localEnginesAllowed() { return this.appEnv === 'local' || this.appEnv === 'test'; },
   /** Local dev only: let learners play DEV_LOCAL_ONLY renders to exercise listening flows end-to-end. */
   get allowLocalVoicePlayback() { return opt('ALLOW_LOCAL_VOICE_PLAYBACK_FOR_DEV') === '1' && this.localEnginesAllowed; },
-  get voiceGatewaySecret() { return opt('VOICE_GATEWAY_SECRET'); },
+  /**
+   * Streaming voice served by the app's own deployment: a WebSocket Vercel Function (`/api/voice/stream`,
+   * Fluid compute, up to 300 s per connection, the client hands over to a fresh connection before that).
+   * Used when no separate gateway host is configured; `VOICE_STREAM=off` turns live mode off.
+   */
+  get voiceStreamBuiltin() {
+    if (opt('NEXT_PUBLIC_VOICE_GATEWAY_URL') || opt('VOICE_STREAM') === 'off') return false;
+    return process.env.VERCEL === '1' || opt('VOICE_STREAM') === 'builtin';
+  },
+  /** Signs the 60 s stream tokens. The built-in stream derives it from the service key (same deployment mints and checks). */
+  get voiceGatewaySecret() {
+    const set = opt('VOICE_GATEWAY_SECRET');
+    if (set || !this.voiceStreamBuiltin) return set;
+    return createHmac('sha256', this.serviceRoleKey).update('greekos-voice-stream-v1').digest('hex');
+  },
   get voiceGatewayPublicUrl() { return opt('NEXT_PUBLIC_VOICE_GATEWAY_URL'); },
   get openaiKey() { return opt('OPENAI_API_KEY'); },
   get openaiAsrModel() { return opt('OPENAI_ASR_MODEL') ?? 'gpt-4o-transcribe'; },

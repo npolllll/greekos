@@ -20,7 +20,7 @@ export default async function ProvidersPage() {
   const [budget, { data: lastCheck }, { data: failures }] = await Promise.all([
     budgetSummary(),
     db.from('admin_audit_log').select('meta, occurred_at').eq('action', 'providers.check').order('occurred_at', { ascending: false }).limit(1).maybeSingle(),
-    db.from('provider_usage').select('provider, operation, created_at').eq('ok', false).gte('created_at', day).order('created_at', { ascending: false }).limit(10),
+    db.from('provider_usage').select('provider, operation, created_at, error_detail').eq('ok', false).gte('created_at', day).order('created_at', { ascending: false }).limit(10),
   ]);
   const llm = llmConfigured();
   const info = llmInfo();
@@ -58,6 +58,19 @@ export default async function ProvidersPage() {
         <div className="card admin-stat"><small className="quiet">По сервисам (резерв учитывается до ответа)</small><div className="small mt8">{budget.byProvider.map((r) => <div key={r.provider}>{r.provider}: {eur(r.eur)}</div>)}{!budget.byProvider.length ? 'платных вызовов не было' : null}{budget.inFlight ? <div className="tiny muted">в процессе: {budget.inFlight}</div> : null}</div><span className="tag gray">сброс {dateTimeRu(budget.resetsAt)}</span></div>
         <div className="card admin-stat"><small className="quiet">Сбои за 24 часа</small><div className="metric mono">{failures?.length ?? 0}</div><span className="tag gray">{(failures ?? []).slice(0, 2).map((f) => `${f.provider}:${f.operation}`).join(', ') || 'нет'}</span></div>
       </div>
+      {budget.capEur > 0 && budget.committedEur >= budget.capEur * 0.8 ? (
+        <div className={`banner ${budget.blocked ? 'warn' : 'info'}`} role="status"><span>{budget.blocked ? 'Месячный лимит платных API достигнут: AI-разговор и AI-проверка письма отвечают вежливым отказом до сброса; уроки, упражнения и аудио работают.' : `Израсходовано ${Math.round((budget.committedEur / budget.capEur) * 100)} % месячного лимита платных API. После 100 % AI-функции остановятся до ${dateTimeRu(budget.resetsAt)}.`}</span></div>
+      ) : null}
+      {failures?.length ? (
+        <div className="card cardpad">
+          <div className="card-title">Последние сбои платных сервисов</div>
+          <div className="table-wrap"><table className="data-table">
+            <thead><tr><th>Время</th><th>Сервис</th><th>Ответ сервиса</th></tr></thead>
+            <tbody>{failures.map((f, i) => <tr key={i}><td className="tiny">{dateTimeRu(f.created_at)}</td><td className="tiny"><span className="code">{f.provider}:{f.operation}</span></td><td className="tiny">{f.error_detail ?? 'причина не записана (сбой до 13.11.2026)'}</td></tr>)}</tbody>
+          </table></div>
+          <p className="tiny muted">Ученик в этот момент видит пометку «запасная реплика сценария» с причиной. Отклонённый сервисом запрос (ошибка до начала ответа) в бюджете не учитывается.</p>
+        </div>
+      ) : null}
     </div>
   );
 }

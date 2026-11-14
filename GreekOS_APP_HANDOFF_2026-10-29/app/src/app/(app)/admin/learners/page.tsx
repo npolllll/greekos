@@ -14,7 +14,7 @@ export default async function LearnersPage() {
   const [cohort, reg] = await Promise.all([loadCohort(), registrationSettings()]);
   return (
     <div className="stack">
-    <RegistrationControl key={`${reg.registration_mode}-${reg.max_learners}-${reg.has_code}`} mode={reg.registration_mode} maxLearners={reg.max_learners} seatsUsed={reg.seats_used} hasCode={reg.has_code} appUrl={env.appUrl} />
+    <RegistrationControl key={reg.max_learners} maxLearners={reg.max_learners} seatsUsed={reg.seats_used} />
     <div className="card cardpad">
       <div className="card-top"><div className="card-title">Ученики ({cohort.length})</div><InviteDialog /></div>
       {cohort.length ? (

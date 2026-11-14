@@ -1,115 +1,87 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
 import { admin, readState } from './fixtures';
 import { login } from './helpers';
 
 /**
- * Self-registration end to end: the owner opens registration (by code) in the admin panel; a visitor
- * registers on /register, receives the e-mail (local Mailpit), opens the link, sets a password, goes
- * through onboarding «from zero» and lands on the alphabet route; a second visitor with a wrong code
- * is refused; when the seats are taken, registration says so. Settings are restored afterwards.
+ * Access on a private platform (registration closed, no e-mail needed):
+ *  - the login page offers no sign-up; /register explains how access works; the public API and a direct
+ *    sign-up at the auth service are refused, and the database allows only the «closed» mode;
+ *  - the owner adds a learner in the admin panel and gets a one-time link; the learner opens it, sets a
+ *    password, signs out and in again; the link does not work twice;
+ *  - «Новая ссылка» lets a learner who forgot the password set a new one;
+ *  - the owner disables the learner: sign-in is refused and the open session loses access.
  */
-// Local Mailpit of the Supabase stack (config.toml [inbucket] port), not the app's baseURL.
-const MAILPIT = process.env.MAILPIT_URL ?? 'http://127.0.0.1:55324';
+const PASSWORD = 'Ellinika-2026!';
 
-async function linkFor(email: string): Promise<string> {
-  for (let i = 0; i < 40; i++) {
-    const r = await fetch(`${MAILPIT}/api/v1/search?query=${encodeURIComponent(`to:${email}`)}`).then((x) => x.json()).catch(() => null);
-    const id = r?.messages?.[0]?.ID;
-    if (id) {
-      const m = await fetch(`${MAILPIT}/api/v1/message/${id}`).then((x) => x.json());
-      const href = /href="([^"]*\/auth\/confirm[^"]*)"/.exec(String(m.HTML).replace(/&amp;/g, '&'))?.[1];
-      if (href) return href;
-    }
-    await new Promise((res) => setTimeout(res, 500));
-  }
-  throw new Error(`no e-mail for ${email}`);
-}
-
-async function setRegistration(page: Page, mode: 'closed' | 'code' | 'open', seats: number, newCode = false): Promise<string | null> {
-  const r = await page.request.post('/api/admin/registration', { data: { registration_mode: mode, max_learners: seats, new_code: newCode } });
-  expect(r.ok()).toBe(true);
-  return (await r.json()).code ?? null;
-}
-
-test('a visitor registers with the owner\'s code, confirms the e-mail and starts from the alphabet', async ({ browser }) => {
-  test.setTimeout(4 * 60_000);
-  const db = admin();
-  const { data: before } = await db.from('platform_settings').select('*').eq('id', true).single();
-  // The rate limit counts every attempt per address; a test run starts from a clean hour.
-  await db.from('registration_attempts').delete().gte('created_at', new Date(Date.now() - 3_600_000).toISOString());
-  const owner = await browser.newPage();
-  await login(owner, readState().owner);
-  await owner.goto('/admin/learners');
-  await expect(owner.getByText('Регистрация учеников')).toBeVisible();
-  const code = await setRegistration(owner, 'code', 50, true);
-  expect(code).toMatch(/^[A-Z2-9]{4}-[A-Z2-9]{4}$/);
-  const email = `self-${randomUUID().slice(0, 8)}@greekos.test`;
-  const created: string[] = [];
-  try {
-    const ctx = await browser.newContext();
-    const page = await ctx.newPage();
-    await page.goto('/login');
-    await page.getByRole('link', { name: 'Зарегистрироваться' }).click();
-    await page.waitForURL(/\/register/);
-    // A wrong code is refused with a clear message.
-    await page.getByLabel('Как к вам обращаться').fill('Ученица Тест');
-    await page.getByLabel('E-mail').fill(email);
-    await page.getByLabel('Код регистрации').fill('WRONG-CODE');
-    await page.locator('.consent-row input').check();
-    await page.getByRole('button', { name: 'Получить письмо для входа' }).click();
-    await expect(page.locator('.error-text')).toContainText('Код регистрации не подходит');
-    await page.getByLabel('Код регистрации').fill(code!);
-    await page.getByRole('button', { name: 'Получить письмо для входа' }).click();
-    await expect(page.getByText('Проверьте почту.')).toBeVisible();
-
-    await page.goto(await linkFor(email));
-    await page.waitForURL(/\/auth\/set-password/);
-    await page.getByLabel('Новый пароль').fill('Ellinika-2026!');
-    await page.getByLabel('Повторите пароль').fill('Ellinika-2026!');
-    await page.getByRole('button', { name: 'Сохранить и продолжить' }).click();
-    await page.waitForURL(/\/welcome/, { timeout: 60_000 });
-    await page.getByRole('radio', { name: /С полного нуля/ }).click();
-    await page.getByRole('radio', { name: 'Жить и общаться в Греции' }).click();
-    await page.getByRole('button', { name: 'Начать' }).click();
-    await page.waitForURL((u) => u.pathname === '/');
-    // Stay on the origin of the e-mail link (APP_URL): the session lives there.
-    await page.goto(new URL('/course', page.url()).toString());
-    await expect(page.locator('.unit-row').first()).toContainText('Алфавит');
-
-    const { data: p } = await db.from('profiles').select('user_id, signup_source, lifecycle_state, active').eq('email', email).single();
-    created.push(p!.user_id);
-    expect(p).toMatchObject({ signup_source: 'self', active: true });
-    // The owner sees the new learner, marked as self-registered.
-    await owner.goto('/admin/learners');
-    await expect(owner.getByText(email)).toBeVisible();
-    await ctx.close();
-
-    // No free seats: registration says so instead of sending an e-mail.
-    const used = (await (await owner.request.get('/api/admin/registration')).json()).seats_used as number;
-    await setRegistration(owner, 'open', used);
-    const r = await owner.request.post('/api/auth/register', { data: { display_name: 'Ещё один', email: `self-${randomUUID().slice(0, 8)}@greekos.test`, consent: true } });
-    expect(r.status()).toBe(409);
-    expect((await r.json()).error).toBe('NO_SEATS');
-  } finally {
-    // Also when the test failed before the account id was recorded: find it by the address.
-    const { data: left } = await db.from('profiles').select('user_id').eq('email', email);
-    for (const id of new Set([...created, ...(left ?? []).map((x) => x.user_id)])) await db.auth.admin.deleteUser(id);
-    await db.from('platform_settings').update({ registration_mode: before.registration_mode, registration_code_hash: before.registration_code_hash, max_learners: before.max_learners }).eq('id', true);
-    await owner.close();
-  }
+test('closed registration: no sign-up anywhere', async ({ page }) => {
+  await page.goto('/login');
+  await expect(page.getByRole('link', { name: /Зарегистр/ })).toHaveCount(0);
+  await expect(page.getByText('Доступ выдаёт владелец курса')).toBeVisible();
+  await page.goto('/register');
+  await expect(page.getByRole('heading', { name: 'Регистрация закрыта' })).toBeVisible();
+  await expect(page.locator('form')).toHaveCount(0);
+  const r = await page.request.post('/api/auth/register', { data: { display_name: 'X', email: `x-${randomUUID().slice(0, 6)}@greekos.test`, consent: true } });
+  expect(r.status()).toBe(403);
+  expect((await r.json()).error).toBe('REGISTRATION_CLOSED');
+  // The setting cannot be reopened, not even by the service role.
+  const { error } = await admin().from('platform_settings').update({ registration_mode: 'open' }).eq('id', true);
+  expect(error?.message ?? '').toMatch(/check constraint/);
 });
 
-test('closed registration: the login page offers no sign-up and the API refuses', async ({ page }) => {
+test('the owner gives access with a one-time link, renews it and disables the learner', async ({ browser }) => {
+  test.setTimeout(4 * 60_000);
   const db = admin();
-  const { data: before } = await db.from('platform_settings').select('*').eq('id', true).single();
-  await db.from('platform_settings').update({ registration_mode: 'closed' }).eq('id', true);
+  const email = `link-${randomUUID().slice(0, 8)}@greekos.test`;
+  const owner = await browser.newPage();
+  await login(owner, readState().owner);
   try {
-    await page.goto('/login');
-    await expect(page.getByRole('link', { name: 'Зарегистрироваться' })).toHaveCount(0);
-    const r = await page.request.post('/api/auth/register', { data: { display_name: 'X', email: `x-${randomUUID().slice(0, 6)}@greekos.test`, consent: true } });
-    expect(r.status()).toBe(403);
+    await owner.goto('/admin/learners');
+    await expect(owner.getByText('Регистрация закрыта')).toBeVisible();
+    await owner.getByRole('button', { name: 'Добавить ученика' }).first().click();
+    await owner.getByLabel('Имя').fill('Ученица По Ссылке');
+    await owner.getByLabel('E-mail').fill(email);
+    await owner.getByRole('button', { name: 'Далее' }).click();
+    await owner.getByRole('button', { name: 'Подтвердить и создать ссылку' }).click();
+    const link = await owner.locator('.copy-box input').inputValue();
+    expect(link).toContain('/auth/confirm?');
+
+    const ctx = await browser.newContext();
+    const page = await ctx.newPage();
+    await page.goto(link);
+    await page.waitForURL(/\/auth\/set-password/);
+    await page.getByLabel('Новый пароль').fill(PASSWORD);
+    await page.getByLabel('Повторите пароль').fill(PASSWORD);
+    await page.getByRole('button', { name: 'Сохранить и продолжить' }).click();
+    await page.waitForURL(/\/welcome/, { timeout: 60_000 });
+    // The same link cannot be used twice.
+    const again = await (await browser.newContext()).newPage();
+    await again.goto(link);
+    await again.waitForURL(/\/login\?error=link/);
+
+    // Forgotten password: the owner issues a new link from the learner card.
+    const { data: p } = await db.from('profiles').select('user_id').eq('email', email).single();
+    const fresh = await owner.request.post(`/api/admin/learners/${p!.user_id}/link`);
+    expect(fresh.ok()).toBe(true);
+    const renew = await (await browser.newContext()).newPage();
+    await renew.goto((await fresh.json()).link);
+    await renew.waitForURL(/\/auth\/set-password/);
+
+    // Disabled: sign-in refused, the open session loses access to learner data.
+    const off = await owner.request.post(`/api/admin/learners/${p!.user_id}/deactivate`, { data: { reason: 'e2e: проверка отключения' } });
+    expect(off.ok()).toBe(true);
+    const me = await page.request.get('/api/me/export');
+    expect([401, 403]).toContain(me.status());
+    const fresh2 = await (await browser.newContext()).newPage();
+    await fresh2.goto('/login');
+    await fresh2.getByLabel('E-mail').fill(email);
+    await fresh2.getByLabel('Пароль').fill(PASSWORD);
+    await fresh2.getByRole('button', { name: 'Войти' }).click();
+    await expect(fresh2.locator('.error-text')).toContainText('доступ отключён');
+    await ctx.close();
   } finally {
-    await db.from('platform_settings').update({ registration_mode: before.registration_mode }).eq('id', true);
+    const { data: left } = await db.from('profiles').select('user_id').eq('email', email);
+    for (const x of left ?? []) await db.auth.admin.deleteUser(x.user_id);
+    await owner.close();
   }
 });

@@ -11,6 +11,7 @@
  * Every failure is a typed reason; the caller decides on an honestly labelled fallback.
  */
 import Anthropic from '@anthropic-ai/sdk';
+import { betaJSONSchemaOutputFormat } from '@anthropic-ai/sdk/helpers/beta/json-schema';
 import { env } from '../env.ts';
 import { reserve, settle, llmCostUsd, llmEstimateUsd, recordUsage, BudgetExceededError, type Reservation } from './budget.ts';
 import { llmConfigured, isLocalLlm, fallbackParams } from './llm.ts';
@@ -30,12 +31,51 @@ export interface StreamJsonParams {
   cacheKey?: string;
   /** Claude effort (cloud only). A live conversation turn is latency-bound: 'low' by default. */
   effort?: 'low' | 'medium' | 'high';
+  /**
+   * Cloud only. 'off' answers without a thinking phase where the model allows it (measured on the
+   * dialogue model: first token ≈ 3.4 s with adaptive thinking). Models that always think ignore it.
+   */
+  thinking?: 'adaptive' | 'off';
   onText?: (chunk: string) => void;
 }
 
 export type StreamJsonResult =
   | { ok: true; text: string; model: string; firstTokenMs: number | null; totalMs: number; usage: { input: number; output: number; cacheWrite?: number; cacheRead?: number } }
   | { ok: false; reason: 'NOT_CONFIGURED' | 'TIMEOUT' | 'ABORTED' | 'PROVIDER_ERROR' | 'BUDGET_EXCEEDED' | 'TRUNCATED' | 'REFUSAL'; detail?: string; text: string; firstTokenMs: number | null; totalMs: number };
+
+/**
+ * The Messages API accepts only a subset of JSON Schema in output_config.format (for example, no
+ * maxItems on arrays: HTTP 400 «For 'array' type, property 'maxItems' is not supported»). The SDK's
+ * own transform keeps the supported part and moves every other constraint into the description,
+ * exactly as messages.parse() does for zod schemas. Callers still enforce the limits on the result.
+ */
+export function anthropicJsonSchema(schema: Record<string, unknown>): Record<string, unknown> {
+  return betaJSONSchemaOutputFormat(schema as Parameters<typeof betaJSONSchemaOutputFormat>[0]).schema as Record<string, unknown>;
+}
+
+/**
+ * Thinking off where the model accepts it (Claude Haiku 5.5, Claude Opus 5, Claude Sonnet 5, Opus 4.8/4.7:
+ * {type: 'disabled'} at effort high or lower). Claude Sonnet 5.5 turns it off with 'between_tools';
+ * Claude Opus 5.5 and the Fable models always think — nothing is sent for them.
+ */
+export function thinkingOff(model: string): Record<string, unknown> {
+  if (model === 'claude-sonnet-5-5') return { thinking: { type: 'between_tools' } };
+  if (/^claude-(haiku-5-5|opus-5|sonnet-5|opus-4-8|opus-4-7)$/.test(model)) return { thinking: { type: 'disabled' } };
+  return {};
+}
+
+/** A provider rejection that happened before any generation (the provider does not bill it). */
+function rejectedBeforeGeneration(e: unknown, generated: boolean): boolean {
+  return !generated && e instanceof Anthropic.APIError && typeof e.status === 'number' && e.status >= 400;
+}
+
+function providerDetail(e: unknown): string {
+  if (e instanceof Anthropic.APIError) {
+    const body = (e.error as { error?: { type?: string; message?: string } } | undefined)?.error;
+    return `HTTP ${e.status ?? '—'} ${body?.type ?? e.name}: ${body?.message ?? e.message}`.slice(0, 300);
+  }
+  return String((e as Error)?.message ?? e).slice(0, 300);
+}
 
 let anthropic: Anthropic | null = null;
 
@@ -96,7 +136,7 @@ async function compatStream(p: StreamJsonParams, signal: AbortSignal, started: n
   return { text, first, model, usage, truncated: finish === 'length', refusal: false };
 }
 
-async function anthropicStream(p: StreamJsonParams, signal: AbortSignal, started: number) {
+async function anthropicStream(p: StreamJsonParams, signal: AbortSignal, started: number, onStart: () => void) {
   if (!env.anthropicKey) throw Object.assign(new Error('no key'), { provider: true });
   anthropic ??= new Anthropic({ apiKey: env.anthropicKey, maxRetries: 1 });
   let text = '';
@@ -116,12 +156,13 @@ async function anthropicStream(p: StreamJsonParams, signal: AbortSignal, started
     // The scene's system prompt and the earlier turns are the same prefix on every turn.
     cache_control: { type: 'ephemeral' },
     system: p.system, messages: p.messages,
-    output_config: { format: { type: 'json_schema', schema: p.schema }, effort: p.effort ?? 'low' },
+    ...(p.thinking === 'off' ? thinkingOff(model) : {}),
+    output_config: { format: { type: 'json_schema', schema: anthropicJsonSchema(p.schema) }, effort: p.effort ?? 'low' },
   }, { signal, timeout: p.timeoutMs });
   for await (const ev of stream) {
     // After a fallback the stream goes on with the fallback model: text before and after the
     // boundary is one continuous reply (the fallback model continues from the partial text).
-    if (ev.type === 'message_start') { model = ev.message.model; usage.input = ev.message.usage?.input_tokens ?? 0; usage.cacheRead = ev.message.usage?.cache_read_input_tokens ?? 0; usage.cacheWrite = ev.message.usage?.cache_creation_input_tokens ?? 0; }
+    if (ev.type === 'message_start') { onStart(); model = ev.message.model; usage.input = ev.message.usage?.input_tokens ?? 0; usage.cacheRead = ev.message.usage?.cache_read_input_tokens ?? 0; usage.cacheWrite = ev.message.usage?.cache_creation_input_tokens ?? 0; }
     else if (ev.type === 'content_block_start' && (ev.content_block as { type: string; to?: { model?: string } }).type === 'fallback') { model = (ev.content_block as { to?: { model?: string } }).to?.model ?? model; }
     else if (ev.type === 'content_block_delta' && ev.delta.type === 'text_delta') {
       first ??= Date.now() - started;
@@ -156,31 +197,38 @@ export async function streamJson(p: StreamJsonParams): Promise<StreamJsonResult>
   let ok = false;
   let completed = false;
   let servedModel = anthModel;
+  let generated = false;
+  let failure: string | null = null;
+  let rejected = false;
   let usage: { input: number; output: number; cacheWrite?: number; cacheRead?: number } = { input: 0, output: 0 };
   try {
-    const r = anth ? await anthropicStream(params, signal, started) : await compatStream(params, signal, started);
+    const r = anth ? await anthropicStream(params, signal, started, () => { generated = true; }) : await compatStream(params, signal, started);
     usage = r.usage;
     servedModel = r.model;
     completed = true;
     const totalMs = Date.now() - started;
-    if (r.refusal) return { ok: false, reason: 'REFUSAL', text: r.text, firstTokenMs: r.first, totalMs };
-    if (r.truncated) return { ok: false, reason: 'TRUNCATED', text: r.text, firstTokenMs: r.first, totalMs };
+    if (r.refusal) { failure = 'REFUSAL'; return { ok: false, reason: 'REFUSAL', text: r.text, firstTokenMs: r.first, totalMs }; }
+    if (r.truncated) { failure = 'TRUNCATED'; return { ok: false, reason: 'TRUNCATED', text: r.text, firstTokenMs: r.first, totalMs }; }
     ok = true;
     return { ok: true, text: r.text, model: r.model, firstTokenMs: r.first, totalMs, usage };
   } catch (e) {
     const totalMs = Date.now() - started;
-    if (p.signal?.aborted) return { ok: false, reason: 'ABORTED', text: partial, firstTokenMs: firstMs, totalMs };
-    if (timeout.aborted) return { ok: false, reason: 'TIMEOUT', text: partial, firstTokenMs: firstMs, totalMs };
-    return { ok: false, reason: 'PROVIDER_ERROR', detail: (e as Error)?.message?.slice(0, 200), text: partial, firstTokenMs: firstMs, totalMs };
+    if (p.signal?.aborted) { failure = 'ABORTED'; return { ok: false, reason: 'ABORTED', text: partial, firstTokenMs: firstMs, totalMs }; }
+    if (timeout.aborted) { failure = `TIMEOUT after ${p.timeoutMs} ms`; return { ok: false, reason: 'TIMEOUT', text: partial, firstTokenMs: firstMs, totalMs }; }
+    rejected = rejectedBeforeGeneration(e, generated);
+    failure = `PROVIDER_ERROR ${providerDetail(e)}`;
+    return { ok: false, reason: 'PROVIDER_ERROR', detail: failure.slice(15, 215), text: partial, firstTokenMs: firstMs, totalMs };
   } finally {
     const local = !anth && isLocalLlm();
-    // A stream cut short (barge-in, timeout, network) has no final usage: the worst case stays booked.
-    const costUsd = !anth ? 0 : completed ? llmCostUsd(servedModel, usage) : estimateUsd;
+    // A request the provider rejected with an HTTP error before generating anything is not billed: 0.
+    // A stream cut short after generation started (barge-in, timeout, network) has no final usage:
+    // the worst case stays booked.
+    const costUsd = !anth || rejected ? 0 : completed ? llmCostUsd(servedModel, usage) : estimateUsd;
     await settle(res, costUsd);
     await recordUsage({
       userId: p.userId, provider: anth ? 'anthropic' : local ? 'local_llm' : 'openai_compatible', operation: p.operation,
       units: usage.input + (usage.cacheWrite ?? 0) + (usage.cacheRead ?? 0) + usage.output, unitKind: 'tokens',
-      costUsd, ok, latencyMs: Date.now() - started,
+      costUsd, ok, latencyMs: Date.now() - started, detail: failure,
     }).catch(() => undefined);
   }
 }

@@ -16,8 +16,14 @@ export default async function QaPage({ searchParams }: { searchParams: Promise<{
   await requireOwnerPage();
   const sp = await searchParams;
   const db = adminClient();
-  const { data: batches } = await db.from('qa_batches').select('id, label, status, counts, report_sha256, report_path, started_at, finished_at, scope').order('started_at', { ascending: false }).limit(8);
-  const latest = (batches ?? []).find((b) => b.status === 'COMPLETED' && (b.scope as { kind?: string }).kind === 'all');
+  const cols = 'id, label, status, counts, report_sha256, report_path, started_at, finished_at, scope';
+  // The latest FULL run is looked up on its own: re-checks after corrections can push it out of the
+  // short history list (it then read as «no checks yet» although a full run existed).
+  const [{ data: batches }, { data: latestFull }] = await Promise.all([
+    db.from('qa_batches').select(cols).order('started_at', { ascending: false }).limit(8),
+    db.from('qa_batches').select(cols).eq('status', 'COMPLETED').eq('scope->>kind', 'all').order('started_at', { ascending: false }).limit(1).maybeSingle(),
+  ]);
+  const latest = latestFull ?? undefined;
   const t = (latest?.counts ?? {}) as Record<string, number>;
   const sev = ['blocking', 'warning'].includes(sp.sev ?? '') ? sp.sev! : null;
   const status = ['open', 'false_positive', 'accepted_risk', 'fixed'].includes(sp.status ?? '') ? sp.status! : 'open';

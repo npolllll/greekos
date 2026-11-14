@@ -1,4 +1,5 @@
 'use client';
+import { ITEM_TYPE_RU } from '@/lib/content/item-types-ru';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'motion/react';
@@ -129,7 +130,7 @@ export function SampleCard(props: { batchId: string; itemId: string; prompt: str
   }
   return (
     <motion.div layout className={`card cardpad ${props.review ? (props.review.decision === 'OK' ? 'sample-ok' : 'sample-issue') : ''}`}>
-      <div className="row between"><span className="tag gray">{props.level ?? '—'} · {props.type}</span><a className="tiny" href={`/admin/qa/item/${encodeURIComponent(props.itemId)}`}>{props.itemId}</a></div>
+      <div className="row between"><span className="tag gray">{props.level ?? '—'} · {ITEM_TYPE_RU[props.type] ?? props.type}</span><a className="tiny" href={`/admin/qa/item/${encodeURIComponent(props.itemId)}`}>{props.itemId}</a></div>
       <p style={{ fontWeight: 600, margin: '10px 0 8px' }} lang="el">{props.prompt}</p>
       {props.options.length ? <ul className="criteria" style={{ marginTop: 0 }}>{props.options.map((o) => <li key={o} lang="el">{o}</li>)}</ul> : null}
       <p className="small" style={{ margin: '6px 0' }}>Ключ: <b lang="el">{props.answer.join(' / ') || '— (оценка по критериям)'}</b>{props.alternatives.length ? <span className="quiet"> · также: <span lang="el">{props.alternatives.slice(0, 4).join(' / ')}</span></span> : null}</p>

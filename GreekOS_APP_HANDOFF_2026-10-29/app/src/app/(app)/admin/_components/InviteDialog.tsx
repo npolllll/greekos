@@ -17,13 +17,13 @@ export function InviteDialog() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [path, setPath] = useState<string>('from_zero');
-  const [delivery, setDelivery] = useState<'email' | 'link'>('email');
+  const [delivery, setDelivery] = useState<'email' | 'link'>('link');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [link, setLink] = useState<string | null>(null);
 
   function reset() {
-    setStep('form'); setName(''); setEmail(''); setPath('from_zero'); setDelivery('email'); setError(null); setLink(null);
+    setStep('form'); setName(''); setEmail(''); setPath('from_zero'); setDelivery('link'); setError(null); setLink(null);
   }
 
   function next() {
@@ -65,8 +65,8 @@ export function InviteDialog() {
                 </div>
                 <p className="form-label">Способ приглашения</p>
                 <div className="entry-options" role="radiogroup">
-                  <label className="entry-option"><input type="radio" name="delivery" checked={delivery === 'email'} onChange={() => setDelivery('email')} /><span><b>Отправить письмо</b><small>Через Supabase Auth (нужен настроенный SMTP в production).</small></span></label>
-                  <label className="entry-option"><input type="radio" name="delivery" checked={delivery === 'link'} onChange={() => setDelivery('link')} /><span><b>Ссылка для ручной передачи</b><small>Письмо не отправляется; одноразовая ссылка будет показана один раз.</small></span></label>
+                  <label className="entry-option"><input type="radio" name="delivery" checked={delivery === 'link'} onChange={() => setDelivery('link')} /><span><b>Одноразовая ссылка (рекомендуется)</b><small>Ссылка появится здесь — передайте её ученику в мессенджере. Почта не нужна.</small></span></label>
+                  <label className="entry-option"><input type="radio" name="delivery" checked={delivery === 'email'} onChange={() => setDelivery('email')} /><span><b>Отправить письмо</b><small>Только если для Supabase настроена своя почта (SMTP); встроенная почта Supabase доставляет письма ненадёжно.</small></span></label>
                 </div>
                 {error ? <p className="error-text" role="alert">{error}</p> : null}
                 <div className="row mt16"><button type="button" className="btn" onClick={next}>Далее</button><button type="button" className="btn outline" onClick={() => setOpen(false)}>Отмена</button></div>

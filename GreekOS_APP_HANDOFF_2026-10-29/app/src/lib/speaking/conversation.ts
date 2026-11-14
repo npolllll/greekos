@@ -117,12 +117,12 @@ export function systemPrompt(p: { scenario: ConversationTurnInput['scenario']; m
     `Ты — ${p.persona.name}, ${role.persona}. Ученик — ${role.learner}. Обращайся к ученику на «${role.register}». ${gender} Место действия — Салоники, Греция.`,
     mode,
     `Ученик — русскоязычный, уровень ${LEVEL_RU[lv] ?? LEVEL_RU.A2}. В сообщениях пользователя есть служебные пометки для тебя по-русски и в конце — слова ученика в кавычках «»: отвечай только на слова ученика.`,
-    `Правила reply_el: только твоя реплика на новогреческом (без русского и латиницы), 1–2 коротких предложения. Ты говоришь от своей роли, никогда от лица ученика. Сначала коротко отреагируй на конкретные слова ученика (например, на «Θέλω δύο κιλά πορτοκάλια» — «Δύο κιλά πορτοκάλια, βεβαίως.»), затем сделай шаг, который требует выбранный stage. Если ученик ошибся, не повторяй ошибку — сам используй правильную форму. Держи цены, время и количества последовательными (см. «Факты»).`,
+    `Правила reply_el: только твоя реплика на новогреческом (без русского и латиницы), 1–2 коротких предложения. Ты говоришь от своей роли, никогда от лица ученика. Сначала коротко отреагируй на конкретные слова ученика (например, на «Θέλω δύο κιλά πορτοκάλια» — «Δύο κιλά πορτοκάλια, βεβαίως.»), затем сделай шаг, который требует выбранный stage. Если ученик ошибся, не повторяй ошибку — сам используй правильную форму. Держи цены, время и количества последовательными (см. «Факты») и пересчитывай сумму под количество: при цене δύο ευρώ το κιλό полкило стоит ένα ευρώ, три кило — έξι ευρώ; если не уверен в сумме, назови цену за кило.`,
     sample,
   ].filter(Boolean).join('\n\n');
 }
 
-function turnSchema(allowed: string[], withHint: boolean) {
+export function turnSchema(allowed: string[], withHint: boolean) {
   // The stage comes first (a few tokens) so the reply is written for the branch the model chose.
   const props: Record<string, unknown> = {
     stage: { type: 'string', enum: allowed },
@@ -130,7 +130,8 @@ function turnSchema(allowed: string[], withHint: boolean) {
     intent: { type: 'string', enum: [...INTENTS] },
   };
   if (withHint) props.hint_ru = { anyOf: [{ type: 'string' }, { type: 'null' }] };
-  props.facts = { type: 'array', items: { type: 'string' }, maxItems: 2 };
+  // «0–2 facts» is enforced below: the API's schema subset has no maxItems (see anthropicJsonSchema).
+  props.facts = { type: 'array', items: { type: 'string' } };
   return { type: 'object', properties: props, required: Object.keys(props), additionalProperties: false };
 }
 
@@ -139,7 +140,7 @@ const TurnOut = z.object({
   stage: z.string(),
   intent: z.enum(INTENTS),
   hint_ru: z.string().nullable().optional(),
-  facts: z.array(z.string()).max(4).default([]),
+  facts: z.array(z.string()).default([]),
 });
 
 /** Messages: only what the learner actually heard counts as context (interrupted turns are truncated upstream). */
@@ -199,7 +200,7 @@ function stateLines(input: Pick<ConversationTurnInput, 'scenario' | 'mode' | 'me
     input.memory.facts.length ? `Факты сцены: ${input.memory.facts.join('; ')}.` : '',
     free ? 'Продолжи разговор: отреагируй на слова ученика и задай вопрос.' : branches(input.scenario, node, allowed, input.mode),
     HINTS_ALLOWED(input.mode) ? 'hint_ru — подсказка по-русски, что ученик может сказать, только если он явно затрудняется, иначе null.' : '',
-    'facts — 0–2 новых факта сцены по-русски (очень коротко), иначе [].',
+    'facts — 0–2 новых факта сцены по-русски (очень коротко; названные цены, количества и время — обязательно), иначе [].',
   ].filter(Boolean);
 }
 
@@ -279,7 +280,7 @@ export async function conversationTurn(input: ConversationTurnInput): Promise<Co
     if (loops > maxRepairs && nodeById(s, 'RETRY')) target = 'RETRY';
   }
   const targetNode = nodeById(s, target) ?? node;
-  const facts = (out?.facts ?? []).map((f) => f.trim().slice(0, 90)).filter((f) => f.length > 3 && !/\p{Script=Greek}{12,}/u.test(f));
+  const facts = (out?.facts ?? []).map((f) => f.trim().slice(0, 90)).filter((f) => f.length > 3 && !/\p{Script=Greek}{12,}/u.test(f)).slice(0, 2);
   return {
     nextNode: targetNode.node_id, assistantEl: spoken.join(' '), engine: 'llm', engineDetail: model, generated: true,
     intent: out?.intent ?? (rejected ? 'guard_truncated' : 'unparsed'), hintRu: withHint ? out?.hint_ru?.trim() || null : null,

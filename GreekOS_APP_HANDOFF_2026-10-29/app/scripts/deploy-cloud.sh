@@ -79,7 +79,7 @@ ask NEXT_PUBLIC_SUPABASE_ANON_KEY "Supabase: anon / publishable key (Settings �
 ask SUPABASE_SERVICE_ROLE_KEY "Supabase: service_role / secret key (Settings → API)" 1
 ask DATABASE_URL "Supabase: строка подключения Session pooler (Connect → Session pooler, с паролем)" 1
 ask APP_URL "Адрес приложения (например https://greekos.vercel.app или ваш домен)"
-APP_URL=${APP_URL%/}
+APP_URL=$(printf '%s' "$APP_URL" | tr -d '[:space:]'); APP_URL=${APP_URL%/}
 ask OWNER_EMAIL "E-mail владельца"
 ask OWNER_NAME "Имя владельца" 0 "Владелец"
 ask ANTHROPIC_API_KEY "Anthropic API key (console.anthropic.com → API Keys)" 1
@@ -117,28 +117,8 @@ step "2/10 схема базы (миграции)"
 run npx supabase link --project-ref "$SUPABASE_PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
 run npx supabase db push --password "$SUPABASE_DB_PASSWORD"
 
-step "3/10 вход и письма: адрес сайта, шаблоны, SMTP, регистрация только через GreekOS"
-# A minimal config with only the auth settings: `config push` leaves everything it does not declare.
-CLOUD=.deploy/supabase-cloud
-mkdir -p "$CLOUD/supabase/templates" && cp supabase/templates/*.html "$CLOUD/supabase/templates/"
-cat > "$CLOUD/supabase/config.toml" <<TOML
-project_id = "greekos"
-
-[auth]
-site_url = "$APP_URL"
-additional_redirect_urls = ["$APP_URL/**"]
-enable_signup = false
-minimum_password_length = 10
-
-[auth.rate_limit]
-email_sent = 60
-
-[auth.email]
-enable_signup = false
-double_confirm_changes = true
-enable_confirmations = false
-TOML
-run env SUPABASE_YES=1 npx supabase config push --workdir "$CLOUD" --project-ref "$SUPABASE_PROJECT_REF"
+step "3/10 вход: адрес сайта, ссылки, прямая регистрация в Supabase выключена, вход по e-mail включён"
+run env APP_URL="$APP_URL" SUPABASE_PROJECT_REF="$SUPABASE_PROJECT_REF" DRY_RUN="$DRY" bash scripts/ops/auth-config.sh
 
 step "4/10 учебный корпус (только в пустую базу)"
 ITEMS=$(sql "select count(*) from public.items")
@@ -148,15 +128,24 @@ step "5/10 владелец (письмо со ссылкой для парол�
 run cloud_env npx tsx scripts/create-owner.ts --email "$OWNER_EMAIL" --name "$OWNER_NAME"
 
 step "6/10 цифровой QA корпуса и записанные исправления (как локально)"
-QA=$(sql "select count(*) from public.qa_batches where status = 'COMPLETED'")
-if [ "$QA" = "0" ]; then
-  run cloud_env npx tsx scripts/qa-batch.ts
+# Spelling needs hunspell with the el_GR dictionary (GitHub Actions installs it; locally: brew/apt).
+if command -v hunspell >/dev/null && { [ -f /usr/share/hunspell/el_GR.dic ] || [ -n "${HUNSPELL_EL_DICT:-}" ]; }; then echo "орфография: hunspell el_GR"
+else echo "ВНИМАНИЕ: нет hunspell el_GR — орфография не проверяется, все объекты получат NEEDS_REVIEW"; fi
+FULL=$(sql "select count(*) from public.qa_batches where status = 'COMPLETED' and scope->>'kind' = 'all'")
+if [ "$FULL" = "0" ]; then
+  # First deployment: the recorded technical fixes of the imported corpus (one time).
+  run cloud_env npx tsx scripts/qa-batch.ts --label "Первый полный прогон"
   run cloud_env npx tsx --conditions=react-server scripts/qa-autofix.ts
   run cloud_env npx tsx --conditions=react-server scripts/qa-engineering-fixes.ts
-else echo "пакет QA уже есть ($QA)"; fi
-# Methodological revisions (Russian explanations, prerequisite order, reading tasks): idempotent,
+fi
+# Methodological revisions (Russian explanations, prerequisite order, reading tasks, wording): idempotent,
 # applied on every run so a redeploy brings an existing database up to the current corpus.
 run cloud_env npx tsx --conditions=react-server scripts/qa-content-revisions.ts
+# Releases are bound to the hashes a FULL run checked. A new full run whenever content changed after the
+# last one, or the last one ran without the spelling dictionary (otherwise revised objects read as STALE).
+STALE=$(sql "select (select coalesce(max(started_at), 'epoch') from public.qa_batches where status = 'COMPLETED' and scope->>'kind' = 'all' and coalesce((counts->>'spelling_checked')::int, 0) = 1) < (select coalesce(max(created_at), 'epoch') from public.content_revisions)")
+if [ "$STALE" = "t" ] || [ "$DRY" = 1 ]; then run cloud_env npx tsx scripts/qa-batch.ts --label "Полный прогон после развёртывания $(date -u +%F)"
+else echo "полный прогон актуален: контент после него не менялся"; fi
 
 step "7/10 голоса Azure: каталог, предложения кастинга, генерация 142 аудио (в пределах лимита)"
 run cloud_env npm run audio -- cast
@@ -188,10 +177,14 @@ echo "+ flyctl secrets import --app $FLY_APP ← $(gw_secrets | cut -d= -f1 | tr
 GW_DEPLOY=("$FLY" deploy "$PWD" --app "$FLY_APP" --config "$PWD/voice-gateway/fly.toml" --dockerfile "$PWD/voice-gateway/Dockerfile" --ha=false "${FT[@]}")
 # Remote build on Fly's builders; if they are unreachable from this network, build with local Docker.
 run "${GW_DEPLOY[@]}" --remote-only || { command -v docker >/dev/null && run "${GW_DEPLOY[@]}" --local-only; }
-else echo "шлюз не разворачивается: AI-разговор работает в пошаговом режиме на Vercel"; fi
+else echo "отдельный шлюз не нужен: живой голосовой режим работает в самом приложении (/api/voice/stream на Vercel)"; fi
 
 step "9/10 Vercel: проект, переменные, развёртывание"
 VT=(); [ -n "${VERCEL_TOKEN:-}" ] && VT=(--token "$VERCEL_TOKEN")
+# The Vercel project builds from the repository root with Root Directory = this app folder: link and deploy
+# from the root (.vercelignore there uploads only the app, never local or secret files).
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || (cd ../.. && pwd))
+VT+=(--cwd "$ROOT")
 if [ "$DRY" != 1 ] && ! npx --yes vercel whoami "${VT[@]}" >/dev/null 2>&1; then
   [ "${NONINTERACTIVE:-0}" = 1 ] && { echo "Vercel: нужен VERCEL_TOKEN" >&2; exit 2; }
   npx --yes vercel login
@@ -203,17 +196,31 @@ declare -A FIXED=([APP_ENV]=production [LLM_PROVIDER]=anthropic [ASR_PROVIDER]=a
 set_var() {
   echo "+ vercel env add $1 production ← $(mask "$2")"
   [ "$DRY" = 1 ] && return 0
+  # Public values (NEXT_PUBLIC_*, inlined into the browser bundle) are plain configuration; Vercel CLI 65
+  # stores new variables as secrets by default and skipped NEXT_PUBLIC_SUPABASE_ANON_KEY without an error.
+  local type=(); [[ $1 == NEXT_PUBLIC_* || $1 == APP_URL || $1 == APP_ENV ]] && type=(--type config)
   npx --yes vercel env rm "$1" production --yes "${VT[@]}" >/dev/null 2>&1 || true
-  printf '%s' "$2" | npx --yes vercel env add "$1" production "${VT[@]}" >/dev/null
+  printf '%s' "$2" | npx --yes vercel env add "$1" production "${type[@]}" "${VT[@]}" 2>&1 | grep -iE "error|warn" || true
 }
 for k in "${VARS[@]}"; do set_var "$k" "${!k}"; done
 for k in "${!FIXED[@]}"; do set_var "$k" "${FIXED[$k]}"; done
-run npx --yes vercel deploy --prod --yes "${VT[@]}"
+if [ "$DRY" != 1 ]; then
+  have=$(npx --yes vercel env ls production "${VT[@]}" 2>/dev/null | awk '{print $1}')
+  for k in "${VARS[@]}" "${!FIXED[@]}"; do grep -qx "$k" <<<"$have" || { echo "Vercel: переменная $k не сохранилась — развёртывание остановлено" >&2; exit 1; }; done
+  echo "переменные Vercel: все ${#VARS[@]}+${#FIXED[@]} на месте"
+fi
+# Never roll production back by accident (Vercel's own Git deployments are off in vercel.json).
+HEAD_SHA=$(git -C "$ROOT" rev-parse HEAD)
+[ "$DRY" = 1 ] || ROOT="$ROOT" bash scripts/ops/no-rollback.sh
+run npx --yes vercel deploy --prod --yes --meta "greekosCommit=$HEAD_SHA" --env "GREEKOS_COMMIT=$HEAD_SHA" "${VT[@]}"
 
 step "10/10 проверка работающей системы"
 if [ "$DRY" != 1 ]; then
-  for i in $(seq 1 30); do curl -sf "$APP_URL/api/health" >/dev/null && break; sleep 5; done
-  curl -sf "$APP_URL/api/health" && echo " ← приложение $APP_URL" || echo "Приложение не отвечает: проверьте домен (Vercel → Settings → Domains)."
+  code=000
+  for i in $(seq 1 30); do code=$(curl -sS -L -o /dev/null -w '%{http_code}' --max-time 20 "$APP_URL/api/health" 2>/tmp/health.err || true); [ "$code" = 200 ] && break; sleep 5; done
+  if [ "$code" = 200 ]; then echo "приложение отвечает: /api/health → 200"
+  else echo "::error::/api/health → HTTP $code $(tr -d '\n' < /tmp/health.err | head -c 200). Проверьте домен (Vercel → Settings → Domains) и секрет APP_URL."; exit 1; fi
+  for path in /login /register; do echo "$path → $(curl -sS -L -o /dev/null -w '%{http_code}' --max-time 20 "$APP_URL$path")"; done
   [ -z "$GATEWAY_URL" ] || { curl -sf "https://$FLY_APP.fly.dev/health" && echo " ← голосовой шлюз $GATEWAY_URL" || echo "Шлюз не отвечает: $FLY logs --app $FLY_APP"; }
 fi
 # A live conversation through the deployed gateway with the real providers (temporary test account).
@@ -224,11 +231,11 @@ fi
 
 cat <<EOF
 
-Развёрнуто: $APP_URL (приложение); голосовой шлюз: ${GATEWAY_URL:-нет — AI-разговор в пошаговом режиме}.
-Осталось решить владельцу в GreekOS ($APP_URL, вход по письму-приглашению):
+Развёрнуто: $APP_URL (приложение); живой голосовой режим: ${GATEWAY_URL:-в приложении, /api/voice/stream}.
+Осталось решить владельцу в GreekOS ($APP_URL):
   • Админ → Политика выпуска → подписать; Админ → Выпуск → выборка (≤ 30) → «Принять решение о выпуске»
   • Админ → Голоса и кастинг → прослушать и утвердить голоса Azure; Админ → Аудио → прослушать, записать условия Azure
-  • Админ → Ученики → «Регистрация учеников»: режим и число мест; ссылка для учеников: $APP_URL/register
+  • Ученики: Админ → Ученики → «Добавить ученика» → одноразовая ссылка (регистрация закрыта, почта не нужна)
 Резервная копия: еженедельно GitHub Actions «GreekOS backup» (зашифрованный дамп) или bash scripts/backup-db.sh.
 Расходы: Админ → Провайдеры (лимит EUR, остаток, дата сброса).
 EOF

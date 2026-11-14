@@ -7,6 +7,7 @@ import { WeekBars } from '@/components/WeekBars';
 import { Icon } from '@/components/Icon';
 import { InviteDialog } from './_components/InviteDialog';
 import { isoDaysAgo } from '@/lib/admin/time';
+import { budgetSummary } from '@/lib/providers/budget';
 
 export const metadata = { title: 'Админ-панель' };
 
@@ -14,7 +15,7 @@ export default async function AdminOverview() {
   const owner = await requireOwnerPage();
   const db = adminClient();
   const since = isoDaysAgo(14).slice(0, 10);
-  const [cohort, week, statuses, audio, components, pending, appeals, humanReleases, recentAct] = await Promise.all([
+  const [cohort, week, statuses, audio, components, pending, appeals, humanReleases, recentAct, budget, aiFailures] = await Promise.all([
     loadCohort(),
     groupWeek(owner.profile.timezone),
     itemStatuses(),
@@ -24,7 +25,10 @@ export default async function AdminOverview() {
     db.from('appeals').select('id', { count: 'exact', head: true }).eq('status', 'OPEN'),
     db.from('content_releases').select('id', { count: 'exact', head: true }).in('review_type', ['HUMAN_TEACHER_REVIEW', 'HUMAN_EXAMINER_REVIEW']).is('revoked_at', null),
     db.from('activity_days').select('user_id').gte('local_date', since),
+    budgetSummary(),
+    db.from('provider_usage').select('id', { count: 'exact', head: true }).eq('ok', false).gte('created_at', isoDaysAgo(1)),
   ]);
+  const budgetPct = budget.capEur > 0 ? Math.round((budget.committedEur / budget.capEur) * 100) : 0;
   const { data: errors, count: errorCount } = await db.from('server_errors').select('at, method, path, kind, message', { count: 'exact' }).gte('at', isoDaysAgo(1)).order('at', { ascending: false }).limit(5);
   const activeIds = new Set((recentAct.data ?? []).map((r) => r.user_id));
   const activeLearners = cohort.filter((c) => c.active && activeIds.has(c.user_id)).length;
@@ -82,6 +86,8 @@ export default async function AdminOverview() {
             <div className="attention-row"><b>Закрытые задания</b><span className={gated === 0 ? 'ok' : ''}>{gated} из {statuses.length} не выпущены{audioPending ? ` · ${audioPending} ждут аудио` : ''}</span></div>
             <div className="attention-row"><b>Ответы на проверке</b><span className={pending.count ? '' : 'ok'}><Link href="/admin/reviews" className="text-link">{pending.count ?? 0}</Link></span></div>
             <div className="attention-row"><b>Оспаривания</b><span className={appeals.count ? '' : 'ok'}><Link href="/admin/reviews" className="text-link">{appeals.count ?? 0} открыто</Link></span></div>
+            <div className="attention-row"><b>Расход AI за месяц</b><span className={budgetPct < 80 ? 'ok' : ''}><Link href="/admin/providers" className="text-link">{budget.blocked ? 'лимит достигнут — AI остановлен' : `${budgetPct} % лимита`}</Link></span></div>
+            <div className="attention-row"><b>Сбои AI и речи за сутки</b><span className={aiFailures.count ? '' : 'ok'}><Link href="/admin/providers" className="text-link">{aiFailures.count ?? 0}</Link></span></div>
             <div className="attention-row"><b>Ошибки сервера за сутки</b><span className={errorCount ? '' : 'ok'}>{errorCount ?? 0}</span></div>
             {(errors ?? []).length ? (
               <ul className="tiny quiet" style={{ margin: '6px 0 0', paddingLeft: 18 }}>

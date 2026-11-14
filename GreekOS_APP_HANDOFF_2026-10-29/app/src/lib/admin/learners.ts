@@ -4,6 +4,7 @@ import { adminClient } from '../supabase/admin.ts';
 import { audit, HttpError, type SessionUser } from '../auth.ts';
 import { env } from '../env.ts';
 import { emitEvent } from '../learning/state.ts';
+import { registrationSettings } from '../registration.ts';
 
 export const InviteRequest = z.object({
   email: z.string().email().max(200),
@@ -35,6 +36,8 @@ export async function inviteLearner(actor: SessionUser, req: z.infer<typeof Invi
   const db = adminClient();
   const email = req.email.trim().toLowerCase();
   if (await findUserByEmail(email)) throw new HttpError(409, 'EXISTS', 'Пользователь с таким e-mail уже есть. Используйте «Новая ссылка» в карточке ученика.');
+  const seats = await registrationSettings();
+  if (seats.seats_free <= 0) throw new HttpError(409, 'NO_SEATS', `Все места заняты (${seats.seats_used} из ${seats.max_learners}). Увеличьте число мест в «Доступ учеников» или отключите ученика.`);
   let userId: string;
   let link: string | null = null;
   if (req.delivery === 'email') {

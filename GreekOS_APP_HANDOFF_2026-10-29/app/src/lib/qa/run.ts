@@ -8,6 +8,7 @@ import { execFile } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { promisify } from 'node:util';
+import { tmpdir } from 'node:os';
 import { adminClient, selectAll } from '../supabase/admin.ts';
 import { stableStringify } from '../content/stable-json.ts';
 import { CHECKS, QA_TOOL_VERSION, checkItem, collectGreekWords, greekFields, orthography, verdictOf, type Finding, type ItemForQa, type QaContext } from './checks.ts';
@@ -237,18 +238,19 @@ export async function runQaBatch(opts: { actorId: string | null; label: string; 
     const report = {
       batch_id: batch.id, label: opts.label, tool_version: QA_TOOL_VERSION, generated_at: new Date().toISOString(), scope,
       dictionary: spell.dictionary ? { engine: 'hunspell', path: spell.dictionary, unique_greek_words: words.size, unknown_words: spell.unknown?.size ?? null } : { engine: null, note: 'hunspell el_GR не найден — проверка словарём ABSTAIN' },
-      totals: { objects: results.length, items: items.length, units: scopedUnits.length, scenarios: scenarios.length, issues_stored: issueRows.length, ...counts },
+      totals: { objects: results.length, items: items.length, units: scopedUnits.length, scenarios: scenarios.length, issues_stored: issueRows.length, spelling_checked: spell.unknown ? 1 : 0, ...counts },
       by_check: CHECKS.map((c) => ({ ...c, ...(byCheck[c.id] ?? { blocking: 0, warning: 0, info: 0, objects: 0 }) })),
       not_performed: ['Независимая экспертиза преподавателем, экзаменатором или носителем языка', 'Проверка смысла и прагматики свободным текстом (нужен LLM-провайдер или человек)', 'Акустическая оценка аудио слушателем'],
     };
     const json = stableStringify(report);
     const sha = createHash('sha256').update(json).digest('hex');
-    const dir = opts.reportDir ?? resolve('reports/v7/qa');
+    // Serverless functions can write only to the temporary directory; the report hash stays on the batch.
+    const dir = opts.reportDir ?? (process.env.VERCEL ? join(tmpdir(), 'greekos-qa') : join(/* turbopackIgnore: true */ process.cwd(), 'reports/v7/qa'));
     mkdirSync(dir, { recursive: true });
     const path = join(dir, `QA_BATCH_${batch.id}.json`);
     writeFileSync(path, JSON.stringify(report, null, 1));
     writeFileSync(join(dir, `QA_BATCH_${batch.id}.md`), markdown(report));
-    await db.from('qa_batches').update({ status: 'COMPLETED', finished_at: new Date().toISOString(), counts: report.totals, report_sha256: sha, report_path: path.replace(resolve('.') + '/', '') }).eq('id', batch.id);
+    await db.from('qa_batches').update({ status: 'COMPLETED', finished_at: new Date().toISOString(), counts: report.totals, report_sha256: sha, report_path: path.replace(`${/* turbopackIgnore: true */ process.cwd()}/`, '') }).eq('id', batch.id);
     return { batch_id: batch.id, totals: report.totals, report_sha256: sha, report_path: path };
   } catch (e) {
     await db.from('qa_batches').update({ status: 'FAILED', finished_at: new Date().toISOString(), counts: { error: (e as Error).message.slice(0, 300) } }).eq('id', batch.id);

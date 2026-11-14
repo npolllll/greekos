@@ -7,13 +7,14 @@
  * Each revision is idempotent and guarded: it applies only while the item still has the exact text it
  * was written against, so a later edit by the owner is never overwritten.
  */
-import { adminClient } from '../supabase/admin.ts';
+import { adminClient, selectAll } from '../supabase/admin.ts';
 import { patchItem } from './release.ts';
 import { audit } from '../audit.ts';
 import { contentHash, sha256Hex, stableStringify } from '../content/stable-json.ts';
 import type { ItemEnvelope } from '../content/types.ts';
 import { READING_ITEMS, type ReadingItemSpec } from './data/reading-items.ts';
 import { runQaBatch } from './run.ts';
+import { PEGP_LANG_RIGHTS_ITEMS, PEGP_LANG_LICENSING, PEGP_LANG_RUBRIC, PEGP_P06_NEW_ITEMS, P06_SCOPE, type PegpNewItem } from './data/pegp-completion.ts';
 
 export const CONTENT_REVISION_ACTOR = 'ai-assisted-content-revision/1.0';
 
@@ -225,4 +226,353 @@ export async function applyReadingItems(): Promise<Array<{ item_id: string; stat
   }
   if (touched.size) await runQaBatch({ actorId: null, label: `Повторная проверка после добавления заданий на чтение (${touched.size} уроков)`, scope: { kind: 'unit', ids: [...touched] } });
   return out;
+}
+
+/**
+ * Wording of task instructions (13.11.2026): English words and a technical abbreviation in Russian
+ * instructions shown to learners («stimulus», «ASR», «concessive link»), and a missing space in
+ * U-B2-016-I02. Meaning, keys and options are unchanged. Prepared with AI, not reviewed by a teacher.
+ */
+const RG_Q05_BEFORE = 'D7 и D28 проводятся отдельно, без карточки и моделей. Прочитайте только stimulus своего дня: объясните смысл выражения, назовите конкретную текстовую подсказку и дайте уместную нейтральную реплику. Не приписывайте услышанную интонацию отсутствующему звуку.';
+const RG_Q05_AFTER = 'D7 и D28 выполняются отдельно, без карточки и образцов. Прочитайте только текст своего дня: объясните смысл выражения, назовите подсказку в тексте, на которую вы опираетесь, и предложите уместную нейтральную реплику. Интонацию не додумывайте: звука в этом задании нет.';
+
+export const PROMPT_REVISIONS: Array<{ item_id: string; before: string; after: string }> = [
+  ...Array.from({ length: 12 }, (_, i) => ({ item_id: `RG-${String(i + 1).padStart(4, '0')}-Q05`, before: RG_Q05_BEFORE, after: RG_Q05_AFTER })),
+  { item_id: 'U-A2-016-I12', before: 'ASR показал «εγραψα» без ударения. Можно ли сразу признать ошибку произношения? Объясните следующий шаг.', after: 'Распознавание речи показало «εγραψα» без ударения. Можно ли сразу признать ошибку произношения? Объясните следующий шаг.' },
+  { item_id: 'U-B2-016-I02', before: 'ASR записал50вместо15. Что делать до вывода об ошибке произношения?', after: 'Распознавание речи записало «50» вместо «15». Что нужно сделать, прежде чем делать вывод об ошибке произношения?' },
+  { item_id: 'U-B2-016-I16', before: 'Самостоятельно предложите план встречи двух групп с разным расписанием. Партнёр после первого предложения меняет одно ограничение; уточните его и обновите план. Слушатель без вашего конспекта фиксирует окончательные время, место и условие. Не оценивайте произношение по ASR.', after: 'Самостоятельно предложите план встречи двух групп с разным расписанием. Партнёр после первого предложения меняет одно ограничение; уточните его и обновите план. Слушатель без вашего конспекта фиксирует окончательные время, место и условие. Не оценивайте произношение по автоматическому распознаванию речи.' },
+  { item_id: 'U-B2-001-I02', before: 'Συμπληρώστε με concessive link: ___ ο χώρος είναι μικρός, χωρά ένα παγκάκι.', after: 'Вставьте уступительный союз («хотя»): ___ ο χώρος είναι μικρός, χωρά ένα παγκάκι.' },
+];
+
+export async function applyPromptRevisions(): Promise<Array<{ item_id: string; status: RevisionStatus; new_hash?: string }>> {
+  const db = adminClient();
+  const out: Array<{ item_id: string; status: RevisionStatus; new_hash?: string }> = [];
+  for (const r of PROMPT_REVISIONS) {
+    const { data: it } = await db.from('items').select('item_id, envelope, current_hash').eq('item_id', r.item_id).maybeSingle();
+    if (!it) { out.push({ item_id: r.item_id, status: 'missing' }); continue; }
+    const prompt = (it.envelope as { prompt?: string }).prompt;
+    if (prompt === r.after) { out.push({ item_id: r.item_id, status: 'already' }); continue; }
+    if (prompt !== r.before) { out.push({ item_id: r.item_id, status: 'changed_since' }); continue; }
+    const p = await patchItem({ system: CONTENT_REVISION_ACTOR }, {
+      item_id: r.item_id, base_hash: it.current_hash, changes: { prompt: r.after },
+      reason: 'Формулировка задания: английские слова и сокращения в русской инструкции заменены русскими (смысл, ключи и варианты не менялись). Подготовлено с помощью AI, не проверено преподавателем.',
+    }, { runQa: false });
+    out.push({ item_id: r.item_id, status: 'applied', new_hash: p.new_hash });
+  }
+  const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
+  if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после правки формулировок (${applied.length})`, scope: { kind: 'items', ids: applied } });
+  return out;
+}
+
+/**
+ * ΚΕΓ B2 listening L01, «who says what»: each statement of rows 1–4 is true for TWO speakers and the row
+ * is split into two tasks with the same prompt, each keyed to one speaker. A learner who named the other
+ * correct speaker was marked wrong. Each task now accepts both correct speakers and says that the two
+ * tasks of the row ask for different speakers. Keys only widened to what the recording supports.
+ */
+const PAIR_NOTE = ' (Так говорят двое: в двух заданиях с этой фразой укажите разных говорящих.)';
+export const EXAM_PAIR_REVISIONS: Array<{ item_id: string; prompt: string; answer: string; partner: string }> = [
+  { item_id: 'KEG-B2-L01-A01', prompt: 'Προτιμά τη συνάντηση το απόγευμα.', answer: 'Άννα', partner: 'Μάνος' },
+  { item_id: 'KEG-B2-L01-A02', prompt: 'Προτιμά τη συνάντηση το απόγευμα.', answer: 'Μάνος', partner: 'Άννα' },
+  { item_id: 'KEG-B2-L01-A03', prompt: 'Προτιμά να γίνει η γιορτή στην αίθουσα.', answer: 'Άννα', partner: 'Ελένη' },
+  { item_id: 'KEG-B2-L01-A04', prompt: 'Προτιμά να γίνει η γιορτή στην αίθουσα.', answer: 'Ελένη', partner: 'Άννα' },
+  { item_id: 'KEG-B2-L01-A05', prompt: 'Υποστηρίζει ξεχωριστή δραστηριότητα για παιδιά.', answer: 'Άννα', partner: 'Ελένη' },
+  { item_id: 'KEG-B2-L01-A06', prompt: 'Υποστηρίζει ξεχωριστή δραστηριότητα για παιδιά.', answer: 'Ελένη', partner: 'Άννα' },
+  { item_id: 'KEG-B2-L01-A07', prompt: 'Υποστηρίζει την προαιρετική οικονομική συνεισφορά.', answer: 'Άννα', partner: 'Μάνος' },
+  { item_id: 'KEG-B2-L01-A08', prompt: 'Υποστηρίζει την προαιρετική οικονομική συνεισφορά.', answer: 'Μάνος', partner: 'Άννα' },
+];
+
+export async function applyExamPairRevisions(): Promise<Array<{ item_id: string; status: RevisionStatus; new_hash?: string }>> {
+  const db = adminClient();
+  const out: Array<{ item_id: string; status: RevisionStatus; new_hash?: string }> = [];
+  for (const r of EXAM_PAIR_REVISIONS) {
+    const { data: it } = await db.from('items').select('item_id, envelope, current_hash').eq('item_id', r.item_id).maybeSingle();
+    if (!it) { out.push({ item_id: r.item_id, status: 'missing' }); continue; }
+    const env = it.envelope as { prompt?: string; answer?: unknown[]; accepted_alternatives?: unknown[] };
+    const after = r.prompt + PAIR_NOTE;
+    if (env.prompt === after && (env.accepted_alternatives ?? []).includes(r.partner)) { out.push({ item_id: r.item_id, status: 'already' }); continue; }
+    if (env.prompt !== r.prompt || JSON.stringify(env.answer) !== JSON.stringify([r.answer])) { out.push({ item_id: r.item_id, status: 'changed_since' }); continue; }
+    const p = await patchItem({ system: CONTENT_REVISION_ACTOR }, {
+      item_id: r.item_id, base_hash: it.current_hash, changes: { prompt: after, accepted_alternatives: [r.partner] },
+      reason: 'Ключ задания «кто это говорит»: фразу говорят два участника записи, задание принимало только одного. Принимаются оба верных говорящих; в инструкции сказано, что в двух заданиях строки нужны разные. Подготовлено с помощью AI, не проверено экзаменатором.',
+    }, { runQa: false });
+    out.push({ item_id: r.item_id, status: 'applied', new_hash: p.new_hash });
+  }
+  const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
+  if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после правки ключей ΚΕΓ L01 (${applied.length})`, scope: { kind: 'items', ids: applied } });
+  return out;
+}
+
+/**
+ * Lost spaces around numbers in task instructions and model answers (an import artefact: «День7:»,
+ * «Напишите80–110слов», «στις20:00», «θέμα48»). A space is restored between a Cyrillic or Greek letter and a
+ * digit; Greek ordinal endings stay attached («19ου», «28ης», «1ος»). Keys and options are not touched;
+ * error-correction tasks are skipped (their text may be wrong on purpose).
+ */
+const CY = 'А-Яа-яЁё';
+const GR = 'Α-Ωα-ωΆ-Ώά-ώϊϋΐΰ';
+const GREEK_ORDINAL = '(?:ος|ου|ού|ης|ής|η|ή|ο|ό|ων|ών|α|ες|ους|οι|ός|ον)(?![Α-Ωα-ωά-ώ])';
+export function restoreNumberSpacing(t: string): string {
+  return t
+    .replace(new RegExp(`([${CY}])(\\d)`, 'g'), '$1 $2')
+    .replace(new RegExp(`(\\d)([${CY}])`, 'g'), '$1 $2')
+    .replace(new RegExp(`([${GR}])(\\d)`, 'g'), '$1 $2')
+    .replace(new RegExp(`(\\d)(?!${GREEK_ORDINAL})([${GR}])`, 'g'), '$1 $2');
+}
+
+export async function applySpacingRevisions(): Promise<{ applied: number; ids: string[] }> {
+  const db = adminClient();
+  const items = await selectAll<{ item_id: string; item_type: string; envelope: { prompt?: string; model_response?: string | null }; current_hash: string }>((f, t) => db.from('items').select('item_id, item_type, envelope, current_hash').order('item_id').range(f, t));
+  const ids: string[] = [];
+  for (const it of items) {
+    if (it.item_type === 'error_correction') continue;
+    const changes: { prompt?: string; model_response?: string } = {};
+    const p = it.envelope.prompt;
+    if (typeof p === 'string' && restoreNumberSpacing(p) !== p) changes.prompt = restoreNumberSpacing(p);
+    const m = it.envelope.model_response;
+    if (typeof m === 'string' && restoreNumberSpacing(m) !== m) changes.model_response = restoreNumberSpacing(m);
+    if (!Object.keys(changes).length) continue;
+    await patchItem({ system: CONTENT_REVISION_ACTOR }, {
+      item_id: it.item_id, base_hash: it.current_hash, changes,
+      reason: 'Формулировка: восстановлены пробелы вокруг чисел («День 7:», «στις 20:00»); смысл, ключи и варианты не менялись.',
+    }, { runQa: false });
+    ids.push(it.item_id);
+  }
+  if (ids.length) await runQaBatch({ actorId: null, label: `Повторная проверка после восстановления пробелов (${ids.length})`, scope: { kind: 'items', ids } });
+  return { applied: ids.length, ids };
+}
+
+/**
+ * AI review of the corpus, 13.11.2026: every task was read by an AI reviewer per level/module and every
+ * finding was checked by a second, independent AI reviewer; only accepted fixes are recorded in
+ * data/ai-review-2026-11-13.json. This is not a teacher's or examiner's review and is never recorded as one.
+ * A fix applies only while the field still holds exactly the reviewed text.
+ */
+type ReviewPatch =
+  | { op: 'set'; field: 'prompt' | 'model_response' | 'answer_explanation_ru'; current: string | null; new: string }
+  | { op: 'add_accepted'; values: string[] }
+  | { op: 'remove_accepted'; values: string[] }
+  | { op: 'set_answer'; current: string[]; new: string[] }
+  | { op: 'set_options'; current: string[]; new: string[] };
+export interface ReviewFix { id: string; reason_ru: string; patches: ReviewPatch[] }
+
+export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<{ item_id: string; status: RevisionStatus }>> {
+  const db = adminClient();
+  const out: Array<{ item_id: string; status: RevisionStatus }> = [];
+  for (const f of fixes) {
+    const { data: it } = await db.from('items').select('item_id, envelope, current_hash').eq('item_id', f.id).maybeSingle();
+    if (!it) { out.push({ item_id: f.id, status: 'missing' }); continue; }
+    const env = it.envelope as { prompt?: string; model_response?: string | null; answer_explanation_ru?: string; answer?: unknown[]; options?: unknown; accepted_alternatives?: unknown[] };
+    const changes: { prompt?: string; model_response?: string; answer_explanation_ru?: string; answer?: string[]; options?: string[]; accepted_alternatives?: string[] } = {};
+    let stale = false;
+    let done = 0;
+    for (const p of f.patches) {
+      if (p.op === 'set') {
+        const now = (env[p.field] ?? null) as string | null;
+        if (now === p.new) { done += 1; continue; }
+        if (p.field === 'answer_explanation_ru' ? (now !== null && now !== p.current) : now !== p.current) { stale = true; continue; }
+        changes[p.field] = p.new;
+      } else if (p.op === 'add_accepted') {
+        const have = (env.accepted_alternatives ?? []).filter((x): x is string => typeof x === 'string');
+        const keys = new Set([...have, ...(env.answer ?? []).filter((x): x is string => typeof x === 'string')]);
+        const add = p.values.filter((v) => !keys.has(v));
+        if (!add.length) { done += 1; continue; }
+        changes.accepted_alternatives = [...(changes.accepted_alternatives ?? have), ...add];
+      } else if (p.op === 'remove_accepted') {
+        const have = (changes.accepted_alternatives ?? (env.accepted_alternatives ?? []).filter((x): x is string => typeof x === 'string'));
+        const kept = have.filter((x) => !p.values.includes(x));
+        if (kept.length === have.length) { done += 1; continue; }
+        changes.accepted_alternatives = kept;
+      } else if (p.op === 'set_answer') {
+        if (JSON.stringify(env.answer) === JSON.stringify(p.new)) { done += 1; continue; }
+        if (JSON.stringify(env.answer) !== JSON.stringify(p.current)) { stale = true; continue; }
+        changes.answer = p.new;
+      } else if (p.op === 'set_options') {
+        if (JSON.stringify(env.options) === JSON.stringify(p.new)) { done += 1; continue; }
+        if (JSON.stringify(env.options) !== JSON.stringify(p.current) || p.new.length !== p.current.length) { stale = true; continue; }
+        changes.options = p.new;
+      }
+    }
+    if (!Object.keys(changes).length) { out.push({ item_id: f.id, status: stale ? 'changed_since' : 'already' }); continue; }
+    await patchItem({ system: CONTENT_REVISION_ACTOR }, {
+      item_id: f.id, base_hash: it.current_hash, changes,
+      reason: `AI-рецензия 13.11.2026 (две независимые AI-проверки, не преподаватель): ${f.reason_ru}`.slice(0, 1000),
+    }, { runQa: false });
+    out.push({ item_id: f.id, status: stale ? 'changed_since' : 'applied' });
+    void done;
+  }
+  const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
+  if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после AI-рецензии (${applied.length})`, scope: { kind: 'items', ids: applied } });
+  return out;
+}
+
+/** A new immutable item revision with history and revocation, for envelope fields `patchItem` does not edit. */
+async function reviseItemEnvelope(row: { item_id: string; module: string; current_hash: string }, next: ItemEnvelope, changes: Record<string, { before: unknown; after: unknown }>, reason: string): Promise<string> {
+  const db = adminClient();
+  const hash = contentHash(next);
+  if (hash === row.current_hash) return hash;
+  const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: 'item', content_id: row.item_id, content_hash: hash, module: row.module, payload_private: next }).select('id').single();
+  if (error) throw new Error(error.message);
+  const { error: ue } = await db.from('items').update({ envelope: next, current_hash: hash, revision_id: rev.id }).eq('item_id', row.item_id).eq('current_hash', row.current_hash);
+  if (ue) throw new Error(ue.message);
+  await db.from('content_patches').insert({ content_kind: 'item', content_id: row.item_id, base_hash: row.current_hash, new_hash: hash, changes, reason, revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });
+  const { count } = await db.from('content_releases').update({ revoked_at: new Date().toISOString(), revoked_reason: 'CONTENT_PATCHED: допуск относился к прежней ревизии' }, { count: 'exact' }).eq('content_kind', 'item').eq('content_id', row.item_id).is('revoked_at', null);
+  await audit(null, 'content.patch', { id: row.item_id }, { base_hash: row.current_hash, new_hash: hash, revoked_releases: count ?? 0, system_actor: CONTENT_REVISION_ACTOR });
+  return hash;
+}
+
+/** A new revision of a ΠΕΓΠ packet payload (same history and revocation rules as items). */
+async function revisePacket(packetId: string, mutate: (payload: Record<string, unknown>) => Record<string, unknown> | null, reason: string): Promise<RevisionStatus> {
+  const db = adminClient();
+  const { data: p } = await db.from('pegp_packets').select('packet_id, payload, current_hash').eq('packet_id', packetId).maybeSingle();
+  if (!p) return 'missing';
+  const before = p.payload as Record<string, unknown>;
+  const next = mutate(before);
+  if (!next) return 'already';
+  const hash = sha256Hex(stableStringify(next));
+  if (hash === p.current_hash) return 'already';
+  const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: 'pegp_packet', content_id: packetId, content_hash: hash, module: 'pegp', payload_private: next }).select('id').single();
+  if (error) throw new Error(error.message);
+  const { error: ue } = await db.from('pegp_packets').update({ payload: next, current_hash: hash, revision_id: rev.id }).eq('packet_id', packetId).eq('current_hash', p.current_hash);
+  if (ue) throw new Error(ue.message);
+  const changed = Object.fromEntries([...new Set([...Object.keys(before), ...Object.keys(next)])].filter((k) => stableStringify(before[k] ?? null) !== stableStringify(next[k] ?? null)).map((k) => [k, { before: before[k] ?? null, after: next[k] ?? null }]));
+  await db.from('content_patches').insert({ content_kind: 'pegp_packet', content_id: packetId, base_hash: p.current_hash, new_hash: hash, changes: changed, reason, revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });
+  await db.from('content_releases').update({ revoked_at: new Date().toISOString(), revoked_reason: 'CONTENT_PATCHED: допуск относился к прежней ревизии' }).eq('content_kind', 'pegp_packet').eq('content_id', packetId).is('revoked_at', null);
+  await audit(null, 'content.patch', { id: packetId }, { base_hash: p.current_hash, new_hash: hash, system_actor: CONTENT_REVISION_ACTOR });
+  return 'applied';
+}
+
+/** A new revision of a content singleton's inner payload (stored as { path, payload }). */
+async function reviseSingleton(id: string, mutate: (payload: Record<string, unknown>) => Record<string, unknown> | null, reason: string): Promise<RevisionStatus> {
+  const db = adminClient();
+  const { data: row } = await db.from('content_singletons').select('singleton_id, payload, current_hash').eq('singleton_id', id).maybeSingle();
+  if (!row) return 'missing';
+  const outer = row.payload as { path?: string; payload?: Record<string, unknown> };
+  const inner = mutate(outer.payload ?? {});
+  if (!inner) return 'already';
+  const next = { ...outer, payload: inner };
+  const hash = sha256Hex(stableStringify(next));
+  if (hash === row.current_hash) return 'already';
+  const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: 'singleton', content_id: id, content_hash: hash, module: null, payload_private: next }).select('id').single();
+  if (error) throw new Error(error.message);
+  const { error: ue } = await db.from('content_singletons').update({ payload: next, current_hash: hash, revision_id: rev.id }).eq('singleton_id', id).eq('current_hash', row.current_hash);
+  if (ue) throw new Error(ue.message);
+  await db.from('content_patches').insert({ content_kind: 'singleton', content_id: id, base_hash: row.current_hash, new_hash: hash, changes: { payload: { before: outer.payload ?? null, after: inner } }, reason, revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });
+  await audit(null, 'content.patch', { id }, { base_hash: row.current_hash, new_hash: hash, system_actor: CONTENT_REVISION_ACTOR });
+  return 'applied';
+}
+
+function pegpNewEnvelope(spec: PegpNewItem): ItemEnvelope {
+  const review = !!spec.review;
+  const strategy = review ? 'REVIEW_REQUIRED' : spec.type === 'mcq' ? 'CHOICE_KEY' : 'EXACT_WITH_REVIEW_FALLBACK';
+  const rubric = spec.review ? { ...PEGP_LANG_RUBRIC, task_0_2: spec.review.task_0_2 } : null;
+  const original_payload = {
+    item_id: spec.item_id, version: '0.1.0', status: 'AUTHORED_DRAFT', exam_family: 'PEGP', pool: 'pegp_practice',
+    strand: spec.stimulus_text_id ? 'PEGP_LANGUAGE_SUPPORT_ORIGINAL' : 'PEGP_TEXT_ALTERNATIVE_TO_PORTRAIT_TASK',
+    prompt: spec.prompt, ...(spec.options ? { options: spec.options } : {}), answer_type: spec.type, canonical_answers: spec.answer,
+    accepted_variants: spec.alternatives ?? [], rationale_ru: spec.explanation_ru, licensing: PEGP_LANG_LICENSING, source_refs: [],
+    ...(rubric ? { rubric, model_response: spec.review!.model_response, model_not_exhaustive: true } : {}),
+    ...(spec.stimulus_text_id ? { stimulus_id: spec.stimulus_text_id } : {}),
+    fact_basis: spec.stimulus_text_id ? 'Факты из текста пакета P06 (PEGP-LANG-P06-T01) и его карточек.' : 'Общеизвестный исторический факт, текстовая замена задания с портретом; со страницами банка 22–25 не сверялся (банк недоступен из среды подготовки).',
+    source_provenance: 'ORIGINAL_GREEKOS_TASK_NOT_OFFICIAL_QUESTION_COPY', human_review: 'NOT_REVIEWED', review_status: 'AI_ASSISTED_REVISION_NOT_INDEPENDENT',
+    evaluation: { unlisted_plausible_answer: 'REVIEW_NO_AUTOMATIC_PENALTY', fact_and_language_separate: true },
+  };
+  const policy = strategy === 'REVIEW_REQUIRED' ? {} : { normalization: ['NFC', 'trim', 'casefold', 'collapse_whitespace'], strip_accents: false, unlisted_plausible_answer: 'REVIEW_REQUIRED_NO_AUTOMATIC_PENALTY', separate_fact_and_language_scores: true };
+  return {
+    item_id: spec.item_id, version: '0.1.0', prompt: spec.prompt, type: spec.type, module: 'pegp', unit_id: null, level: spec.stimulus_text_id ? 'B1' : null,
+    canonical: { path: `GreekOS_Content_Revisions/pegp/${spec.item_id}.json`, sha256: sha256Hex(stableStringify(original_payload)) },
+    stimulus: spec.stimulus_text_id ? { text_id: spec.stimulus_text_id } : null, model_response: spec.review?.model_response ?? null, rubric,
+    estimated_effort: null, requires_audio: false, original_payload, competency_ids: [], prerequisite_ids: [], source_claim_ids: [], audio_job_ids: [],
+    options: spec.options ?? [], answer: spec.answer, accepted_alternatives: spec.alternatives ?? [], criteria: [], error_tags: null,
+    scoring: { policy, strategy, unlisted_answer: 'HOLD_FOR_REVIEW_NO_PENALTY', automatic_final_score_allowed: false } as unknown as ItemEnvelope['scoring'],
+    release: { state: 'CONTENT_GATED', learner_access: false, automatic_mastery: false, review_required: true },
+    answer_explanation_ru: spec.explanation_ru,
+  } as unknown as ItemEnvelope;
+}
+
+/**
+ * ΠΕΓΠ completion (14.11.2026): rights records for 20 own language tasks, own text alternatives and the
+ * missing production / delayed tasks for P06, and the P01 overview without a republication claim. See
+ * data/pegp-completion.ts. Idempotent; guarded by the exact state each change was written against.
+ */
+export async function applyPegpCompletion(): Promise<{ licensing: Record<RevisionStatus, number>; new_items: Record<string, RevisionStatus>; packets: Record<string, RevisionStatus> }> {
+  const db = adminClient();
+  const licensing: Record<RevisionStatus, number> = { applied: 0, already: 0, changed_since: 0, missing: 0 };
+  const touched: string[] = [];
+  for (const [id, textId] of Object.entries(PEGP_LANG_RIGHTS_ITEMS)) {
+    const { data: it } = await db.from('items').select('item_id, module, envelope, current_hash').eq('item_id', id).maybeSingle();
+    if (!it) { licensing.missing += 1; continue; }
+    const env = it.envelope as ItemEnvelope & { original_payload?: Record<string, unknown>; stimulus?: { text_id?: string } | null };
+    if (env.original_payload?.licensing) { licensing.already += 1; continue; }
+    if (env.stimulus?.text_id !== textId || env.original_payload?.strand !== 'PEGP_LANGUAGE_SUPPORT_ORIGINAL') { licensing.changed_since += 1; continue; }
+    const next = { ...env, original_payload: { ...env.original_payload, licensing: PEGP_LANG_LICENSING } } as ItemEnvelope;
+    await reviseItemEnvelope(it, next, { 'original_payload.licensing': { before: null, after: PEGP_LANG_LICENSING } }, 'Права: задание и текст — собственные материалы GreekOS (из банка взяты только факты со ссылкой на страницу); добавлена запись о происхождении. Подготовлено с помощью AI, юридическая экспертиза не проводилась.');
+    licensing.applied += 1;
+    touched.push(id);
+  }
+  const new_items: Record<string, RevisionStatus> = {};
+  for (const spec of PEGP_P06_NEW_ITEMS) {
+    const env = pegpNewEnvelope(spec);
+    const hash = contentHash(env);
+    const { data: existing } = await db.from('items').select('current_hash').eq('item_id', spec.item_id).maybeSingle();
+    if (existing) { new_items[spec.item_id] = existing.current_hash === hash ? 'already' : 'changed_since'; continue; }
+    const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: 'item', content_id: spec.item_id, content_hash: hash, module: 'pegp', payload_private: env }).select('id').single();
+    if (error) throw new Error(error.message);
+    const { error: ie } = await db.from('items').insert({
+      item_id: spec.item_id, module: 'pegp', unit_id: null, item_type: spec.type, level: env.level, pool: spec.stimulus_text_id ? null : 'pegp_practice', section: null,
+      requires_audio: false, scoring_strategy: env.scoring.strategy, competency_ids: [], prerequisite_ids: [], audio_job_ids: [], error_tags: null,
+      envelope: env, current_hash: hash, revision_id: rev.id,
+    });
+    if (ie) throw new Error(ie.message);
+    await db.from('content_patches').insert({ content_kind: 'item', content_id: spec.item_id, base_hash: 'NEW_ITEM', new_hash: hash, changes: { added: { before: null, after: { packet: 'PEGP-2026-11-P06', type: spec.type } } }, reason: spec.stimulus_text_id ? 'ΠΕΓΠ P06: дописано задание на письмо/говорение/отложенное повторение по тексту пакета (было не написано). Подготовлено с помощью AI, не проверено преподавателем.' : 'ΠΕΓΠ P06: текстовая замена задания с портретом (права на изображение не подтверждены). Подготовлено с помощью AI, не проверено преподавателем.', revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });
+    await audit(null, 'content.add_item', { id: spec.item_id }, { system_actor: CONTENT_REVISION_ACTOR, packet: 'PEGP-2026-11-P06', hash });
+    new_items[spec.item_id] = 'applied';
+    touched.push(spec.item_id);
+  }
+  const packets: Record<string, RevisionStatus> = {};
+  const histIds = PEGP_P06_NEW_ITEMS.filter((s) => !s.stimulus_text_id).map((s) => s.item_id);
+  const langIds = PEGP_P06_NEW_ITEMS.filter((s) => s.stimulus_text_id).map((s) => s.item_id);
+  packets['PEGP-2026-11-P06'] = await revisePacket('PEGP-2026-11-P06', (pl) => {
+    if (pl.status !== 'PARTIAL_AUTHORED_NOT_RELEASED') return null;
+    const cards = Array.isArray(pl.learning_cards) ? pl.learning_cards as Array<Record<string, unknown>> : [];
+    const histCards = PEGP_P06_NEW_ITEMS.filter((s) => !s.stimulus_text_id).map((s) => ({
+      card_id: `${s.item_id}-CARD`, item_id: s.item_id, assessment_item_ids: [s.item_id], fact_el: s.fact_el, explanation_ru: s.explanation_ru,
+      D7: { prompt: 'Без карточки назовите человека и его роль одной греческой фразой.', expected: s.fact_el },
+      D28: { prompt: 'Объясните другому учащемуся по-гречески, чем известен этот человек; затем проверьте по карточке.', expected_fact: s.fact_el },
+      source_note: 'Текстовая замена задания с портретом; со страницами банка не сверялось.', status: 'AUTHORED_DRAFT',
+    }));
+    const { remaining: _old, ...rest } = pl;
+    void _old;
+    return {
+      ...rest, status: P06_SCOPE.status, version: '0.2.0',
+      item_ids: [...((pl.item_ids as string[]) ?? []).filter((x) => !histIds.includes(x)), ...histIds],
+      language_item_ids: [...((pl.language_item_ids as string[]) ?? []).filter((x) => !langIds.includes(x)), ...langIds],
+      learning_cards: [...cards.filter((c) => !histIds.includes(String(c.item_id))), ...histCards],
+      excluded_scope: P06_SCOPE.excluded_scope,
+      source_scope: `${String(pl.source_scope ?? '')}; HIS — текстовые замены без изображений (общеизвестные факты)`,
+    };
+  }, 'ΠΕΓΠ P06 завершён в заявленном объёме: задания с портретами заменены собственными текстовыми (права на изображения не подтверждены), дописаны письмо, говорение, D7 и D28; исключения записаны в пакете. Подготовлено с помощью AI, не проверено преподавателем.');
+  packets['PEGP-2026-11-P01'] = await revisePacket('PEGP-2026-11-P01', (pl) => {
+    if (pl.status !== 'PARTIAL_DRAFT') return null;
+    const blockers = ((pl.blockers as string[]) ?? []).map(String);
+    return {
+      ...pl, status: 'EXAM_FORMAT_OVERVIEW', version: '0.2.0',
+      blockers: [],
+      open_reviews: blockers.filter((b) => !/RIGHTS|REPUBLICATION|LANGUAGE_COMPONENT_AUTHORING/.test(b)),
+      republication: { official_bank: 'NOT_REPUBLISHED', note_ru: 'GreekOS не перепубликует официальный банк вопросов: обзор формата экзамена изложен своими словами, ученик получает ссылку на официальный сайт и тренируется на собственных заданиях GreekOS.' },
+      language_component: { authored_in: ['PEGP-LANG-P03', 'PEGP-LANG-P04', 'PEGP-LANG-P05', 'PEGP-LANG-P06'], note_ru: 'Языковая часть (чтение, письмо, говорение, отложенные повторения) написана в языковых пакетах P03–P06.' },
+      original_language_tasks_authored: true,
+    };
+  }, 'ΠΕΓΠ P01 (обзор формата экзамена): официальный банк не перепубликуется — записано явно; языковая часть написана в пакетах P03–P06; оставшиеся проверки человеком перечислены в open_reviews. Подготовлено с помощью AI.');
+  packets.pegp_module = await reviseSingleton('pegp_module', (pl) => {
+    const blockers = ((pl.blockers as string[]) ?? []).map(String);
+    if (!blockers.some((b) => /REPUBLICATION|LANGUAGE_COMPONENT_AUTHORING/.test(b))) return null;
+    return {
+      ...pl, blockers: blockers.filter((b) => !/REPUBLICATION|LANGUAGE_COMPONENT_AUTHORING/.test(b)),
+      republication: { official_bank: 'NOT_REPUBLISHED', note_ru: 'Официальный банк не перепубликуется: ссылка на официальный сайт и собственные задания GreekOS.' },
+      language_packets: ['PEGP-LANG-P03', 'PEGP-LANG-P04', 'PEGP-LANG-P05', 'PEGP-LANG-P06'],
+    };
+  }, 'Модуль ΠΕΓΠ: сняты пункты «права на перепубликацию» (банк не перепубликуется) и «языковая часть не завершена» (пакеты P03–P06); проверка человеком и аудио остаются открытыми. Подготовлено с помощью AI.');
+  if (touched.length) await runQaBatch({ actorId: null, label: `Повторная проверка ΠΕΓΠ после ревизии прав и завершения P06 (${touched.length})`, scope: { kind: 'items', ids: touched } });
+  return { licensing, new_items, packets };
 }

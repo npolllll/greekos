@@ -1,0 +1,154 @@
+# GreekOS — operations tasks that need the production secrets but change nothing for learners:
+# provider diagnostics, a read-only state report, the backup restore test, production acceptance.
+# Run: Actions → «GreekOS ops» → Run workflow → task. A maintenance branch can also request a task by
+# committing its name to GreekOS_APP_HANDOFF_2026-10-29/app/ops/request (first line).
+# Every task prints counts and statuses only: no keys, no e-mails, no learner content.
+name: GreekOS ops
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'one or more, comma-separated: db-state, qa-fails, llm-diagnose, restore-test, acceptance, e2e, vercel-info, azure-pa'
+        default: 'db-state'
+        required: true
+  push:
+    branches: ['claude/**']
+    paths: ['GreekOS_APP_HANDOFF_2026-10-29/app/ops/request']
+
+permissions:
+  contents: read
+
+concurrency:
+  # One run per requested task list: the disposable e2e copy and production checks do not wait for each other.
+  group: greekos-ops-${{ inputs.task || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  ops:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: GreekOS_APP_HANDOFF_2026-10-29/app
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      APP_URL: ${{ secrets.APP_URL }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+      AZURE_SPEECH_REGION: ${{ vars.AZURE_SPEECH_REGION || 'westeurope' }}
+      BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+      OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      ACCEPT_SPEAKING: ${{ vars.ACCEPT_SPEAKING || '1' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # a redeploy checks that it does not roll production back
+      - name: Task
+        id: task
+        env:
+          INPUT_TASK: ${{ inputs.task }}
+        run: |
+          t="${INPUT_TASK:-}"
+          [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
+          for x in ${t//,/ }; do
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa|release-readiness|acceptance-speaking|qa-full) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+          done
+          echo "tasks=,$t," >> "$GITHUB_OUTPUT"
+          echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
+          echo "Tasks: $t"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: GreekOS_APP_HANDOFF_2026-10-29/app/package-lock.json
+      - name: PostgreSQL 17 client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -qq postgresql-client-17
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+      - run: npm ci --no-audit --no-fund
+      - name: auth-config (sign-in settings of the Supabase project)
+        if: contains(steps.task.outputs.tasks, ',auth-config,')
+        run: bash scripts/ops/auth-config.sh
+      - name: vercel-logs (runtime errors of the current production deployment)
+        if: contains(steps.task.outputs.tasks, ',vercel-logs,')
+        working-directory: .
+        run: |
+          npx --yes vercel link --yes --project greekos-course --token "$VERCEL_TOKEN" >/dev/null 2>&1
+          npx --yes vercel ls greekos-course --token "$VERCEL_TOKEN" 2>&1 | head -12
+          DEP=$(npx --yes vercel inspect "$APP_URL" --token "$VERCEL_TOKEN" 2>&1 | grep -oE 'greekos-course-[a-z0-9]+-[a-z0-9-]+\.vercel\.app' | head -1)
+          echo "current production deployment: $DEP"
+          npx --yes vercel inspect "$DEP" --token "$VERCEL_TOKEN" 2>&1 | grep -iE "status|target|region|created|root" | head -10 || true
+          ( sleep 8; for p in /api/health /login; do curl -s -o /dev/null -w "$p %{http_code}\n" "$APP_URL$p"; done ) &
+          timeout 45 npx --yes vercel logs "$DEP" --token "$VERCEL_TOKEN" 2>&1 | grep -v "^$" | head -80 || true
+          npx --yes vercel env ls production --token "$VERCEL_TOKEN" 2>&1 | awk '{print $1}' | head -40
+      - name: vercel-redeploy (restore lost variables, rebuild production)
+        if: contains(steps.task.outputs.tasks, ',vercel-redeploy,')
+        run: bash scripts/ops/vercel-env-redeploy.sh
+      - name: vercel-rollback (back to the previous production deployment)
+        if: contains(steps.task.outputs.tasks, ',vercel-rollback,')
+        working-directory: .
+        run: |
+          npx --yes vercel link --yes --project greekos-course --token "$VERCEL_TOKEN" >/dev/null 2>&1
+          npx --yes vercel rollback --yes --token "$VERCEL_TOKEN" 2>&1 | tail -5
+          sleep 10
+          for p in /api/health /login; do curl -s -o /dev/null -w "$p %{http_code}\n" "$APP_URL$p"; done
+      - name: db-state
+        if: contains(steps.task.outputs.tasks, ',db-state,')
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/db-state.sql
+      - name: qa-full (a new full digital QA batch with hunspell el_GR; writes QA records only)
+        if: contains(steps.task.outputs.tasks, ',qa-full,')
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+        run: |
+          sudo apt-get install -y -qq hunspell hunspell-el
+          npx tsx scripts/qa-batch.ts --label "Полный прогон (ops) $(date -u +%F)" | tail -25
+      - name: qa-fails (failing objects of the latest full QA batch)
+        if: contains(steps.task.outputs.tasks, ',qa-fails,')
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/qa-fails.sql
+      - name: release-readiness (what a release would open; what waits for the owner)
+        if: contains(steps.task.outputs.tasks, ',release-readiness,')
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/release-readiness.sql
+      - name: vercel-info (Git link, Fluid compute, region, recent deployments)
+        if: contains(steps.task.outputs.tasks, ',vercel-info,')
+        run: bash scripts/ops/vercel-info.sh
+      - name: azure-pa (does Azure score Greek pronunciation?)
+        if: contains(steps.task.outputs.tasks, ',azure-pa,')
+        run: node scripts/ops/azure-pa-probe.mjs
+      - name: llm-diagnose
+        if: contains(steps.task.outputs.tasks, ',llm-diagnose,')
+        run: node scripts/ops/llm-diagnose.mjs
+        env:
+          LLM_DIAG_CASES: ${{ vars.LLM_DIAG_CASES || 'A,C,D,E' }}
+      - name: restore-test
+        if: contains(steps.task.outputs.tasks, ',restore-test,')
+        run: bash scripts/ops/restore-test.sh
+      - name: acceptance
+        if: contains(steps.task.outputs.tasks, ',acceptance,') || contains(steps.task.outputs.tasks, ',acceptance-speaking,')
+        env:
+          ACCEPT_STEPS: ${{ contains(steps.task.outputs.tasks, ',acceptance-speaking,') && 'speaking.mobile' || '' }}
+        run: |
+          npx playwright install --with-deps chromium
+          npx tsx scripts/ops/acceptance.ts
+      - name: e2e (disposable copy of the system on this runner, no production service)
+        if: contains(steps.task.outputs.tasks, ',e2e,')
+        run: |
+          sudo apt-get install -y -qq hunspell hunspell-el
+          bash scripts/ops/e2e-local.sh
+      - name: Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: greekos-ops-${{ steps.task.outputs.name }}-${{ github.run_id }}
+          path: GreekOS_APP_HANDOFF_2026-10-29/app/reports/ops
+          if-no-files-found: ignore
+          retention-days: 30

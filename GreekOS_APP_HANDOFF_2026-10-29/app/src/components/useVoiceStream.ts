@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { decodeAudioChunk, INPUT_SAMPLE_RATE, type ClientMessage, type ServerMessage, type Speed, type PersonaWire, type ConfirmReasonWire } from '@/lib/speaking/stream-protocol';
+import { decodeAudioChunk, HANDOVER_CLOSE_CODE, INPUT_SAMPLE_RATE, type ClientMessage, type ServerMessage, type Speed, type PersonaWire, type ConfirmReasonWire } from '@/lib/speaking/stream-protocol';
 
 export type StreamStatus =
   | 'idle' | 'unsupported' | 'requesting_microphone' | 'permission_denied' | 'connecting'
@@ -235,9 +235,11 @@ export function useVoiceStream(opts: {
       sock.onopen = () => { sock.send(JSON.stringify({ type: 'auth', token: tok.token, input_source: inputSource(), speed: speedRef.current })); resolve(true); };
       sock.onmessage = (e) => { if (typeof e.data === 'string') handle(JSON.parse(e.data) as ServerMessage); else onChunk(e.data as ArrayBuffer); };
       sock.onerror = () => resolve(false);
-      sock.onclose = () => {
+      sock.onclose = (ev) => {
         authed.current = false;
         if (ws.current !== sock || stopping.current) return;
+        // Planned handover (the server's connection time limit, chosen at a quiet moment): reconnect at once.
+        if (ev.code === HANDOVER_CLOSE_CODE) { reconnect.current(); return; }
         // Network drop: keep the mic, reconnect with a fresh token; the server state is authoritative.
         stopPlayback();
         setStatus('network_lost');

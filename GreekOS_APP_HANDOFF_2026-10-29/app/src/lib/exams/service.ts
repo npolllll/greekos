@@ -80,6 +80,16 @@ export async function candidateComponent(c: ComponentRow, viewer: Viewer = PUBLI
   }
   const kind = (c.component_kind ?? componentKindOf(c.component_id)) as ComponentKind;
   const form = (c.payload?.form ?? {}) as Record<string, unknown>;
+  // Banks kept in the form or in the tasks (R02, R03, U02, U03) are shown with the texts, once.
+  if (texts.length && !texts.some((t) => t.phrase_bank || t.word_bank?.length)) {
+    const itemBank = rows.map((r) => (r.envelope.stimulus as { bank?: unknown } | undefined)?.bank ?? (r.item_type === 'short_answer' && r.envelope.options && !Array.isArray(r.envelope.options) ? r.envelope.options : undefined)).find((b) => b && typeof b === 'object');
+    const phrase = (form.phrase_bank && typeof form.phrase_bank === 'object' ? form.phrase_bank : itemBank) as Record<string, string> | undefined;
+    const words = Array.isArray(form.word_bank) ? (form.word_bank as unknown[]).filter((w): w is string => typeof w === 'string') : [];
+    const example = form.example as { gap?: number; answer?: string } | undefined;
+    const last = texts[texts.length - 1];
+    if (phrase) last.phrase_bank = { ...(example?.answer ? { [`Пример (${example.gap ?? 0})`]: String(example.answer) } : {}), ...phrase };
+    else if (words.length) last.word_bank = words;
+  }
   const comparison = form.comparison as { columns?: unknown } | undefined;
   const columns = Array.isArray(comparison?.columns) ? (comparison!.columns as unknown[]).filter((x): x is string => typeof x === 'string') : [];
   return {

@@ -6,5 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const started = Date.now();
   const { error } = await adminClient().from('import_runs').select('id', { head: true, count: 'exact' });
-  return NextResponse.json({ ok: !error, db: error ? 'error' : 'ok', latency_ms: Date.now() - started }, { status: error ? 503 : 200 });
+  // The deployed commit (no secret): lets the deploy script refuse to roll production back.
+  const commit = process.env.GREEKOS_COMMIT ?? process.env.VERCEL_GIT_COMMIT_SHA ?? null;
+  return NextResponse.json({ ok: !error, db: error ? 'error' : 'ok', latency_ms: Date.now() - started, commit }, { status: error ? 503 : 200 });
 }

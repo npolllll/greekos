@@ -18,7 +18,17 @@ const LVL_RU: Record<string, string> = { independent: 'самостоятель�
 
 const LIVE = new Set(['connecting', 'listening', 'speech', 'transcribing', 'confirming', 'thinking', 'speaking', 'paused', 'network_lost']);
 const SPEED_RU: Record<Speed, string> = { normal: 'обычно', slow: 'медленнее', fast: 'чуть быстрее' };
-const FALLBACK_NOTE = 'AI-собеседник не ответил вовремя или его реплика не прошла проверку греческого — прозвучала авторская реплика сценария (она помечена). Разговор продолжается.';
+/** Why the scene's authored line was used instead of an AI reply: said plainly, never hidden. */
+export function fallbackNote(reason: string | null | undefined): string {
+  const r = reason ?? '';
+  const tail = ' Вместо ответа AI прозвучала авторская реплика сценария (она помечена); разговор можно продолжать.';
+  if (r.startsWith('BUDGET')) return `Лимит AI-функций исчерпан (дневной для ученика или месячный для курса).${tail} Уроки и упражнения работают как обычно.`;
+  if (r.startsWith('TIMEOUT')) return `AI-собеседник не ответил вовремя.${tail}`;
+  if (r.startsWith('GUARD')) return `Ответ AI не прошёл автоматическую проверку греческого и не был показан.${tail}`;
+  if (r.startsWith('NOT_CONFIGURED')) return `AI-собеседник не подключён.${tail}`;
+  if (r.startsWith('PROVIDER') || r.startsWith('REFUSAL') || r.startsWith('TRUNCATED') || r.startsWith('EMPTY')) return `Сервис AI вернул ошибку (она записана для владельца курса).${tail}`;
+  return `AI-собеседник не ответил.${tail}`;
+}
 
 function engineMeta(engine: string | null, generated: boolean): string {
   if (engine?.startsWith('llm:') || (!engine && generated)) return 'AI-собеседник';
@@ -54,7 +64,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
     sessionId: initial.session_id,
     initialSpeed: initial.mode === 'b2_mock' ? 'normal' : defaultRate,
     onView: (v) => setView(v as SessionView),
-    onTurnMeta: (m) => { setHint(m.hint_ru); setEngineNote(m.engine === 'scripted_fallback' ? FALLBACK_NOTE : null); },
+    onTurnMeta: (m) => { setHint(m.hint_ru); setEngineNote(m.engine === 'scripted_fallback' ? fallbackNote(m.engine_reason) : null); },
     onAssistantText: (turnId, text) => setLive({ turnId, text }),
   });
   const fallback = streamFallback ?? (wantsStream && stream.status === 'unsupported' ? stream.error ?? 'браузер не поддерживает потоковый звук' : null);
@@ -154,7 +164,7 @@ export function SpeakingStage({ initial, defaultRate }: { initial: SessionView; 
       setPending(null);
       setTyped('');
       if (j.hint_ru) setHint(j.hint_ru);
-      setEngineNote(j.engine_kind === 'scripted_fallback' ? FALLBACK_NOTE : null);
+      setEngineNote(j.engine_kind === 'scripted_fallback' ? fallbackNote(j.engine_reason) : null);
       setState('ready');
     } catch (e) {
       const ex = e as Error & { status?: number };

@@ -53,9 +53,18 @@ function base(partial: Partial<DeterministicScore>): DeterministicScore {
 }
 
 /** Compare a text answer with the item key under its own normalisation policy. */
-export function compareText(item: ItemEnvelope, raw: string): DeterministicScore {
+// A code answer («G», «B») typed on a Greek or Russian keyboard looks the same but is another letter.
+const LOOKALIKE: Record<string, string> = { Α: 'A', Β: 'B', Ε: 'E', Ζ: 'Z', Η: 'H', Ι: 'I', Κ: 'K', Μ: 'M', Ν: 'N', Ο: 'O', Ρ: 'P', Τ: 'T', Υ: 'Y', Χ: 'X', А: 'A', В: 'B', Е: 'E', К: 'K', М: 'M', Н: 'H', О: 'O', Р: 'P', С: 'C', Т: 'T', Х: 'X' };
+function letterCode(raw: string, keys: string[]): string {
+  const t = raw.trim().toUpperCase();
+  if (t.length !== 1 || !keys.length || !keys.every((k) => /^[A-Z]$/.test(k.trim()))) return raw;
+  return LOOKALIKE[t] ?? t;
+}
+
+export function compareText(item: ItemEnvelope, raw0: string): DeterministicScore {
   const st = steps(item);
   const norm = (s: string) => normalizeByPolicy(s, st);
+  const raw = letterCode(raw0, keyStrings(item.answer));
   const response = norm(raw);
   const keys = keyStrings(item.answer);
   const alts = keyStrings(item.accepted_alternatives);

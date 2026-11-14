@@ -9,6 +9,15 @@ export const metadata = { title: 'Политика выпуска' };
 
 interface Gate { id: string; classification: string; disposition: string; evidence: string; decision: string; owner: string }
 
+// The gates file of the academic corpus is in English; the owner reads it in Russian.
+const GATE_TEXT_RU: Array<[RegExp, string]> = [
+  [/^Implement the route and locked editorial content now; publication requires the stated academic evidence\.?$/, 'Маршрут и закрытый редакционный контент реализованы; публикация требует указанного академического подтверждения.'],
+  [/^Readiness meanings separated by final owner directive; no academic review upgraded\..*$/, 'Значения готовности разделены по решению владельца; академическая проверка не повышена. C2/C9 требуют успешного отчёта текущей передачи.'],
+];
+const OWNER_RU: Record<string, string> = { 'GreekOS academic editor / external reviewer': 'академический редактор GreekOS / внешний рецензент', 'Claude Code / academic editor': 'разработка / академический редактор' };
+const CLASS_RU: Record<string, string> = { CONTENT_GATED: 'контент закрыт' };
+const gateRu = (t: string) => GATE_TEXT_RU.find(([re]) => re.test(t))?.[1] ?? t;
+
 export default async function PolicyPage() {
   await requireOwnerPage();
   const db = adminClient();
@@ -28,7 +37,7 @@ export default async function PolicyPage() {
         <p className="small quiet">Из ACADEMIC_PUBLICATION_GATES.json. Ни одни ворота не закрыты техническим импортом; внешние проверки не выполнялись. Заданий под воротами: {gp?.content_gated_item_count ?? '—'}.</p>
         <div className="table-wrap"><table className="data-table">
           <thead><tr><th>Ворота</th><th>Класс</th><th>Решение</th><th>Доказательство</th><th>Ответственный</th></tr></thead>
-          <tbody>{(gp?.gates ?? []).map((g) => <tr key={g.id}><td><strong>{g.id}</strong></td><td>{g.classification}</td><td className="tiny">{g.decision}</td><td className="code tiny">{g.evidence}</td><td className="tiny">{g.owner}</td></tr>)}</tbody>
+          <tbody>{(gp?.gates ?? []).map((g) => <tr key={g.id}><td><strong>{g.id}</strong></td><td>{CLASS_RU[g.classification] ?? g.classification}</td><td className="tiny">{gateRu(g.decision)}</td><td className="code tiny">{g.evidence}</td><td className="tiny">{OWNER_RU[g.owner] ?? g.owner}</td></tr>)}</tbody>
         </table></div>
       </div>
       <div className="card cardpad">
