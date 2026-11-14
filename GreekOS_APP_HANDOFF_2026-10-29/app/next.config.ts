@@ -16,7 +16,9 @@ function csp(): string {
   const supa = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').replace(/\/$/, '');
   const ws = supa.replace(/^http/, 'ws');
   const gateway = (process.env.NEXT_PUBLIC_VOICE_GATEWAY_URL ?? '').replace(/\/$/, '');
-  const connect = ["'self'", supa, ws, gateway].filter(Boolean).join(' ');
+  // Live voice built into the deployment: the app's own wss:// origin (older Safari does not match it by 'self').
+  const app = !gateway && process.env.APP_URL ? process.env.APP_URL.trim().replace(/^http/, 'ws').replace(/\/$/, '') : '';
+  const connect = ["'self'", supa, ws, gateway, app].filter(Boolean).join(' ');
   return [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline'",

@@ -48,6 +48,8 @@ jobs:
       ACCEPT_SPEAKING: ${{ vars.ACCEPT_SPEAKING || '1' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # a redeploy checks that it does not roll production back
       - name: Task
         id: task
         env:

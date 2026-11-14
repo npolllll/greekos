@@ -16,8 +16,8 @@ async function tts(text, lang, voice) {
   return new Uint8Array(await r.arrayBuffer());
 }
 
-async function assess(wav, lang, reference) {
-  const pa = Buffer.from(JSON.stringify({ ReferenceText: reference, GradingSystem: 'HundredMark', Granularity: 'Phoneme', Dimension: 'Comprehensive', EnableMiscue: true })).toString('base64');
+async function assess(wav, lang, reference, label = lang, extra = {}) {
+  const pa = Buffer.from(JSON.stringify({ ReferenceText: reference, GradingSystem: 'HundredMark', Granularity: 'Word', Dimension: 'Comprehensive', EnableMiscue: !!reference, ...extra })).toString('base64');
   const t0 = Date.now();
   const r = await fetch(`https://${region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${lang}&format=detailed`, {
     method: 'POST', body: wav,
@@ -27,7 +27,7 @@ async function assess(wav, lang, reference) {
   let j = null; try { j = JSON.parse(body); } catch { /* not json */ }
   const best = j?.NBest?.[0];
   console.log(JSON.stringify({
-    lang, http: r.status, ms: Date.now() - t0, recognition: j?.RecognitionStatus ?? null, display: j?.DisplayText ?? null,
+    case: label, lang, http: r.status, ms: Date.now() - t0, recognition: j?.RecognitionStatus ?? null, display: j?.DisplayText ?? null,
     confidence: best?.Confidence ?? null,
     pronunciation: best?.PronunciationAssessment ?? (best && 'AccuracyScore' in best ? { AccuracyScore: best.AccuracyScore, FluencyScore: best.FluencyScore, CompletenessScore: best.CompletenessScore, PronScore: best.PronScore } : null),
     words: (best?.Words ?? []).slice(0, 6).map((w) => ({ w: w.Word, acc: w.PronunciationAssessment?.AccuracyScore ?? w.AccuracyScore ?? null, err: w.PronunciationAssessment?.ErrorType ?? w.ErrorType ?? null, phonemes: (w.Phonemes ?? []).length })),
@@ -36,6 +36,17 @@ async function assess(wav, lang, reference) {
 }
 
 const el = 'Καλημέρα, θέλω ένα κιλό ντομάτες.';
+const native = await tts(el, 'el-GR', 'el-GR-AthinaNeural');
+// A Russian voice reading a Cyrillic transliteration: Greek words with a strong Russian accent.
+const accented = await tts('Калимера, тэло эна кило доматэс.', 'ru-RU', 'ru-RU-DmitryNeural');
+const wrongWords = await tts('Καλησπέρα, θέλω δύο κιλά πατάτες.', 'el-GR', 'el-GR-NestorasNeural');
+const variant = process.env.PA_PROBE ?? 'full';
+if (variant === 'full') {
+  await assess(native, 'el-GR', el, 'scripted-native');
+  await assess(accented, 'el-GR', el, 'scripted-russian-accent');
+  await assess(wrongWords, 'el-GR', el, 'scripted-wrong-words');
+  await assess(native, 'el-GR', '', 'unscripted-native');
+  await assess(accented, 'el-GR', '', 'unscripted-russian-accent');
+}
 const en = 'Good morning, I would like a kilo of tomatoes.';
-await assess(await tts(el, 'el-GR', 'el-GR-AthinaNeural'), 'el-GR', el);
-await assess(await tts(en, 'en-US', 'en-US-JennyNeural'), 'en-US', en);
+await assess(await tts(en, 'en-US', 'en-US-JennyNeural'), 'en-US', en, 'control-en');

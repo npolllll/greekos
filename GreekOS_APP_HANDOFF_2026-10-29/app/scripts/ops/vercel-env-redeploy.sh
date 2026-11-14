@@ -20,6 +20,8 @@ for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE
   grep -qx "$v" <<<"$now" || { echo "::error::missing in Vercel: $v"; exit 1; }
 done
 echo "all required variables present"
-npx --yes vercel deploy --prod --yes "${T[@]}" 2>&1 | grep -E "Production|Error|error|Ready|Aliased" | head -10
+ROOT="$ROOT" bash scripts/ops/no-rollback.sh
+SHA=$(git -C "$ROOT" rev-parse HEAD)
+npx --yes vercel deploy --prod --yes --meta "greekosCommit=$SHA" --env "GREEKOS_COMMIT=$SHA" "${T[@]}" 2>&1 | grep -E "Production|Error|error|Ready|Aliased" | head -10
 for i in $(seq 1 20); do c=$(curl -s -o /dev/null -w '%{http_code}' "$APP_URL/api/health"); [ "$c" = 200 ] && break; sleep 5; done
 for p in /api/health /login /register; do curl -s -o /dev/null -w "$p %{http_code}\n" "$APP_URL$p"; done

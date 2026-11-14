@@ -14,7 +14,7 @@ import { utteranceAsr, confirmationReason, type UtteranceAsr, type UtteranceTran
 import { parseWav, pcmSamples } from '../audio/wav.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
 import {
-  STREAM_PROTOCOL, INPUT_SAMPLE_RATE, FRAME_SAMPLES, GATEWAY_PATH, encodeAudioChunk, heardTextAt,
+  STREAM_PROTOCOL, HANDOVER_CLOSE_CODE, INPUT_SAMPLE_RATE, FRAME_SAMPLES, GATEWAY_PATH, encodeAudioChunk, heardTextAt,
   type ClientMessage, type ServerMessage, type Speed, type InputSource, type GatewayState,
 } from './stream-protocol.ts';
 
@@ -100,7 +100,7 @@ function concat(chunks: Int16Array[]): Int16Array {
   return out;
 }
 
-class StreamSession {
+export class StreamSession {
   private user!: SessionUser;
   private sessionId!: string;
   private mode!: string;
@@ -195,6 +195,8 @@ class StreamSession {
   }
 
   get isAuthed() { return this.authed; }
+  /** Nothing would be lost by closing now: no speech being captured, no turn, reply, playback or confirmation pending. */
+  get isIdle() { return !this.utter && !this.busy && !this.queued && !this.playback && !this.reply && !this.confirmed && this.pendingConfirm.size === 0; }
 
   /** Long operations run beside the ordered message chain so audio and barge-in keep flowing. */
   private spawn(fn: () => Promise<void>) {
@@ -728,7 +730,48 @@ function viewOf(res: TurnResult): Omit<TurnResult, 'afterReply'> {
 }
 
 function originAllowed(req: IncomingMessage): boolean {
-  const origin = req.headers.origin;
+  return streamOriginAllowed(req.headers.origin);
+}
+
+/**
+ * One streaming connection, wherever the socket comes from: the standalone gateway process or the app's
+ * own WebSocket Vercel Function. `maxMs` is the platform's connection limit: shortly before it the session
+ * waits for a quiet moment (no speech, turn, reply or confirmation in progress) and closes with
+ * HANDOVER_CLOSE_CODE so the client reconnects without losing a line; the conversation state lives in the
+ * database, so the next connection continues it.
+ */
+export function attachStreamConnection(ws: WebSocket, opts: { maxMs?: number } = {}): StreamSession {
+  const s = new StreamSession(ws);
+  let alive = true;
+  ws.on('pong', () => { alive = true; });
+  const authTimer = setTimeout(() => { if (!s.isAuthed) ws.close(1008, 'AUTH_TIMEOUT'); }, AUTH_TIMEOUT_MS);
+  const ping = setInterval(() => {
+    if (!alive) { ws.terminate(); return; }
+    alive = false;
+    ws.ping();
+  }, 15_000);
+  ping.unref?.();
+  let handover: ReturnType<typeof setInterval> | null = null;
+  const opened = Date.now();
+  if (opts.maxMs) {
+    const softAt = opened + opts.maxMs - 45_000;
+    const hardAt = opened + opts.maxMs - 6_000;
+    handover = setInterval(() => {
+      const now = Date.now();
+      if (now < softAt) return;
+      if (s.isIdle || now >= hardAt) ws.close(HANDOVER_CLOSE_CODE, 'HANDOVER');
+    }, 500);
+    handover.unref?.();
+  }
+  // Messages are handled strictly in order so control and audio frames never race.
+  let chain = Promise.resolve();
+  ws.on('message', (data, isBinary) => { chain = chain.then(() => s.onMessage(data, isBinary)).catch(() => undefined); });
+  ws.on('close', () => { clearTimeout(authTimer); clearInterval(ping); if (handover) clearInterval(handover); s.close(); });
+  return s;
+}
+
+/** Browser origins allowed to open the stream: the app itself (plus configured extras; dev hosts locally). */
+export function streamOriginAllowed(origin: string | null | undefined): boolean {
   if (!origin) return env.localEnginesAllowed; // non-browser clients only in local/test
   const allowed = new Set([new URL(env.appUrl).origin, ...(process.env.VOICE_GATEWAY_ALLOWED_ORIGINS ?? '').split(',').map((s) => s.trim()).filter(Boolean)]);
   if (env.localEnginesAllowed) { allowed.add('http://localhost:3210'); allowed.add('http://127.0.0.1:3210'); }
@@ -755,30 +798,16 @@ export async function startVoiceGateway(opts: { port: number; host?: string }): 
     if (path !== GATEWAY_PATH || !originAllowed(req)) { socket.write('HTTP/1.1 403 Forbidden\r\n\r\n'); socket.destroy(); return; }
     wss.handleUpgrade(req, socket, head, (ws) => wss.emit('connection', ws, req));
   });
-  wss.on('connection', (ws: WebSocket & { alive?: boolean }) => {
-    const s = new StreamSession(ws);
+  wss.on('connection', (ws: WebSocket) => {
+    const s = attachStreamConnection(ws);
     live.add(s);
-    ws.alive = true;
-    ws.on('pong', () => { ws.alive = true; });
-    const authTimer = setTimeout(() => { if (!s.isAuthed) ws.close(1008, 'AUTH_TIMEOUT'); }, AUTH_TIMEOUT_MS);
-    // Messages are handled strictly in order so control and audio frames never race.
-    let chain = Promise.resolve();
-    ws.on('message', (data, isBinary) => { chain = chain.then(() => s.onMessage(data, isBinary)).catch(() => undefined); });
-    ws.on('close', () => { clearTimeout(authTimer); s.close(); live.delete(s); });
+    ws.on('close', () => live.delete(s));
   });
-  const ping = setInterval(() => {
-    for (const ws of wss.clients as Set<WebSocket & { alive?: boolean }>) {
-      if (ws.alive === false) { ws.terminate(); continue; }
-      ws.alive = false;
-      ws.ping();
-    }
-  }, 15_000);
-  ping.unref();
   await new Promise<void>((resolve) => server.listen(opts.port, opts.host ?? '127.0.0.1', resolve));
   const port = (server.address() as { port: number }).port;
   return {
     server, port, sessions: () => live.size,
-    close: () => new Promise<void>((resolve) => { clearInterval(ping); for (const ws of wss.clients) ws.terminate(); wss.close(); server.close(() => resolve()); }),
+    close: () => new Promise<void>((resolve) => { for (const ws of wss.clients) ws.terminate(); wss.close(); server.close(() => resolve()); }),
   };
 }
 

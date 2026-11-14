@@ -209,7 +209,10 @@ if [ "$DRY" != 1 ]; then
   for k in "${VARS[@]}" "${!FIXED[@]}"; do grep -qx "$k" <<<"$have" || { echo "Vercel: переменная $k не сохранилась — развёртывание остановлено" >&2; exit 1; }; done
   echo "переменные Vercel: все ${#VARS[@]}+${#FIXED[@]} на месте"
 fi
-run npx --yes vercel deploy --prod --yes "${VT[@]}"
+# Never roll production back by accident (Vercel's own Git deployments are off in vercel.json).
+HEAD_SHA=$(git -C "$ROOT" rev-parse HEAD)
+[ "$DRY" = 1 ] || ROOT="$ROOT" bash scripts/ops/no-rollback.sh
+run npx --yes vercel deploy --prod --yes --meta "greekosCommit=$HEAD_SHA" --env "GREEKOS_COMMIT=$HEAD_SHA" "${VT[@]}"
 
 step "10/10 проверка работающей системы"
 if [ "$DRY" != 1 ]; then

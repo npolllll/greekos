@@ -8,6 +8,10 @@ export const STREAM_PROTOCOL = 'greekos-voice.v1';
 export const INPUT_SAMPLE_RATE = 16_000;
 export const FRAME_SAMPLES = 320; // 20 ms at 16 kHz
 export const GATEWAY_PATH = '/v1/stream';
+/** The same protocol served by the app's own deployment (WebSocket Vercel Function). */
+export const BUILTIN_STREAM_PATH = '/api/voice/stream';
+/** Close code that asks the client to reconnect at once with a fresh token (planned handover, not an error). */
+export const HANDOVER_CLOSE_CODE = 4001;
 
 export type Speed = 'normal' | 'slow' | 'fast';
 export type InputSource = 'microphone' | 'synthetic_test_clip';

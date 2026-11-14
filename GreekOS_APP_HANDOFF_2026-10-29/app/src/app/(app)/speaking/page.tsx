@@ -12,8 +12,9 @@ import { StartSpeaking } from './StartSpeaking';
 
 export const metadata = { title: 'Разговоры' };
 
-/** The streaming gateway is a separate process; offer live mode only when it answers. */
+/** Live mode: built into this deployment, or a separate gateway process that must answer its health check. */
 async function gatewayUp(): Promise<boolean> {
+  if (env.voiceStreamBuiltin) return !!env.voiceGatewaySecret;
   const base = env.voiceGatewayPublicUrl;
   if (!base || !env.voiceGatewaySecret) return false;
   try {
