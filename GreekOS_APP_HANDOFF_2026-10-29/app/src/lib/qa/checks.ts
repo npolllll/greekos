@@ -315,9 +315,13 @@ export function checkItem(it: ItemForQa, ctx: QaContext): Finding[] {
   for (const { field, text } of greekFields(e)) {
     const found = orthography(field, text, ctx.ortho);
     const kept = contrast && field.startsWith('options') ? found.filter((x) => !/^ortho\.(missing_accent|monosyllable_accent|double_accent|spelling)$/.test(x.check_id)) : found;
+    const word = (x: { evidence?: unknown }) => String((x.evidence as { word?: string } | undefined)?.word ?? '');
     f.push(...(field === 'prompt' && stressTask.size
-      ? kept.filter((x) => !(/^ortho\.(missing_accent|spelling)$/.test(x.check_id) && stressTask.has(bare(String((x.evidence as { word?: string } | undefined)?.word ?? '')))))
-      : kept));
+      ? kept.filter((x) => !(/^ortho\.(missing_accent|spelling)$/.test(x.check_id) && stressTask.has(bare(word(x)))))
+      // A Russian explanation quotes a stressed syllable of the key («ударение над ού» in παιδιού): not a word.
+      : field === 'answer_explanation_ru'
+        ? kept.filter((x) => !(x.check_id === 'ortho.monosyllable_accent' && answers.some((a) => a.normalize('NFC').toLowerCase().includes(word(x).normalize('NFC').toLowerCase()) && word(x).length > 0)))
+        : kept));
   }
   // Level
   const unit = it.unit_id ? ctx.units.get(it.unit_id) : undefined;
