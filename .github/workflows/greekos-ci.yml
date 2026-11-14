@@ -1,0 +1,53 @@
+# GreekOS — checks on every pull request and on main: types, lint, unit tests, a production build, and
+# that the change does not roll production back (the commit must contain the one that is live).
+# Uses no production secret except to read which commit is live (a public health endpoint).
+name: GreekOS CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: greekos-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: GreekOS_APP_HANDOFF_2026-10-29/app
+    env:
+      # Build-time placeholders only: nothing is contacted during the build.
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: placeholder-service-key
+      APP_URL: https://greekos-course.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: GreekOS_APP_HANDOFF_2026-10-29/app/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Types
+        run: npx tsc --noEmit -p .
+      - name: Lint
+        run: npx eslint src scripts --max-warnings 0
+      - name: Unit tests
+        run: npx vitest run tests/unit
+      - name: Production build
+        run: npx next build
+      - name: Does not roll production back
+        env:
+          APP_URL: ${{ secrets.APP_URL || 'https://greekos-course.vercel.app' }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: ROOT="$GITHUB_WORKSPACE" bash scripts/ops/no-rollback.sh
