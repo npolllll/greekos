@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: 'one or more, comma-separated: db-state, llm-diagnose, restore-test, acceptance, e2e'
+        description: 'one or more, comma-separated: db-state, qa-fails, llm-diagnose, restore-test, acceptance, e2e, vercel-info, azure-pa'
         default: 'db-state'
         required: true
   push:
@@ -56,7 +56,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -103,6 +103,15 @@ jobs:
       - name: db-state
         if: contains(steps.task.outputs.tasks, ',db-state,')
         run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/db-state.sql
+      - name: qa-fails (failing objects of the latest full QA batch)
+        if: contains(steps.task.outputs.tasks, ',qa-fails,')
+        run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/qa-fails.sql
+      - name: vercel-info (Git link, Fluid compute, region, recent deployments)
+        if: contains(steps.task.outputs.tasks, ',vercel-info,')
+        run: bash scripts/ops/vercel-info.sh
+      - name: azure-pa (does Azure score Greek pronunciation?)
+        if: contains(steps.task.outputs.tasks, ',azure-pa,')
+        run: node scripts/ops/azure-pa-probe.mjs
       - name: llm-diagnose
         if: contains(steps.task.outputs.tasks, ',llm-diagnose,')
         run: node scripts/ops/llm-diagnose.mjs
