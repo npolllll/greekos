@@ -1,0 +1,114 @@
+[
+ {
+  "voice": "el-GR-AthinaNeural",
+  "locale": "el-GR",
+  "gender": "Female",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "el-GR-NestorasNeural",
+  "locale": "el-GR",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "de-DE-FlorianMultilingualNeural",
+  "locale": "de-DE",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "locale": "de-DE",
+  "gender": "Female",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-AU-WilliamMultilingualNeural",
+  "locale": "en-AU",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-GB-AdaMultilingualNeural",
+  "locale": "en-GB",
+  "gender": "Female",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-GB-OllieMultilingualNeural",
+  "locale": "en-GB",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-US-AdamMultilingualNeural",
+  "locale": "en-US",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-US-AlloyTurboMultilingualNeural",
+  "locale": "en-US",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-US-AmandaMultilingualNeural",
+  "locale": "en-US",
+  "gender": "Female",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-US-AndrewMultilingualNeural",
+  "locale": "en-US",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-US-AshTurboMultilingualNeural",
+  "locale": "en-US",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-US-AvaMultilingualNeural",
+  "locale": "en-US",
+  "gender": "Female",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ },
+ {
+  "voice": "en-US-BrandonMultilingualNeural",
+  "locale": "en-US",
+  "gender": "Male",
+  "type": "Neural",
+  "sentences": [],
+  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+ }
+]
