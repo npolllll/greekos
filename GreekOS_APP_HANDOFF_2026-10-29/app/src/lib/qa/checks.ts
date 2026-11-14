@@ -308,9 +308,16 @@ export function checkItem(it: ItemForQa, ctx: QaContext): Finding[] {
     const labels = choiceOptions(e.options).map((o) => o.label.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim());
     return labels.length > 1 && new Set(labels).size < labels.length;
   })();
+  // A word given without its accent in the prompt is the task material when the key is that same word
+  // with the accent added («Поставьте ударение: μαθηματα» → μαθήματα): not a spelling defect.
+  const bare = (w: string) => w.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim();
+  const stressTask = new Set(answers.filter((a) => /\p{M}/u.test(a.normalize('NFD'))).map(bare));
   for (const { field, text } of greekFields(e)) {
     const found = orthography(field, text, ctx.ortho);
-    f.push(...(contrast && field.startsWith('options') ? found.filter((x) => !/^ortho\.(missing_accent|monosyllable_accent|double_accent|spelling)$/.test(x.check_id)) : found));
+    const kept = contrast && field.startsWith('options') ? found.filter((x) => !/^ortho\.(missing_accent|monosyllable_accent|double_accent|spelling)$/.test(x.check_id)) : found;
+    f.push(...(field === 'prompt' && stressTask.size
+      ? kept.filter((x) => !(/^ortho\.(missing_accent|spelling)$/.test(x.check_id) && stressTask.has(bare(String((x.evidence as { word?: string } | undefined)?.word ?? '')))))
+      : kept));
   }
   // Level
   const unit = it.unit_id ? ctx.units.get(it.unit_id) : undefined;

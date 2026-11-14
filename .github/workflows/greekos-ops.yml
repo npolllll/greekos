@@ -58,7 +58,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa|release-readiness|acceptance-speaking) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa|release-readiness|acceptance-speaking|qa-full) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -105,6 +105,13 @@ jobs:
       - name: db-state
         if: contains(steps.task.outputs.tasks, ',db-state,')
         run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/db-state.sql
+      - name: qa-full (a new full digital QA batch with hunspell el_GR; writes QA records only)
+        if: contains(steps.task.outputs.tasks, ',qa-full,')
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+        run: |
+          sudo apt-get install -y -qq hunspell hunspell-el
+          npx tsx scripts/qa-batch.ts --label "Полный прогон (ops) $(date -u +%F)" | tail -25
       - name: qa-fails (failing objects of the latest full QA batch)
         if: contains(steps.task.outputs.tasks, ',qa-fails,')
         run: psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f scripts/ops/qa-fails.sql

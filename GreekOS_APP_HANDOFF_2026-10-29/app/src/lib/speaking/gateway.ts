@@ -223,13 +223,14 @@ export class StreamSession {
     const user = await loadSessionUser(claims.sub);
     if (!user) return this.fail('BAD_TOKEN', 'Пользователь не активен.', true);
     const db = adminClient();
-    const { data: s } = await db.from('speaking_sessions').select('session_id, user_id, status, input_mode, mode, voice_persona, scenario_id').eq('session_id', claims.sid).maybeSingle();
+    const { data: s } = await db.from('speaking_sessions').select('session_id, user_id, status, input_mode, mode, voice_persona, scenario_id, preview').eq('session_id', claims.sid).maybeSingle();
     if (!s || s.user_id !== user.userId) return this.fail('NOT_FOUND', 'Разговор не найден.', true);
     if (s.status !== 'ACTIVE') return this.fail('SESSION_CLOSED', 'Разговор уже завершён.', true);
     if (s.input_mode !== 'voice') return this.fail('VOICE_SESSION', 'Потоковый канал только для голосового режима.', true);
     // Synthetic speech never stands in for a learner's voice: in production only an explicit test
-    // account (the owner's smoke test) may send it, and its metrics stay labelled synthetic.
-    if (m.input_source === 'synthetic_test_clip' && !env.localEnginesAllowed) {
+    // account, or the owner in a preview conversation (the owner's smoke test, which counts for no
+    // one), may send it — and its metrics stay labelled synthetic.
+    if (m.input_source === 'synthetic_test_clip' && !env.localEnginesAllowed && !(user.isOwner && s.preview)) {
       const { data: kind } = await db.from('profiles').select('account_kind').eq('user_id', user.userId).maybeSingle();
       if (kind?.account_kind !== 'dev_preview_tester') return this.fail('SYNTHETIC_INPUT', 'Синтетический вход разрешён только в тестовой среде.', true);
     }
