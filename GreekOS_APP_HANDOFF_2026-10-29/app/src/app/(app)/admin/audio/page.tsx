@@ -6,7 +6,7 @@ import { DIGITAL_STATUS_LABEL } from '@/lib/admin/labels';
 import { verifiedAudioCount } from '@/lib/admin/data';
 import { loadCastingContext } from '@/lib/audio/pipeline';
 import { Icon } from '@/components/Icon';
-import { AssetPlayer, AudioReleaseButton } from '../_components/AudioControls';
+import { AssetPlayer, AudioReleaseButton, ProviderTermsAll } from '../_components/AudioControls';
 import { audioReleaseBlockers, ownerListening } from '@/lib/qa/audio-release';
 import { activePolicy } from '@/lib/admin/releases';
 
@@ -59,6 +59,12 @@ export default async function AudioPage({ searchParams }: { searchParams: Promis
         <div className="card admin-stat"><small className="quiet">Выпущено для учеников</small><div className="metric mono">{counts.released}</div>{counts.released ? <span className="tag green">синтез, не носитель</span> : <span className="tag">не выпущено</span>}</div>
         <div className="card admin-stat"><small className="quiet">Движки</small><div className="metric-text"><span>Синтез: <b>{tts.configured ? (tts.provider === 'local' ? 'локальный' : tts.provider) : 'нет'}</b></span><span>Распознавание: <b>{asr.configured ? (asr.provider === 'local' ? 'локальный Whisper' : asr.provider) : 'нет'}</b></span></div>{tts.synthetic || asr.synthetic ? <span className="tag">тестовый транспорт</span> : null}</div>
       </div>
+      {(assets ?? []).some((a) => a.rights_status === 'RIGHTS_PENDING') ? (
+        <div className="card cardpad">
+          <div className="card-title"><Icon name="lock" /> Условия провайдера голоса — ваше решение</div>
+          <ProviderTermsAll count={(assets ?? []).filter((a) => a.rights_status === 'RIGHTS_PENDING').length} />
+        </div>
+      ) : null}
       <div className="banner info"><Icon name="info" /><span><strong>Как читать статусы.</strong> «Цифровая проверка пройдена» — файл технически исправен и каждый сегмент распознан близко к сценарию (Whisper, фонетическое сравнение). Это не проверка носителем и не оценка естественности: прослушайте файл перед выпуском. Мужские голоса MBROLA — только для разработки (лицензия), выпуск ученикам с ними невозможен.</span></div>
       {failingByVoice.size ? (
         <div className="card cardpad">

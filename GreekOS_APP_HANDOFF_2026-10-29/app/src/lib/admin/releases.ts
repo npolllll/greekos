@@ -20,7 +20,7 @@ export type ReleaseRequest = z.infer<typeof ReleaseRequest>;
 interface Target { kind: ReleaseKind; id: string; hash: string; scope: string; requiresAudio?: boolean; pegp?: boolean }
 
 export async function activePolicy() {
-  const { data } = await adminClient().from('publication_policies').select('id, kind, version, statement_ru, risks_acknowledged, signed_by, signed_at, revoked_at')
+  const { data } = await adminClient().from('publication_policies').select('id, kind, version, statement_ru, risks_acknowledged, signed_by, signed_at, revoked_at, delegation')
     .is('revoked_at', null).order('signed_at', { ascending: false }).limit(1).maybeSingle();
   return data;
 }

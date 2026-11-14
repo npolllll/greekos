@@ -23,6 +23,8 @@ export interface CatalogVoice {
   speed_profile: { normal: number; slow: number; fast: number };
   distribution_allowed: boolean;
   approved_by_owner: boolean;
+  /** Who approved: the owner, or the AI editor the owner delegated the choice of voices to. */
+  approval_source?: 'owner' | 'ai_editorial_delegated' | null;
   qa_status: string;
   rights: Record<string, unknown>;
 }
@@ -351,4 +353,9 @@ export async function proposeJobCasting() {
     }
   }
   return written;
+}
+
+/** A voice may be used for learners: approved by the owner or by the AI editor under the owner's delegation. */
+export function voiceApproved(v: Pick<CatalogVoice, 'approved_by_owner' | 'approval_source'>): boolean {
+  return !!v.approved_by_owner || v.approval_source === 'ai_editorial_delegated';
 }

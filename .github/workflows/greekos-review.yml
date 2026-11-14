@@ -59,6 +59,25 @@ jobs:
       - name: voices (candidate Azure voices on a Greek test set)
         if: contains(steps.task.outputs.tasks, ',voices,')
         run: python3 scripts/review/audio_review.py voices
+      - uses: actions/setup-node@v4
+        if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,')
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: GreekOS_APP_HANDOFF_2026-10-29/app/package-lock.json
+      - name: Node dependencies
+        if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,')
+        run: npm ci --no-audit --no-fund
+      - name: sample-show (the release sample of the latest full QA batch)
+        if: contains(steps.task.outputs.tasks, ',sample-show,')
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+        run: npx tsx --conditions=react-server scripts/review/editorial-apply.ts sample-show
+      - name: apply (AI editor's recorded decisions; delegated release only under an owner-signed policy)
+        if: contains(steps.task.outputs.tasks, ',apply,')
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+        run: npx tsx --conditions=react-server scripts/review/editorial-apply.ts apply
       - name: Commit the results to the requesting branch
         if: always()
         working-directory: .

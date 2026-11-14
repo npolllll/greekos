@@ -13,7 +13,7 @@ import { localAsrHealth, localTranscribe } from '../providers/local-engines.ts';
 import { COST } from '../providers/budget.ts';
 import { analyzeWav, concatWav, normalizeLoudness, parseWav, pcmSamples, type TechnicalReport } from './wav.ts';
 import { alignmentDiff, chunkText, roundTrip, roundTripPass, segmentSignals, type RoundTripMetrics } from './roundtrip.ts';
-import type { CatalogVoice, CastRole } from '../voice/catalog.ts';
+import { voiceApproved, type CatalogVoice, type CastRole } from '../voice/catalog.ts';
 
 export const SYNTHESIS_VERSION = 'greekos-audio/2.2'; // 2.2: pause after the target in the Coqui carrier, natural phrase release kept
 
@@ -117,7 +117,7 @@ export function planJob(job: AudioJobRow, ctx: CastingContext): PlanResult {
     if (need && v.presentation !== need) return { ok: false, status: 'BLOCKED_NO_SUITABLE_VOICE', reason: `роль «${role}» требует ${need === 'male' ? 'мужской' : 'женский'} голос, а у ${v.display_name} заявлен ${v.presentation}` };
     castMap[role] = c.cast_role_id;
     voiceMap[role] = v.voice_id;
-    castApproved &&= c.approved && cr.approved && v.approved_by_owner;
+    castApproved &&= c.approved && cr.approved && voiceApproved(v);
   }
   const distinctVoices = new Set(Object.values(voiceMap));
   if (distinctVoices.size < roles.length) {
