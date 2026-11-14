@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { READING_ITEMS } from '@/lib/qa/data/reading-items';
-import { EXPLANATION_REVISIONS, UNIT_ORDER_REVISIONS, readingEnvelope } from '@/lib/qa/content-revisions';
+import { EXPLANATION_REVISIONS, UNIT_ORDER_REVISIONS, readingEnvelope, applyTextPatches } from '@/lib/qa/content-revisions';
 import { scoreDeterministic } from '@/lib/scoring/score';
 import { buildItemDTO, assertNoLeak } from '@/lib/content/dto';
 import { choiceOptions } from '@/lib/content/types';
@@ -78,5 +78,27 @@ describe('lesson order', () => {
   it('B1-G10 (cause, purpose, result) is taught before the lesson that requires it', () => {
     const at = Object.fromEntries(UNIT_ORDER_REVISIONS.map((r) => [r.unit_id, r.after]));
     expect(at['U-B1-008']).toBeLessThan(at['U-B1-007']);
+  });
+});
+
+describe('AI review text fixes in lessons, scenarios and cards', () => {
+  const scenario = { nodes: [{ node_id: 'OPEN', assistant_el: 'Καλημέρα! Τι θέλεις;', acceptable_examples_el: ['Θέλω ένα καφέ.'] }, { node_id: 'B1', assistant_el: 'Τι θέλεις;' }] };
+  it('replaces a snippet that occurs exactly once and leaves the original untouched', () => {
+    const r = applyTextPatches(scenario, [{ op: 'replace_text', field: 'acceptable_examples_el', current: 'ένα καφέ', new: 'έναν καφέ' }]);
+    expect(r.applied).toBe(1);
+    expect((r.next as typeof scenario).nodes[0].acceptable_examples_el[0]).toBe('Θέλω έναν καφέ.');
+    expect(scenario.nodes[0].acceptable_examples_el[0]).toBe('Θέλω ένα καφέ.');
+    expect(r.changed[0].path).toBe('nodes[0].acceptable_examples_el[0]');
+  });
+  it('refuses an ambiguous snippet and an absent one; reports an already applied fix', () => {
+    const amb = applyTextPatches(scenario, [{ op: 'replace_text', current: 'Τι θέλεις;', new: 'Τι θέλετε;' }]);
+    expect(amb.applied).toBe(0);
+    expect(amb.failed[0].reason).toContain('2');
+    const narrowed = applyTextPatches(scenario, [{ op: 'replace_text', field: 'nodes[1]', current: 'Τι θέλεις;', new: 'Τι θέλετε;' }]);
+    expect(narrowed.applied).toBe(1);
+    const again = applyTextPatches(narrowed.next, [{ op: 'replace_text', field: 'nodes[1]', current: 'Τι θέλεις;', new: 'Τι θέλετε;' }]);
+    expect(again.applied).toBe(0);
+    expect(again.already).toBe(1);
+    expect(applyTextPatches(scenario, [{ op: 'replace_text', current: 'Γεια', new: 'Γεια σου' }]).failed[0].reason).toBe('фрагмент не найден');
   });
 });

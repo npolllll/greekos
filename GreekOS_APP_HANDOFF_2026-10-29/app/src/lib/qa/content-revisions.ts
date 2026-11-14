@@ -356,7 +356,10 @@ type ReviewPatch =
   | { op: 'set_options'; current: string[]; new: string[] };
 export interface ReviewFix { id: string; reason_ru: string; patches: ReviewPatch[] }
 
-export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<{ item_id: string; status: RevisionStatus }>> {
+/** Label of the review a fix list comes from, written into every patch reason. */
+const REVIEW_13_11 = 'AI-рецензия 13.11.2026 (две независимые AI-проверки, не преподаватель)';
+
+export async function applyAiReviewRevisions(fixes: ReviewFix[], label = REVIEW_13_11): Promise<Array<{ item_id: string; status: RevisionStatus }>> {
   const db = adminClient();
   const out: Array<{ item_id: string; status: RevisionStatus }> = [];
   for (const f of fixes) {
@@ -396,13 +399,79 @@ export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<
     if (!Object.keys(changes).length) { out.push({ item_id: f.id, status: stale ? 'changed_since' : 'already' }); continue; }
     await patchItem({ system: CONTENT_REVISION_ACTOR }, {
       item_id: f.id, base_hash: it.current_hash, changes,
-      reason: `AI-рецензия 13.11.2026 (две независимые AI-проверки, не преподаватель): ${f.reason_ru}`.slice(0, 1000),
+      reason: `${label}: ${f.reason_ru}`.slice(0, 1000),
     }, { runQa: false });
     out.push({ item_id: f.id, status: stale ? 'changed_since' : 'applied' });
     void done;
   }
   const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
   if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после AI-рецензии (${applied.length})`, scope: { kind: 'items', ids: applied } });
+  return out;
+}
+
+/**
+ * Text fixes in lessons (teaching JSON), speaking scenarios and Real Greek cards from an AI review: an
+ * exact snippet is replaced in the one string of the object that contains it. `field` narrows the search
+ * to strings whose JSON path contains it (e.g. "theory_ru", "assistant_el"). A fix applies only while the
+ * snippet occurs exactly once; otherwise it is reported and nothing changes. New revision with history.
+ */
+export interface TextFix { id: string; kind: 'unit' | 'scenario' | 'rg'; reason_ru: string; patches: Array<{ op: 'replace_text'; field?: string; current: string; new: string }> }
+type Leaf = { path: string; get: () => string; set: (v: string) => void };
+function stringLeaves(root: unknown, path = ''): Leaf[] {
+  const out: Leaf[] = [];
+  const walk = (node: unknown, p: string, parent: Record<string, unknown> | unknown[] | null, key: string | number | null) => {
+    if (typeof node === 'string' && parent !== null && key !== null) {
+      out.push({ path: p, get: () => (parent as Record<string | number, string>)[key], set: (v) => { (parent as Record<string | number, string>)[key] = v; } });
+    } else if (Array.isArray(node)) node.forEach((x, i) => walk(x, `${p}[${i}]`, node, i));
+    else if (node && typeof node === 'object') for (const [k, v] of Object.entries(node as Record<string, unknown>)) walk(v, p ? `${p}.${k}` : k, node as Record<string, unknown>, k);
+  };
+  walk(root, path, null, null);
+  return out;
+}
+export function applyTextPatches(obj: unknown, patches: TextFix['patches']): { next: unknown; applied: number; already: number; failed: Array<{ current: string; reason: string }>; changed: Array<{ path: string; before: string; after: string }> } {
+  const next = structuredClone(obj);
+  let applied = 0; let already = 0;
+  const failed: Array<{ current: string; reason: string }> = [];
+  const changed: Array<{ path: string; before: string; after: string }> = [];
+  for (const p of patches) {
+    const leaves = stringLeaves(next).filter((l) => !p.field || l.path.includes(p.field));
+    const count = (t: string, s: string) => (s ? t.split(s).length - 1 : 0);
+    const hits = leaves.filter((l) => l.get().includes(p.current));
+    const total = hits.reduce((n, l) => n + count(l.get(), p.current), 0);
+    if (total === 1) {
+      const l = hits[0]; const before = l.get(); const after = before.replace(p.current, p.new);
+      l.set(after); changed.push({ path: l.path, before, after }); applied += 1;
+    } else if (total === 0 && p.new && leaves.some((l) => l.get().includes(p.new))) already += 1;
+    else failed.push({ current: p.current.slice(0, 80), reason: total === 0 ? 'фрагмент не найден' : `фрагмент встречается ${total} раз` });
+  }
+  return { next, applied, already, failed, changed };
+}
+
+export async function applyAiTextRevisions(fixes: TextFix[], label: string): Promise<Array<{ id: string; kind: string; status: RevisionStatus; failed?: Array<{ current: string; reason: string }> }>> {
+  const db = adminClient();
+  const out: Array<{ id: string; kind: string; status: RevisionStatus; failed?: Array<{ current: string; reason: string }> }> = [];
+  for (const f of fixes) {
+    const reason = `${label}: ${f.reason_ru}`.slice(0, 1000);
+    const spec = f.kind === 'unit' ? { table: 'units', key: 'unit_id', col: 'teaching', kind: 'unit', module: 'core' }
+      : f.kind === 'scenario' ? { table: 'speaking_scenarios', key: 'scenario_id', col: 'payload', kind: 'scenario', module: 'speaking' }
+      : { table: 'rg_expressions', key: 'expression_id', col: 'payload', kind: 'rg_expression', module: 'real_greek' };
+    const { data: row } = await db.from(spec.table).select(`${spec.key}, ${spec.col}, current_hash`).eq(spec.key, f.id).maybeSingle();
+    if (!row) { out.push({ id: f.id, kind: f.kind, status: 'missing' }); continue; }
+    const r = row as unknown as Record<string, unknown> & { current_hash: string };
+    const res = applyTextPatches(r[spec.col], f.patches);
+    if (!res.applied) { out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'already', failed: res.failed.length ? res.failed : undefined }); continue; }
+    const hash = sha256Hex(stableStringify(res.next));
+    const payloadPrivate = f.kind === 'unit' ? { unit_id: f.id, content_hash: hash, teaching_material: res.next, patched_from: r.current_hash } : { [spec.key]: f.id, payload: res.next, patched_from: r.current_hash };
+    const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: spec.kind, content_id: f.id, content_hash: hash, module: spec.module, payload_private: payloadPrivate }).select('id').single();
+    if (error) throw new Error(error.message);
+    const { error: ue } = await db.from(spec.table).update({ [spec.col]: res.next, current_hash: hash, revision_id: rev.id }).eq(spec.key, f.id).eq('current_hash', r.current_hash);
+    if (ue) throw new Error(ue.message);
+    const changes = Object.fromEntries(res.changed.map((c) => [c.path, { before: c.before, after: c.after }]));
+    await db.from('content_patches').insert({ content_kind: spec.kind, content_id: f.id, base_hash: r.current_hash, new_hash: hash, changes, reason, revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });
+    await db.from('content_releases').update({ revoked_at: new Date().toISOString(), revoked_reason: 'CONTENT_PATCHED: допуск относился к прежней ревизии' }).eq('content_kind', spec.kind).eq('content_id', f.id).is('revoked_at', null);
+    await audit(null, 'content.patch', { id: f.id }, { base_hash: r.current_hash, new_hash: hash, system_actor: CONTENT_REVISION_ACTOR });
+    out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'applied', failed: res.failed.length ? res.failed : undefined });
+  }
   return out;
 }
 
