@@ -25,7 +25,10 @@ CRON_SECRET=e2e-cron-secret
 REGISTRATION_SALT=e2e-salt
 ASR_PROVIDER=none
 TTS_PROVIDER=none
+LLM_PROVIDER=none
 EOF
+# The copy never spends on paid providers: the runner's production keys are not passed to it.
+unset ANTHROPIC_API_KEY AZURE_SPEECH_KEY OPENAI_API_KEY GOOGLE_TTS_API_KEY
 set -a; . ./.env.local; set +a
 
 echo "== real corpus, QA and recorded corrections (as in production)"

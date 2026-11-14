@@ -90,9 +90,9 @@ export async function transcribe(wav: Uint8Array, userId: string | null): Promis
       const url = `${env.azureSttBase}/speech/recognition/conversation/cognitiveservices/v1?language=el-GR&format=detailed`;
       const res = await timed(() => fetch(url, { method: 'POST', headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey!, 'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000', Accept: 'application/json' }, body: wav as BodyInit }), 30_000);
       if (!res.ok) throw azureError('asr', res.status);
-      const json = (await res.json()) as { RecognitionStatus?: string; NBest?: Array<{ Display?: string; Confidence?: number }> };
+      const json = (await res.json()) as { RecognitionStatus?: string; NBest?: Array<{ Display?: string; Lexical?: string; Confidence?: number }> };
       const best = json.NBest?.[0];
-      result = { text: json.RecognitionStatus === 'Success' ? (best?.Display ?? '').trim() : '', confidence: best?.Confidence ?? null, provider: 'azure', model: 'speech-to-text-rest-short', durationMs: info?.durationMs ?? null, synthetic: false };
+      result = { text: json.RecognitionStatus === 'Success' ? spokenGreek(best?.Display ?? '', best?.Lexical) : '', confidence: best?.Confidence ?? null, provider: 'azure', model: 'speech-to-text-rest-short', durationMs: info?.durationMs ?? null, synthetic: false };
     } else if (st.provider === 'local') {
       // Real recognition by the local Whisper service (development engine, Modern Greek).
       const r = await localTranscribe(wav, 'small', 30_000);
@@ -107,6 +107,19 @@ export async function transcribe(wav: Uint8Array, userId: string | null): Promis
     await settle(res0, ok ? costUsd : 0);
     await recordUsage({ userId, provider: st.provider, operation: 'asr', units: seconds, unitKind: 'seconds', costUsd: ok ? costUsd : 0, ok, latencyMs: Date.now() - started }).catch(() => undefined);
   }
+}
+
+/**
+ * Azure's display form writes numbers and units as digits («Θέλω 1 kg ντομάτες»). A learner's words are
+ * what the course teaches and corrects («ένα κιλό» — gender, case), so then the spoken (lexical) form is
+ * used, with the display form's capital letter and final punctuation.
+ */
+export function spokenGreek(display: string, lexical?: string): string {
+  const d = display.trim();
+  const l = (lexical ?? '').trim();
+  if (!/\d/.test(d) || !l) return d;
+  const end = /[.;?!…]$/.test(d) ? d.slice(-1) : '';
+  return `${l.charAt(0).toLocaleUpperCase('el')}${l.slice(1)}${end}`;
 }
 
 function escapeXml(s: string): string {

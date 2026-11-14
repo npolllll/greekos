@@ -20,6 +20,7 @@ import { chromium, devices, type Browser, type BrowserContext, type Page } from 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 const APP = (process.env.APP_URL ?? '').trim().replace(/\/$/, '');
 const SUPA = `https://${(process.env.SUPABASE_PROJECT_REF ?? '').trim()}.supabase.co`;
@@ -51,6 +52,40 @@ async function ownerPage(browser: Browser): Promise<Page> {
   const page = await (await browser.newContext()).newPage();
   await page.goto(`${APP}/auth/confirm?token_hash=${data.properties.hashed_token}&type=magiclink&next=/admin`);
   return page;
+}
+
+/** The owner signed in inside a given browser context (one-time link; the password is never used). */
+async function ownerIn(ctx: BrowserContext): Promise<Page> {
+  const { data, error } = await db.auth.admin.generateLink({ type: 'magiclink', email: OWNER_EMAIL });
+  if (error || !data.properties?.hashed_token) throw new Error(`owner link: ${error?.message ?? 'no token'}`);
+  const page = await ctx.newPage();
+  await page.goto(`${APP}/auth/confirm?token_hash=${data.properties.hashed_token}&type=magiclink&next=/speaking`);
+  return page;
+}
+
+async function waitFor(fn: () => Promise<boolean>, ms: number): Promise<boolean> {
+  const end = Date.now() + ms;
+  while (Date.now() < end) { if (await fn().catch(() => false)) return true; await new Promise((r) => setTimeout(r, 400)); }
+  return false;
+}
+
+/** A Greek phrase spoken by an Azure neural voice (free tier), 16 kHz WAV with 2.5 s of silence after it. */
+async function greekClip(text: string): Promise<string> {
+  const key = process.env.AZURE_SPEECH_KEY ?? '';
+  const region = (process.env.AZURE_SPEECH_REGION ?? 'northeurope').trim();
+  const ssml = `<speak version="1.0" xml:lang="el-GR"><voice name="el-GR-NestorasNeural">${text}</voice></speak>`;
+  const r = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, { method: 'POST', body: ssml, headers: { 'Ocp-Apim-Subscription-Key': key, 'Content-Type': 'application/ssml+xml', 'X-Microsoft-OutputFormat': 'riff-16khz-16bit-mono-pcm', 'User-Agent': 'greekos-acceptance' } });
+  if (!r.ok) throw new Error(`clip TTS HTTP ${r.status}`);
+  const wav = Buffer.from(await r.arrayBuffer());
+  const at = wav.indexOf('data');
+  const pcm = Buffer.concat([wav.subarray(at + 8), Buffer.alloc(16000 * 2 * 2.5)]);
+  const head = Buffer.alloc(44);
+  head.write('RIFF', 0); head.writeUInt32LE(36 + pcm.length, 4); head.write('WAVE', 8); head.write('fmt ', 12);
+  head.writeUInt32LE(16, 16); head.writeUInt16LE(1, 20); head.writeUInt16LE(1, 22); head.writeUInt32LE(16000, 24);
+  head.writeUInt32LE(32000, 28); head.writeUInt16LE(2, 32); head.writeUInt16LE(16, 34); head.write('data', 36); head.writeUInt32LE(pcm.length, 40);
+  const path = resolve(OUT, 'greek-clip.wav');
+  writeFileSync(path, Buffer.concat([head, pcm]));
+  return path;
 }
 
 async function invite(owner: Page, name: string, email: string, viaUi: boolean): Promise<string> {
@@ -287,6 +322,67 @@ async function main() {
         report.asr = { http: tr.status(), ms: Date.now() - t, text: j.text ?? null, confidence: j.confidence ?? null, provider: j.provider ?? null, stored: j.stored ?? null };
         check('speaking.asr_el_gr', tr.ok() && !!j.text, `${Date.now() - t} мс, уверенность ${j.confidence ?? '—'}`);
       }
+    });
+
+    // ---------------- AI Speaking on a phone: the real microphone path ----------------
+    // A Pixel-sized browser whose microphone plays a Greek phrase (Azure voice, free tier): live mode over
+    // the app's own WebSocket and step mode (record → transcript → reply), as the owner (preview).
+    if (SPEAKING) await step('speaking.mobile', async () => {
+      const clip = await greekClip('Καλημέρα. Θέλω ένα κιλό ντομάτες, παρακαλώ.');
+      const mb = await chromium.launch({ args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', `--use-file-for-fake-audio-capture=${clip}`, '--autoplay-policy=no-user-gesture-required'] });
+      try {
+        const ctx = await mb.newContext({ ...devices['Pixel 7'], permissions: ['microphone'], locale: 'ru-RU' });
+        // The recording is a synthetic clip, and is stored as such (not as a person's microphone).
+        await ctx.addInitScript(() => localStorage.setItem('greekos.inputSource', 'synthetic_test_clip'));
+        const page = await ownerIn(ctx);
+        const { data: scen } = await db.from('speaking_scenarios').select('scenario_id').eq('level', 'A1').order('scenario_id').limit(1).single();
+        const open = async (transport: 'stream_local_gateway' | 'batch') => {
+          const r = await page.request.post(`${APP}/api/speaking`, { data: { action: 'start', scenario_id: scen!.scenario_id, mode: 'roleplay', input_mode: 'voice', transport, idempotency_key: `acc-${run}-m-${transport}` } });
+          const j = await r.json() as { session_id?: string };
+          if (!j.session_id) throw new Error(`start ${transport}: HTTP ${r.status()}`);
+          await page.goto(`${APP}/speaking/${j.session_id}`);
+          return j.session_id;
+        };
+        const assistantCount = () => page.locator('.msg:not(.mine) .bubble.greek').count();
+        // Live mode over the app's own WebSocket.
+        const sockets: string[] = [];
+        page.on('websocket', (w) => sockets.push(w.url()));
+        const liveSid = await open('stream_local_gateway');
+        const startBtn = page.getByRole('button', { name: 'Начать разговор' });
+        if (await startBtn.count()) {
+          const before = await assistantCount();
+          await startBtn.click();
+          const t0 = Date.now();
+          const listening = await waitFor(async () => /Слушаю|Говорю|Распознаю|Думаю/.test(await page.locator('.voice-stage .status-live').innerText().catch(() => '')), 20_000);
+          check('speaking.mobile.live_connects', listening && sockets.some((u) => u.includes('/api/voice/stream')), sockets.map((u) => new URL(u).pathname).join(', ') || 'нет WebSocket');
+          let confirmed = false;
+          const heard = await waitFor(async () => {
+            const yes = page.getByRole('button', { name: 'Да, отправить' });
+            if (await yes.count()) { await yes.first().click().catch(() => undefined); confirmed = true; }
+            return (await page.locator('.msg.mine .bubble.my:not(.draft)').count()) > 0;
+          }, 60_000);
+          const replied = heard && await waitFor(async () => (await assistantCount()) > before, 60_000);
+          const shown = replied ? (await page.locator('.msg:not(.mine) .bubble.greek').last().innerText()).split('\n')[0].slice(0, 120) : '';
+          check('speaking.mobile.live_turn', replied, replied ? `${Math.round((Date.now() - t0) / 100) / 10} с от начала до ответа${confirmed ? ' (с подтверждением транскрипта)' : ''}: «${shown}»` : heard ? 'реплика распознана, ответа нет' : 'реплика не распознана');
+          const { data: lt } = await db.from('speaking_turns').select('speaker, engine_kind, input_source').eq('session_id', liveSid).order('created_at');
+          report.speaking.push({ mode: 'live_mobile', turns: lt });
+          await page.getByRole('button', { name: 'Остановить' }).click().catch(() => undefined);
+        } else check('speaking.mobile.live_connects', false, 'нет кнопки «Начать разговор» (живой режим недоступен)');
+        // Step mode: record → transcript → reply.
+        await open('batch');
+        const before = await assistantCount();
+        await page.getByRole('button', { name: 'Начать запись' }).click();
+        await page.waitForTimeout(6500);
+        await page.getByRole('button', { name: 'Остановить запись' }).click();
+        const tr = await waitFor(async () => (await page.getByRole('button', { name: 'Да, отправить' }).count()) > 0, 40_000);
+        const said = tr ? await page.locator('.voice-answer, .transcript, [data-transcript]').first().innerText().catch(() => '') : '';
+        if (tr) await page.getByRole('button', { name: 'Да, отправить' }).first().click();
+        const replied = tr && await waitFor(async () => (await assistantCount()) > before, 60_000);
+        check('speaking.mobile.step_turn', replied, tr ? (replied ? `распознано и отвечено${said ? `: «${said.split('\n')[0].slice(0, 80)}»` : ''}` : 'транскрипт есть, ответа нет') : 'транскрипта нет');
+        const over = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
+        check('speaking.mobile.no_horizontal_scroll', !over);
+        await page.screenshot({ path: `${OUT}/speaking-mobile.png` });
+      } finally { await mb.close(); }
     });
 
     // ---------------- disable ----------------

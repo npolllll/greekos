@@ -47,3 +47,13 @@ describe('restoring spaces around numbers in task text', async () => {
     for (const t of ['του 19ου αιώνα', 'της 28ης Οκτωβρίου', 'ο 1ος όροφος', 'D7 и D28', 'A1–B2', '18:00–19:30']) expect(restoreNumberSpacing(t)).toBe(t);
   });
 });
+
+describe('spoken form of Azure transcripts', async () => {
+  const { spokenGreek } = await import('../../src/lib/providers/speech');
+  it('keeps number words a learner said', () => {
+    expect(spokenGreek('Καλημέρα θέλω 1 kg ντομάτες.', 'καλημέρα θέλω ένα κιλό ντομάτες')).toBe('Καλημέρα θέλω ένα κιλό ντομάτες.');
+  });
+  it('leaves transcripts without digits as displayed', () => {
+    expect(spokenGreek('Θέλω ένα κιλό μήλα, παρακαλώ.', 'θέλω ένα κιλό μήλα παρακαλώ')).toBe('Θέλω ένα κιλό μήλα, παρακαλώ.');
+  });
+});
