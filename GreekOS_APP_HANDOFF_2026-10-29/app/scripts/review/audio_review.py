@@ -291,7 +291,8 @@ def focus_prosody(wav_bytes, targets):
         text = ' '.join(w.word.strip() for w in ws)
         row = {'from_s': round(a, 2), 'to_s': round(b, 2), 'whisper': text, 'words': {}}
         for t in targets:
-            hit = next((w for w in ws if strip_accents(w.word.strip(' ,.;')).lower() == strip_accents(t).lower()), None)
+            bare = lambda x: strip_accents(x.strip(' ,.;?!')).lower()
+            hit = next((w for w in ws if bare(w.word) == bare(t)), None) or next((w for w in ws if edit(bare(w.word), bare(t)) <= 1), None)
             if not hit: row['words'][t] = None; continue
             s0, s1 = a + hit.start, a + hit.end
             mk = (tf >= s0) & (tf <= s1)

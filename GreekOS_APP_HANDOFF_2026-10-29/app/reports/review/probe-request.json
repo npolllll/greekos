@@ -1,16 +1,16 @@
 [
  {
-  "case": "U-B2-016-I12 выделение: ответственный (1), день (2)",
+  "case": "U-B2-016-I12 выделение 2: ответственный (1), день (2); как в конвейере (внешний prosody rate)",
   "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
   "voices": [
    "el-GR-AthinaNeural"
   ],
   "variants": [
-   "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
-   "Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.",
-   "Η <prosody pitch=\"+35%\" rate=\"-20%\" volume=\"+30%\">Μαρία</prosody> <prosody pitch=\"-12%\">θα στείλει την αίτηση αύριο.</prosody> <break time=\"800ms\"/><prosody pitch=\"-8%\">Η Μαρία θα στείλει την αίτηση</prosody> <prosody pitch=\"+35%\" rate=\"-20%\" volume=\"+30%\">αύριο</prosody>.",
-   "Η <prosody pitch=\"+50%\" rate=\"-25%\" volume=\"+40%\">Μαρία</prosody> <prosody pitch=\"-15%\">θα στείλει την αίτηση αύριο.</prosody> <break time=\"800ms\"/><prosody pitch=\"-10%\">Η Μαρία θα στείλει την αίτηση</prosody> <prosody pitch=\"+50%\" rate=\"-25%\" volume=\"+40%\">αύριο</prosody>.",
-   "Η <emphasis level=\"strong\">Μαρία</emphasis> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <emphasis level=\"strong\">αύριο</emphasis>."
+   "<prosody rate=\"+0%\">Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.</prosody>",
+   "<prosody rate=\"+0%\">Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>",
+   "<prosody rate=\"+0%\">Η <prosody pitch=\"+35%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+35%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>",
+   "<prosody rate=\"+0%\">Η <prosody pitch=\"+30%\" rate=\"-10%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+30%\" rate=\"-10%\">αύριο</prosody>.</prosody>",
+   "Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>."
   ],
   "focus_words": [
    "Μαρία",
