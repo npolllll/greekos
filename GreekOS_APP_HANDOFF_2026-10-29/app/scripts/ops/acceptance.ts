@@ -286,7 +286,9 @@ async function main() {
     // ---------------- AI Speaking (real providers, owner preview) ----------------
     if (SPEAKING) await step('speaking', async () => {
       const { data: scen } = await db.from('speaking_scenarios').select('scenario_id, level, domain, payload').order('scenario_id');
-      for (const level of ['A1', 'A2', 'B1', 'B2']) {
+      // ACCEPT_SPEAKING_LEVELS=B1 limits the paid dialogue test to the levels named (test budget).
+      const levels = (process.env.ACCEPT_SPEAKING_LEVELS ?? 'A1,A2,B1,B2').split(',').map((x) => x.trim()).filter(Boolean);
+      for (const level of levels) {
         const s = (scen ?? []).find((x) => x.level === level && (x.payload as { nodes?: unknown[] }).nodes?.length);
         if (!s) { check(`speaking.${level}`, false, 'нет сценария'); continue; }
         const nodes = (s.payload as { nodes: Array<{ node_id: string; acceptable_examples_el?: string[] }> }).nodes;
