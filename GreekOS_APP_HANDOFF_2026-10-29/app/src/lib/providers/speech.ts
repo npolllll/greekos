@@ -7,6 +7,7 @@ import { reserve, settle, speechPrice, recordUsage, type Reservation } from './b
 import { buildWav, parseWav } from '../audio/wav.ts';
 import { localTranscribe, sayToWav, localTtsSupported, serviceTts } from './local-engines.ts';
 import type { CatalogVoice } from '../voice/catalog.ts';
+import { spokenForm, spokenSsmlMarkup } from '../audio/spoken-form.ts';
 
 export interface AsrResult {
   text: string;
@@ -122,6 +123,11 @@ export function spokenGreek(display: string, lexical?: string): string {
   return `${l.charAt(0).toLocaleUpperCase('el')}${l.slice(1)}${end}`;
 }
 
+/** The voice reads the spoken form (src/lib/audio/spoken-form.ts); the learner still sees the written text. */
+export function spokenSsml(text: string): string {
+  return spokenSsmlMarkup(escapeXml(spokenForm(text)));
+}
+
 function escapeXml(s: string): string {
   return s.replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[c]!);
 }
@@ -151,7 +157,7 @@ export async function synthesize(text: string, opts: { voice?: string; rate?: 's
       bytes = new Uint8Array(await res.arrayBuffer());
     } else if (st.provider === 'azure') {
       model = 'azure-neural-tts';
-      const ssml = `<speak version="1.0" xml:lang="el-GR"><voice name="${escapeXml(voice)}"><prosody rate="${slow ? '-20%' : '0%'}">${escapeXml(text)}</prosody></voice></speak>`;
+      const ssml = `<speak version="1.0" xml:lang="el-GR"><voice name="${escapeXml(voice)}"><prosody rate="${slow ? '-20%' : '0%'}">${spokenSsml(text)}</prosody></voice></speak>`;
       const res = await timed(() => fetch(`${env.azureTtsBase}/cognitiveservices/v1`, {
         method: 'POST',
         headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey!, 'Content-Type': 'application/ssml+xml', 'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm', 'User-Agent': 'greekos' },
@@ -224,7 +230,7 @@ export async function synthesizeWithVoice(text: string, voice: CatalogVoice, opt
       if (!env.azureSpeechKey || !env.azureSpeechRegion) throw new ProviderUnavailableError('Azure Speech не подключён.');
       const pct = Math.round((mult - 1) * 100);
       // A multilingual voice (another locale) speaks Greek inside <lang xml:lang="el-GR">.
-      const body = `<prosody rate="${pct >= 0 ? '+' : ''}${pct}%">${escapeXml(text)}</prosody>`;
+      const body = `<prosody rate="${pct >= 0 ? '+' : ''}${pct}%">${spokenSsml(text)}</prosody>`;
       const greekNative = voice.provider_voice_name.startsWith('el-GR-');
       const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="el-GR"><voice name="${escapeXml(voice.provider_voice_name)}">${greekNative ? body : `<lang xml:lang="el-GR">${body}</lang>`}</voice></speak>`;
       const res = await fetch(`${env.azureTtsBase}/cognitiveservices/v1`, { method: 'POST', headers: { 'Ocp-Apim-Subscription-Key': env.azureSpeechKey, 'Content-Type': 'application/ssml+xml', 'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm', 'User-Agent': 'greekos' }, body: ssml, signal: AbortSignal.timeout(45_000) });

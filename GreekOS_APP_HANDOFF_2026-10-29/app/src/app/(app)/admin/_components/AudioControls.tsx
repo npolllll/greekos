@@ -166,3 +166,36 @@ export function ImportAudioForm({ audioId, roles }: { audioId: string; roles: st
     </div>
   );
 }
+
+/**
+ * The owner's own act, once for every Azure-synthesised file: the terms of the voice provider that the
+ * owner read. Nothing is prefilled as accepted — the owner pastes the link they checked.
+ */
+export function ProviderTermsAll({ count }: { count: number }) {
+  const router = useRouter();
+  const [url, setUrl] = useState('');
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [ack, setAck] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  async function save() {
+    setBusy(true); setMsg(null);
+    const res = await fetch('/api/admin/audio/rights', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ all_by_provider: 'azure', provider: 'Microsoft Azure AI Speech (нейросетевые голоса)', terms_url: url, checked_on: date, scope_ru: 'Синтезированная речь в учебной платформе GreekOS; доступ только приглашённым ученикам' }) });
+    const j = await res.json().catch(() => ({}));
+    setBusy(false);
+    if (!res.ok) return setMsg(j.message ?? 'Не сохранено');
+    const e = j.editorial as { status?: string; released?: number; reason?: string } | undefined;
+    setMsg(`Условия записаны для ${j.recorded} файлов.${e ? e.status === 'released' ? ` AI-редактор выпустил аудио: ${e.released ?? 0}.` : ` Выпуск аудио пока не выполнен: ${e.reason ?? '—'}.` : ''}`);
+    router.refresh();
+  }
+  return (
+    <div className="inline-form" style={{ width: '100%' }}>
+      <p className="small">Это ваше личное подтверждение: вы прочитали условия использования синтезированной речи Microsoft Azure и разрешаете показывать эти записи ученикам. Его не делает AI-редактор. Файлов Azure: {count}.</p>
+      <div className="field"><label htmlFor="terms-url">Ссылка на условия, которые вы прочитали</label><input id="terms-url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://www.microsoft.com/licensing/terms/…" /></div>
+      <div className="field"><label htmlFor="terms-date">Дата проверки</label><input id="terms-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} /></div>
+      <div className="check-list"><label><input type="checkbox" checked={ack} onChange={(e) => setAck(e.target.checked)} />Я прочитал(а) условия провайдера и подтверждаю их для всех файлов Azure.</label></div>
+      <button type="button" className="btn" disabled={!ack || !/^https?:\/\//.test(url) || busy} onClick={save}>{busy ? 'Записываю…' : 'Записать условия Azure для всех файлов'}</button>
+      {msg ? <p className="small" role="status">{msg}</p> : null}
+    </div>
+  );
+}

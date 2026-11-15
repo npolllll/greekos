@@ -3,6 +3,7 @@ import { adminClient } from '@/lib/supabase/admin';
 import { activePolicy } from '@/lib/admin/releases';
 import { POLICY_RISKS, POLICY_STATEMENT, REVIEW_TYPE_LABEL, dateTimeRu } from '@/lib/admin/labels';
 import { PolicySign } from '../_components/PolicySign';
+import { DELEGATION_RU } from '@/lib/qa/editorial';
 import { ActionButton } from '../_components/ActionButton';
 
 export const metadata = { title: 'Политика выпуска' };
@@ -46,12 +47,13 @@ export default async function PolicyPage() {
           <>
             <div className="banner ok"><span>Политика действует с {dateTimeRu(policy.signed_at)}. Выпуски по ней помечаются ученикам как «Цифровая проверка, без независимой экспертизы».</span></div>
             <p className="small">{policy.statement_ru}</p>
+            {(policy as { delegation?: { statement_ru?: string } | null }).delegation ? <p className="small"><strong>Поручение AI-редактору:</strong> {(policy as { delegation?: { statement_ru?: string } }).delegation?.statement_ru}</p> : null}
             <ActionButton url="/api/admin/policy/revoke" body={{ policy_id: policy.id }} label="Отозвать политику и все выпуски по ней" promptReason="Причина отзыва политики (все выпуски по ней будут отозваны)" />
           </>
         ) : (
           <>
             <p className="small">{POLICY_STATEMENT}</p>
-            <PolicySign risks={POLICY_RISKS} />
+            <PolicySign risks={POLICY_RISKS} delegation={DELEGATION_RU} />
           </>
         )}
       </div>

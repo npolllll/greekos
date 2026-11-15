@@ -335,6 +335,9 @@ export function checkItem(it: ItemForQa, ctx: QaContext): Finding[] {
   if (it.requires_audio && it.audio_job_ids.length && !it.audio_job_ids.every((a) => ctx.verifiedAudio.has(a))) {
     f.push({ check_id: 'modality.audio', severity: 'info', field: 'audio_job_ids', message_ru: 'Нет аудио, прошедшего цифровую проверку: задание откроется только после выпуска аудио (транскрипт звук не заменяет).' });
   }
+  // A task with its own recording that is not marked as audio would be shown without the recording and
+  // without its (hidden) transcript — unanswerable (found by the final AI review, 15.11.2026).
+  if (!it.requires_audio && it.audio_job_ids.length) f.push({ check_id: 'modality.audio_flag', severity: 'blocking', field: 'requires_audio', message_ru: 'У задания есть запись, но оно не помечено как задание на слух: ученик не увидит ни записи, ни текста.', evidence: { audio_job_ids: it.audio_job_ids } });
   if (it.requires_audio && !it.audio_job_ids.length) f.push({ check_id: 'modality.spoken', severity: 'info', field: 'requires_audio', message_ru: 'Требуется речь ученика (не стимул): оценивается только по подтверждённому транскрипту.' });
   // Sources and rights
   const claimIds = ctx.itemClaims.get(it.item_id) ?? [];

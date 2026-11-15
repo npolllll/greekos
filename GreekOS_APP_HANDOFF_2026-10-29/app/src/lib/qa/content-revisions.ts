@@ -309,16 +309,8 @@ export async function applyExamPairRevisions(): Promise<Array<{ item_id: string;
  * digit; Greek ordinal endings stay attached («19ου», «28ης», «1ος»). Keys and options are not touched;
  * error-correction tasks are skipped (their text may be wrong on purpose).
  */
-const CY = 'А-Яа-яЁё';
-const GR = 'Α-Ωα-ωΆ-Ώά-ώϊϋΐΰ';
-const GREEK_ORDINAL = '(?:ος|ου|ού|ης|ής|η|ή|ο|ό|ων|ών|α|ες|ους|οι|ός|ον)(?![Α-Ωα-ωά-ώ])';
-export function restoreNumberSpacing(t: string): string {
-  return t
-    .replace(new RegExp(`([${CY}])(\\d)`, 'g'), '$1 $2')
-    .replace(new RegExp(`(\\d)([${CY}])`, 'g'), '$1 $2')
-    .replace(new RegExp(`([${GR}])(\\d)`, 'g'), '$1 $2')
-    .replace(new RegExp(`(\\d)(?!${GREEK_ORDINAL})([${GR}])`, 'g'), '$1 $2');
-}
+export { restoreNumberSpacing } from '../content/spacing.ts';
+import { restoreNumberSpacing } from '../content/spacing.ts';
 
 export async function applySpacingRevisions(): Promise<{ applied: number; ids: string[] }> {
   const db = adminClient();
@@ -356,7 +348,10 @@ type ReviewPatch =
   | { op: 'set_options'; current: string[]; new: string[] };
 export interface ReviewFix { id: string; reason_ru: string; patches: ReviewPatch[] }
 
-export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<{ item_id: string; status: RevisionStatus }>> {
+/** Label of the review a fix list comes from, written into every patch reason. */
+const REVIEW_13_11 = 'AI-рецензия 13.11.2026 (две независимые AI-проверки, не преподаватель)';
+
+export async function applyAiReviewRevisions(fixes: ReviewFix[], label = REVIEW_13_11): Promise<Array<{ item_id: string; status: RevisionStatus }>> {
   const db = adminClient();
   const out: Array<{ item_id: string; status: RevisionStatus }> = [];
   for (const f of fixes) {
@@ -368,9 +363,11 @@ export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<
     let done = 0;
     for (const p of f.patches) {
       if (p.op === 'set') {
-        const now = (env[p.field] ?? null) as string | null;
+        const raw = (env[p.field] ?? null) as string | null;
+        const now = raw === '' ? null : raw;
+        const cur = p.current === '' ? null : p.current;
         if (now === p.new) { done += 1; continue; }
-        if (p.field === 'answer_explanation_ru' ? (now !== null && now !== p.current) : now !== p.current) { stale = true; continue; }
+        if (p.field === 'answer_explanation_ru' ? (now !== null && now !== cur) : now !== cur) { stale = true; continue; }
         changes[p.field] = p.new;
       } else if (p.op === 'add_accepted') {
         const have = (env.accepted_alternatives ?? []).filter((x): x is string => typeof x === 'string');
@@ -396,7 +393,7 @@ export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<
     if (!Object.keys(changes).length) { out.push({ item_id: f.id, status: stale ? 'changed_since' : 'already' }); continue; }
     await patchItem({ system: CONTENT_REVISION_ACTOR }, {
       item_id: f.id, base_hash: it.current_hash, changes,
-      reason: `AI-рецензия 13.11.2026 (две независимые AI-проверки, не преподаватель): ${f.reason_ru}`.slice(0, 1000),
+      reason: `${label}: ${f.reason_ru}`.slice(0, 1000),
     }, { runQa: false });
     out.push({ item_id: f.id, status: stale ? 'changed_since' : 'applied' });
     void done;
@@ -404,6 +401,124 @@ export async function applyAiReviewRevisions(fixes: ReviewFix[]): Promise<Array<
   const applied = out.filter((o) => o.status === 'applied').map((o) => o.item_id);
   if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после AI-рецензии (${applied.length})`, scope: { kind: 'items', ids: applied } });
   return out;
+}
+
+/**
+ * Text fixes in lessons (teaching JSON), speaking scenarios and Real Greek cards from an AI review: an
+ * exact snippet is replaced in the one string of the object that contains it. `field` narrows the search
+ * to strings whose JSON path contains it (e.g. "theory_ru", "assistant_el"). A fix applies only while the
+ * snippet occurs exactly once; otherwise it is reported and nothing changes. New revision with history.
+ */
+export interface TextFix { id: string; kind: 'unit' | 'scenario' | 'rg' | 'object' | 'item'; reason_ru: string; patches: Array<{ op: 'replace_text'; field?: string; current: string; new: string }> }
+/** Item fields a text fix may touch (keys, options and prompts go through applyAiReviewRevisions). */
+const ITEM_TEXT_FIELDS = ['stimulus', 'criteria'];
+/** Reviewers name fields as «payload.nodes[2]…» or «objective»; the payload JSON has «nodes[2]…», «learning_objective». */
+function normaliseField(f?: string): string | undefined {
+  if (!f) return f;
+  const x = f.replace(/^payload\./, '');
+  return x === 'objective' ? 'learning_objective' : x;
+}
+type Leaf = { path: string; get: () => string; set: (v: string) => void };
+function stringLeaves(root: unknown, path = ''): Leaf[] {
+  const out: Leaf[] = [];
+  const walk = (node: unknown, p: string, parent: Record<string, unknown> | unknown[] | null, key: string | number | null) => {
+    if (typeof node === 'string' && parent !== null && key !== null) {
+      out.push({ path: p, get: () => (parent as Record<string | number, string>)[key], set: (v) => { (parent as Record<string | number, string>)[key] = v; } });
+    } else if (Array.isArray(node)) node.forEach((x, i) => walk(x, `${p}[${i}]`, node, i));
+    else if (node && typeof node === 'object') for (const [k, v] of Object.entries(node as Record<string, unknown>)) walk(v, p ? `${p}.${k}` : k, node as Record<string, unknown>, k);
+  };
+  walk(root, path, null, null);
+  return out;
+}
+export function applyTextPatches(obj: unknown, patches: TextFix['patches']): { next: unknown; applied: number; already: number; failed: Array<{ current: string; reason: string }>; changed: Array<{ path: string; before: string; after: string }> } {
+  const next = structuredClone(obj);
+  let applied = 0; let already = 0;
+  const failed: Array<{ current: string; reason: string }> = [];
+  const changed: Array<{ path: string; before: string; after: string }> = [];
+  for (const p of patches) {
+    // `field` is a JSON path prefix at a segment boundary («theory_ru», «nodes[2]», «criteria»).
+    const under = (path: string, f: string) => path === f || path.startsWith(`${f}.`) || path.startsWith(`${f}[`);
+    const leaves = stringLeaves(next).filter((l) => !p.field || under(l.path, p.field));
+    const count = (t: string, s: string) => (s ? t.split(s).length - 1 : 0);
+    const hits = leaves.filter((l) => l.get().includes(p.current));
+    const total = hits.reduce((n, l) => n + count(l.get(), p.current), 0);
+    if (total === 1) {
+      const l = hits[0]; const before = l.get(); const after = before.replace(p.current, p.new);
+      l.set(after); changed.push({ path: l.path, before, after }); applied += 1;
+    } else if (total === 0 && p.new && leaves.some((l) => l.get().includes(p.new))) already += 1;
+    else failed.push({ current: p.current.slice(0, 80), reason: total === 0 ? 'фрагмент не найден' : `фрагмент встречается ${total} раз` });
+  }
+  return { next, applied, already, failed, changed };
+}
+
+export async function applyAiTextRevisions(fixes: TextFix[], label: string): Promise<Array<{ id: string; kind: string; status: RevisionStatus; failed?: Array<{ current: string; reason: string }> }>> {
+  const db = adminClient();
+  const out: Array<{ id: string; kind: string; status: RevisionStatus; failed?: Array<{ current: string; reason: string }> }> = [];
+  const touchedItems: string[] = [];
+  for (const f of fixes) {
+    const reason = `${label}: ${f.reason_ru}`.slice(0, 1000);
+    const patches = f.patches.map((p) => ({ ...p, field: normaliseField(p.field) }));
+    if (f.kind === 'item') {
+      // Stimulus texts and criteria of a task: a new item revision (keys and prompts are not touched here).
+      if (patches.some((p) => !p.field || !ITEM_TEXT_FIELDS.some((k) => p.field!.startsWith(k)))) { out.push({ id: f.id, kind: f.kind, status: 'changed_since', failed: [{ current: '', reason: 'поле задания не разрешено' }] }); continue; }
+      const { data: it } = await db.from('items').select('item_id, module, envelope, current_hash').eq('item_id', f.id).maybeSingle();
+      if (!it) { out.push({ id: f.id, kind: f.kind, status: 'missing' }); continue; }
+      const res = applyTextPatches(it.envelope, patches);
+      if (!res.applied) { out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'already', failed: res.failed.length ? res.failed : undefined }); continue; }
+      await reviseItemEnvelope(it as { item_id: string; module: string; current_hash: string }, res.next as ItemEnvelope, Object.fromEntries(res.changed.map((c) => [c.path, { before: c.before, after: c.after }])), reason);
+      touchedItems.push(f.id);
+      out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'applied', failed: res.failed.length ? res.failed : undefined });
+      continue;
+    }
+    const spec = f.kind === 'unit' ? { table: 'units', key: 'unit_id', col: 'teaching', kind: 'unit', module: 'core' }
+      : f.kind === 'scenario' ? { table: 'speaking_scenarios', key: 'scenario_id', col: 'payload', kind: 'scenario', module: 'speaking' }
+      : f.kind === 'object' ? { table: 'content_objects', key: 'object_id', col: 'payload', kind: 'object', module: null }
+      : { table: 'rg_expressions', key: 'expression_id', col: 'payload', kind: 'rg_expression', module: 'real_greek' };
+    const { data: row } = await db.from(spec.table).select(`${spec.key}, ${spec.col}, current_hash`).eq(spec.key, f.id).maybeSingle();
+    if (!row) { out.push({ id: f.id, kind: f.kind, status: 'missing' }); continue; }
+    const r = row as unknown as Record<string, unknown> & { current_hash: string };
+    const res = applyTextPatches(r[spec.col], patches);
+    if (!res.applied) { out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'already', failed: res.failed.length ? res.failed : undefined }); continue; }
+    const hash = sha256Hex(stableStringify(res.next));
+    const payloadPrivate = f.kind === 'unit' ? { unit_id: f.id, content_hash: hash, teaching_material: res.next, patched_from: r.current_hash } : { [spec.key]: f.id, payload: res.next, patched_from: r.current_hash };
+    const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: spec.kind, content_id: f.id, content_hash: hash, module: spec.module, payload_private: payloadPrivate }).select('id').single();
+    if (error) throw new Error(error.message);
+    // A scenario's objective column mirrors its payload (shown in the scenario list).
+    const objective = f.kind === 'scenario' ? (res.next as { learning_objective?: unknown }).learning_objective : undefined;
+    const extra = typeof objective === 'string' ? { objective_ru: objective } : {};
+    const { error: ue } = await db.from(spec.table).update({ [spec.col]: res.next, current_hash: hash, revision_id: rev.id, ...extra }).eq(spec.key, f.id).eq('current_hash', r.current_hash);
+    if (ue) throw new Error(ue.message);
+    const changes = Object.fromEntries(res.changed.map((c) => [c.path, { before: c.before, after: c.after }]));
+    await db.from('content_patches').insert({ content_kind: spec.kind, content_id: f.id, base_hash: r.current_hash, new_hash: hash, changes, reason, revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });
+    await db.from('content_releases').update({ revoked_at: new Date().toISOString(), revoked_reason: 'CONTENT_PATCHED: допуск относился к прежней ревизии' }).eq('content_kind', spec.kind).eq('content_id', f.id).is('revoked_at', null);
+    await audit(null, 'content.patch', { id: f.id }, { base_hash: r.current_hash, new_hash: hash, system_actor: CONTENT_REVISION_ACTOR });
+    out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'applied', failed: res.failed.length ? res.failed : undefined });
+  }
+  if (touchedItems.length) await runQaBatch({ actorId: null, label: `Повторная проверка после правки текстов заданий (${touchedItems.length})`, scope: { kind: 'items', ids: touchedItems } });
+  return out;
+}
+
+/**
+ * Listening tasks that carry their own recording but were imported with requires_audio=false (49 tasks in
+ * A1-019/020, A2-016…018, B1-018/019): the player then showed neither the recording nor the hidden
+ * transcript. The flag is set on the envelope and the row; the task opens only with released audio.
+ */
+export async function applyAudioFlagRevisions(): Promise<{ applied: string[] }> {
+  const db = adminClient();
+  const rows = await selectAll<{ item_id: string; module: string; requires_audio: boolean; audio_job_ids: string[]; envelope: ItemEnvelope; current_hash: string }>((f, t) => db.from('items').select('item_id, module, requires_audio, audio_job_ids, envelope, current_hash').eq('requires_audio', false).order('item_id').range(f, t));
+  const applied: string[] = [];
+  for (const r of rows) {
+    if (!r.audio_job_ids?.length) continue;
+    const next = { ...r.envelope, requires_audio: true } as ItemEnvelope;
+    if (r.envelope.requires_audio !== true) {
+      await reviseItemEnvelope(r, next, { requires_audio: { before: r.envelope.requires_audio ?? false, after: true } }, 'Методическая правка (AI-рецензия 15.11.2026, не преподаватель): у задания есть своя запись, но оно не было помечено как задание на слух; без этого ученик не видел ни записи, ни текста.');
+    }
+    const { error } = await db.from('items').update({ requires_audio: true }).eq('item_id', r.item_id);
+    if (error) throw new Error(error.message);
+    applied.push(r.item_id);
+  }
+  if (applied.length) await runQaBatch({ actorId: null, label: `Повторная проверка после пометки заданий на слух (${applied.length})`, scope: { kind: 'items', ids: applied } });
+  return { applied };
 }
 
 /** A new immutable item revision with history and revocation, for envelope fields `patchItem` does not edit. */

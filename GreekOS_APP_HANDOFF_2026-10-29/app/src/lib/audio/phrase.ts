@@ -9,7 +9,7 @@ import { localAsrHealth, localTranscribe } from '../providers/local-engines.ts';
 import { analyzeWav, normalizeLoudness } from './wav.ts';
 import { roundTrip, roundTripPass } from './roundtrip.ts';
 import { env } from '../env.ts';
-import type { CatalogVoice } from '../voice/catalog.ts';
+import { voiceApproved, type CatalogVoice } from '../voice/catalog.ts';
 import { lessonWords } from '../alphabet/reference.ts';
 
 export const PHRASE_SYNTHESIS_VERSION = 'greekos-phrase/1.2'; // 1.1: carrier word boundaries + loudness normalisation
@@ -37,7 +37,7 @@ async function narratorVoice(viewer: SessionUser): Promise<CatalogVoice> {
     if (!v || !v.available) continue;
     if (v.engine_kind === 'local' && !env.localEnginesAllowed) continue;
     // Ordinary learners hear only voices the owner approved and that may be distributed.
-    if (!viewer.isOwner && !viewer.devPreview && !(v.approved_by_owner && v.distribution_allowed)) continue;
+    if (!viewer.isOwner && !viewer.devPreview && !(voiceApproved(v) && v.distribution_allowed)) continue;
     return v;
   }
   throw new HttpError(503, 'TTS_UNAVAILABLE', 'Озвучка сейчас недоступна: нет утверждённого голоса диктора.');
@@ -78,7 +78,7 @@ export async function phraseAudio(viewer: SessionUser, input: { unit_id: string;
     const row = {
       cache_key: key, text_el: text, voice_id: voice.voice_id, speed: input.speed, synthesis_version: PHRASE_SYNTHESIS_VERSION, object_path: path, sha256: sha,
       duration_ms: analyzeWav(best.bytes)?.duration_ms ?? null, roundtrip: { ...best.metrics, hypothesis: best.hyp, engine: `local:whisper-${model}` },
-      qa_verdict: pass ? 'PASS' : 'NEEDS_REVIEW', dev_only: !voice.distribution_allowed || !voice.approved_by_owner,
+      qa_verdict: pass ? 'PASS' : 'NEEDS_REVIEW', dev_only: !voice.distribution_allowed || !voiceApproved(voice),
     };
     await db.from('tts_cache_entries').upsert(row);
     entry = { ...row, hits: 0 };

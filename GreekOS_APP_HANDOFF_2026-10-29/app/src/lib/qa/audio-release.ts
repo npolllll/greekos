@@ -15,11 +15,12 @@ import { sha256Hex, stableStringify } from '../content/stable-json.ts';
 export const ListenReview = z.object({ asset_id: z.string().uuid(), decision: z.enum(['OK', 'ISSUE']), note: z.string().trim().max(500).optional() });
 export const AudioDecision = z.object({ asset_ids: z.array(z.string().uuid()).min(1).max(200), note: z.string().trim().max(500).optional() });
 
-interface AssetRow {
+export interface AssetRow {
   id: string; audio_id: string; script_hash: string; sha256: string | null; digital_status: string; technical_status: string; rights_status: string;
   cast_approved: boolean; invalidated_at: string | null; history: Array<Record<string, unknown>> | null; asr_roundtrip: { cer_phonetic?: number; wer?: number; engine?: string } | null; created_at: string;
 }
 const COLS = 'id, audio_id, script_hash, sha256, digital_status, technical_status, rights_status, cast_approved, invalidated_at, history, asr_roundtrip, created_at';
+export const ASSET_COLS = COLS;
 
 /** The owner's latest listening verdict on this exact file, if any. */
 export function ownerListening(a: Pick<AssetRow, 'history'>): { decision: 'OK' | 'ISSUE'; at: string; note: string | null } | null {
@@ -28,7 +29,14 @@ export function ownerListening(a: Pick<AssetRow, 'history'>): { decision: 'OK' |
 }
 
 /** Why a file cannot be released yet (empty = eligible), in the owner's language. */
-export function audioReleaseBlockers(a: AssetRow, jobScriptHash: string | null): string[] {
+/** The AI editor's latest objective review of this exact file (delegated by the owner), if any. */
+export function editorialListening(a: Pick<AssetRow, 'history' | 'sha256'>): { decision: 'OK' | 'ISSUE'; at: string; note: string | null } | null {
+  const ev = [...(a.history ?? [])].reverse().find((h) => h.event === 'editorial_reviewed' && (!h.sha256 || h.sha256 === a.sha256));
+  return ev ? { decision: ev.decision as 'OK' | 'ISSUE', at: String(ev.at), note: (ev.note as string | null) ?? null } : null;
+}
+
+/** `acceptEditorial`: under a policy that delegates it, the AI editor's file review stands in for the owner's listening. */
+export function audioReleaseBlockers(a: AssetRow, jobScriptHash: string | null, opts: { acceptEditorial?: boolean } = {}): string[] {
   const out: string[] = [];
   if (a.invalidated_at || a.script_hash !== jobScriptHash) out.push('файл устарел: сценарий изменён или есть новый рендер');
   if (a.technical_status !== 'TECHNICAL_PASS') out.push('технический QA не пройден');
@@ -36,9 +44,9 @@ export function audioReleaseBlockers(a: AssetRow, jobScriptHash: string | null):
   if (!a.cast_approved) out.push('кастинг ролей не утверждён');
   if (a.rights_status === 'DEV_LOCAL_ONLY') out.push('голос только для разработки (лицензия)');
   else if (a.rights_status !== 'PROVIDER_TERMS_RECORDED') out.push('условия провайдера голоса не записаны');
-  const l = ownerListening(a);
-  if (!l) out.push('владелец ещё не прослушал файл');
-  else if (l.decision !== 'OK') out.push('при прослушивании отмечена проблема');
+  const l = ownerListening(a) ?? (opts.acceptEditorial ? editorialListening(a) : null);
+  if (!l) out.push(opts.acceptEditorial ? 'файл не проверен (ни владельцем, ни AI-редактором)' : 'владелец ещё не прослушал файл');
+  else if (l.decision !== 'OK') out.push('при проверке файла отмечена проблема');
   return out;
 }
 

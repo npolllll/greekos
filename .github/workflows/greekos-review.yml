@@ -1,0 +1,107 @@
+# GreekOS — editorial review data: exports the current course corpus from production and runs the objective
+# audio checks (course files and candidate voices). Results are committed to the requesting branch under
+# GreekOS_APP_HANDOFF_2026-10-29/app/reports/review/ — course content and measurements only, no learner data.
+# Request: commit "corpus", "assets", "voices" and/or "probe" (comma-separated, first line) to
+# GreekOS_APP_HANDOFF_2026-10-29/app/ops/review-request on a claude/** branch.
+name: GreekOS review
+
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['GreekOS_APP_HANDOFF_2026-10-29/app/ops/review-request']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: greekos-review-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: GreekOS_APP_HANDOFF_2026-10-29/app
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+      AZURE_SPEECH_REGION: ${{ vars.AZURE_SPEECH_REGION || 'northeurope' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tasks
+        id: task
+        run: |
+          t=$(head -n1 ops/review-request | tr -d '[:space:]')
+          ids=$(sed -n 2p ops/review-request | tr -d '[:space:]')
+          echo "tasks=,$t," >> "$GITHUB_OUTPUT"; echo "ids=$ids" >> "$GITHUB_OUTPUT"; echo "Tasks: $t; ids: ${ids:-all}"
+      - name: PostgreSQL 17 client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y -qq postgresql-client-17
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Python tools (audio analysis, independent recogniser)
+        if: contains(steps.task.outputs.tasks, ',assets,') || contains(steps.task.outputs.tasks, ',voices,') || contains(steps.task.outputs.tasks, ',probe,')
+        run: pip install -q numpy praat-parselmouth faster-whisper
+      - name: corpus (current content after all revisions)
+        if: contains(steps.task.outputs.tasks, ',corpus,')
+        run: bash scripts/review/export-corpus.sh
+      - name: assets (142 course audio files, or only the ids on line 2)
+        if: contains(steps.task.outputs.tasks, ',assets,')
+        env:
+          REVIEW_IDS: ${{ steps.task.outputs.ids }}
+        run: python3 scripts/review/audio_review.py assets
+      - name: voices (candidate Azure voices on a Greek test set)
+        if: contains(steps.task.outputs.tasks, ',voices,')
+        run: python3 scripts/review/audio_review.py voices
+      - name: probe (spoken-form variants and voice candidates on given texts)
+        if: contains(steps.task.outputs.tasks, ',probe,')
+        run: python3 scripts/review/audio_review.py probe
+      - uses: actions/setup-node@v4
+        if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,') || contains(steps.task.outputs.tasks, ',render,')
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: GreekOS_APP_HANDOFF_2026-10-29/app/package-lock.json
+      - name: Node dependencies
+        if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,') || contains(steps.task.outputs.tasks, ',render,')
+        run: npm ci --no-audit --no-fund
+      - name: render (re-render the audio jobs on line 2 with the current casting; Azure F0, no charge)
+        if: contains(steps.task.outputs.tasks, ',render,') && steps.task.outputs.ids != ''
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+          TTS_PROVIDER: azure
+          ASR_PROVIDER: azure
+          AZURE_SPEECH_TIER: F0
+        run: |
+          mkdir -p reports/review/audio
+          npx tsx --conditions=react-server scripts/audio-cli.ts render-batch --ids "${{ steps.task.outputs.ids }}" --force --budget-cap 0 > reports/review/audio/render.json
+          node -e "const r=require('./reports/review/audio/render.json'); console.log(JSON.stringify({total:r.total,rendered:r.rendered,counts:r.counts}))"
+      - name: sample-show (the release sample of the latest full QA batch)
+        if: contains(steps.task.outputs.tasks, ',sample-show,')
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+        run: npx tsx --conditions=react-server scripts/review/editorial-apply.ts sample-show
+      - name: apply (AI editor's recorded decisions; delegated release only under an owner-signed policy)
+        if: contains(steps.task.outputs.tasks, ',apply,')
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+        run: npx tsx --conditions=react-server scripts/review/editorial-apply.ts apply
+      - name: Commit the results to the requesting branch
+        if: always()
+        working-directory: .
+        run: |
+          git config user.name "greekos-review"
+          git config user.email "greekos-review@users.noreply.github.com"
+          git add GreekOS_APP_HANDOFF_2026-10-29/app/reports/review || true
+          git diff --cached --quiet && { echo "nothing to commit"; exit 0; }
+          git commit -qm "Review data: ${{ steps.task.outputs.tasks }} ($(date -u +%FT%TZ))"
+          for i in 1 2 3; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep 5; done
