@@ -190,7 +190,7 @@ export function ProviderTermsAll({ count }: { count: number }) {
   }
   return (
     <div className="inline-form" style={{ width: '100%' }}>
-      <p className="small">Это ваше личное подтверждение: вы прочитали условия использования синтезированной речи Microsoft Azure и разрешаете показывать эти записи ученикам. Его не делает AI-редактор. Файлов Azure: {count}.</p>
+      <p className="small">Это ваше личное подтверждение: вы прочитали условия использования синтезированной речи Microsoft Azure и разрешаете показывать эти записи ученикам. Его не делает AI-редактор. Файлов Azure: {count}. Условия Microsoft: <a href="https://www.microsoft.com/licensing/terms/" target="_blank" rel="noreferrer">Product Terms</a> (раздел Azure AI Services).</p>
       <div className="field"><label htmlFor="terms-url">Ссылка на условия, которые вы прочитали</label><input id="terms-url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://www.microsoft.com/licensing/terms/…" /></div>
       <div className="field"><label htmlFor="terms-date">Дата проверки</label><input id="terms-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} /></div>
       <div className="check-list"><label><input type="checkbox" checked={ack} onChange={(e) => setAck(e.target.checked)} />Я прочитал(а) условия провайдера и подтверждаю их для всех файлов Azure.</label></div>
