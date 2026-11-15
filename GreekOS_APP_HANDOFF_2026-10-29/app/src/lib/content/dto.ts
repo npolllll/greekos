@@ -99,6 +99,11 @@ export function buildItemDTO(params: {
       const focus: Record<string, string | number> = {};
       for (const k of ['cue_id', 'comparison_row']) if (typeof st[k] === 'string' || typeof st[k] === 'number') focus[k] = st[k] as string | number;
       stimulus = { kind: 'audio_cue', focus };
+    } else if (st.display_policy !== 'AFTER_ATTEMPT_ONLY') {
+      // A text written into the task ({ text }, { text, origin }, { text_el }): the reading text itself.
+      // A transcript marked AFTER_ATTEMPT_ONLY stays hidden — it would give away a listening answer.
+      const inline = typeof st.text === 'string' ? st.text : typeof st.text_el === 'string' ? st.text_el : null;
+      if (inline?.trim()) stimulus = { kind: 'inline', text: inline };
     }
   }
   return {

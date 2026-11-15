@@ -1,2 +1,2 @@
-speaking-b1,release-readiness,qa-fails,db-state
-# 2026-11-15 final main 722058d: correction priority check (B1 only, test budget), readiness
+e2e,release-readiness,qa-fails
+# 2026-11-15 final main d628cff: course walk with listening tasks awaiting audio
