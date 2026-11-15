@@ -1,0 +1,25 @@
+{
+ "voices": {
+  "job_rows": 0,
+  "assets_cast_approved": 0
+ },
+ "digital": {
+  "confirmed": 14,
+  "skipped": []
+ },
+ "listening": {
+  "written": 142
+ },
+ "sample": {
+  "written": 30,
+  "sample": 30
+ },
+ "release": {
+  "status": "pending",
+  "reason": "нет действующей политики владельца с поручением AI-редактору"
+ },
+ "audio_release": {
+  "status": "pending",
+  "reason": "нет действующей политики владельца с поручением AI-редактору"
+ }
+}

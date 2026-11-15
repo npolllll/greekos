@@ -54,11 +54,6 @@ jobs:
       - name: corpus (current content after all revisions)
         if: contains(steps.task.outputs.tasks, ',corpus,')
         run: bash scripts/review/export-corpus.sh
-      - name: assets (142 course audio files, or only the ids on line 2)
-        if: contains(steps.task.outputs.tasks, ',assets,')
-        env:
-          REVIEW_IDS: ${{ steps.task.outputs.ids }}
-        run: python3 scripts/review/audio_review.py assets
       - name: voices (candidate Azure voices on a Greek test set)
         if: contains(steps.task.outputs.tasks, ',voices,')
         run: python3 scripts/review/audio_review.py voices
@@ -74,6 +69,11 @@ jobs:
       - name: Node dependencies
         if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,') || contains(steps.task.outputs.tasks, ',render,')
         run: npm ci --no-audit --no-fund
+      - name: apply (AI editor's recorded decisions; delegated release only under an owner-signed policy)
+        if: contains(steps.task.outputs.tasks, ',apply,')
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+        run: npx tsx --conditions=react-server scripts/review/editorial-apply.ts apply
       - name: render (re-render the audio jobs on line 2 with the current casting; Azure F0, no charge)
         if: contains(steps.task.outputs.tasks, ',render,') && steps.task.outputs.ids != ''
         env:
@@ -85,16 +85,16 @@ jobs:
           mkdir -p reports/review/audio
           npx tsx --conditions=react-server scripts/audio-cli.ts render-batch --ids "${{ steps.task.outputs.ids }}" --force --budget-cap 0 > reports/review/audio/render.json
           node -e "const r=require('./reports/review/audio/render.json'); console.log(JSON.stringify({total:r.total,rendered:r.rendered,counts:r.counts}))"
+      - name: assets (142 course audio files, or only the ids on line 2)
+        if: contains(steps.task.outputs.tasks, ',assets,')
+        env:
+          REVIEW_IDS: ${{ steps.task.outputs.ids }}
+        run: python3 scripts/review/audio_review.py assets
       - name: sample-show (the release sample of the latest full QA batch)
         if: contains(steps.task.outputs.tasks, ',sample-show,')
         env:
           NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
         run: npx tsx --conditions=react-server scripts/review/editorial-apply.ts sample-show
-      - name: apply (AI editor's recorded decisions; delegated release only under an owner-signed policy)
-        if: contains(steps.task.outputs.tasks, ',apply,')
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
-        run: npx tsx --conditions=react-server scripts/review/editorial-apply.ts apply
       - name: Commit the results to the requesting branch
         if: always()
         working-directory: .

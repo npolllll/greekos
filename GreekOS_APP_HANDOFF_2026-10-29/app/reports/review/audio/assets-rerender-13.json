@@ -1,0 +1,1307 @@
+[
+ {
+  "audio_id": "KEG-B2-L01-AUD2",
+  "asset_id": "b60aa2ad-3c87-4d66-9345-98066a4a12d3",
+  "sha256": "06a1feab72a6ef055a0721174dae395499afc19fbb864055057771d44e349747",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Άννα": "azure:el-GR-AthinaNeural",
+   "Ελένη": "azure:en-GB-AdaMultilingualNeural",
+   "Μάνος": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 9035444,
+  "acoustics": {
+   "duration_s": 188.24,
+   "sample_rate": 24000,
+   "peak_dbfs": -2.6,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -17.6,
+   "lead_silence_s": 0.15,
+   "trail_silence_s": 0.35,
+   "pauses_over_250ms": 69,
+   "longest_pause_s": 1.69,
+   "voiced_time_s": 137.98,
+   "f0": {
+    "median_hz": 185.4,
+    "range_st": 18.7
+   },
+   "segments": [
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 228.9,
+      "range_st": 11.7
+     }
+    },
+    {
+     "speaker": "Μάνος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 110.1,
+      "range_st": 9.5
+     }
+    },
+    {
+     "speaker": "Ελένη",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 194.0,
+      "range_st": 13.8
+     }
+    },
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 221.3,
+      "range_st": 11.4
+     }
+    },
+    {
+     "speaker": "Μάνος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 110.4,
+      "range_st": 9.3
+     }
+    },
+    {
+     "speaker": "Ελένη",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 189.9,
+      "range_st": 11.1
+     }
+    },
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 223.6,
+      "range_st": 9.2
+     }
+    },
+    {
+     "speaker": "Μάνος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 111.5,
+      "range_st": 10.8
+     }
+    },
+    {
+     "speaker": "Ελένη",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 194.8,
+      "range_st": 12.5
+     }
+    }
+   ]
+  },
+  "script_words": 474,
+  "syllables_per_s": 6.72,
+  "stored_roundtrip": {
+   "wer": 0.0295,
+   "cer_accent_insensitive": 0.0042,
+   "cer_phonetic": 0.0026,
+   "accent_mismatches": [
+    "μια"
+   ]
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.12,
+   "wer_accent_insensitive": 0.112,
+   "stress_mismatches": [],
+   "text": "Είμαι η Άνα. Πρέπει να αποφασίσουμε πως θα οργανώσουμε τη γιορτή της γειτονιάς. Εγώ προτιμόν να γίνει το απόγευμα γιατί το προή εργάζομαι. Θα ήθελα επίσης να υπάρχει χώρος όπου τα παιδιά μπορούν να συμμετέχουν σε μια ίσυχη δραστηριότητα. Δεν έχω αντίρρηση για τη μουσική, αρκεί να μην καλύπτει κάθε σεζήτηση. Είμαι ο μάνος. Συμφωνώ για το απόγευμα. Το προή δεν μπορώ ούτε εγώ. Για το χώρο όμως θα διάλεγα την αυλή. Ακόμη και αχρειαστεί να μεταφέρουμε περισσότερες καρέκλες. Θέλω να υπάρχει όπωςδήποτε ζωντανή μουσική. Δεν μιλάω για μεγάλη σκηνή ή ακριβό εξοπλισμό, αλλά για δύο μουσικούς που γνωρίζουμε και μπορούν να παίξουν χωρίς αμμιβή. Είμαι η Ελένη. Εγώ προτιμό το προή. Όταν έχει περισσότερο φως. Καταλαβαίνω όμως ότι δεν σας εξυπηρετή. Θα μπορούσα να έρθω και το απόγευμα. Αν το αποφασίσεις η ομάδα, θα επέλεγα την έθουσα. Επειδή ο καιρός είναι αβέβαιος και συμφωνώ με την άνα ότι χρειάζεται ξεχωριστή δραστηριότητα για παιδιά. Όχι απλώς μια γονιά με καρέκλες. Και εγώ την έθωσα προτιμό. Η αυλή είναι όμορφη, αλλά δεν θέλω να κυρώσουμε τελευταία στιγμή λόγο βροχής. Για τα έξοδα, προτείνω προερετική συνησφορά. Όποιος μπορεί, βοηθάει, όποιος δεν μπορεί, συμμετέχει κανονικά. Δεν θα έβαζε η συντηρίω στην ίσοδο. Αν τα χρήματα δεν φτάσουν, θα περιορίσουμε το πρόγραμμα. Η προερετική συνησφορά μου φαίνεται σωστή. Μπορούμε να ανακοινώσουμε από πριν ποια έξοδα έχουμε, χωρίς να πιέζουμε τους κατήκους. Για τα παιδιά δεν έχω συγκεκριμένη πρόταση και δεν μπορώ να ανάλαβω σχετική δραστηριότητα. Θα βοηθήσω όμως να μεταφέρουμε τις καρέκλες. Παραμένω υπέρ της αυλής, παρόλο που καταλαβαίνω τον κίνδυνο της βροχής. Εγώ δεν θα ζητούσα συνησφορές αυτή τη φορά. Θα ξεκινούσα μόνο με όσα υλικά έχουμε ήδη και θα έκανα το πρόγραμμα ακόμη μικρότερο. Δεν θεωρώ απαραίτητη τη ζωντανή μουσική. Αν τελικά υπάρχουν μουσική, βέβαια, δεν θα αντιδράσω, αρκεί να τηρυθεί η ώρα λίξης. Προτιμό να ξέρουμε ότι μπορούμε να καθαρίσουμε τον χώρο χωρίς βιασίνη. Για την ενημέρωση θα ήθελα να τυπώσουμε λίγες αφήσες. Μερικοί γείτονες δεν βλέπουν τις ανακοινώσεις στο διαδίκτυο. Αυτό δεν σημαίνει ότι θα σταματήσουμε τις ηλεκτρονικές αναρτήσεις, θέλω να συνδυάσουμε τα δύο. Όσο για τη μουσική, μπορώ να δεχτώ την πρόταση του μάνου, αλλά δεν είναι για μένα απαραίτητος όρος της γιορτής. Εγώ θα έκανα μόνο ηλεκτρονική ενημέρωση, για να μην έχουμε εξοδακτύποσης. Αν βέβαια βρεθούν δωρεάν αφήσες, δεν θα τις πετάξουμε. Απλώς δεν τις προτείνω ως προτερεότητα. Για τη μουσική επιμένω, θα δώσει έναν κοινόριθμό στη συνάντηση και μπορεί να φέρει κοντά ανθρώπους που δεν γνωρίζονται. Οι αφήσες είναι χρήσιμες, αλλά δεν θα αναλάβω να κρίνω τώρα πιο μέσω θα χρησιμοποιήσουμε. Ας ξεχωρίσουμε τις προσωπικές προτιμήσεις μας από την τελική απόφαση. Έχουμε καταγράψει τις διαφορές για την ώρα, τον χώρο κοιτά εξοδα. Μπορούμε να ρωτήσουμε και τους υπόλοιπους κατήκους και να συναντιθούμε ξανά με πιο συγκεκριμένα στοιχεία, χωρίς να θεωρούμε ότι όσα ανέχτηκε κάποιος ήταν δική του πρόταση."
+  }
+ },
+ {
+  "audio_id": "KEG-B2-L02-AUD2",
+  "asset_id": "a66c4585-faff-49af-9d44-e6f8a50a097a",
+  "sha256": "934f510fae3033f4af4e570a8bf3e94a01bc70e0919c2d82d6498962b085f3a5",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Δανάη": "azure:el-GR-AthinaNeural",
+   "Σοφία": "azure:en-GB-AdaMultilingualNeural",
+   "Πέτρος": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 9266444,
+  "acoustics": {
+   "duration_s": 193.05,
+   "sample_rate": 24000,
+   "peak_dbfs": -2.4,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -17.7,
+   "lead_silence_s": 0.14,
+   "trail_silence_s": 0.36,
+   "pauses_over_250ms": 62,
+   "longest_pause_s": 1.7,
+   "voiced_time_s": 146.23,
+   "f0": {
+    "median_hz": 188.9,
+    "range_st": 18.5
+   },
+   "segments": [
+    {
+     "speaker": "Δανάη",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 229.2,
+      "range_st": 11.1
+     }
+    },
+    {
+     "speaker": "Πέτρος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 110.7,
+      "range_st": 10.6
+     }
+    },
+    {
+     "speaker": "Σοφία",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 196.0,
+      "range_st": 11.0
+     }
+    },
+    {
+     "speaker": "Δανάη",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 233.0,
+      "range_st": 11.4
+     }
+    },
+    {
+     "speaker": "Πέτρος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 113.3,
+      "range_st": 11.1
+     }
+    },
+    {
+     "speaker": "Σοφία",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 196.2,
+      "range_st": 10.8
+     }
+    },
+    {
+     "speaker": "Δανάη",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 229.9,
+      "range_st": 9.2
+     }
+    },
+    {
+     "speaker": "Πέτρος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 111.7,
+      "range_st": 12.3
+     }
+    },
+    {
+     "speaker": "Σοφία",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 190.2,
+      "range_st": 12.5
+     }
+    }
+   ]
+  },
+  "script_words": 498,
+  "syllables_per_s": 6.69,
+  "stored_roundtrip": {
+   "wer": 0.0321,
+   "cer_accent_insensitive": 0.0082,
+   "cer_phonetic": 0.0073,
+   "accent_mismatches": [
+    "άδειά"
+   ]
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.127,
+   "wer_accent_insensitive": 0.112,
+   "stress_mismatches": [
+    "παλιό→παλιο",
+    "ώστε→ωστε",
+    "περίληψη→περίληψή",
+    "άδειά→άδεια"
+   ],
+   "text": "Είμαι η Δανάη. Σας κάλεσα για να συζητήσουμε την νέα σειρά υγητικών εκπομπών του συλλόγου μας. Έχω ήδη κρατήσει την έθουσα για τη σημερινή δοκιμή. Θα πρότεινε τα επεισόδια να διαρκούν 15 λεπτά. Έτσι μπορούμε να αναπτήσουμε ένα θέμα χωρίς να κουράζουμε όσους ακούν στη διαδρομή προς τη δουλειά. Δεν θα περιόριζα, πάντως, κάθε απάντηση του καλεσμένου με χρονόμετρο. Είμαι ο Πέτρος. Εγώ θα έδεινα μισή ώρα σε κάθε επεισόδιο, γιατί οι άνθρωποι χρειάζονται χρόνο για να εξηγήσουν την εμπειρία τους. Περισότερο με απασχολή ήχο γράφηση. Προτιμό να καλούμε τους καλεσμένους εδώ, στο στουδιο, όπου ελέγχουμε το θόρυβο. Η σύνδεση από το σπίτι φαίνεται εύκολη, αλλά συχνά μας αναγκάζει να επαναλαμβάνουμε ολόκληρες φράσεις. Είμαι η Σοφία. Για τη διάρκεια θα αποφασίσω αφού ακούσω τη δοκιμή, στη συνεντέφξη προτιμό την εξαποστάσεως ημετοχή, επειδή ανοίγει την πόρτα σε ανθρώπους που μένουν μακριά. Δέχομαι ότι υπάρχουν τεχνικά προβλήματα, αλλά δεν θεωρώ δίκαιο να αποκλείονται εξαρχής. Μπορούμε να τους δίνουμε οδηγίες για το μικρόφωνο και να κάνουμε έναν σύντομο έλεγχο πριν ξεκινήσουμε. Δεν έχω σταθερή προτίμηση για το χώρο της συνέντεφξης. Για τη μουσική, όμως, θα ήθελε ένα σύντομο σήμα στην αρχή με δική μας σύνθεση. Όχι μουσική κάτω από τη συζήτηση. Αν γεμίσουμε κάθε πάυση, ο λόγος θα χάσει τη θεσικότητά του. Οι μικρές υοπές δεν είναι απαραίτητα λάθη που πρέπει να σβήσουμε. Εγώ θα ξεκινούσα κατευθείαν με τη φωνή του παρουσιαστή, χωρίς μουσικό σήμα. Θα κρατούσα επίσης τα επεισόδια στις ελίδα μας, χωρίς να επιτρέπεται η λύψη τους. Μπορεί κάποιος να θέλει να διορθώσει μια πληροφορία αργότερα και προτιμό να ξέρουμε πια εκδοχή ακούγεται. Δεν λέω ότι αυτό αποκλεί κάθε παλιο αντίγραφο, αλλά διευκολύνει τη διαχείρηση. Η δική μου πρόταση είναι να προσφέρουμε και αρχείο για λύψη. Πολλοί ακούν όταν δεν έχουν σύνδεση. Μπορούμε να βάζουμε η μερομηνία στην κάθε έκδοση και να σημειώνουμε τις διορθώσεις της ελίδα. Για τη μουσική δεν έχω ακόμη άποψη. Θα ήθελα επίσης να ανεβάζουμε πλήρη γραπτή από μαγνητοφόννηση. Ωστε το περιεχόμενο να είναι προσβάσιμο και σε ανθρώπους με δυσκολία ακοής. Πλήρες κείμενο δεν θα υποσχεθώ πριν δούμε πόσο χρόνο χρειάζεται. Προτείνω αρχικά μόνο μια σύντομη περίληψή με τα βασικά σημεία. Για τους καλεσμένους, θα έστελνα πριν από τη συνέντευξη έναν κατάλογο θεμάτων χωρίς να πετούμε έτοιμες απαντήσεις. Έτσι θα μπορούν να προετοιμάσουν στοιχεία, ενώ η συζήτηση θα παραμένει ανυκτήσει σε αυθόρμιτες ερωτήσεις. Εγώ δεν θα έστελνα κατάλογο εκ των πρωτέρων γιατί φοβάμαι ότι η συνέντευξη θα γίνει ανάγνωσικημένου. Θα εξηγούσα μόνο το γενικό σκοπό. Πριν δημοσιέψουμε το πρώτο επεισόδιο, προτείνω να το ακούσουν πέντε άνθρωποι εκτός της ομάδας μας. Θέλω να μάθουμε να καταλαβαίνουν ποιος μιλάει και που αλλάζει το θέμα, χωρίς να τους δώσουμε εξηγήσεις. Δεν θα κάνω εγώ πρόταση για τον κατάλογο ερωτήσεων. Πάντως θα δεχτώ μικρό με τόνο, τι συμφωνήσετε. Αρκείο καλεσμένος να γνωρίζει που θα δημοσιαφτεί η οικογράφηση. Θεωρώ απαραίτητο να πάρουμε την άδεια του πριν από τη δημοσίευση. Δεν αρκείο ότι δέχτηκε να καθίσει μπροστά στο μικρόφωνο. Για εξωτερική δοκιμή δεν έχω αποφασίσει. Θα ήθελα πρώτα να ακούσω το υλικό."
+  }
+ },
+ {
+  "audio_id": "KEG-B2-L03-AUD2",
+  "asset_id": "953ee456-0f18-4eae-a3d3-8bd999906ff7",
+  "sha256": "8cbccdb43dec13a3531b43006aebaa10e5a5bad583a71982a1fbf384f8e96e27",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Λένα": "azure:el-GR-AthinaNeural",
+   "Μυρτώ": "azure:en-GB-AdaMultilingualNeural",
+   "Ορέστης": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 9614444,
+  "acoustics": {
+   "duration_s": 200.3,
+   "sample_rate": 24000,
+   "peak_dbfs": -2.6,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -17.7,
+   "lead_silence_s": 0.14,
+   "trail_silence_s": 0.36,
+   "pauses_over_250ms": 62,
+   "longest_pause_s": 1.69,
+   "voiced_time_s": 152.3,
+   "f0": {
+    "median_hz": 186.3,
+    "range_st": 18.2
+   },
+   "segments": [
+    {
+     "speaker": "Λένα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 225.5,
+      "range_st": 10.8
+     }
+    },
+    {
+     "speaker": "Ορέστης",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 110.7,
+      "range_st": 8.9
+     }
+    },
+    {
+     "speaker": "Μυρτώ",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 190.7,
+      "range_st": 11.5
+     }
+    },
+    {
+     "speaker": "Λένα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 217.9,
+      "range_st": 10.0
+     }
+    },
+    {
+     "speaker": "Ορέστης",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 111.6,
+      "range_st": 9.2
+     }
+    },
+    {
+     "speaker": "Μυρτώ",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 191.7,
+      "range_st": 10.8
+     }
+    },
+    {
+     "speaker": "Λένα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 230.6,
+      "range_st": 10.6
+     }
+    },
+    {
+     "speaker": "Ορέστης",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 111.8,
+      "range_st": 10.2
+     }
+    },
+    {
+     "speaker": "Μυρτώ",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 194.7,
+      "range_st": 11.5
+     }
+    }
+   ]
+  },
+  "script_words": 513,
+  "syllables_per_s": 7.23,
+  "stored_roundtrip": {
+   "wer": 0.0468,
+   "cer_accent_insensitive": 0.0076,
+   "cer_phonetic": 0.007,
+   "accent_mismatches": [
+    "μια"
+   ]
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.119,
+   "wer_accent_insensitive": 0.113,
+   "stress_mismatches": [
+    "μια→μία",
+    "μια→μία",
+    "μια→μία"
+   ],
+   "text": "Είμαι η Λένα. Έχω συγκεντρώσει τις προτάσεις για την ομαδική μας εκδρομή, αλλά δεν έχω κάνει καμία κράτηση. Εγώ προτιμό να φύγουμε παρασκευή απόγευμα, ώστε να έχουμε δύο ολόκληρες ημέρες στον προορισμό. Ξέρω ότι θα φτάσουμε αργά. Θα δεχόμουν το Σάββατο αν δεν βρεθεί λύση, όμως δεν είναι η πρώτη μου επιλογή. Ας ξεχωρίσουμε την προτιμάμε από όσα μπορούμε να ανεχτούμε. Είμαι ωραίς της. Εμένα με εξυπηρετή μόνο το Σάββατο το πρωί, γιατί την παρασκευή εργάζομαι μέχρι αργά. Θα ήθελα επίσης να ταξιδέψουμε με τρένο. Μπορούμε να συζητάμε να ξεκοραζόμαστε χωρίς να αναλάβει κάποιος την οδήγηση. Αν ο σταθμός βρίσκεται μακριά από το κατάλημα, θα υπολογήσουμε χωριστά τη μικρή μετακίνηση από εκεί. Δεν έχω αντίρηση να περπατήσω λίγο με τη βαλίτσα. Είμαι η μυρτώ. Για την ημέρα αναχώρησης δεν θα εκφράσω ακόμη προτίμηση. Για τη διαδρομή, όμως, θα επέλεγαν ηκιασμένο μικρόλεοφορίο με οδηγό. Θα μπορούσαμε να σταματίσουμε όπου χρειάζεται και να μεταφέρουμε όλοι μαζί της αποσκευές. Καταλαβαίνω ότι ίσως κοστήσει περισσότερο από το τρένο. Γι' αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε. Όχι μία εσιόδοξη υπόθεση για το συνολικό ποσό. Δεν έχω αποφασίσει ανάμεσα στα δύο μέσα. Στον προορισμό θα προτιμούσα να μηνουμε σε μικρό ξενώνος το κέντρο, ακόμη και αν τα δωμάτια είναι απλά. Έτσι θα μπορεί ο καθένας να βγει μόνος του όταν θέλει. Δεν θα διάλεγα από μονομένο κατάλημα μόνο και μόνο για μεγαλύτερα δωμάτια, αν κάθε μικρή μετακίνηση απαιτήσει εννοήσει ολόκληρης της ομάδας. Εγώ θα επέλεγα να νησυχωχώρω έξω από το κέντρο, γιατί με ενδιαφέρει περισσότερο να ξεκουραστώ. Θα ήθελα ακόμη να κλείσουμε μία ξενάγηση το πρώτο πρωί. Ένας άνθρωπος που γνωρίζει τον τόπο μπορεί να μας βοηθήσει να καταλάβουμε όσα βλέπουμε. Δεν ζητά οργανωμένο πρόγραμμα για κάθε ώρα, αλλά μία δραστηριότητα που θα μας δώσει κοινή αφαιτηρία. Για τη διαμονή θα περιμένω να δω τις επιλογές. Δεν θα έκλει να ξενάγησει εκ των πρωτέρων. Προτιμώ έναν ελεύθερο περίπατο, ώστε να αλλάζουμε διαδρομή αν κάτι μας κινήσει το ενδιαφέρον. Όποιος θέλει οδηγώ, φυσικά, μπορεί να αναζητήσει μία χωριστή δραστηριότητα. Αυτό δεν σημαίνει ότι πρέπει όλοι να ακολουθούμε το ίδιο πρόγραμμα για να θεωρούμαστε παρέα. Θα ήθελα να κρατήσουμε το Σάββατο το απόγευμα τελείως ελεύθερο. Μπορούμε να συναντηθούμε ξανά για φαγητό, χωρίς να εξηγήσει ο καθένας που σ' πέρασε κάθε λεπτό. Για το εστιατόριο προτείνο μία κράτηση πριν φύγουμε, αφού πρώτα ρωτήσουμε για διαφορετικές διατροφικές ανάγκες. Δεν θέλω να ψάχνουμε όλοι μαζί όταν θα είμαστε ήδη κουρασμένοι και πινασμένοι. Εγώ θα διάλεγα εστιατόριο επιτόπου, βλέποντας τη μαστεριάζη. Αν όμως η άλλη προτιμού κράτηση, θα ακολουθήσω χωρίς να επιμείνω. Για τα χρήματα, θεωρώ απαραίτητο να συμφωνήσουμε από τώρα έναν ότατο ποσό ανάατομο. Αλλιώς, κυνδυνεύουμε να δεχτούμε χωριστά πολλές μικρές ταπάνες που στο τέλος γίνονται απαγορευτικές για κάποιον, χωρίς να το έχει προβλέψει. Για το εστιατόριο δεν έχω πρόταση. Θα ήθελα όμως να μοιραστούμε τις οργανωτικές εργασίες, αντί να περιμένουμε να τα κάνει όλα ηλένα. Μπορώ να ζητήσω εγώ προσφορές μεταφοράς και κάποιος άλλος να ελέγξει τα καταλήματα. Ας επιστρέψουμε με συγκεκριμένα στοιχεία και ας αφήσουμε τις τελικές κρατήσεις για τότε. Η σημερινή συζήτηση δείχνει ανάγκες, όχι οριστική συμφωνία."
+  }
+ },
+ {
+  "audio_id": "RG-0003-TONE01",
+  "asset_id": "8e7e82a4-6ccb-4d5c-a91c-de9ba3f52c73",
+  "sha256": "76de42325c7adfe01630173e860a391fef10bdc959b6ad3225fa426b60aa9d8e",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Α": "azure:el-GR-AthinaNeural",
+   "Β": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 781244,
+  "acoustics": {
+   "duration_s": 16.27,
+   "sample_rate": 24000,
+   "peak_dbfs": -1.3,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -15.4,
+   "lead_silence_s": 0.15,
+   "trail_silence_s": 0.88,
+   "pauses_over_250ms": 8,
+   "longest_pause_s": 1.7,
+   "voiced_time_s": 7.03,
+   "f0": {
+    "median_hz": 171.1,
+    "range_st": 22.8
+   },
+   "segments": [
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 227.3,
+      "range_st": 11.0
+     }
+    },
+    {
+     "speaker": "Β",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 99.9,
+      "range_st": 11.5
+     }
+    },
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 233.7,
+      "range_st": 11.1
+     }
+    },
+    {
+     "speaker": "Β",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 128.5,
+      "range_st": 9.0
+     }
+    }
+   ]
+  },
+  "script_words": 22,
+  "syllables_per_s": 6.69,
+  "stored_roundtrip": {
+   "wer": 0,
+   "cer_accent_insensitive": 0,
+   "cer_phonetic": 0,
+   "accent_mismatches": []
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Δεν διάβασα τίποτα, αλλά είμαι βέβαιος ότι θα πάρω άριστα. Α, καλά. Χωρίς διάβασμα. Η Μαρία ξεκουράστηκε. Α, καλά έκανε. Το χρειαζόταν."
+  }
+ },
+ {
+  "audio_id": "RG-0010-TONE01",
+  "asset_id": "675c1d7a-46e2-4012-982a-bd838a69cce6",
+  "sha256": "72c82d3ca2b978fbfc9c4ab0a09ca267bf688d5e80b9fd43a7c213d2d64ae4cf",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Α": "azure:el-GR-AthinaNeural",
+   "Β": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 809190,
+  "acoustics": {
+   "duration_s": 16.86,
+   "sample_rate": 24000,
+   "peak_dbfs": -1.2,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -16.0,
+   "lead_silence_s": 0.14,
+   "trail_silence_s": 0.93,
+   "pauses_over_250ms": 5,
+   "longest_pause_s": 1.8,
+   "voiced_time_s": 8.48,
+   "f0": {
+    "median_hz": 127.9,
+    "range_st": 21.8
+   },
+   "segments": [
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 235.0,
+      "range_st": 12.0
+     }
+    },
+    {
+     "speaker": "Β",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 108.4,
+      "range_st": 10.4
+     }
+    },
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 228.0,
+      "range_st": 12.8
+     }
+    },
+    {
+     "speaker": "Β",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 108.5,
+      "range_st": 11.2
+     }
+    }
+   ]
+  },
+  "script_words": 28,
+  "syllables_per_s": 6.13,
+  "stored_roundtrip": {
+   "wer": 0.1429,
+   "cer_accent_insensitive": 0.0234,
+   "cer_phonetic": 0.019,
+   "accent_mismatches": []
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.25,
+   "wer_accent_insensitive": 0.214,
+   "stress_mismatches": [],
+   "text": "Έλεγε ότι ήξερε να επισκευάζει τα πάντα. Δε με κειδικός. Δεν ήξερε ούτε που είναι το πρόβλημα. Ήταν σταλήθεια ηδικός. Δεν μπορώ να το κρίνω. Χρειαζόμαστε περισσότερα στοιχεία."
+  }
+ },
+ {
+  "audio_id": "U-A1-002-AUD01",
+  "asset_id": "1dd2363e-b115-4a66-acce-8d3c6815c864",
+  "sha256": "00494e5ccf85a85990d895eaa60ac1a76011ea8283b075f9279d546d88490031",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Άννα": "azure:el-GR-AthinaNeural",
+   "Λένα": "azure:en-GB-AdaMultilingualNeural"
+  },
+  "bytes": 604604,
+  "acoustics": {
+   "duration_s": 12.6,
+   "sample_rate": 24000,
+   "peak_dbfs": -3.4,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -16.0,
+   "lead_silence_s": 0.15,
+   "trail_silence_s": 0.48,
+   "pauses_over_250ms": 5,
+   "longest_pause_s": 1.63,
+   "voiced_time_s": 6.19,
+   "f0": {
+    "median_hz": 217.0,
+    "range_st": 15.0
+   },
+   "segments": [
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 231.3,
+      "range_st": 12.1
+     }
+    },
+    {
+     "speaker": "Λένα",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 205.6,
+      "range_st": 14.5
+     }
+    },
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 221.8,
+      "range_st": 12.6
+     }
+    },
+    {
+     "speaker": "Λένα",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 219.5,
+      "range_st": 15.8
+     }
+    }
+   ]
+  },
+  "script_words": 19,
+  "syllables_per_s": 5.49,
+  "stored_roundtrip": {
+   "wer": 0.0526,
+   "cer_accent_insensitive": 0.0505,
+   "cer_phonetic": 0,
+   "accent_mismatches": []
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.158,
+   "wer_accent_insensitive": 0.158,
+   "stress_mismatches": [],
+   "text": "Βλέπεις το Μάριο. Όχι, βλέπω την Εύα στην ίσοδο. Ωραία! Εγώ περιμένω το Μάριο έξω. Η Εύα έρχεται τώρα."
+  }
+ },
+ {
+  "audio_id": "U-A1-007-AUD01",
+  "asset_id": "37c6b8ae-3a81-436c-80fb-8af8ac5045bc",
+  "sha256": "157113f9e4e2a26157c7994bd441e8e342cdd41cceca051430ffc4d65204076a",
+  "digital_status": "NEEDS_REVIEW",
+  "voice_map": {
+   "Α": "azure:el-GR-AthinaNeural",
+   "Β": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 702164,
+  "acoustics": {
+   "duration_s": 14.63,
+   "sample_rate": 24000,
+   "peak_dbfs": -1.0,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -15.4,
+   "lead_silence_s": 0.19,
+   "trail_silence_s": 1.01,
+   "pauses_over_250ms": 7,
+   "longest_pause_s": 1.79,
+   "voiced_time_s": 5.31,
+   "f0": {
+    "median_hz": 161.2,
+    "range_st": 23.1
+   },
+   "segments": [
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 198.8,
+      "range_st": 11.7
+     }
+    },
+    {
+     "speaker": "Β",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 103.7,
+      "range_st": 13.3
+     }
+    },
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 213.4,
+      "range_st": 12.2
+     }
+    },
+    {
+     "speaker": "Β",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 89.8,
+      "range_st": 12.6
+     }
+    },
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 250.6,
+      "range_st": 11.2
+     }
+    }
+   ]
+  },
+  "script_words": 17,
+  "syllables_per_s": 4.71,
+  "stored_roundtrip": {
+   "wer": 0.1765,
+   "cer_accent_insensitive": 0.0843,
+   "cer_phonetic": 0.0779,
+   "accent_mismatches": []
+  },
+  "stored_failed_segments": [
+   {
+    "reference": "Άλφα, νι, νι, άλφα.",
+    "hypothesis": "Άλφα μ μη Α.",
+    "wer": 0.75,
+    "pass": false,
+    "accent_mismatches": []
+   }
+  ],
+  "whisper": {
+   "wer": 0.176,
+   "wer_accent_insensitive": 0.176,
+   "stress_mismatches": [],
+   "text": "Πώς σε λένε? Με λένε άνα. Μπορείς να το πεις γράμμα γράμμα. Άλφα, νη, νη, άλφα. Ευχαριστώ."
+  }
+ },
+ {
+  "audio_id": "U-A2-006-AUD01",
+  "asset_id": "b44de330-529f-4fa5-972f-7fc7d3d26c94",
+  "sha256": "a660ec87416476defd681a7aed3403a1da08534e710d300af6887726db61b7cd",
+  "digital_status": "NEEDS_REVIEW",
+  "voice_map": {
+   "Α": "azure:el-GR-AthinaNeural",
+   "Β": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 671444,
+  "acoustics": {
+   "duration_s": 13.99,
+   "sample_rate": 24000,
+   "peak_dbfs": -1.0,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -15.8,
+   "lead_silence_s": 0.14,
+   "trail_silence_s": 0.91,
+   "pauses_over_250ms": 5,
+   "longest_pause_s": 1.73,
+   "voiced_time_s": 6.42,
+   "f0": {
+    "median_hz": 128.8,
+    "range_st": 20.5
+   },
+   "segments": [
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 224.0,
+      "range_st": 8.7
+     }
+    },
+    {
+     "speaker": "Β",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 106.1,
+      "range_st": 8.8
+     }
+    },
+    {
+     "speaker": "Α",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 233.9,
+      "range_st": 12.5
+     }
+    },
+    {
+     "speaker": "Β",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 121.2,
+      "range_st": 11.0
+     }
+    }
+   ]
+  },
+  "script_words": 20,
+  "syllables_per_s": 5.92,
+  "stored_roundtrip": {
+   "wer": 0.1,
+   "cer_accent_insensitive": 0,
+   "cer_phonetic": 0,
+   "accent_mismatches": [
+    "όχι",
+    "έρχεστε"
+   ]
+  },
+  "stored_failed_segments": [
+   {
+    "reference": "Όχι. Αλλά η συνάδελφός μου εργάζεται μέχρι τις δύο.",
+    "hypothesis": "Οχι αλλά η συνάδελφός μου εργάζεται μέχρι τις δύο.",
+    "wer": 0.1111,
+    "pass": false,
+    "accent_mismatches": [
+     "όχι"
+    ]
+   },
+   {
+    "reference": "Έρχεστε μαζί στις τρεις;",
+    "hypothesis": "Ερχεστε μαζί στις τρεις.",
+    "wer": 0.25,
+    "pass": false,
+    "accent_mismatches": [
+     "έρχεστε"
+    ]
+   }
+  ],
+  "whisper": {
+   "wer": 0.05,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [
+    "συνάδελφός→συνάδελφος"
+   ],
+   "text": "Εργάζεστε αύριο το πρωί. Όχι. Αλλά η συνάδελφος μου εργάζεται μέχρι τις δύο. Έρχεστε μαζί στις τρεις. Ναι, ερχόμαστε μαζί."
+  }
+ },
+ {
+  "audio_id": "U-B1-008-AUD01",
+  "asset_id": "ed04f2ef-10db-44e4-b6f2-9472485a14cc",
+  "sha256": "b5dd7e73cb1872bbebcb1a93daf8ceade7b6bc96ad67a9b390652a04065697e9",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Άννα": "azure:el-GR-AthinaNeural",
+   "Πέτρος": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 793004,
+  "acoustics": {
+   "duration_s": 16.52,
+   "sample_rate": 24000,
+   "peak_dbfs": -1.6,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -16.0,
+   "lead_silence_s": 0.14,
+   "trail_silence_s": 0.92,
+   "pauses_over_250ms": 5,
+   "longest_pause_s": 1.83,
+   "voiced_time_s": 8.07,
+   "f0": {
+    "median_hz": 119.1,
+    "range_st": 20.4
+   },
+   "segments": [
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 226.8,
+      "range_st": 13.3
+     }
+    },
+    {
+     "speaker": "Πέτρος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 107.8,
+      "range_st": 8.3
+     }
+    },
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 233.1,
+      "range_st": 11.9
+     }
+    },
+    {
+     "speaker": "Πέτρος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 110.0,
+      "range_st": 12.9
+     }
+    }
+   ]
+  },
+  "script_words": 30,
+  "syllables_per_s": 6.69,
+  "stored_roundtrip": {
+   "wer": 0.0667,
+   "cer_accent_insensitive": 0.0061,
+   "cer_phonetic": 0.0065,
+   "accent_mismatches": []
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.233,
+   "wer_accent_insensitive": 0.233,
+   "stress_mismatches": [],
+   "text": "Γιατί άλλαξε στην ώρα. Επειδή το λεωφορείο φτάνει αργότερα. Έκλεισα το τραπέζι για τις οκτώ για να προλάβουν όλοι. Και ο Νίκος. Δε βρει και η Σιτήριο. Γι' αυτό θα έρθει αύριο."
+  }
+ },
+ {
+  "audio_id": "U-B2-001-AUD01",
+  "asset_id": "d3d5b5d7-6583-4ce5-8e1e-0480931e89d6",
+  "sha256": "d2731fe02e07798b15864dcef154b4c89332731fefd4a02889c14077efbc0a88",
+  "digital_status": "NEEDS_REVIEW",
+  "voice_map": {
+   "Αλέξης": "azure:el-GR-NestorasNeural",
+   "Νάντια": "azure:en-GB-AdaMultilingualNeural",
+   "Συντονίστρια": "azure:el-GR-AthinaNeural"
+  },
+  "bytes": 1071644,
+  "acoustics": {
+   "duration_s": 22.32,
+   "sample_rate": 24000,
+   "peak_dbfs": -3.5,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -17.1,
+   "lead_silence_s": 0.18,
+   "trail_silence_s": 0.36,
+   "pauses_over_250ms": 7,
+   "longest_pause_s": 1.72,
+   "voiced_time_s": 14.35,
+   "f0": {
+    "median_hz": 170.9,
+    "range_st": 18.3
+   },
+   "segments": [
+    {
+     "speaker": "Συντονίστρια",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 236.3,
+      "range_st": 13.2
+     }
+    },
+    {
+     "speaker": "Αλέξης",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 113.4,
+      "range_st": 11.4
+     }
+    },
+    {
+     "speaker": "Νάντια",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 199.3,
+      "range_st": 10.8
+     }
+    },
+    {
+     "speaker": "Αλέξης",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 105.6,
+      "range_st": 8.6
+     }
+    },
+    {
+     "speaker": "Νάντια",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 190.7,
+      "range_st": 13.8
+     }
+    }
+   ]
+  },
+  "script_words": 48,
+  "syllables_per_s": 6.62,
+  "stored_roundtrip": {
+   "wer": 0.0208,
+   "cer_accent_insensitive": 0,
+   "cer_phonetic": 0,
+   "accent_mismatches": []
+  },
+  "stored_failed_segments": [
+   {
+    "reference": "Ας κάνουμε πρώτα μια δοκιμή ενός μήνα.",
+    "hypothesis": "Ας κάνουμε πρώτα μία δοκιμή ενός μήνα.",
+    "wer": 0.1429,
+    "pass": false,
+    "accent_mismatches": [
+     "μια"
+    ]
+   }
+  ],
+  "whisper": {
+   "wer": 0.104,
+   "wer_accent_insensitive": 0.104,
+   "stress_mismatches": [],
+   "text": "Τι προτείνετε για τον χώρο? Περισότερο πράσινο, αλλά όχι να κλείσει η διαδρομή προς τη βιβλιοθήκη. Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνη μία λαγή πριν υπολογήσουμε το κόστος. Ας κάνουμε πρώτα μια δοκιμή ενός μήνα. Θα το συζητούσα. Αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά."
+  }
+ },
+ {
+  "audio_id": "U-B2-015-AUD01",
+  "asset_id": "5702d299-ded1-4bca-b444-ea5638c4b85c",
+  "sha256": "e95a057e0728374f4d18c8b1065920d205d3a793328ff6c1b93402def5f94998",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Άννα": "azure:el-GR-AthinaNeural",
+   "Ελένη": "azure:en-GB-AdaMultilingualNeural",
+   "Μάνος": "azure:el-GR-NestorasNeural",
+   "Πέτρος": "azure:de-DE-FlorianMultilingualNeural"
+  },
+  "bytes": 8407844,
+  "acoustics": {
+   "duration_s": 175.16,
+   "sample_rate": 24000,
+   "peak_dbfs": -2.1,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -17.6,
+   "lead_silence_s": 0.15,
+   "trail_silence_s": 0.36,
+   "pauses_over_250ms": 59,
+   "longest_pause_s": 1.73,
+   "voiced_time_s": 129.14,
+   "f0": {
+    "median_hz": 170.6,
+    "range_st": 19.2
+   },
+   "segments": [
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 226.6,
+      "range_st": 10.8
+     }
+    },
+    {
+     "speaker": "Μάνος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 112.2,
+      "range_st": 11.2
+     }
+    },
+    {
+     "speaker": "Ελένη",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 193.0,
+      "range_st": 12.4
+     }
+    },
+    {
+     "speaker": "Πέτρος",
+     "voice": "azure:de-DE-FlorianMultilingualNeural",
+     "f0": {
+      "median_hz": 142.8,
+      "range_st": 13.3
+     }
+    },
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 227.1,
+      "range_st": 9.4
+     }
+    },
+    {
+     "speaker": "Μάνος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 107.9,
+      "range_st": 9.6
+     }
+    },
+    {
+     "speaker": "Ελένη",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 187.6,
+      "range_st": 12.7
+     }
+    },
+    {
+     "speaker": "Πέτρος",
+     "voice": "azure:de-DE-FlorianMultilingualNeural",
+     "f0": {
+      "median_hz": 144.6,
+      "range_st": 12.9
+     }
+    },
+    {
+     "speaker": "Άννα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 227.4,
+      "range_st": 11.4
+     }
+    },
+    {
+     "speaker": "Μάνος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 109.2,
+      "range_st": 9.5
+     }
+    },
+    {
+     "speaker": "Ελένη",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 197.3,
+      "range_st": 14.3
+     }
+    },
+    {
+     "speaker": "Πέτρος",
+     "voice": "azure:de-DE-FlorianMultilingualNeural",
+     "f0": {
+      "median_hz": 134.8,
+      "range_st": 14.2
+     }
+    }
+   ]
+  },
+  "script_words": 445,
+  "syllables_per_s": 6.64,
+  "stored_roundtrip": {
+   "wer": 0.0202,
+   "cer_accent_insensitive": 0.0018,
+   "cer_phonetic": 0.002,
+   "accent_mismatches": []
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.11,
+   "wer_accent_insensitive": 0.094,
+   "stress_mismatches": [
+    "επίβλεψη→επιβλέψη",
+    "μία→μια",
+    "μία→μια",
+    "επίβλεψη→επιβλέψη",
+    "έναρξης→εναρξής"
+   ],
+   "text": "Ευχαριστώ που ήρθατε. Πρέπει να προτείνουμε πως θα λειτουργήσει η έθωση της γειτονιάς τον επόμενο μήνα. Έχουμε δύο ελεύθερα από γεύματα, την 3η και την 5η. Αρχικά σκέφτηκα να κάνουμε προβολές ταινιών και τις 2η μέρες, αλλά θα ήθελα να ακούσω τις ανάγκες σας πριν αποφασίσουμε. Οι προβολές είναι ωραία ιδέα, όμως υπάρχουν μαθητές που ψάχνουν ήσυχο χώρο για διάβασμα. Στο σπίτι δεν έχουν όλοι δικό τους δωμάτιο. Θα πρότει να η 3η να μείνει για το μική μελέτη. Δεν χρειάζεται να αγοράσουμε πολλά πράγματα. Υπάρχουν ήδη τραπές για και καρέκλες. Συμφωνώ ότι η μελέτη είναι σημαντική, αλλά θέλω να προσέξουμε το φωτισμό. Δύο λάμπες δεν λειτουργούν. Αν δεν επισκευαστούν, δεν θα έλεγα ότι ο χώρος είναι έτοιμος. Επίσης, όποιος αναλάβει την επιβλέψη πρέπει να ξέρει που βρίσκονται τα κλειδιά και πως κλείνει το κτήριο. Εγώ μπορώ να βοηθήσω την 3η, όχι όμως κάθε εβδομάδα. Η δουλειά μου αλλάζει ο ράριο. Αν στηριχτούμε μόνο σε εμένα, κάποια μέρα μπορεί να μη βρεθεί κανείς να ανοίξει. Θα προτιμούσα να υπάρχει 2η Πεύθυνος και ένα κοινό πρόγραμμα, το οποίο να ελέγχουμε λίγες ημέρες πριν. Άρα δεν αρκεί να διαλέξουμε δραστηριότητα. Πρέπει να εξασφαλήσουμε και ότι ο χώρος θα ανοίγει κανονικά. Για την BEMTI θα μπορούσαμε να κρατήσουμε μια πολιτιστική δραστηριότητα. Τι θα λέγατε για συζήτηση γύρω από μια ταινία, χωρίς δυνατή μουσική μετά. Αυτό μου φαίνεται πιο λογικό από 2 ίδιες βραδιές. Θα ήθελα όμως να μην αλλάζει χρήση της 3ης τελευταίας τη γμή. Αν οι μαθητές υπολογίζουν ότι θα διαβάσουν εδώ, μια ξαφνική προβολή θα τους δημιουργήσει πρόβλημα. Οι αλλαγές πρέπει να ανακοινώνονται ενγέρος. Δεν έχω αντίρηση για την BEMTI. Προτείνω μόνο να αρχίσουμε με μια δοκιμαστική συνάντηση. Δεν ξέρουμε ακόμη πώς θα έρθουν ούτε αν ο προβολέας λειτουργεί σωστά. Μπορώ να τον ελέγξω αύριο, αλλά δεν μπορώ να αναλάβω όλες τις τεχνικές ανάγκες του μήνα. Αν γίνει δοκιμή, θα μπορούσαμε να ζητήσουμε σύντομα σχόλια. Όχι μόνο ανάρεσε η ταινία, αλλά αν η ώρα και ο χώρος ήταν κατάλληλα. Και για τη μελέτη θα ήταν χρήσιμο να ακούσουμε όσους ήρθαν, αλλά δεν βρήκαν θέση. Αλλιώς θα μετράμε μόνο τους ικανοποιημένους. Να συνοψήσω λοιπόν την πρόταση, όχι να την παρουσιάσω ως οριστική απόφαση. Την 3η προτείνουμε μελέτη, εφόσον διορθωθεί ο φωτισμός και βρεθούν δύο υπέφθηνοι. Την 5η προτείνουμε μια δοκιμαστική πολιτιστική συνάντηση, αφού ελεγχθεί ο προβολέας. Θα στείλουμε το σχέδιο στην επιτροπή του κτηρίου για έγκριση. Συμφωνώ με αυτή τη διατύπωση. Να γράψουμε καθαρά ότι περιμένουμε έγκριση, για να μην εμφανιστούν άνθρωποι πριν είμαστε έτοιμοι. Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση. Και εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επιύβλεψη. Μέχρι να έχουμε απάντηση, ας μην υποσχεθούμε συγκεκριμένη ημερομηνία εναρξής."
+  }
+ },
+ {
+  "audio_id": "U-B2-015-AUD02",
+  "asset_id": "0bb27c41-59e6-4a09-8ba2-175afb9de833",
+  "sha256": "7875a3e2bd5c0edf8e9d81d179dd786437dd4ab7def8d6eb375d74def01884f2",
+  "digital_status": "NEEDS_REVIEW",
+  "voice_map": {
+   "Άρης": "azure:de-DE-FlorianMultilingualNeural",
+   "Λένα": "azure:el-GR-AthinaNeural",
+   "Νίκος": "azure:el-GR-NestorasNeural",
+   "Σοφία": "azure:en-GB-AdaMultilingualNeural"
+  },
+  "bytes": 1764644,
+  "acoustics": {
+   "duration_s": 36.76,
+   "sample_rate": 24000,
+   "peak_dbfs": -1.9,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -17.0,
+   "lead_silence_s": 0.15,
+   "trail_silence_s": 0.93,
+   "pauses_over_250ms": 15,
+   "longest_pause_s": 1.69,
+   "voiced_time_s": 23.09,
+   "f0": {
+    "median_hz": 176.5,
+    "range_st": 20.0
+   },
+   "segments": [
+    {
+     "speaker": "Λένα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 224.2,
+      "range_st": 10.7
+     }
+    },
+    {
+     "speaker": "Νίκος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 113.8,
+      "range_st": 11.3
+     }
+    },
+    {
+     "speaker": "Σοφία",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 196.0,
+      "range_st": 13.6
+     }
+    },
+    {
+     "speaker": "Άρης",
+     "voice": "azure:de-DE-FlorianMultilingualNeural",
+     "f0": {
+      "median_hz": 137.5,
+      "range_st": 14.8
+     }
+    },
+    {
+     "speaker": "Λένα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 227.9,
+      "range_st": 10.2
+     }
+    },
+    {
+     "speaker": "Νίκος",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 111.2,
+      "range_st": 10.6
+     }
+    }
+   ]
+  },
+  "script_words": 92,
+  "syllables_per_s": 7.36,
+  "stored_roundtrip": {
+   "wer": 0.023,
+   "cer_accent_insensitive": 0.0021,
+   "cer_phonetic": 0,
+   "accent_mismatches": [
+    "άρα"
+   ]
+  },
+  "stored_failed_segments": [
+   {
+    "reference": "Άρα δεν έχουμε ακόμη κοινή ώρα αναχώρησης. Θα ελέγξω πρώτα τον καιρό και μετά θα σας στείλω δύο επιλογές.",
+    "hypothesis": "Αρα δεν έχουμε ακόμη κοινή ώρα αναχώρησης θα ελέγξω πρώτα τον καιρό και μετά θα σας στείλω δύο επιλογές.",
+    "wer": 0.0526,
+    "pass": false,
+    "accent_mismatches": [
+     "άρα"
+    ]
+   }
+  ],
+  "whisper": {
+   "wer": 0.163,
+   "wer_accent_insensitive": 0.163,
+   "stress_mismatches": [],
+   "text": "Για την εκδρομή προτείνω να φύγουμε στις 8 ώστε να έχουμε χρόνο για περπάτημα. Εγώ μπορώ μόνο μετά τη σαναία. Αν φύγεται νωρίτερα θα έρθω μόνος μου. Δεν με απασχολεί τόσο η ώρα. Όσο η επιστροφή πρέπει να είμαι πίσω πριν από τις 6. Πριν κλείσουμε μεταφορά, ας δούμε τον καιρό. Αν προβλέπετε δυνατή βροχή, προτείνω να αναβάλουμε. Άρα δεν έχουμε ακόμη κινή η ώρα αναχώρησης. Θα ελέγξω πρώτα τον καιρό και μετά θα σας στείλω δύο επιλογές. Εντάξει, απλώς κρατήσω ότι πριν από τις 9 δεν μπορώ."
+  }
+ },
+ {
+  "audio_id": "U-B2-015-AUD03",
+  "asset_id": "5176e7bb-5e27-4eb4-9891-95c0bcb8a62c",
+  "sha256": "4c3a18b2d375692ecb8152432f4bb133498a29971d8f5e8ce88bebe55ad2a213",
+  "digital_status": "AUDIO_VERIFIED_DIGITAL",
+  "voice_map": {
+   "Δώρα": "azure:en-GB-AdaMultilingualNeural",
+   "Ρένα": "azure:el-GR-AthinaNeural",
+   "Κώστας": "azure:de-DE-FlorianMultilingualNeural",
+   "Γιάννης": "azure:el-GR-NestorasNeural"
+  },
+  "bytes": 1332044,
+  "acoustics": {
+   "duration_s": 27.75,
+   "sample_rate": 24000,
+   "peak_dbfs": -2.1,
+   "clipping_ratio": 0.0,
+   "rms_dbfs": -17.1,
+   "lead_silence_s": 0.14,
+   "trail_silence_s": 0.91,
+   "pauses_over_250ms": 9,
+   "longest_pause_s": 1.68,
+   "voiced_time_s": 18.05,
+   "f0": {
+    "median_hz": 154.7,
+    "range_st": 20.6
+   },
+   "segments": [
+    {
+     "speaker": "Ρένα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 230.3,
+      "range_st": 11.8
+     }
+    },
+    {
+     "speaker": "Γιάννης",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 112.6,
+      "range_st": 13.3
+     }
+    },
+    {
+     "speaker": "Δώρα",
+     "voice": "azure:en-GB-AdaMultilingualNeural",
+     "f0": {
+      "median_hz": 184.1,
+      "range_st": 14.2
+     }
+    },
+    {
+     "speaker": "Κώστας",
+     "voice": "azure:de-DE-FlorianMultilingualNeural",
+     "f0": {
+      "median_hz": 145.8,
+      "range_st": 14.6
+     }
+    },
+    {
+     "speaker": "Ρένα",
+     "voice": "azure:el-GR-AthinaNeural",
+     "f0": {
+      "median_hz": 231.4,
+      "range_st": 9.6
+     }
+    },
+    {
+     "speaker": "Γιάννης",
+     "voice": "azure:el-GR-NestorasNeural",
+     "f0": {
+      "median_hz": 112.4,
+      "range_st": 9.8
+     }
+    }
+   ]
+  },
+  "script_words": 69,
+  "syllables_per_s": 7.92,
+  "stored_roundtrip": {
+   "wer": 0.0469,
+   "cer_accent_insensitive": 0.0107,
+   "cer_phonetic": 0.0083,
+   "accent_mismatches": []
+  },
+  "stored_failed_segments": [],
+  "whisper": {
+   "wer": 0.145,
+   "wer_accent_insensitive": 0.145,
+   "stress_mismatches": [],
+   "text": "Ο μικρός χώρος είναι φθινότερος, αλλά δεν χωρά 20 άτομα. Τότε προτιμώ το μεγαλύτερο, αν το κόστος δεν ξεπερνά τον προϋπολογισμό μας. Η τιμή που έχουμε αφορά μόνο την έθουσα, όχι τον εξοπλισμό. Άρα δεν πρέπει να κάνουμε κράτηση ακόμη. Θα ρωτήσω σήμερα για την πρόσθετη χρέωση και θα σας ενημερώσω. Ωραία! Κρατάμε την προτίμηση για το μεγάλο χώρο, αλλά αποφασίζουμε μετά την απάντηση."
+  }
+ }
+]

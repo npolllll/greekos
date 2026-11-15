@@ -1,0 +1,2800 @@
+[
+ {
+  "asset_id": "afea5783-fe62-4c64-9890-0407ab6b6e3a",
+  "audio_id": "D-A1-LISTENING-01-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 11.05,
+   "syllables_per_s": 4.87,
+   "rms_dbfs": -15.6,
+   "peak_dbfs": -1.1,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 243,
+    "el-GR-NestorasNeural": 104
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "70cdfe6f-ea47-446d-aec2-c903fb4cce76",
+  "audio_id": "D-A2-LISTENING-01-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.9,
+   "syllables_per_s": 6.7,
+   "rms_dbfs": -16.1,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 230,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.074,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "baa01654-14eb-4222-8645-bc480fcad4d5",
+  "audio_id": "D-B1-LISTENING-01-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.39,
+   "syllables_per_s": 6.01,
+   "rms_dbfs": -16.9,
+   "peak_dbfs": -1.8,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 223,
+    "el-GR-NestorasNeural": 100
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.147,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "2281f319-f54c-4410-924b-646b8ab48a9b",
+  "audio_id": "KEG-B2-L01-AUD1",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 200.49,
+   "syllables_per_s": 7.3,
+   "rms_dbfs": -17.6,
+   "peak_dbfs": -2.7,
+   "longest_pause_s": 1.68,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 225
+   },
+   "azure_wer": 0.0257,
+   "whisper_wer": 0.248,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "b60aa2ad-3c87-4d66-9345-98066a4a12d3",
+  "audio_id": "KEG-B2-L01-AUD2",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 188.24,
+   "syllables_per_s": 6.72,
+   "rms_dbfs": -17.6,
+   "peak_dbfs": -2.6,
+   "longest_pause_s": 1.69,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 225,
+    "el-GR-NestorasNeural": 111,
+    "en-GB-AdaMultilingualNeural": 193
+   },
+   "azure_wer": 0.0295,
+   "whisper_wer": 0.118,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "46cecafb-9b87-48b5-8873-8344fd14a853",
+  "audio_id": "KEG-B2-L02-AUD1",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 196.97,
+   "syllables_per_s": 7.24,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -2.6,
+   "longest_pause_s": 1.67,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0.0242,
+   "whisper_wer": 0.137,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "a66c4585-faff-49af-9d44-e6f8a50a097a",
+  "audio_id": "KEG-B2-L02-AUD2",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 193.05,
+   "syllables_per_s": 6.69,
+   "rms_dbfs": -17.7,
+   "peak_dbfs": -2.4,
+   "longest_pause_s": 1.7,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 231,
+    "el-GR-NestorasNeural": 112,
+    "en-GB-AdaMultilingualNeural": 194
+   },
+   "azure_wer": 0.0321,
+   "whisper_wer": 0.137,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "d63bcc5a-4a2d-476b-8d24-091a0474d7cf",
+  "audio_id": "KEG-B2-L03-AUD1",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 196.49,
+   "syllables_per_s": 7.5,
+   "rms_dbfs": -17.7,
+   "peak_dbfs": -1.7,
+   "longest_pause_s": 1.78,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0.0371,
+   "whisper_wer": 0.146,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "953ee456-0f18-4eae-a3d3-8bd999906ff7",
+  "audio_id": "KEG-B2-L03-AUD2",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 200.3,
+   "syllables_per_s": 7.23,
+   "rms_dbfs": -17.7,
+   "peak_dbfs": -2.6,
+   "longest_pause_s": 1.69,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 225,
+    "el-GR-NestorasNeural": 111,
+    "en-GB-AdaMultilingualNeural": 192
+   },
+   "azure_wer": 0.0468,
+   "whisper_wer": 0.111,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "9618a15b-43c0-43be-9bae-918d7956830b",
+  "audio_id": "RG-0001-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.34,
+   "syllables_per_s": 5.41,
+   "rms_dbfs": -15.2,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 249,
+    "el-GR-NestorasNeural": 102
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.067,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "e19768a0-6c35-4dce-855a-1d68ba9dfcc8",
+  "audio_id": "RG-0002-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.21,
+   "syllables_per_s": 5.21,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -1.4,
+   "longest_pause_s": 1.76,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 245,
+    "el-GR-NestorasNeural": 109
+   },
+   "azure_wer": 0.04,
+   "whisper_wer": 0.24,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "8e7e82a4-6ccb-4d5c-a91c-de9ba3f52c73",
+  "audio_id": "RG-0003-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.27,
+   "syllables_per_s": 6.69,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -1.3,
+   "longest_pause_s": 1.7,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 230,
+    "el-GR-NestorasNeural": 114
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "eb691250-618c-4bb8-b2b0-1aec251d82dd",
+  "audio_id": "RG-0004-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.35,
+   "syllables_per_s": 6.69,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -2.4,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 230,
+    "el-GR-NestorasNeural": 106
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.13,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "3de00fdb-9ddd-4d4f-920e-8ad351f4c968",
+  "audio_id": "RG-0005-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.89,
+   "syllables_per_s": 5.64,
+   "rms_dbfs": -15.1,
+   "peak_dbfs": -1.6,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 234,
+    "el-GR-NestorasNeural": 95
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.077,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "82ed4757-224a-4b76-a7ce-7ba0c6ed79e9",
+  "audio_id": "RG-0006-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.1,
+   "syllables_per_s": 7.13,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -2.9,
+   "longest_pause_s": 1.76,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 225,
+    "el-GR-NestorasNeural": 109
+   },
+   "azure_wer": 0.1111,
+   "whisper_wer": 0.111,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "7e67b607-c7d4-4006-b2f0-62ebc3c957a0",
+  "audio_id": "RG-0007-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.75,
+   "syllables_per_s": 5.37,
+   "rms_dbfs": -15.7,
+   "peak_dbfs": -1.3,
+   "longest_pause_s": 1.76,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 233,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.048,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "a786a673-ee19-49d5-a58a-b9f65474241f",
+  "audio_id": "RG-0008-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 14.2,
+   "syllables_per_s": 5.92,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -2.2,
+   "longest_pause_s": 1.68,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 240,
+    "el-GR-NestorasNeural": 99
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.083,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "7535f6b5-de6c-44d2-8857-a62b948590bc",
+  "audio_id": "RG-0009-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.9,
+   "syllables_per_s": 5.81,
+   "rms_dbfs": -15.7,
+   "peak_dbfs": -2.2,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 246,
+    "el-GR-NestorasNeural": 109
+   },
+   "azure_wer": 0.1579,
+   "whisper_wer": 0.263,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "675c1d7a-46e2-4012-982a-bd838a69cce6",
+  "audio_id": "RG-0010-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.86,
+   "syllables_per_s": 6.13,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -1.2,
+   "longest_pause_s": 1.8,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232,
+    "el-GR-NestorasNeural": 108
+   },
+   "azure_wer": 0.1429,
+   "whisper_wer": 0.25,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "4834590f-b323-467a-a880-198b119f73ff",
+  "audio_id": "RG-0011-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.46,
+   "syllables_per_s": 6.51,
+   "rms_dbfs": -15.6,
+   "peak_dbfs": -1.3,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 241,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0.0952,
+   "whisper_wer": 0.095,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "15ef8aee-fec7-4c00-a72d-5928851ad757",
+  "audio_id": "RG-0012-TONE01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 12.68,
+   "syllables_per_s": 6.68,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -2.3,
+   "longest_pause_s": 1.75,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 223,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0.0455,
+   "whisper_wer": 0.136,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "82d5448f-4f5d-4451-bdee-f8d96531df9a",
+  "audio_id": "U-A1-001-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 22.27,
+   "syllables_per_s": 5.45,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 242,
+    "el-GR-NestorasNeural": 120
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.037,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "1dd2363e-b115-4a66-acce-8d3c6815c864",
+  "audio_id": "U-A1-002-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 12.6,
+   "syllables_per_s": 5.49,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -3.4,
+   "longest_pause_s": 1.63,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 227,
+    "en-GB-AdaMultilingualNeural": 213
+   },
+   "azure_wer": 0.0526,
+   "whisper_wer": 0.158,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "e6f37b1d-7fe8-4ef4-8373-e1fa204de56b",
+  "audio_id": "U-A1-003-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.07,
+   "syllables_per_s": 6.1,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -1.9,
+   "longest_pause_s": 1.75,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 113,
+    "el-GR-AthinaNeural": 237
+   },
+   "azure_wer": 0.0476,
+   "whisper_wer": 0.286,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "5ce2b90d-de93-47c9-a07e-f85cca437688",
+  "audio_id": "U-A1-004-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.18,
+   "syllables_per_s": 6.03,
+   "rms_dbfs": -16.1,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 102,
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "43b5a1ff-5331-4053-99d6-9baf4be96e64",
+  "audio_id": "U-A1-005-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 14.5,
+   "syllables_per_s": 6.47,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -1.7,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236,
+    "el-GR-NestorasNeural": 109
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.045,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "7c2a8fab-6329-4ce1-86e4-439b1f87d1a4",
+  "audio_id": "U-A1-006-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.53,
+   "syllables_per_s": 5.16,
+   "rms_dbfs": -15.0,
+   "peak_dbfs": -1.4,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 104,
+    "el-GR-AthinaNeural": 236
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.048,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "37c6b8ae-3a81-436c-80fb-8af8ac5045bc",
+  "audio_id": "U-A1-007-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 14.63,
+   "syllables_per_s": 4.71,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.79,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 221,
+    "el-GR-NestorasNeural": 97
+   },
+   "azure_wer": 0.1765,
+   "whisper_wer": 0.176,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "24f58aec-5fec-4159-adbe-93c505c3406f",
+  "audio_id": "U-A1-008-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 11.18,
+   "syllables_per_s": 5.05,
+   "rms_dbfs": -15.0,
+   "peak_dbfs": -1.3,
+   "longest_pause_s": 1.7,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 230,
+    "el-GR-NestorasNeural": 91
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "69c5dd0a-a0c9-4386-a54c-74205cd85cda",
+  "audio_id": "U-A1-009-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 11.55,
+   "syllables_per_s": 5.52,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -1.3,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 102,
+    "el-GR-AthinaNeural": 235
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "4fa3007c-9d7d-4fcb-bcf2-2321aab261bb",
+  "audio_id": "U-A1-010-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.31,
+   "syllables_per_s": 4.89,
+   "rms_dbfs": -16.1,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.7,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 105,
+    "de-DE-FlorianMultilingualNeural": 147
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "0af991ca-cdea-40a8-9c08-4618e3897479",
+  "audio_id": "U-A1-011-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.94,
+   "syllables_per_s": 5.83,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -2.9,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 106,
+    "el-GR-AthinaNeural": 231
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.037,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "92f84e43-d325-418b-bbbe-2a0cf04a7b35",
+  "audio_id": "U-A1-012-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 28.63,
+   "syllables_per_s": 4.38,
+   "rms_dbfs": -15.5,
+   "peak_dbfs": -1.2,
+   "longest_pause_s": 1.86,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0.0263,
+   "whisper_wer": 0.132,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "c1bb41b7-674a-4c4c-b7e5-2c628284f30c",
+  "audio_id": "U-A1-013-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 21.74,
+   "syllables_per_s": 5.27,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -1.6,
+   "longest_pause_s": 1.74,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 245,
+    "el-GR-NestorasNeural": 113
+   },
+   "azure_wer": 0.0571,
+   "whisper_wer": 0.057,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "ec15536c-3722-45b4-81ab-cefedd0a53d3",
+  "audio_id": "U-A1-014-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.11,
+   "syllables_per_s": 6.43,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -1.9,
+   "longest_pause_s": 1.74,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 228,
+    "el-GR-NestorasNeural": 112
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.357,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "42755d9f-3934-4882-b225-48bf9282cfc2",
+  "audio_id": "U-A1-015-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 19.12,
+   "syllables_per_s": 5.52,
+   "rms_dbfs": -15.5,
+   "peak_dbfs": -2.1,
+   "longest_pause_s": 1.78,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 222,
+    "el-GR-NestorasNeural": 108
+   },
+   "azure_wer": 0.0714,
+   "whisper_wer": 0.25,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "4a675687-456d-4d76-97c1-5eea18252a4a",
+  "audio_id": "U-A1-016-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 22.16,
+   "syllables_per_s": 5.39,
+   "rms_dbfs": -14.7,
+   "peak_dbfs": -1.4,
+   "longest_pause_s": 1.86,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 241,
+    "el-GR-NestorasNeural": 126
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "56e59ea9-6e4e-46b6-abc3-bae4ec603c97",
+  "audio_id": "U-A1-017-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.68,
+   "syllables_per_s": 5.28,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -3.2,
+   "longest_pause_s": 1.7,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 229,
+    "el-GR-NestorasNeural": 94
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.069,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "bafe7b80-dc56-4682-9631-0c428aa52047",
+  "audio_id": "U-A1-018-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 17.51,
+   "syllables_per_s": 5.09,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -1.4,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 235,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.214,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "7afea448-a09e-4119-a200-d353e47908c9",
+  "audio_id": "U-A1-019-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 1.82,
+   "syllables_per_s": 5.8,
+   "rms_dbfs": -15.2,
+   "peak_dbfs": -3.7,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 196
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.667,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "6709127a-c002-4f54-8494-b2e35e3214a5",
+  "audio_id": "U-A1-019-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 1.82,
+   "syllables_per_s": 1.67,
+   "rms_dbfs": -14.6,
+   "peak_dbfs": -3.4,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 199
+   },
+   "azure_wer": 0.5,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "3b1af636-9eea-4bb0-a8d2-c206cb603e40",
+  "audio_id": "U-A1-019-AUD03",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 2.98,
+   "syllables_per_s": 6.57,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -4.0,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "e8500b9b-8703-4d30-9e1d-f244dbf8cc37",
+  "audio_id": "U-A1-019-AUD04",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 3.76,
+   "syllables_per_s": 6.56,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -3.6,
+   "longest_pause_s": 0.94,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 241
+   },
+   "azure_wer": 0.2857,
+   "whisper_wer": 0.143,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "f2a5ad0b-8511-4fe9-bfc0-39147f78afab",
+  "audio_id": "U-A1-019-AUD05",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 1.9,
+   "syllables_per_s": 4.55,
+   "rms_dbfs": -15.6,
+   "peak_dbfs": -4.2,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 242
+   },
+   "azure_wer": 0.3333,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "74dccbf3-12ef-496e-896c-05fd668b7f5b",
+  "audio_id": "U-A1-019-AUD06",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 1.98,
+   "syllables_per_s": 3.19,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -3.8,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.667,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "e27b0c17-7cda-45fc-81bf-86fa67b2c71b",
+  "audio_id": "U-A1-019-AUD07",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 5.35,
+   "syllables_per_s": 7.35,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -4.7,
+   "longest_pause_s": 0.95,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 250
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.1,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "64614810-9904-44e8-8d26-b55096e0117f",
+  "audio_id": "U-A1-020-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 2.86,
+   "syllables_per_s": 4.92,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -4.2,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.833,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "fb7657e9-a76c-46f7-bc5d-ef2205134162",
+  "audio_id": "U-A1-020-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 2.86,
+   "syllables_per_s": 4.92,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -4.2,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.833,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "f98a33b7-366c-4cd7-8b54-77bea0c54786",
+  "audio_id": "U-A1-020-AUD03",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 3.26,
+   "syllables_per_s": 5.86,
+   "rms_dbfs": -17.2,
+   "peak_dbfs": -4.3,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 242
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.222,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "1f281dac-2648-48b7-b70e-1d9fb7e85667",
+  "audio_id": "U-A1-020-AUD04",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 3.56,
+   "syllables_per_s": 7.03,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -4.8,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 242
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.333,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "da098580-d1d1-439e-9c89-6d6bdcc82d63",
+  "audio_id": "U-A1-020-AUD05",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 4.95,
+   "syllables_per_s": 5.37,
+   "rms_dbfs": -16.8,
+   "peak_dbfs": -5.0,
+   "longest_pause_s": 0.94,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 229
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.333,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "e8f28e95-3071-4199-a284-8dfbf580326d",
+  "audio_id": "U-A1-020-AUD06",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 3.86,
+   "syllables_per_s": 6.01,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -3.9,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 234
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.4,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "cd26fc8c-d4db-457d-8be7-cf40ba9282fc",
+  "audio_id": "U-A1-020-AUD07",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 3.8,
+   "syllables_per_s": 6.72,
+   "rms_dbfs": -17.3,
+   "peak_dbfs": -5.2,
+   "longest_pause_s": 0.25,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 233
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "bd81c782-2fa9-4928-bce7-d896b01e706b",
+  "audio_id": "U-A1-020-AUD08",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 3.14,
+   "syllables_per_s": 6.16,
+   "rms_dbfs": -17.2,
+   "peak_dbfs": -4.3,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.875,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "38c1f693-2c9d-4206-9b22-37050652b336",
+  "audio_id": "U-A1-020-AUD09",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 4.21,
+   "syllables_per_s": 5.96,
+   "rms_dbfs": -17.3,
+   "peak_dbfs": -3.7,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 233
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.417,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "2b214ced-6922-4c1b-a83c-749866cf3eb5",
+  "audio_id": "U-A2-001-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 18.77,
+   "syllables_per_s": 7.23,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 226,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0.125,
+   "whisper_wer": 0.188,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "92d24a88-c85d-4d37-9095-62494c5a9d58",
+  "audio_id": "U-A2-002-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 17.65,
+   "syllables_per_s": 6.33,
+   "rms_dbfs": -15.6,
+   "peak_dbfs": -1.9,
+   "longest_pause_s": 1.86,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.097,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "4313cb4f-dc01-4d1e-963c-35494cc3f48f",
+  "audio_id": "U-A2-003-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 14.3,
+   "syllables_per_s": 4.69,
+   "rms_dbfs": -15.2,
+   "peak_dbfs": -2.7,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 95,
+    "el-GR-AthinaNeural": 252
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.12,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "679f9d8b-370d-444d-9042-6f268397788f",
+  "audio_id": "U-A2-004-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.38,
+   "syllables_per_s": 5.47,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -3.0,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 107,
+    "el-GR-AthinaNeural": 230
+   },
+   "azure_wer": 0.0938,
+   "whisper_wer": 0.156,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "46eabe5a-c89a-45d0-976b-58a8135a38cb",
+  "audio_id": "U-A2-005-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 14.44,
+   "syllables_per_s": 4.83,
+   "rms_dbfs": -15.1,
+   "peak_dbfs": -1.6,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 233,
+    "el-GR-NestorasNeural": 104
+   },
+   "azure_wer": 0.1111,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "b44de330-529f-4fa5-972f-7fc7d3d26c94",
+  "audio_id": "U-A2-006-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.99,
+   "syllables_per_s": 5.92,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 229,
+    "el-GR-NestorasNeural": 114
+   },
+   "azure_wer": 0.1,
+   "whisper_wer": 0.1,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "93e0c9f5-11a6-44a3-8caf-47d904878c4d",
+  "audio_id": "U-A2-007-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.49,
+   "syllables_per_s": 5.69,
+   "rms_dbfs": -16.2,
+   "peak_dbfs": -1.5,
+   "longest_pause_s": 1.71,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 246,
+    "el-GR-NestorasNeural": 108
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.179,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "75b84c25-00b5-4690-a2d5-183df83949ed",
+  "audio_id": "U-A2-008-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.49,
+   "syllables_per_s": 7.24,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -3.0,
+   "longest_pause_s": 1.85,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236,
+    "el-GR-NestorasNeural": 101
+   },
+   "azure_wer": 0.1333,
+   "whisper_wer": 0.067,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "c2c953eb-0c85-4ec3-bcea-964bb5ba3524",
+  "audio_id": "U-A2-009-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 24.56,
+   "syllables_per_s": 6.54,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -2.1,
+   "longest_pause_s": 1.81,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 234,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.083,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "852c3314-f14c-457e-9ec8-c9b6dd37520d",
+  "audio_id": "U-A2-010-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 21.03,
+   "syllables_per_s": 6.12,
+   "rms_dbfs": -16.1,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.92,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 212,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0.0556,
+   "whisper_wer": 0.056,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "9fca4a8c-2543-404b-ae78-8c396d068656",
+  "audio_id": "U-A2-011-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 29.77,
+   "syllables_per_s": 5.74,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -2.0,
+   "longest_pause_s": 1.74,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 228,
+    "el-GR-NestorasNeural": 124
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.179,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "6bf163be-1bd2-4fbc-9d9a-2d14eabb12ca",
+  "audio_id": "U-A2-012-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 27.52,
+   "syllables_per_s": 6.38,
+   "rms_dbfs": -15.7,
+   "peak_dbfs": -1.8,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 231,
+    "el-GR-NestorasNeural": 106
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.37,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "7a3cfc2a-f1a3-42ae-880a-9543cb2a2a31",
+  "audio_id": "U-A2-013-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 36.58,
+   "syllables_per_s": 6.65,
+   "rms_dbfs": -15.6,
+   "peak_dbfs": -2.2,
+   "longest_pause_s": 1.79,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232,
+    "el-GR-NestorasNeural": 114
+   },
+   "azure_wer": 0.0426,
+   "whisper_wer": 0.292,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "ac3c8630-98bf-43d8-969d-3e70682c1f26",
+  "audio_id": "U-A2-014-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 31.78,
+   "syllables_per_s": 6.55,
+   "rms_dbfs": -16.1,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.98,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 220,
+    "el-GR-NestorasNeural": 104
+   },
+   "azure_wer": 0.0196,
+   "whisper_wer": 0.059,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "278acece-f86e-42d5-a993-aac9edd77a4a",
+  "audio_id": "U-A2-015-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 29.91,
+   "syllables_per_s": 6.55,
+   "rms_dbfs": -16.5,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.78,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 221,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0.0851,
+   "whisper_wer": 0.17,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "daf5365b-7744-418a-91c3-34c97d91e75e",
+  "audio_id": "U-A2-016-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 1.82,
+   "syllables_per_s": 5.26,
+   "rms_dbfs": -14.2,
+   "peak_dbfs": -1.8,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 209
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "086c74cf-2d9f-4667-873e-fe878d6fae24",
+  "audio_id": "U-A2-016-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 1.82,
+   "syllables_per_s": 6.45,
+   "rms_dbfs": -14.1,
+   "peak_dbfs": -2.1,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 208
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "5de5b729-e00e-4d14-89a8-ced54fd54a67",
+  "audio_id": "U-A2-017-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.32,
+   "syllables_per_s": 7.59,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -2.5,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 112,
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.24,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "04d5a9f1-bae4-473f-b0b6-8d2e549a5bdc",
+  "audio_id": "U-A2-017-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 11.54,
+   "syllables_per_s": 8.02,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -2.7,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 111,
+    "el-GR-AthinaNeural": 227
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.25,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "1f497b1b-4756-4003-bb27-9caca01c0ba6",
+  "audio_id": "U-A2-017-AUD03",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 4.6,
+   "syllables_per_s": 6.9,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -4.2,
+   "longest_pause_s": 0.96,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.222,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "5a6f40fa-5a45-49d4-a41f-505fd9d22866",
+  "audio_id": "U-A2-017-AUD04",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 9.71,
+   "syllables_per_s": 7.05,
+   "rms_dbfs": -15.3,
+   "peak_dbfs": -2.0,
+   "longest_pause_s": 1.7,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 108,
+    "el-GR-AthinaNeural": 249
+   },
+   "azure_wer": 0.0714,
+   "whisper_wer": 0.188,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "96aa6a2b-c58e-4fad-ae94-8e1f2731c928",
+  "audio_id": "U-A2-017-AUD05",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 6.44,
+   "syllables_per_s": 7.62,
+   "rms_dbfs": -16.2,
+   "peak_dbfs": -2.9,
+   "longest_pause_s": 1.68,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232,
+    "el-GR-NestorasNeural": 122
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.222,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "884dc41e-59a5-45fd-b7e7-4cc4942ba3b2",
+  "audio_id": "U-A2-017-AUD06",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 9.3,
+   "syllables_per_s": 7.8,
+   "rms_dbfs": -15.6,
+   "peak_dbfs": -1.8,
+   "longest_pause_s": 1.7,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 104,
+    "el-GR-AthinaNeural": 232
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.188,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "31430b03-2402-4937-8f81-ac3f73c675bf",
+  "audio_id": "U-A2-017-AUD07",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 9.65,
+   "syllables_per_s": 6.48,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 233,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.357,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "59f95b2b-7232-4670-8862-20ebb5f4a36e",
+  "audio_id": "U-A2-018-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 5.41,
+   "syllables_per_s": 7.29,
+   "rms_dbfs": -16.8,
+   "peak_dbfs": -4.0,
+   "longest_pause_s": 0.94,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "0eb29ffb-d679-4f7f-88f8-e788ab44a763",
+  "audio_id": "U-A2-018-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 2.83,
+   "syllables_per_s": 7.87,
+   "rms_dbfs": -16.9,
+   "peak_dbfs": -4.1,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 220
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "9de55b81-e226-4006-88b6-d29f2eae6a63",
+  "audio_id": "U-A2-018-AUD03",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 7.29,
+   "syllables_per_s": 7.13,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -3.8,
+   "longest_pause_s": 0.96,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 240
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "4954aedc-db47-4512-bc0f-0907674de42d",
+  "audio_id": "U-A2-018-AUD04",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 5.01,
+   "syllables_per_s": 7.25,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -4.1,
+   "longest_pause_s": 0.95,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 251
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "e3af8070-d672-448d-b53c-e1f8759ac14e",
+  "audio_id": "U-A2-018-AUD05",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 3.94,
+   "syllables_per_s": 7.22,
+   "rms_dbfs": -16.1,
+   "peak_dbfs": -4.8,
+   "longest_pause_s": 0.96,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 242
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "501725d0-62aa-4e3d-a11a-08dd40c094ef",
+  "audio_id": "U-A2-018-AUD06",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 5.33,
+   "syllables_per_s": 6.45,
+   "rms_dbfs": -16.5,
+   "peak_dbfs": -3.0,
+   "longest_pause_s": 0.94,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 241
+   },
+   "azure_wer": 0.0833,
+   "whisper_wer": 0.25,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "c95af7af-e90c-4703-97b1-1d2b31174153",
+  "audio_id": "U-A2-018-AUD07",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 4.96,
+   "syllables_per_s": 7.74,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -4.1,
+   "longest_pause_s": 0.95,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 228
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.182,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "22b834c4-dc0b-4157-a149-5b56a8a6eead",
+  "audio_id": "U-A2-018-AUD08",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 8.28,
+   "syllables_per_s": 6.38,
+   "rms_dbfs": -16.3,
+   "peak_dbfs": -2.9,
+   "longest_pause_s": 1.19,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 240
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.083,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "9c1671f9-6d81-4e32-b89e-22fb2aec01fc",
+  "audio_id": "U-B1-001-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 20.43,
+   "syllables_per_s": 5.93,
+   "rms_dbfs": -16.4,
+   "peak_dbfs": -2.8,
+   "longest_pause_s": 1.75,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 105,
+    "el-GR-AthinaNeural": 239
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.19,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "d02f5268-e7b7-4009-bf72-deb98ee1cd31",
+  "audio_id": "U-B1-002-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 13.38,
+   "syllables_per_s": 6.11,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -1.9,
+   "longest_pause_s": 1.76,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 228,
+    "el-GR-NestorasNeural": 112
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.048,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "563e7e99-f2ba-41c1-8ad8-f9671a08c62b",
+  "audio_id": "U-B1-003-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.25,
+   "syllables_per_s": 6.12,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -1.7,
+   "longest_pause_s": 1.69,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 238,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.138,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "7c6850f7-9f26-43af-8aea-7902922097ff",
+  "audio_id": "U-B1-004-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.33,
+   "syllables_per_s": 5.2,
+   "rms_dbfs": -15.4,
+   "peak_dbfs": -2.1,
+   "longest_pause_s": 1.78,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 218,
+    "el-GR-NestorasNeural": 115
+   },
+   "azure_wer": 0.12,
+   "whisper_wer": 0.2,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "5d39e4e0-2bca-4f3e-91bb-90567d82769a",
+  "audio_id": "U-B1-005-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.6,
+   "syllables_per_s": 6.37,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -2.8,
+   "longest_pause_s": 1.76,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 218,
+    "el-GR-NestorasNeural": 117
+   },
+   "azure_wer": 0.0385,
+   "whisper_wer": 0.115,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "832f315a-9868-419d-8410-55ba9b864899",
+  "audio_id": "U-B1-006-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.1,
+   "syllables_per_s": 6.63,
+   "rms_dbfs": -16.1,
+   "peak_dbfs": -2.5,
+   "longest_pause_s": 1.69,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 234,
+    "el-GR-NestorasNeural": 103
+   },
+   "azure_wer": 0.1071,
+   "whisper_wer": 0.071,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "a58e063a-2189-476f-96f9-8999ec0f40dd",
+  "audio_id": "U-B1-007-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 19.47,
+   "syllables_per_s": 6.97,
+   "rms_dbfs": -16.3,
+   "peak_dbfs": -1.5,
+   "longest_pause_s": 1.87,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 108,
+    "el-GR-AthinaNeural": 234
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.065,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "ed04f2ef-10db-44e4-b6f2-9472485a14cc",
+  "audio_id": "U-B1-008-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 16.52,
+   "syllables_per_s": 6.69,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -1.6,
+   "longest_pause_s": 1.83,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 230,
+    "el-GR-NestorasNeural": 109
+   },
+   "azure_wer": 0.0667,
+   "whisper_wer": 0.2,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "a9582247-c224-4197-a2a4-11186e767bbc",
+  "audio_id": "U-B1-009-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 15.5,
+   "syllables_per_s": 6.06,
+   "rms_dbfs": -16.3,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.83,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236,
+    "el-GR-NestorasNeural": 114
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.24,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "720b6d81-ff32-402a-93dd-5294c338af54",
+  "audio_id": "U-B1-010-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 21.13,
+   "syllables_per_s": 6.65,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -2.5,
+   "longest_pause_s": 1.75,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 230,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.167,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "8f29423c-ffa7-4856-84a2-f6a8d332361d",
+  "audio_id": "U-B1-011-SCRIPT",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 30.85,
+   "syllables_per_s": 5.98,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0.08,
+   "whisper_wer": 0.1,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "d8a2e531-ecf3-47fd-9ca2-07647e995db8",
+  "audio_id": "U-B1-012-SCRIPT",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 29.4,
+   "syllables_per_s": 5.61,
+   "rms_dbfs": -16.5,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.7,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 109,
+    "el-GR-AthinaNeural": 230
+   },
+   "azure_wer": 0.0536,
+   "whisper_wer": 0.054,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "245b8c94-db4f-4c95-a6c9-bbe2ce2cacce",
+  "audio_id": "U-B1-013-SCRIPT",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 27.12,
+   "syllables_per_s": 5.78,
+   "rms_dbfs": -15.8,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.76,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 246,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0.0444,
+   "whisper_wer": 0.089,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "4a6b511a-586f-40bd-bc8a-b481df7808d2",
+  "audio_id": "U-B1-014-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 22.14,
+   "syllables_per_s": 5.93,
+   "rms_dbfs": -16.0,
+   "peak_dbfs": -2.1,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 231,
+    "el-GR-NestorasNeural": 112
+   },
+   "azure_wer": 0.0769,
+   "whisper_wer": 0.179,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "698df21a-607d-483b-adfd-22ad3e7b2035",
+  "audio_id": "U-B1-015-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 21.76,
+   "syllables_per_s": 6.02,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 209,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0.0294,
+   "whisper_wer": 0.206,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "59fb6dd4-bb30-41fd-a421-34a995341663",
+  "audio_id": "U-B1-016-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 22.05,
+   "syllables_per_s": 6.02,
+   "rms_dbfs": -15.6,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.81,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 110,
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0.0303,
+   "whisper_wer": 0.091,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "26a88666-1886-423b-8108-b66a1c817fb3",
+  "audio_id": "U-B1-017-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 26.1,
+   "syllables_per_s": 6.78,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -1.2,
+   "longest_pause_s": 1.76,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 112,
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0.0185,
+   "whisper_wer": 0.185,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "beb040d8-5f57-4958-aead-1d4cffa80877",
+  "audio_id": "U-B1-018-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 43.84,
+   "syllables_per_s": 7.11,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -3.4,
+   "longest_pause_s": 0.97,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0.0354,
+   "whisper_wer": 0.124,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "e6162277-f999-411c-b1b8-60677d5e55e0",
+  "audio_id": "U-B1-018-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 43.84,
+   "syllables_per_s": 7.11,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -3.4,
+   "longest_pause_s": 0.97,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0.0354,
+   "whisper_wer": 0.115,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "a650e669-be5b-4b18-b815-0b02f8f4a3d3",
+  "audio_id": "U-B1-018-AUD03",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 43.84,
+   "syllables_per_s": 7.11,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -3.4,
+   "longest_pause_s": 0.97,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0.0354,
+   "whisper_wer": 0.124,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "129cd1cc-17f8-4d91-876c-bef50b0c63b0",
+  "audio_id": "U-B1-018-AUD04",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 43.84,
+   "syllables_per_s": 7.11,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -3.4,
+   "longest_pause_s": 0.97,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0.0354,
+   "whisper_wer": 0.115,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "ffbbf533-2a03-43bb-9120-db1f5f3f1f0f",
+  "audio_id": "U-B1-018-AUD05",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 43.84,
+   "syllables_per_s": 7.11,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -3.4,
+   "longest_pause_s": 0.97,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0.0354,
+   "whisper_wer": 0.124,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "249bb533-7d0f-4e30-8581-73c18795a751",
+  "audio_id": "U-B1-018-AUD06",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 10.41,
+   "syllables_per_s": 7.6,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -4.0,
+   "longest_pause_s": 0.97,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 222
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.276,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "cfde4b46-d226-4951-81e4-a3a198a8832d",
+  "audio_id": "U-B1-018-AUD07",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 9.65,
+   "syllables_per_s": 7.23,
+   "rms_dbfs": -17.3,
+   "peak_dbfs": -3.5,
+   "longest_pause_s": 0.93,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 223
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.227,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "61665f1f-1a3d-4281-abda-4d731982a4f4",
+  "audio_id": "U-B1-018-AUD08",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 8.97,
+   "syllables_per_s": 7.09,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -4.4,
+   "longest_pause_s": 0.94,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.217,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "064ba899-1acf-43a0-a7ad-22845c980185",
+  "audio_id": "U-B1-019-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 50.2,
+   "syllables_per_s": 7.66,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -2.6,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 107,
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0.0328,
+   "whisper_wer": 0.118,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "7dc4aab6-0e8f-4785-bbc3-b84cfe5b8e18",
+  "audio_id": "U-B1-019-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 50.2,
+   "syllables_per_s": 7.66,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -2.6,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 107,
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0.0328,
+   "whisper_wer": 0.118,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "dc49e332-c28a-4a4e-9bfc-21064580793b",
+  "audio_id": "U-B1-019-AUD03",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 50.2,
+   "syllables_per_s": 7.66,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -2.6,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 107,
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0.0328,
+   "whisper_wer": 0.118,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "3c8938f0-a246-4b82-bc66-152c4e1e3a02",
+  "audio_id": "U-B1-019-AUD04",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 50.2,
+   "syllables_per_s": 7.66,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -2.6,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 107,
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0.0328,
+   "whisper_wer": 0.118,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "50ad6625-281f-4080-b7c7-83e3f091f1b2",
+  "audio_id": "U-B1-019-AUD05",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 50.2,
+   "syllables_per_s": 7.66,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -2.6,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-NestorasNeural": 107,
+    "el-GR-AthinaNeural": 226
+   },
+   "azure_wer": 0.0328,
+   "whisper_wer": 0.134,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "15c5f647-3e87-4db7-ad67-35c7b3f95896",
+  "audio_id": "U-B1-019-AUD06",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 9.86,
+   "syllables_per_s": 6.94,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -4.4,
+   "longest_pause_s": 0.96,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.217,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "0df1915e-2105-40e9-9526-3d3de23c0540",
+  "audio_id": "U-B1-019-AUD07",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 6.74,
+   "syllables_per_s": 7.31,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -4.6,
+   "longest_pause_s": 0.96,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0.0556,
+   "whisper_wer": 0.056,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "cc9076fe-1fde-48a3-9f47-2c8c10cf1401",
+  "audio_id": "U-B1-019-AUD08",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 9.03,
+   "syllables_per_s": 8.09,
+   "rms_dbfs": -17.6,
+   "peak_dbfs": -4.6,
+   "longest_pause_s": 0.98,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.143,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "9662d046-6288-450d-b72c-69e0927df6a9",
+  "audio_id": "U-B1-021-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 2.67,
+   "syllables_per_s": 7.14,
+   "rms_dbfs": -17.0,
+   "peak_dbfs": -4.5,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 230
+   },
+   "azure_wer": 0.1429,
+   "whisper_wer": 0.714,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "ff21a300-4289-4ccc-9875-58054715b20e",
+  "audio_id": "U-B1-021-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 2.67,
+   "syllables_per_s": 7.14,
+   "rms_dbfs": -17.0,
+   "peak_dbfs": -4.5,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 230
+   },
+   "azure_wer": 0.1429,
+   "whisper_wer": 0.857,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "d3d5b5d7-6583-4ce5-8e1e-0480931e89d6",
+  "audio_id": "U-B2-001-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 22.32,
+   "syllables_per_s": 6.62,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -3.5,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 236,
+    "el-GR-NestorasNeural": 110,
+    "en-GB-AdaMultilingualNeural": 195
+   },
+   "azure_wer": 0.0208,
+   "whisper_wer": 0.104,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "23c97eb6-f151-4faf-9965-15a51fb51324",
+  "audio_id": "U-B2-002-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 18.02,
+   "syllables_per_s": 6.83,
+   "rms_dbfs": -16.2,
+   "peak_dbfs": -1.0,
+   "longest_pause_s": 1.97,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 228,
+    "el-GR-NestorasNeural": 123
+   },
+   "azure_wer": 0.0625,
+   "whisper_wer": 0.094,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "2ef9249d-743d-4037-b5bd-de109d936a93",
+  "audio_id": "U-B2-003-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 17.4,
+   "syllables_per_s": 6.24,
+   "rms_dbfs": -15.9,
+   "peak_dbfs": -1.4,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 225,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0.0645,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "757c4a1f-4178-4b63-a9fa-257be70ce485",
+  "audio_id": "U-B2-004-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 19.81,
+   "syllables_per_s": 7.21,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -1.8,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 240,
+    "el-GR-NestorasNeural": 112
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.03,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "e0afac93-faf9-4e76-b35b-9176721fbc76",
+  "audio_id": "U-B2-005-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 22.6,
+   "syllables_per_s": 6.25,
+   "rms_dbfs": -16.5,
+   "peak_dbfs": -1.5,
+   "longest_pause_s": 1.72,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224,
+    "el-GR-NestorasNeural": 113
+   },
+   "azure_wer": 0.0263,
+   "whisper_wer": 0.132,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "ee50d0b2-3610-4831-b79b-baa760173d49",
+  "audio_id": "U-B2-006-SCRIPT",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 33.44,
+   "syllables_per_s": 6.33,
+   "rms_dbfs": -16.3,
+   "peak_dbfs": -2.5,
+   "longest_pause_s": 1.76,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232,
+    "el-GR-NestorasNeural": 111
+   },
+   "azure_wer": 0.0313,
+   "whisper_wer": 0.109,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "f992904d-b855-4dad-8b6f-28d3b059df88",
+  "audio_id": "U-B2-007-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 28.98,
+   "syllables_per_s": 7.18,
+   "rms_dbfs": -16.8,
+   "peak_dbfs": -1.7,
+   "longest_pause_s": 1.74,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 222,
+    "el-GR-NestorasNeural": 110
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.129,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "31dd3abc-7566-494e-994e-dd42ea288111",
+  "audio_id": "U-B2-008-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 30.03,
+   "syllables_per_s": 7.44,
+   "rms_dbfs": -16.6,
+   "peak_dbfs": -1.7,
+   "longest_pause_s": 2.02,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 217,
+    "el-GR-NestorasNeural": 107
+   },
+   "azure_wer": 0.0167,
+   "whisper_wer": 0.067,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "f9cab601-3312-483b-abf4-5be10bd2e1e9",
+  "audio_id": "U-B2-012-AUD00",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 5.34,
+   "syllables_per_s": 6.37,
+   "rms_dbfs": -17.4,
+   "peak_dbfs": -3.3,
+   "longest_pause_s": 0.27,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.188,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "55d108b3-aea2-4727-b774-6698f6231f09",
+  "audio_id": "U-B2-012-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 149.9,
+   "syllables_per_s": 7.0,
+   "rms_dbfs": -17.6,
+   "peak_dbfs": -2.8,
+   "longest_pause_s": 1.68,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 225
+   },
+   "azure_wer": 0.0249,
+   "whisper_wer": 0.082,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "1308dc55-725d-4a71-b3d3-c5e3d6dcaf83",
+  "audio_id": "U-B2-012-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 28.91,
+   "syllables_per_s": 6.88,
+   "rms_dbfs": -17.6,
+   "peak_dbfs": -2.4,
+   "longest_pause_s": 1.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.176,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "3aaad3b0-1f96-4d62-8777-a1fa7a51043f",
+  "audio_id": "U-B2-012-AUD03",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 14.9,
+   "syllables_per_s": 7.22,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -4.1,
+   "longest_pause_s": 0.97,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 224
+   },
+   "azure_wer": 0.0714,
+   "whisper_wer": 0.19,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "5702d299-ded1-4bca-b444-ea5638c4b85c",
+  "audio_id": "U-B2-015-AUD01",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 175.16,
+   "syllables_per_s": 6.64,
+   "rms_dbfs": -17.6,
+   "peak_dbfs": -2.1,
+   "longest_pause_s": 1.73,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 227,
+    "el-GR-NestorasNeural": 110,
+    "en-GB-AdaMultilingualNeural": 193,
+    "de-DE-FlorianMultilingualNeural": 141
+   },
+   "azure_wer": 0.0202,
+   "whisper_wer": 0.083,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "0bb27c41-59e6-4a09-8ba2-175afb9de833",
+  "audio_id": "U-B2-015-AUD02",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 36.76,
+   "syllables_per_s": 7.36,
+   "rms_dbfs": -17.0,
+   "peak_dbfs": -1.9,
+   "longest_pause_s": 1.69,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 226,
+    "el-GR-NestorasNeural": 112,
+    "en-GB-AdaMultilingualNeural": 196,
+    "de-DE-FlorianMultilingualNeural": 138
+   },
+   "azure_wer": 0.023,
+   "whisper_wer": 0.163,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "5176e7bb-5e27-4eb4-9891-95c0bcb8a62c",
+  "audio_id": "U-B2-015-AUD03",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 27.75,
+   "syllables_per_s": 7.92,
+   "rms_dbfs": -17.1,
+   "peak_dbfs": -2.1,
+   "longest_pause_s": 1.68,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 231,
+    "el-GR-NestorasNeural": 112,
+    "en-GB-AdaMultilingualNeural": 184,
+    "de-DE-FlorianMultilingualNeural": 146
+   },
+   "azure_wer": 0.0469,
+   "whisper_wer": 0.145,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "eca90cb7-96d1-4174-bfd4-505820cf7b06",
+  "audio_id": "U-B2-016-I11-AUDIO",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 5.15,
+   "syllables_per_s": 6.08,
+   "rms_dbfs": -17.3,
+   "peak_dbfs": -4.5,
+   "longest_pause_s": 0.0,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 232
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.231,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "69cbe96d-9783-42af-9d49-edf9459fb943",
+  "audio_id": "U-B2-016-I12-AUDIO",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 5.28,
+   "syllables_per_s": 6.01,
+   "rms_dbfs": -17.0,
+   "peak_dbfs": -4.3,
+   "longest_pause_s": 0.94,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 233
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.643,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "353265f1-13d8-42ae-b2b8-45ba0a23bbfc",
+  "audio_id": "U-B2-016-I13-AUDIO",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 8.71,
+   "syllables_per_s": 6.07,
+   "rms_dbfs": -17.0,
+   "peak_dbfs": -3.3,
+   "longest_pause_s": 0.96,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 231
+   },
+   "azure_wer": 0,
+   "whisper_wer": 0.0,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "c892f6fa-6c46-43ba-b1db-6755e2c994f4",
+  "audio_id": "U-B2-016-I14-AUDIO",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 8.45,
+   "syllables_per_s": 7.41,
+   "rms_dbfs": -17.5,
+   "peak_dbfs": -4.4,
+   "longest_pause_s": 0.95,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 227
+   },
+   "azure_wer": 0.0909,
+   "whisper_wer": 0.318,
+   "spelled_letters": []
+  }
+ },
+ {
+  "asset_id": "ca26f4c5-dbcb-4c4b-84d9-5c464a4352ee",
+  "audio_id": "U-B2-016-I15-AUDIO",
+  "decision": "OK",
+  "note": "AI-редактор (не человек): технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет. Естественность и интонация человеком не оценивались.",
+  "metrics": {
+   "duration_s": 12.96,
+   "syllables_per_s": 6.45,
+   "rms_dbfs": -17.4,
+   "peak_dbfs": -3.4,
+   "longest_pause_s": 0.98,
+   "f0_by_voice_hz": {
+    "el-GR-AthinaNeural": 223
+   },
+   "azure_wer": 0.0541,
+   "whisper_wer": 0.081,
+   "spelled_letters": []
+  }
+ }
+]

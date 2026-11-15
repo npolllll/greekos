@@ -81,7 +81,7 @@ export default async function VoicesPage() {
               <td>{PRES_RU[v.presentation]}<div className="tiny muted">{v.presentation_source}</div></td>
               <td>{v.quality_tier ?? '—'}</td>
               <td className="tiny">{v.distribution_allowed ? 'распространение разрешено' : 'только разработка'}</td>
-              <td>{v.qa_status}{v.approved_by_owner ? ' · утверждён' : ''}</td>
+              <td>{v.qa_status}{v.approved_by_owner ? ' · утверждён' : v.approval_source === 'ai_editorial_delegated' ? ' · выбран AI-редактором' : ''}{v.approval_note ? <div className="tiny muted">{v.approval_note}</div> : null}</td>
               <td><VoiceRow voiceId={v.voice_id} hasSample={!!v.sample_object_path} approved={v.approved_by_owner} available={v.available} mock={v.provider === 'mock'} /></td>
             </tr>
           ))}
@@ -122,7 +122,7 @@ export default async function VoicesPage() {
             <tr key={r.cast_role_id}>
               <td><strong>{r.cast_role_id}</strong></td><td>{PRES_RU[r.requested_presentation]}</td><td className="tiny">{r.use_case}</td>
               <td><CastRoleControl castRoleId={r.cast_role_id} presentation={r.requested_presentation} voiceId={r.voice_id} approved={r.approved} options={(voices ?? []).filter((v) => v.available && v.provider !== 'mock').map((v) => ({ id: v.voice_id, label: voiceLabel.get(v.voice_id)!, presentation: v.presentation }))} /></td>
-              <td>{r.approved ? <span className="status">утверждён</span> : r.voice_id ? <span className="status wait">предложен</span> : <span className="status blocked">нет голоса</span>}</td>
+              <td>{r.approved ? <span className="status">{r.approval_source === 'ai_editorial_delegated' ? 'выбран AI-редактором' : 'утверждён'}</span> : r.voice_id ? <span className="status wait">предложен</span> : <span className="status blocked">нет голоса</span>}</td>
             </tr>
           ))}
         </tbody></table></div>

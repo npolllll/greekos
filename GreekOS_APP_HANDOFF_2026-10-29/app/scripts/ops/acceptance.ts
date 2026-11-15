@@ -163,6 +163,8 @@ async function main() {
       check('access.owner_login_one_time_link', /\/admin/.test(owner.url()));
       await shot(owner, 'owner-admin');
     });
+    // A Speaking-only run still needs the owner's session for the text dialogues (owner preview).
+    if (!owner && ONLY.includes('speaking')) { owner = await ownerPage(browser); await owner.waitForURL(/\/admin/, { timeout: 30_000 }); }
     if (!owner && !ONLY.length) throw new Error('no owner session');
     const op = owner as unknown as Page;
 
@@ -294,12 +296,16 @@ async function main() {
         if (!sid) { check(`speaking.${level}.start`, false, `HTTP ${start.status} ${JSON.stringify(start.json).slice(0, 200)}`); continue; }
         const turns: unknown[] = [];
         let current = String(start.json.current_node ?? (s.payload as { entry_node?: string }).entry_node ?? '');
-        for (let i = 0; i < 4; i++) {
-          const node = nodes.find((n) => n.node_id === current) ?? nodes[0];
+        // B1 runs a long dialogue (8 turns): memory, a slow-down request and a grammar error to correct.
+        const n = level === 'B1' ? 8 : 4;
+        for (let i = 0; i < n; i++) {
+          const node = nodes.find((x) => x.node_id === current) ?? nodes[0];
           let text = node.acceptable_examples_el?.[0] ?? 'Ναι, ευχαριστώ.';
           // Turn 2 carries typical learner errors (no stress marks, lower case); turn 4 asks to repeat.
           if (i === 1) text = text.normalize('NFD').replace(/[́̈]/g, '').normalize('NFC').toLowerCase();
           if (i === 3) text = 'Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε πιο αργά;';
+          if (i === 5) text = 'Χθες πάω στο γιατρό και μετά θα έρχομαι εδώ.';
+          if (i === 7) text = 'Τι είπαμε στην αρχή; Μπορείτε να το επαναλάβετε σύντομα;';
           const r = await post({ action: 'turn', session_id: sid, text, source: 'typed', asr_confidence: null, help_used: [], repair: false, interrupted_previous: false, idempotency_key: `acc-${run}-${level}-${i}` });
           const assistant = (r.json.turns as Array<{ speaker: string; text: string; engine?: string }> | undefined)?.filter((t) => t.speaker === 'assistant').at(-1);
           turns.push({ learner: text, reply: assistant?.text ?? null, engine: r.json.engine_kind, reason: r.json.engine_reason ?? null, ms: r.ms, http: r.status, hint_ru: r.json.hint_ru ?? null });
@@ -407,7 +413,13 @@ async function main() {
           pageLog.push(`статус: ${statusNow}${errorsNow ? `; ошибки: ${errorsNow}` : ''}`);
           check('speaking.mobile.live_turn', replied, replied ? `${Math.round((Date.now() - t0) / 100) / 10} с от начала до ответа${confirmed ? ' (с подтверждением транскрипта)' : ''}: «${shown}»` : heard ? 'реплика распознана, ответа нет' : 'реплика не распознана');
           const { data: lt } = await db.from('speaking_turns').select('speaker, engine_kind, input_source').eq('session_id', liveSid).order('created_at');
-          report.speaking.push({ mode: 'live_mobile', turns: [], db_turns: lt, frames, page: pageLog });
+          // The voice reply: timings the gateway stored for this turn (end of speech → first audio of the reply).
+          await waitFor(async () => frames.some((f) => f.includes('"metrics"')), 20_000);
+          const { data: tm } = await db.from('speaking_turn_metrics').select('turn_seq, tts_engine, vad_hangover_ms, asr_final_ms, llm_first_sentence_ms, tts_first_audio_ms, end_of_speech_to_audio_ms').eq('session_id', liveSid).order('turn_seq');
+          const m0 = (tm ?? []).find((x) => x.tts_first_audio_ms != null) ?? (tm ?? [])[0];
+          const audioIn = frames.some((f) => f.includes('← binary'));
+          check('speaking.mobile.live_voice_audio', !!m0?.tts_first_audio_ms && audioIn, m0 ? `голос ${m0.tts_engine ?? '—'}: конец речи → первый звук ответа ${m0.end_of_speech_to_audio_ms ?? '—'} мс (VAD ${m0.vad_hangover_ms ?? '—'}, распознавание ${m0.asr_final_ms ?? '—'}, первое предложение ${m0.llm_first_sentence_ms ?? '—'}, синтез ${m0.tts_first_audio_ms ?? '—'} мс)${audioIn ? '' : '; звук не пришёл'}` : 'нет метрик хода');
+          report.speaking.push({ mode: 'live_mobile', turns: [], db_turns: lt, metrics: tm, frames, page: pageLog });
           await page.getByRole('button', { name: 'Остановить' }).click().catch(() => undefined);
         } else check('speaking.mobile.live_connects', false, 'нет кнопки «Начать разговор» (живой режим недоступен)');
         // Step mode: record → transcript → reply.
@@ -450,10 +462,15 @@ async function main() {
     writeFileSync(`${OUT}/acceptance.json`, JSON.stringify(report, null, 1));
     const failed = report.checks.filter((c) => c.ok === false);
     console.log(`\n${report.checks.length - failed.length}/${report.checks.length} проверок пройдено`);
-    for (const s of report.speaking as Array<{ level?: string; mode?: string; turns: Array<{ learner: string; reply: string | null; engine: string; reason: string | null; ms: number }>; frames?: string[]; page?: string[] }>) {
+    for (const s of report.speaking as Array<{ level?: string; mode?: string; turns: Array<{ learner: string; reply: string | null; engine: string; reason: string | null; ms: number }>; feedback?: unknown[]; frames?: string[]; page?: string[] }>) {
       if (!s.level) { console.log(`\n== Speaking ${s.mode}`); for (const f of s.frames ?? []) console.log(`  ${f}`); for (const l of s.page ?? []) console.log(`  page: ${l}`); continue; }
       console.log(`\n== Speaking ${s.level}`);
-      for (const t of s.turns) console.log(`  ученик: ${t.learner}\n  AI [${t.engine}${t.reason ? `: ${t.reason}` : ''}, ${t.ms} мс]: ${t.reply}`);
+      s.turns.forEach((t, i) => {
+        console.log(`  ученик: ${t.learner}\n  AI [${t.engine}${t.reason ? `: ${t.reason}` : ''}, ${t.ms} мс]: ${t.reply}`);
+        // The written feedback on this learner turn (corrections), as the learner sees it after the dialogue.
+        const fb = s.feedback?.[i];
+        if (fb) console.log(`  отзыв: ${JSON.stringify(fb).slice(0, 400)}`);
+      });
     }
     if (report.asr) console.log(`\nASR: ${JSON.stringify(report.asr)}`);
     console.log(`\nPERF: ${JSON.stringify(report.perf)}`);
