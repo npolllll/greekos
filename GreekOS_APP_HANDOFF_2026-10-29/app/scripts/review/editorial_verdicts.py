@@ -45,10 +45,14 @@ def benign_accent(m, hyp):
     """A stored accent mismatch (reference word) is benign when the recogniser wrote μια/μία, or only dropped the
     enclitic second accent; a moved main stress («συνάδελφός» → «συναδέλφός») is not."""
     m = m.rstrip('σς') if m.endswith('σ') else m
-    for h in re.findall(r'[\wͰ-Ͽ]+', hyp.lower()):
+    for h in re.findall(r'[\wͰ-Ͽ]+', hyp):
         if strip(h).rstrip('σς') != strip(m).rstrip('σς'): continue
+        h_low = h.lower()
         if {strip(m), strip(h)} <= {'μια'}: return True
+        if h_low == m.lower(): return True
         ph, pm = accent_pos(h), accent_pos(m)
+        # A capitalised word written without its accent mark («Οχι», «Αρα») is typography, not stress.
+        if not ph and h[:1].upper() == h[:1] and pm and pm[0] == 1: return True
         return bool(ph) and set(ph) <= set(pm)
     return False
 def script(j):
