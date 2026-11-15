@@ -9,6 +9,7 @@ placement and naturalness are judged only indirectly (recognisers spelling a wor
 
   python3 scripts/review/audio_review.py assets   # 142 course files → reports/review/audio/
   python3 scripts/review/audio_review.py voices   # candidate Azure voices on a fixed Greek test set
+  python3 scripts/review/audio_review.py probe    # spoken-form variants / voices from reports/review/probe-request.json
 Env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, DATABASE_URL, AZURE_SPEECH_KEY, AZURE_SPEECH_REGION.
 """
 import io, json, math, os, re, subprocess, sys, time, unicodedata, urllib.request, urllib.error
@@ -143,14 +144,14 @@ def resample16k(wav_bytes):
     snd.save('/tmp/greekos-16k.wav', 'WAV')
     return open('/tmp/greekos-16k.wav', 'rb').read()
 
-def whisper_asr(wav_bytes, detect=False):
+def whisper_asr(wav_bytes, detect=False, beam=1):
     """Independent recogniser. Audio goes in as a 16 kHz float array (no container decoding)."""
     m = whisper()
     if not m: return None
     with open('/tmp/greekos-w.wav', 'wb') as f: f.write(wav_bytes)
     snd = parselmouth.Sound('/tmp/greekos-w.wav').resample(16000)
     audio = snd.values[0].astype(np.float32)
-    segs, info = m.transcribe(audio, language=None if detect else 'el', beam_size=1, vad_filter=False)
+    segs, info = m.transcribe(audio, language=None if detect else 'el', beam_size=beam, vad_filter=False)
     text = ' '.join(s.text.strip() for s in segs)
     return {'text': text, 'language': info.language, 'language_probability': round(float(info.language_probability), 3)}
 
@@ -244,5 +245,43 @@ def voices():
         print(json.dumps({'voice': name, 'locale': loc, 'gender': row['gender'], 'summary': row.get('summary'), 'error': row.get('error')}, ensure_ascii=False), flush=True)
     json.dump(out, open(f'{OUT}/voices.json', 'w'), ensure_ascii=False, indent=1)
 
+# ---------------- 3. probe: spoken-form variants and voice candidates on given texts ----------------
+def phon(t):
+    t = strip_accents(t.lower())
+    for a, b in (('ει', 'ι'), ('οι', 'ι'), ('υι', 'ι'), ('αι', 'ε'), ('αυ', 'αφ'), ('ευ', 'εφ'), ('η', 'ι'), ('υ', 'ι'), ('ω', 'ο'), ('μμ', 'μ')):
+        t = t.replace(a, b)
+    return re.sub(r'[^α-ω]', '', t)
+# Letter names a recogniser writes when the voice spells a fragment instead of reading it («Γι’» → «γάμα γιώτα»).
+LETTER_NAMES = ['αλφα', 'βιτα', 'γαμα', 'δελτα', 'εψιλον', 'ζιτα', 'θιτα', 'γιοτα', 'καπα', 'λαμδα', 'σιγμα', 'ταφ', 'ιψιλον', 'ομεγα', 'νιγιοτα']
+def spelled_letters(hyp, ref):
+    h, r = phon(hyp), phon(ref)
+    return [n for n in LETTER_NAMES if n in h and n not in r]
+def probe():
+    req = json.load(open('reports/review/probe-request.json'))
+    voice_locale = {v['ShortName']: v['Locale'] for v in json.loads(http(f'https://{REGION}.tts.speech.microsoft.com/cognitiveservices/voices/list', None, {'Ocp-Apim-Subscription-Key': KEY}))}
+    out = []
+    for case in req:
+        for voice in case['voices']:
+            for text in case['variants']:
+                row = {'case': case['case'], 'voice': voice, 'reference': case['reference'], 'text': text}
+                try:
+                    wav = tts(voice, voice_locale.get(voice, 'el-GR'), text)
+                    ac = acoustics(wav)
+                    az = azure_asr(wav)
+                    wh = whisper_asr(wav, beam=5)
+                    def spelled(h): return spelled_letters(h or '', case['reference'])
+                    vt = ac['voiced_time_s']
+                    row.update({
+                        'syllables_per_s': round(syllables(case['reference']) / vt, 2) if vt else None, 'f0': ac['f0'],
+                        'azure': {'text': az.get('text'), 'confidence': az.get('confidence'), 'wer_bare': wer_bare(case['reference'], az.get('text', '')), 'stress': stress_mismatches(case['reference'], az.get('text', '')), 'spelled': spelled(az.get('text', ''))},
+                        'whisper': {'text': wh['text'], 'wer_bare': wer_bare(case['reference'], wh['text']), 'stress': stress_mismatches(case['reference'], wh['text']), 'spelled': spelled(wh['text'])} if wh else None,
+                    })
+                except Exception as e:  # noqa: BLE001
+                    row['error'] = str(e)[:200]
+                out.append(row)
+                print(json.dumps({k: row.get(k) for k in ('case', 'voice', 'text')} | {'az': (row.get('azure') or {}).get('text'), 'wh': (row.get('whisper') or {}).get('text')}, ensure_ascii=False), flush=True)
+                time.sleep(3.2)  # F0: stay under 20 transactions per minute
+    json.dump(out, open(f'{OUT}/probe.json', 'w'), ensure_ascii=False, indent=1)
+
 if __name__ == '__main__':
-    {'assets': assets, 'voices': voices}[sys.argv[1]]()
+    {'assets': assets, 'voices': voices, 'probe': probe}[sys.argv[1]]()

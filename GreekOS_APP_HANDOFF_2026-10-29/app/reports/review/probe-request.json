@@ -1,0 +1,301 @@
+[
+ {
+  "case": "RG-0003 «Α,» (вопрос)",
+  "reference": "Α, καλά… Χωρίς διάβασμα;",
+  "voices": [
+   "el-GR-NestorasNeural"
+  ],
+  "variants": [
+   "Α, καλά… Χωρίς διάβασμα;",
+   "α, καλά… Χωρίς διάβασμα;",
+   "Αα, καλά… Χωρίς διάβασμα;",
+   "Α! Καλά… Χωρίς διάβασμα;",
+   "Ά, καλά… Χωρίς διάβασμα;"
+  ]
+ },
+ {
+  "case": "RG-0003 «Α,» (утверждение)",
+  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
+  "voices": [
+   "el-GR-NestorasNeural"
+  ],
+  "variants": [
+   "Α, καλά έκανε. Το χρειαζόταν.",
+   "α, καλά έκανε. Το χρειαζόταν.",
+   "Αα, καλά έκανε. Το χρειαζόταν.",
+   "Ά, καλά έκανε. Το χρειαζόταν."
+  ]
+ },
+ {
+  "case": "RG-0010 «στ’»",
+  "reference": "Ήταν στ’ αλήθεια ειδικός;",
+  "voices": [
+   "el-GR-AthinaNeural"
+  ],
+  "variants": [
+   "Ήταν στ’ αλήθεια ειδικός;",
+   "Ήταν στ' αλήθεια ειδικός;",
+   "Ήταν σταλήθεια ειδικός;",
+   "Ήταν στα αλήθεια ειδικός;"
+  ]
+ },
+ {
+  "case": "RG-0010 «Ντεμέκ»",
+  "reference": "Ντεμέκ ειδικός! Δεν ήξερε ούτε πού είναι το πρόβλημα.",
+  "voices": [
+   "el-GR-NestorasNeural"
+  ],
+  "variants": [
+   "Ντεμέκ ειδικός! Δεν ήξερε ούτε πού είναι το πρόβλημα.",
+   "Ντεμέκ, ειδικός! Δεν ήξερε ούτε πού είναι το πρόβλημα."
+  ]
+ },
+ {
+  "case": "U-B1-008 «Γι’»",
+  "reference": "Δεν βρήκε εισιτήριο. Γι’ αυτό θα έρθει αύριο.",
+  "voices": [
+   "el-GR-NestorasNeural"
+  ],
+  "variants": [
+   "Δεν βρήκε εισιτήριο. Γι’ αυτό θα έρθει αύριο.",
+   "Δεν βρήκε εισιτήριο. Γι' αυτό θα έρθει αύριο.",
+   "Δεν βρήκε εισιτήριο. Γιαυτό θα έρθει αύριο.",
+   "Δεν βρήκε εισιτήριο. Για αυτό θα έρθει αύριο."
+  ]
+ },
+ {
+  "case": "KEG-B2-L03-AUD2 «Γι’»",
+  "reference": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+   "Γιαυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε."
+  ]
+ },
+ {
+  "case": "U-A1-007 буквы",
+  "reference": "Άλφα, νι, νι, άλφα.",
+  "voices": [
+   "el-GR-NestorasNeural"
+  ],
+  "variants": [
+   "Άλφα, νι, νι, άλφα.",
+   "Άλφα. Νι. Νι. Άλφα.",
+   "Άλφα, νυ, νυ, άλφα.",
+   "Άλφα, νη, νη, άλφα."
+  ]
+ },
+ {
+  "case": "U-A2-006 «συνάδελφός μου»",
+  "reference": "Όχι. Αλλά η συνάδελφός μου εργάζεται μέχρι τις δύο.",
+  "voices": [
+   "el-GR-NestorasNeural"
+  ],
+  "variants": [
+   "Όχι. Αλλά η συνάδελφός μου εργάζεται μέχρι τις δύο.",
+   "Όχι. Αλλά η συνάδελφος μου εργάζεται μέχρι τις δύο."
+  ]
+ },
+ {
+  "case": "U-B2-016-I14 «πενήντα… όχι»",
+  "reference": "Η συμμετοχή κοστίζει πενήντα… όχι, δεκαπέντε ευρώ.",
+  "voices": [
+   "el-GR-AthinaNeural"
+  ],
+  "variants": [
+   "Η συμμετοχή κοστίζει πενήντα… όχι, δεκαπέντε ευρώ.",
+   "Η συμμετοχή κοστίζει πενήντα... όχι, δεκαπέντε ευρώ.",
+   "Η συμμετοχή κοστίζει πενήντα, όχι, δεκαπέντε ευρώ."
+  ]
+ },
+ {
+  "case": "Athina «Ε,»",
+  "reference": "Ε, καλά, δεν πειράζει!",
+  "voices": [
+   "el-GR-AthinaNeural",
+   "el-GR-NestorasNeural"
+  ],
+  "variants": [
+   "Ε, καλά, δεν πειράζει!",
+   "Ε καλά, δεν πειράζει!"
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Όχι. Βλέπω την Εύα στην είσοδο.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Όχι. Βλέπω την Εύα στην είσοδο."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Πότε θα έρθεις; Ποτέ δεν αργείς."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "reference": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "voices": [
+   "de-DE-SeraphinaMultilingualNeural",
+   "en-GB-AdaMultilingualNeural",
+   "en-US-AvaMultilingualNeural"
+  ],
+  "variants": [
+   "Θέλω να μιλήσω με τον γιατρό για την εξέταση."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "reference": "Όχι, δεν έχω χρόνο τώρα. Μην περιμένεις εδώ, σε παρακαλώ.",
+  "voices": [
+   "de-DE-FlorianMultilingualNeural",
+   "en-US-AshTurboMultilingualNeural"
+  ],
+  "variants": [
+   "Όχι, δεν έχω χρόνο τώρα. Μην περιμένεις εδώ, σε παρακαλώ."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "reference": "Κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη.",
+  "voices": [
+   "de-DE-FlorianMultilingualNeural",
+   "en-US-AshTurboMultilingualNeural"
+  ],
+  "variants": [
+   "Κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "reference": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "voices": [
+   "de-DE-FlorianMultilingualNeural",
+   "en-US-AshTurboMultilingualNeural"
+  ],
+  "variants": [
+   "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "reference": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "voices": [
+   "de-DE-FlorianMultilingualNeural",
+   "en-US-AshTurboMultilingualNeural"
+  ],
+  "variants": [
+   "Πότε θα έρθεις; Ποτέ δεν αργείς."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "reference": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "voices": [
+   "de-DE-FlorianMultilingualNeural",
+   "en-US-AshTurboMultilingualNeural"
+  ],
+  "variants": [
+   "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά."
+  ]
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "reference": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "voices": [
+   "de-DE-FlorianMultilingualNeural",
+   "en-US-AshTurboMultilingualNeural"
+  ],
+  "variants": [
+   "Θέλω να μιλήσω με τον γιατρό για την εξέταση."
+  ]
+ }
+]
