@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { planJob, normalizeSegments, type AudioJobRow, type CastingContext, type CastingRow } from '@/lib/audio/pipeline';
+import { planJob, normalizeSegments, sameRenderKey, jobStatusOf, type AudioJobRow, type CastingContext, type CastingRow } from '@/lib/audio/pipeline';
 import { proposeRoleCasting, proposeNarratorCasting, castRolesForJob, type CatalogVoice, type CastRole } from '@/lib/voice/catalog';
 import { CORPUS, hasCorpusFile } from '../corpus';
 
@@ -148,5 +148,17 @@ describe('round-trip numeral normalisation', async () => {
     expect(normalizeNumerals(tokens('θέλω ένα καφέ'))).toEqual(['θέλω', 'ένα', 'καφέ']);
     expect(normalizeNumerals(tokens('δεκαπέντε Μαρτίου'))).toEqual(['15', 'μαρτίου']);
     expect(roundTrip('στις δέκα', 'στις έντεκα').wer).toBeGreaterThan(0);
+  });
+});
+
+describe('render keys of forced re-renders', () => {
+  it('a forced re-render («key:time») is the current file of the same plan; another plan is not', () => {
+    expect(sameRenderKey('abc', 'abc')).toBe(true);
+    expect(sameRenderKey('abc:1763221000000', 'abc')).toBe(true);
+    expect(sameRenderKey('abcd', 'abc')).toBe(false);
+    expect(sameRenderKey(null, 'abc')).toBe(false);
+    expect(jobStatusOf('DIGITAL_REVIEWED')).toBe('DIGITAL_REVIEWED');
+    expect(jobStatusOf('LINGUISTIC_QA_PENDING')).toBe('TECH_QA_PASS');
+    expect(jobStatusOf('TECH_QA_FAIL')).toBe('TECH_QA_FAIL');
   });
 });

@@ -82,6 +82,23 @@ describe('lesson order', () => {
 });
 
 describe('AI review text fixes in lessons, scenarios and cards', () => {
+  it('applies an addition that keeps the original sentence once, and collapses copies left by repeated runs', () => {
+    const cur = 'Отличайте событие от состояния.';
+    const tail = ' Простое «закрыто» — κλειστός.';
+    const patch = [{ op: 'replace_text' as const, field: 'theory_ru', current: cur, new: cur + tail }];
+    const first = applyTextPatches({ theory_ru: `Начало. ${cur} Конец.` }, patch);
+    expect(first.applied).toBe(1);
+    const second = applyTextPatches(first.next, patch);
+    expect(second.applied).toBe(0);
+    expect(second.already).toBe(1);
+    // Before 15.11 every deploy appended the addition again (six copies on production).
+    const repeated = { theory_ru: `Начало. ${cur}${tail.repeat(6)} Конец.` };
+    const fixed = applyTextPatches(repeated, patch);
+    expect(fixed.applied).toBe(1);
+    expect(fixed.repaired).toBe(1);
+    expect((fixed.next as { theory_ru: string }).theory_ru).toBe(`Начало. ${cur}${tail} Конец.`);
+    expect(applyTextPatches(fixed.next, patch).applied).toBe(0);
+  });
   const scenario = { nodes: [{ node_id: 'OPEN', assistant_el: 'Καλημέρα! Τι θέλεις;', acceptable_examples_el: ['Θέλω ένα καφέ.'] }, { node_id: 'B1', assistant_el: 'Τι θέλεις;' }] };
   it('replaces a snippet that occurs exactly once and leaves the original untouched', () => {
     const r = applyTextPatches(scenario, [{ op: 'replace_text', field: 'nodes[0].acceptable_examples_el', current: 'ένα καφέ', new: 'έναν καφέ' }]);
