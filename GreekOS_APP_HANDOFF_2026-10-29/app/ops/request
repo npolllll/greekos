@@ -1,2 +1,2 @@
-release-readiness
-# 2026-11-15 baseline before the fix: audio ready for the AI editor except the owner items
+e2e
+# 2026-11-15 branch 298b26e before merge: course walk + reading texts visible in the browser
