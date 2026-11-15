@@ -1,2 +1,2 @@
-release-readiness,qa-fails,acceptance-free
-# 2026-11-15 final production 13b5737: release readiness, QA fails, production acceptance without paid Speaking
+release-readiness,qa-fails
+# 2026-11-15 final main e7e1937: readout after the last deploy
