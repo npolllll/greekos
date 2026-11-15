@@ -1,3 +1,3 @@
 apply
 
-# 2026-11-15 production 13b5737: the AI editor records the sample review of batch ea5b90ea (30/30 OK), 142 audio verdicts, 2 digital confirmations, voices
+# 2026-11-15: corrected AI-editor notes recorded for every current file (the note now states what each recogniser heard)
