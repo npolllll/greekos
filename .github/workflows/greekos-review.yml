@@ -54,11 +54,6 @@ jobs:
       - name: corpus (current content after all revisions)
         if: contains(steps.task.outputs.tasks, ',corpus,')
         run: bash scripts/review/export-corpus.sh
-      - name: assets (142 course audio files, or only the ids on line 2)
-        if: contains(steps.task.outputs.tasks, ',assets,')
-        env:
-          REVIEW_IDS: ${{ steps.task.outputs.ids }}
-        run: python3 scripts/review/audio_review.py assets
       - name: voices (candidate Azure voices on a Greek test set)
         if: contains(steps.task.outputs.tasks, ',voices,')
         run: python3 scripts/review/audio_review.py voices
@@ -85,6 +80,11 @@ jobs:
           mkdir -p reports/review/audio
           npx tsx --conditions=react-server scripts/audio-cli.ts render-batch --ids "${{ steps.task.outputs.ids }}" --force --budget-cap 0 > reports/review/audio/render.json
           node -e "const r=require('./reports/review/audio/render.json'); console.log(JSON.stringify({total:r.total,rendered:r.rendered,counts:r.counts}))"
+      - name: assets (142 course audio files, or only the ids on line 2)
+        if: contains(steps.task.outputs.tasks, ',assets,')
+        env:
+          REVIEW_IDS: ${{ steps.task.outputs.ids }}
+        run: python3 scripts/review/audio_review.py assets
       - name: sample-show (the release sample of the latest full QA batch)
         if: contains(steps.task.outputs.tasks, ',sample-show,')
         env:

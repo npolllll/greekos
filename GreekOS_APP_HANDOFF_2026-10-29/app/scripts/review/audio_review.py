@@ -158,7 +158,7 @@ def whisper_asr(wav_bytes, detect=False, beam=1):
 # ---------------- 1. course audio ----------------
 def assets():
     rows = psql_json("""select json_agg(t order by t.audio_id) from (
-      select a.id, a.audio_id, a.object_path, a.voice_map, a.segment_cues, a.digital_status, a.asr_roundtrip, a.technical_report, a.cast_snapshot,
+      select a.id, a.audio_id, a.sha256, a.object_path, a.voice_map, a.segment_cues, a.digital_status, a.asr_roundtrip, a.technical_report, a.cast_snapshot,
              j.text_el, j.segments
       from public.audio_assets a join public.audio_jobs j on j.audio_id = a.audio_id where a.invalidated_at is null) t""") or []
     only = [x for x in os.environ.get('REVIEW_IDS', '').split(',') if x]
@@ -166,12 +166,14 @@ def assets():
     results = []
     t0 = time.time()
     for r in rows:
-        res = {'audio_id': r['audio_id'], 'asset_id': r['id'], 'digital_status': r['digital_status'], 'voice_map': r['voice_map']}
+        res = {'audio_id': r['audio_id'], 'asset_id': r['id'], 'sha256': r.get('sha256'), 'digital_status': r['digital_status'], 'voice_map': r['voice_map']}
         try:
             wav = http(f"{SUPA}/storage/v1/object/authenticated/course-audio/{r['object_path']}", None, {'Authorization': f'Bearer {SERVICE}', 'apikey': SERVICE}, 120)
             res['bytes'] = len(wav)
             res['acoustics'] = acoustics(wav, r.get('segment_cues') or [])
-            ref = r.get('text_el') or ' '.join((s.get('text_el') or s.get('text') or '') for s in (r.get('segments') or []))
+            # The spoken script only: segment texts, or the dialogue without its «Name:» labels.
+            segs = [(s.get('text_el') or s.get('text') or '') for s in (r.get('segments') or [])]
+            ref = ' '.join(x for x in segs if x) or re.sub(r'^\s*[^\n:]{1,30}:\s*', '', r.get('text_el') or '', flags=re.M)
             res['script_words'] = len(words(ref))
             vt = res['acoustics']['voiced_time_s']
             res['syllables_per_s'] = round(syllables(ref) / vt, 2) if vt else None
@@ -182,7 +184,7 @@ def assets():
             if time.time() - t0 < 2400:
                 w = whisper_asr(wav)
                 if w:
-                    res['whisper'] = {'wer': wer(ref, w['text']), 'wer_accent_insensitive': wer_bare(ref, w['text']), 'stress_mismatches': stress_mismatches(ref, w['text'])[:8], 'text': w['text'][:400]}
+                    res['whisper'] = {'wer': wer(ref, w['text']), 'wer_accent_insensitive': wer_bare(ref, w['text']), 'stress_mismatches': stress_mismatches(ref, w['text'])[:8], 'text': w['text'][:4000]}
         except Exception as e:  # noqa: BLE001
             res['error'] = str(e)[:200]
         results.append(res)
