@@ -161,6 +161,8 @@ def assets():
       select a.id, a.audio_id, a.sha256, a.object_path, a.voice_map, a.segment_cues, a.digital_status, a.asr_roundtrip, a.technical_report, a.cast_snapshot,
              j.text_el, j.segments
       from public.audio_assets a join public.audio_jobs j on j.audio_id = a.audio_id where a.invalidated_at is null) t""") or []
+    # Recordings whose task asks the learner to hear a contrastive focus: word-level prosody per version.
+    focus_check = {'U-B2-016-I12-AUDIO': (['Μαρία', 'αύριο'], True), 'U-B1-021-AUD01': (['Άννα', 'αύριο'], False), 'U-B1-021-AUD02': (['Άννα', 'αύριο'], False)}
     only = [x for x in os.environ.get('REVIEW_IDS', '').split(',') if x]
     if only: rows = [r for r in rows if r['audio_id'] in only]
     results = []
@@ -185,6 +187,7 @@ def assets():
                 w = whisper_asr(wav)
                 if w:
                     res['whisper'] = {'wer': wer(ref, w['text']), 'wer_accent_insensitive': wer_bare(ref, w['text']), 'stress_mismatches': stress_mismatches(ref, w['text'])[:8], 'text': w['text'][:4000]}
+            if r['audio_id'] in focus_check: res['focus'] = focus_prosody(wav, *focus_check[r['audio_id']])
         except Exception as e:  # noqa: BLE001
             res['error'] = str(e)[:200]
         results.append(res)
@@ -260,7 +263,7 @@ LETTER_NAMES = ['αλφα', 'βιτα', 'γαμα', 'δελτα', 'εψιλον'
 def spelled_letters(hyp, ref):
     h, r = phon(hyp), phon(ref)
     return [n for n in LETTER_NAMES if n in h and n not in r]
-def focus_prosody(wav_bytes, targets):
+def focus_prosody(wav_bytes, targets, split=True):
     """Contrastive focus, measured: the file is split at its longest pause into versions; in each version
     Whisper gives word times and the pitch (median and peak F0), loudness and length of every target word
     are measured. A focus that is heard should show the target word higher, louder or longer in the version
@@ -280,6 +283,7 @@ def focus_prosody(wav_bytes, targets):
             run += 1
             if run > best: best, cut = run, float(tx[start + run // 2])
         else: run = 0
+    if not split: cut, best = None, 0  # one version per file: compared across files
     bounds = [(0.0, cut), (cut, snd.duration)] if cut else [(0.0, snd.duration)]
     pitch = snd.to_pitch(time_step=0.01, pitch_floor=70, pitch_ceiling=450)
     f0, tf = pitch.selected_array['frequency'], pitch.xs()
@@ -324,7 +328,7 @@ def probe():
                         'azure': {'text': az.get('text'), 'confidence': az.get('confidence'), 'wer_bare': wer_bare(case['reference'], az.get('text', '')), 'stress': stress_mismatches(case['reference'], az.get('text', '')), 'spelled': spelled(az.get('text', ''))},
                         'whisper': {'text': wh['text'], 'wer_bare': wer_bare(case['reference'], wh['text']), 'stress': stress_mismatches(case['reference'], wh['text']), 'spelled': spelled(wh['text'])} if wh else None,
                     })
-                    if case.get('focus_words'): row['focus'] = focus_prosody(wav, case['focus_words'])
+                    if case.get('focus_words'): row['focus'] = focus_prosody(wav, case['focus_words'], case.get('focus_split', True))
                 except Exception as e:  # noqa: BLE001
                     row['error'] = str(e)[:200]
                 out.append(row)

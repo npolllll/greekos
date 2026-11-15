@@ -1,20 +1,33 @@
 [
  {
-  "case": "U-B2-016-I12 выделение 2: ответственный (1), день (2); как в конвейере (внешний prosody rate)",
-  "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
+  "case": "U-B1-021 дорожка A (кто: Άννα)",
+  "reference": "Η Άννα θα φέρει τα εισιτήρια αύριο.",
   "voices": [
    "el-GR-AthinaNeural"
   ],
   "variants": [
-   "<prosody rate=\"+0%\">Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.</prosody>",
-   "<prosody rate=\"+0%\">Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>",
-   "<prosody rate=\"+0%\">Η <prosody pitch=\"+35%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+35%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>",
-   "<prosody rate=\"+0%\">Η <prosody pitch=\"+30%\" rate=\"-10%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+30%\" rate=\"-10%\">αύριο</prosody>.</prosody>",
-   "Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>."
+   "<prosody rate=\"+0%\">Η Άννα θα φέρει τα εισιτήρια αύριο.</prosody>",
+   "<prosody rate=\"+0%\">Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Άννα</prosody> θα φέρει τα εισιτήρια αύριο.</prosody>"
   ],
   "focus_words": [
-   "Μαρία",
+   "Άννα",
    "αύριο"
-  ]
+  ],
+  "focus_split": false
+ },
+ {
+  "case": "U-B1-021 дорожка B (когда: αύριο)",
+  "reference": "Η Άννα θα φέρει τα εισιτήρια αύριο.",
+  "voices": [
+   "el-GR-AthinaNeural"
+  ],
+  "variants": [
+   "<prosody rate=\"+0%\">Η Άννα θα φέρει τα εισιτήρια <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>"
+  ],
+  "focus_words": [
+   "Άννα",
+   "αύριο"
+  ],
+  "focus_split": false
  }
 ]
