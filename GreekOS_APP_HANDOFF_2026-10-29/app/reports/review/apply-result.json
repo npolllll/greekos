@@ -7,65 +7,17 @@
   "confirmed": 0,
   "skipped": [
    {
-    "asset_id": "82ed4757-224a-4b76-a7ce-7ba0c6ed79e9",
+    "asset_id": "5d7cfb8e-077e-43fc-9ece-88a2bf9246c4",
     "reason": "статус AUDIO_VERIFIED_DIGITAL"
    },
    {
-    "asset_id": "7535f6b5-de6c-44d2-8857-a62b948590bc",
+    "asset_id": "8ed4aa34-5660-4ceb-925b-c4dfffa7b12b",
     "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "4834590f-b323-467a-a880-198b119f73ff",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "37c6b8ae-3a81-436c-80fb-8af8ac5045bc",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "b44de330-529f-4fa5-972f-7fc7d3d26c94",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "75b84c25-00b5-4690-a2d5-183df83949ed",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "278acece-f86e-42d5-a993-aac9edd77a4a",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "5a6f40fa-5a45-49d4-a41f-505fd9d22866",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "7c6850f7-9f26-43af-8aea-7902922097ff",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "832f315a-9868-419d-8410-55ba9b864899",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "d3d5b5d7-6583-4ce5-8e1e-0480931e89d6",
-    "reason": "файл устарел"
-   },
-   {
-    "asset_id": "23c97eb6-f151-4faf-9965-15a51fb51324",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "ee50d0b2-3610-4831-b79b-baa760173d49",
-    "reason": "статус AUDIO_VERIFIED_DIGITAL"
-   },
-   {
-    "asset_id": "0bb27c41-59e6-4a09-8ba2-175afb9de833",
-    "reason": "файл устарел"
    }
   ]
  },
  "listening": {
-  "written": 0
+  "written": 131
  },
  "sample": {
   "written": 30,

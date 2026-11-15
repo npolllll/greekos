@@ -200,9 +200,10 @@ export async function recordEditorialListening(verdicts: ListeningVerdict[]) {
   for (const v of verdicts) {
     const { data: a } = await db.from('audio_assets').select('id, sha256, history, invalidated_at').eq('id', v.asset_id).maybeSingle();
     if (!a || a.invalidated_at) continue;
-    // Idempotent: the same verdict on the same file bytes is recorded once.
-    const last = [...((a.history as Array<{ event?: string; sha256?: string; decision?: string }>) ?? [])].reverse().find((h) => h.event === 'editorial_reviewed');
-    if (last && last.sha256 === a.sha256 && last.decision === v.decision) continue;
+    // Idempotent: the same verdict with the same note on the same file bytes is recorded once. A corrected note
+    // (15.11: notes now say what each recogniser heard) is appended; the earlier record stays in the history.
+    const last = [...((a.history as Array<{ event?: string; sha256?: string; decision?: string; note?: string }>) ?? [])].reverse().find((h) => h.event === 'editorial_reviewed');
+    if (last && last.sha256 === a.sha256 && last.decision === v.decision && last.note === v.note.slice(0, 500)) continue;
     const history = [...((a.history as unknown[]) ?? []), { at: new Date().toISOString(), event: 'editorial_reviewed', decision: v.decision, note: v.note.slice(0, 500), by: EDITOR_ACTOR, sha256: a.sha256, metrics: v.metrics ?? null }];
     await db.from('audio_assets').update({ history }).eq('id', a.id);
     written += 1;
