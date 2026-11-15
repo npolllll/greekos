@@ -14,7 +14,7 @@ import { COST } from '../providers/budget.ts';
 import { analyzeWav, concatWav, normalizeLoudness, parseWav, pcmSamples, type TechnicalReport } from './wav.ts';
 import { alignmentDiff, chunkText, roundTrip, roundTripPass, segmentSignals, type RoundTripMetrics } from './roundtrip.ts';
 import { voiceApproved, type CatalogVoice, type CastRole } from '../voice/catalog.ts';
-import { spokenKey } from './spoken-form.ts';
+import { focusText, spokenKey } from './spoken-form.ts';
 
 export const SYNTHESIS_VERSION = 'greekos-audio/2.2'; // 2.2: pause after the target in the Coqui carrier, natural phrase release kept
 
@@ -63,6 +63,8 @@ export interface PlannedSegment {
   cast_role_id: string;
   voice_id: string;
   text: string;
+  /** What the voice reads when it differs from `text` (a marked contrastive focus); `text` stays the recogniser's reference. */
+  speak_text?: string;
   gap_before_ms: number;
 }
 
@@ -128,7 +130,8 @@ export function planJob(job: AudioJobRow, ctx: CastingContext): PlanResult {
   let prevRole: string | null = null;
   for (const s of src) {
     chunkText(s.text).forEach((chunk, i) => {
-      segments.push({ segment_id: i ? `${s.id}#${i + 1}` : s.id, role: s.role, cast_role_id: castMap[s.role], voice_id: voiceMap[s.role], text: chunk, gap_before_ms: segments.length === 0 ? 0 : prevRole !== s.role || i === 0 ? ROLE_GAP_MS : CHUNK_GAP_MS });
+      const speak = focusText(job.audio_id, chunk);
+      segments.push({ segment_id: i ? `${s.id}#${i + 1}` : s.id, role: s.role, cast_role_id: castMap[s.role], voice_id: voiceMap[s.role], text: chunk, ...(speak !== chunk ? { speak_text: speak } : {}), gap_before_ms: segments.length === 0 ? 0 : prevRole !== s.role || i === 0 ? ROLE_GAP_MS : CHUNK_GAP_MS });
     });
     prevRole = s.role;
   }
@@ -137,7 +140,7 @@ export function planJob(job: AudioJobRow, ctx: CastingContext): PlanResult {
   const cloudChars = segments.filter((s) => ctx.voices.get(s.voice_id)?.engine_kind === 'cloud').reduce((a, s) => a + s.text.length, 0);
   const settings = { version: SYNTHESIS_VERSION, voiceMap, gaps: [ROLE_GAP_MS, CHUNK_GAP_MS], format: 'wav-pcm16-24k', normalization: 'rms-20dbfs-peak-1dbfs' };
   // The spoken form joins the key only where it differs from the text, so only those files re-render.
-  const idempotency_key = createHash('sha256').update(stableStringify({ settings, script_hash: job.script_hash, segments: segments.map((s) => { const sp = spokenKey(s.text); return sp === null ? [s.segment_id, s.voice_id, s.text] : [s.segment_id, s.voice_id, s.text, sp]; }) })).digest('hex');
+  const idempotency_key = createHash('sha256').update(stableStringify({ settings, script_hash: job.script_hash, segments: segments.map((s) => { const sp = spokenKey(s.speak_text ?? s.text); return sp === null ? [s.segment_id, s.voice_id, s.text] : [s.segment_id, s.voice_id, s.text, sp]; }) })).digest('hex');
   const plan = { audio_id: job.audio_id, script_hash: job.script_hash, voice_map: voiceMap, cast_map: castMap, segments, characters, estimated_cost_usd: Number((cloudChars * COST.ttsPerChar).toFixed(4)), cast_approved: castApproved, engines, idempotency_key };
   return { ok: true, plan: { ...plan, plan_hash: createHash('sha256').update(stableStringify(plan)).digest('hex') } };
 }
@@ -255,7 +258,7 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
   const synthOnce = async (seg: PlannedSegment, speed: 'normal' | 'careful') => {
     const voice = ctx.voices.get(seg.voice_id)!;
     // 'careful' = the voice's slower, more articulated profile (deterministic engines change output).
-    return (await synthesizeWithVoice(seg.text, voice, { speed: speed === 'careful' ? 'slow' : 'normal', userId: opts.actorId, operation: 'tts_course_audio' })).bytes;
+    return (await synthesizeWithVoice(seg.speak_text ?? seg.text, voice, { speed: speed === 'careful' ? 'slow' : 'normal', userId: opts.actorId, operation: 'tts_course_audio' })).bytes;
   };
   for (const seg of plan.segments) {
     let attempt = 0;
