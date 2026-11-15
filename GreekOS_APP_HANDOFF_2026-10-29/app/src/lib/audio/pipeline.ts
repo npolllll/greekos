@@ -14,7 +14,7 @@ import { COST } from '../providers/budget.ts';
 import { analyzeWav, concatWav, normalizeLoudness, parseWav, pcmSamples, type TechnicalReport } from './wav.ts';
 import { alignmentDiff, chunkText, roundTrip, roundTripPass, segmentSignals, type RoundTripMetrics } from './roundtrip.ts';
 import { voiceApproved, type CatalogVoice, type CastRole } from '../voice/catalog.ts';
-import { spokenKey } from './spoken-form.ts';
+import { focusText, spokenKey } from './spoken-form.ts';
 
 export const SYNTHESIS_VERSION = 'greekos-audio/2.2'; // 2.2: pause after the target in the Coqui carrier, natural phrase release kept
 
@@ -63,6 +63,8 @@ export interface PlannedSegment {
   cast_role_id: string;
   voice_id: string;
   text: string;
+  /** What the voice reads when it differs from `text` (a marked contrastive focus); `text` stays the recogniser's reference. */
+  speak_text?: string;
   gap_before_ms: number;
 }
 
@@ -128,7 +130,8 @@ export function planJob(job: AudioJobRow, ctx: CastingContext): PlanResult {
   let prevRole: string | null = null;
   for (const s of src) {
     chunkText(s.text).forEach((chunk, i) => {
-      segments.push({ segment_id: i ? `${s.id}#${i + 1}` : s.id, role: s.role, cast_role_id: castMap[s.role], voice_id: voiceMap[s.role], text: chunk, gap_before_ms: segments.length === 0 ? 0 : prevRole !== s.role || i === 0 ? ROLE_GAP_MS : CHUNK_GAP_MS });
+      const speak = focusText(job.audio_id, chunk);
+      segments.push({ segment_id: i ? `${s.id}#${i + 1}` : s.id, role: s.role, cast_role_id: castMap[s.role], voice_id: voiceMap[s.role], text: chunk, ...(speak !== chunk ? { speak_text: speak } : {}), gap_before_ms: segments.length === 0 ? 0 : prevRole !== s.role || i === 0 ? ROLE_GAP_MS : CHUNK_GAP_MS });
     });
     prevRole = s.role;
   }
@@ -137,7 +140,7 @@ export function planJob(job: AudioJobRow, ctx: CastingContext): PlanResult {
   const cloudChars = segments.filter((s) => ctx.voices.get(s.voice_id)?.engine_kind === 'cloud').reduce((a, s) => a + s.text.length, 0);
   const settings = { version: SYNTHESIS_VERSION, voiceMap, gaps: [ROLE_GAP_MS, CHUNK_GAP_MS], format: 'wav-pcm16-24k', normalization: 'rms-20dbfs-peak-1dbfs' };
   // The spoken form joins the key only where it differs from the text, so only those files re-render.
-  const idempotency_key = createHash('sha256').update(stableStringify({ settings, script_hash: job.script_hash, segments: segments.map((s) => { const sp = spokenKey(s.text); return sp === null ? [s.segment_id, s.voice_id, s.text] : [s.segment_id, s.voice_id, s.text, sp]; }) })).digest('hex');
+  const idempotency_key = createHash('sha256').update(stableStringify({ settings, script_hash: job.script_hash, segments: segments.map((s) => { const sp = spokenKey(s.speak_text ?? s.text); return sp === null ? [s.segment_id, s.voice_id, s.text] : [s.segment_id, s.voice_id, s.text, sp]; }) })).digest('hex');
   const plan = { audio_id: job.audio_id, script_hash: job.script_hash, voice_map: voiceMap, cast_map: castMap, segments, characters, estimated_cost_usd: Number((cloudChars * COST.ttsPerChar).toFixed(4)), cast_approved: castApproved, engines, idempotency_key };
   return { ok: true, plan: { ...plan, plan_hash: createHash('sha256').update(stableStringify(plan)).digest('hex') } };
 }
@@ -214,6 +217,16 @@ function jobRoundTrip(engine: string, segs: SegmentRoundTrip[]): JobRoundTrip {
   return { ...roundTrip(segs.map((x) => x.reference).join(' '), segs.map((x) => x.hypothesis).join(' ')), engine, diff: alignmentDiff(segs.map((x) => x.reference).join(' '), segs.map((x) => x.hypothesis).join(' ')), segments: segs };
 }
 
+/** A stored render key belongs to a plan when it is the plan's key, or that key with a forced re-render's «:time» suffix. */
+export function sameRenderKey(stored: string | null | undefined, key: string): boolean {
+  return !!stored && (stored === key || stored.startsWith(`${key}:`));
+}
+
+/** The job status that follows from a file's render status. */
+export function jobStatusOf(renderStatus: string): string {
+  return renderStatus === 'TECH_QA_FAIL' ? 'TECH_QA_FAIL' : renderStatus === 'DIGITAL_REVIEWED' ? 'DIGITAL_REVIEWED' : 'TECH_QA_PASS';
+}
+
 export async function renderJob(job: AudioJobRow, opts: { actorId: string | null; budgetCapUsd?: number; approvedPlanHash?: string; ctx?: CastingContext; force?: boolean }): Promise<RenderResult> {
   const db = adminClient();
   const ctx = opts.ctx ?? (await loadCastingContext());
@@ -228,14 +241,24 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
     await setJobStatus(job.audio_id, 'BLOCKED_BUDGET', `оценка ${plan.estimated_cost_usd}$ выше лимита`);
     return { status: 'BLOCKED', job_status: 'BLOCKED_BUDGET', error: 'BUDGET_CAP' };
   }
-  const { data: existing } = await db.from('audio_assets').select('id, render_status, invalidated_at').eq('idempotency_key', plan.idempotency_key).maybeSingle();
-  if (existing && !existing.invalidated_at && !opts.force) return { status: 'REUSED', job_status: existing.render_status, asset_id: existing.id, render_status: existing.render_status };
+  // The current file of this exact plan is reused — also when it came from a forced re-render, which is
+  // stored under «key:time» (before 15.11 every deploy re-rendered those files and replaced checked ones).
+  const { data: currentAssets } = await db.from('audio_assets').select('id, render_status, idempotency_key').eq('audio_id', job.audio_id).is('invalidated_at', null);
+  const same = (currentAssets ?? []).find((a) => sameRenderKey(a.idempotency_key, plan.idempotency_key));
+  if (same && !opts.force) {
+    // A failed attempt recorded before the file was found again must not stay on the job.
+    const { data: js } = await db.from('audio_job_render_status').select('status').eq('audio_id', job.audio_id).maybeSingle();
+    if (js?.status === 'RENDER_FAILED') await setJobStatus(job.audio_id, jobStatusOf(same.render_status), null, { asset_id: same.id });
+    return { status: 'REUSED', job_status: same.render_status, asset_id: same.id, render_status: same.render_status };
+  }
+  // A superseded file may still hold the plain key: the new one then gets «key:time» (the key is unique).
+  const { data: keyTaken } = await db.from('audio_assets').select('id').eq('idempotency_key', plan.idempotency_key).maybeSingle();
 
   const rendered: Uint8Array[] = [];
   const synthOnce = async (seg: PlannedSegment, speed: 'normal' | 'careful') => {
     const voice = ctx.voices.get(seg.voice_id)!;
     // 'careful' = the voice's slower, more articulated profile (deterministic engines change output).
-    return (await synthesizeWithVoice(seg.text, voice, { speed: speed === 'careful' ? 'slow' : 'normal', userId: opts.actorId, operation: 'tts_course_audio' })).bytes;
+    return (await synthesizeWithVoice(seg.speak_text ?? seg.text, voice, { speed: speed === 'careful' ? 'slow' : 'normal', userId: opts.actorId, operation: 'tts_course_audio' })).bytes;
   };
   for (const seg of plan.segments) {
     let attempt = 0;
@@ -312,7 +335,7 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
   const cues = plan.segments.map((s, i) => ({ segment_id: s.segment_id, role: s.role, voice_id: s.voice_id, ...master.cues[i] }));
   const { data: prevAssets } = await db.from('audio_assets').select('id').eq('audio_id', job.audio_id).is('invalidated_at', null);
   const { data: inserted, error } = await db.from('audio_assets').insert({
-    audio_id: job.audio_id, script_hash: job.script_hash, idempotency_key: opts.force ? `${plan.idempotency_key}:${Date.now()}` : plan.idempotency_key,
+    audio_id: job.audio_id, script_hash: job.script_hash, idempotency_key: opts.force || keyTaken ? `${plan.idempotency_key}:${Date.now()}` : plan.idempotency_key,
     provider: plan.engines.join('+'), model: voices.map((v) => v.provider_voice_name).join('+'), voice_map: plan.voice_map, voice_ids: voices.map((v) => v.voice_id),
     cast_snapshot: plan.cast_map, cast_approved: plan.cast_approved, synthesis_version: SYNTHESIS_VERSION,
     generation_params: { speed: 'normal', gaps_ms: [ROLE_GAP_MS, CHUNK_GAP_MS], sample_rate: tech?.sample_rate ?? null, plan_hash: plan.plan_hash },
@@ -335,7 +358,7 @@ export async function renderJob(job: AudioJobRow, opts: { actorId: string | null
     content_kind: 'audio_asset', content_id: inserted.id, content_hash: sha, check_kind: 'DIGITAL_AUDIO_QA', tool_id: `${tech?.profile ?? 'n/a'}+${rt?.engine ?? 'no-asr'}`,
     verdict: renderStatus === 'DIGITAL_REVIEWED' ? 'PASS' : renderStatus === 'TECH_QA_FAIL' ? 'FAIL' : 'NEEDS_REVIEW', report: { technical: tech, roundtrip: rt, regeneration, signals, plan_hash: plan.plan_hash, normalization: norm.report }, run_by: opts.actorId,
   });
-  const jobStatus = renderStatus === 'TECH_QA_FAIL' ? 'TECH_QA_FAIL' : renderStatus === 'DIGITAL_REVIEWED' ? 'DIGITAL_REVIEWED' : 'TECH_QA_PASS';
+  const jobStatus = jobStatusOf(renderStatus);
   await setJobStatus(job.audio_id, jobStatus, renderStatus === 'LINGUISTIC_QA_PENDING' ? (truncated.length ? `возможный обрыв в конце сегментов ${truncated.join(', ')}` : rt ? 'ASR round-trip выше порогов — нужен разбор' : 'ASR round-trip не выполнен') : null, { attempted: true, asset_id: inserted.id, cost: plan.estimated_cost_usd });
   return { status: 'RENDERED', job_status: jobStatus, asset_id: inserted.id, render_status: renderStatus, technical: tech, roundtrip: rt };
 }

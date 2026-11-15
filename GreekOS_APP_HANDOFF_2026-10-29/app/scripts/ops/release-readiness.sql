@@ -18,6 +18,24 @@ select count(*) as units_audio_only from public.units u where not exists (select
 select c.cast_role_id, c.requested_presentation, v.provider_voice_name, c.approved, c.status from public.cast_roles c left join public.voice_catalog v on v.voice_id = c.voice_id order by 1;
 \echo == audio assets by status
 select digital_status, rights_status, technical_status, count(*) from public.audio_assets where invalidated_at is null group by 1, 2, 3 order by 4 desc;
+\echo == audio: ready for the AI editor's release except the owner's items (provider terms recorded, signed policy)
+with cur as (
+  select a.audio_id, a.technical_status, a.digital_status, a.cast_approved, a.script_hash = j.script_hash as script_current,
+         (select h from jsonb_array_elements(a.history) h where h->>'event' = 'editorial_reviewed' and (h->>'sha256' is null or h->>'sha256' = a.sha256) order by h->>'at' desc limit 1) as ed
+  from public.audio_assets a join public.audio_jobs j on j.audio_id = a.audio_id where a.invalidated_at is null)
+select (select count(*) from public.audio_jobs) as jobs, count(distinct audio_id) as jobs_with_current_file, count(*) as current_files,
+       count(*) filter (where technical_status = 'TECHNICAL_PASS' and digital_status = 'AUDIO_VERIFIED_DIGITAL' and cast_approved and script_current and ed->>'decision' = 'OK') as ready_except_owner_items,
+       count(*) filter (where digital_status <> 'AUDIO_VERIFIED_DIGITAL') as not_verified, count(*) filter (where not cast_approved) as cast_not_approved,
+       count(*) filter (where ed is null) as no_editorial_review_of_this_file, count(*) filter (where ed->>'decision' = 'ISSUE') as editorial_issue
+from cur;
+with cur as (
+  select a.audio_id, a.technical_status, a.digital_status, a.cast_approved, a.script_hash = j.script_hash as script_current,
+         (select h from jsonb_array_elements(a.history) h where h->>'event' = 'editorial_reviewed' and (h->>'sha256' is null or h->>'sha256' = a.sha256) order by h->>'at' desc limit 1) as ed
+  from public.audio_assets a join public.audio_jobs j on j.audio_id = a.audio_id where a.invalidated_at is null)
+select audio_id, technical_status, digital_status, cast_approved, script_current, ed->>'decision' as editorial from cur
+where not (technical_status = 'TECHNICAL_PASS' and digital_status = 'AUDIO_VERIFIED_DIGITAL' and cast_approved and script_current and coalesce(ed->>'decision', '') = 'OK') order by 1;
+\echo == audio jobs whose last render attempt failed
+select audio_id, status, left(reason, 120) as reason from public.audio_job_render_status where status = 'RENDER_FAILED' order by 1;
 \echo == owner decisions on record
 select (select count(*) from public.publication_policies where revoked_at is null) as active_policies,
        (select count(*) from public.release_decisions where revoked_at is null) as active_release_decisions,

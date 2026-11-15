@@ -1,2 +1,2 @@
-e2e,release-readiness,qa-fails
-# 2026-11-15 final main d628cff: course walk with listening tasks awaiting audio
+e2e
+# 2026-11-15 branch 298b26e before merge: course walk + reading texts visible in the browser

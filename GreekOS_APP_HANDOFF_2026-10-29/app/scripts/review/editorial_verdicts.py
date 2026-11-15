@@ -8,6 +8,14 @@ part_p = f'{APP}/reports/review/audio/assets-partial.json'
 part = {x['audio_id']: x for x in json.load(open(part_p))} if os.path.exists(part_p) else {}
 cur = {**full, **part}
 jobs = {j['audio_id']: j for j in json.load(gzip.open(f'{APP}/reports/review/corpus/audio_jobs.json.gz'))}
+# Files where Whisper small diverges from the script although Azure passes every segment: each was read by the
+# AI editor against its script (exact file: sha256) and the divergence explained. An unreviewed one is an ISSUE.
+wr_p = f'{APP}/reports/review/decisions/whisper-reviewed.json'
+whisper_reviewed = {(r['audio_id'], r['sha256']): r for r in json.load(open(wr_p))} if os.path.exists(wr_p) else {}
+# Recordings whose task asks the learner to hear a contrastive focus: (word, version that stresses it) inside
+# one file, or (word, the other track) for one sentence recorded as two tracks with different focus.
+FOCUS_REQ = {'U-B2-016-I12-AUDIO': [('Μαρία', 0), ('αύριο', 1)]}
+FOCUS_CROSS = {'U-B1-021-AUD01': ('Άννα', 'U-B1-021-AUD02'), 'U-B1-021-AUD02': ('αύριο', 'U-B1-021-AUD01')}
 NUMW = set('ενα μια μια ενας μιας ενος δυο τρια τρεις τεσσερα τεσσερις πεντε εξι επτα εφτα οκτω οχτω εννεα εννια δεκα εντεκα δωδεκα δεκατρια δεκαπεντε εικοσι τριαντα σαραντα πενηντα εξηντα εβδομηντα ογδοντα ενενηντα εκατο διακοσια τριακοσια τετρακοσια πεντακοσια εξακοσια επτακοσια χιλια μιση μισο'.split())
 def strip(t): return ''.join(c for c in unicodedata.normalize('NFD', t.lower()) if unicodedata.category(c) != 'Mn')
 def words(t): return [w for w in re.findall(r'[α-ωa-z0-9]+', strip(t))]
@@ -91,9 +99,42 @@ for aid, x in sorted(cur.items()):
         elif unconfirmed: problems.append(f"второй распознаватель не подтверждает {len(unconfirmed)} спорн. сегмент(а)")
     elif status != 'AUDIO_VERIFIED_DIGITAL':
         problems.append(f'цифровой статус {status}')
+    ww = (x.get('whisper') or {}).get('wer_accent_insensitive')
+    rev = whisper_reviewed.get((aid, x.get('sha256')))
+    if status == 'AUDIO_VERIFIED_DIGITAL' and ww is not None and ww > 0.25 and not rev:
+        problems.append(f'Whisper расходится со сценарием (WER {ww}), расхождение не просмотрено')
+    focus_note = ''
+    if aid in FOCUS_REQ:
+        import math
+        vs = ((x.get('focus') or {}).get('versions') or [])
+        got = []
+        for word, k in FOCUS_REQ[aid]:
+            try:
+                a, b = vs[k]['words'][word]['f0_median_hz'], vs[1 - k]['words'][word]['f0_median_hz']
+                got.append((word, round(12 * math.log2(a / b), 1)))
+            except (IndexError, KeyError, TypeError, ValueError, ZeroDivisionError):
+                got.append((word, None))
+        weak = [w for w, d in got if d is None or d < 3.0]
+        if len(vs) != 2 or weak: problems.append(f"выделение не слышно по измерению: {', '.join(f'{w} {d}' for w, d in got)} полутона")
+        else: focus_note = '; выделение измерено: ' + ', '.join(f'«{w}» на {d} полутона выше в своей версии' for w, d in got)
+    if aid in FOCUS_CROSS:
+        import math
+        word, other = FOCUS_CROSS[aid]
+        def f0(a):
+            try: return (cur[a]['focus']['versions'][0]['words'][word] or {}).get('f0_median_hz')
+            except (KeyError, IndexError, TypeError): return None
+        a, b = f0(aid), f0(other)
+        d = round(12 * math.log2(a / b), 1) if a and b else None
+        if d is None or d < 3.0: problems.append(f'выделение не слышно по измерению: «{word}» {d} полутона относительно {other}')
+        else: focus_note = f'; выделение измерено: «{word}» на {d} полутона выше, чем в {other}'
+    if status == 'AUDIO_VERIFIED_DIGITAL': asr = 'распознавание Azure по сегментам совпадает со сценарием'
+    else: asr = f'Azure разошёлся в {len(failed)} сегмент(ах) только из-за записи распознавателя, Whisper читает их как в сценарии'
+    if ww is None: asr += '; Whisper недоступен'
+    elif ww <= 0.25: asr += f'; Whisper тоже (WER {ww})'
+    elif rev: asr += f"; Whisper small расходится (WER {ww}) — просмотрено AI-редактором: {rev['finding']}"
     metrics = {'duration_s': ac.get('duration_s'), 'syllables_per_s': x.get('syllables_per_s'), 'rms_dbfs': ac.get('rms_dbfs'), 'peak_dbfs': ac.get('peak_dbfs'), 'longest_pause_s': ac.get('longest_pause_s'), 'f0_by_voice_hz': {k.split(':')[-1]: round(sum(v) / len(v)) for k, v in by_voice.items()}, 'azure_wer': (x.get('stored_roundtrip') or {}).get('wer'), 'whisper_wer': (x.get('whisper') or {}).get('wer_accent_insensitive'), 'spelled_letters': sp}
     decision = 'ISSUE' if problems else 'OK'
-    note = ('AI-редактор (не человек): ' + ('; '.join(problems) if problems else 'технически чисто, распознавание двумя распознавателями совпадает со сценарием, названий букв нет')) + '. Естественность и интонация человеком не оценивались.'
+    note = ('AI-редактор (не человек): ' + ('; '.join(problems) if problems else f'технически чисто; {asr}{focus_note}; названий букв нет')) + '. Естественность и интонация человеком не оценивались.'
     listening.append({'asset_id': x['asset_id'], 'audio_id': aid, 'decision': decision, 'note': note[:480], 'metrics': metrics})
     summary[decision] += 1
     if problems: summary['issues'].append((aid, problems))

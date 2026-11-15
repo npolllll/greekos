@@ -430,9 +430,9 @@ function stringLeaves(root: unknown, path = ''): Leaf[] {
   walk(root, path, null, null);
   return out;
 }
-export function applyTextPatches(obj: unknown, patches: TextFix['patches']): { next: unknown; applied: number; already: number; failed: Array<{ current: string; reason: string }>; changed: Array<{ path: string; before: string; after: string }> } {
+export function applyTextPatches(obj: unknown, patches: TextFix['patches']): { next: unknown; applied: number; already: number; repaired: number; failed: Array<{ current: string; reason: string }>; changed: Array<{ path: string; before: string; after: string }> } {
   const next = structuredClone(obj);
-  let applied = 0; let already = 0;
+  let applied = 0; let already = 0; let repaired = 0;
   const failed: Array<{ current: string; reason: string }> = [];
   const changed: Array<{ path: string; before: string; after: string }> = [];
   for (const p of patches) {
@@ -440,6 +440,22 @@ export function applyTextPatches(obj: unknown, patches: TextFix['patches']): { n
     const under = (path: string, f: string) => path === f || path.startsWith(`${f}.`) || path.startsWith(`${f}[`);
     const leaves = stringLeaves(next).filter((l) => !p.field || under(l.path, p.field));
     const count = (t: string, s: string) => (s ? t.split(s).length - 1 : 0);
+    // An addition that keeps the original sentence (the new text contains the current one) is applied once:
+    // where the new text is already present the fix stands. Copies added by repeated runs before this rule
+    // existed are collapsed back to one.
+    const at = p.new ? p.new.indexOf(p.current) : -1;
+    if (p.current && at >= 0 && leaves.some((l) => l.get().includes(p.new))) {
+      const head = p.new.slice(0, at); const tail = p.new.slice(at + p.current.length);
+      let fixed = false;
+      for (const l of leaves) {
+        const before = l.get(); let after = before;
+        if (tail) while (after.includes(p.new + tail)) after = after.replace(p.new + tail, p.new);
+        if (head) while (after.includes(head + p.new)) after = after.replace(head + p.new, p.new);
+        if (after !== before) { l.set(after); changed.push({ path: l.path, before, after }); fixed = true; }
+      }
+      if (fixed) { applied += 1; repaired += 1; } else already += 1;
+      continue;
+    }
     const hits = leaves.filter((l) => l.get().includes(p.current));
     const total = hits.reduce((n, l) => n + count(l.get(), p.current), 0);
     if (total === 1) {
@@ -448,7 +464,7 @@ export function applyTextPatches(obj: unknown, patches: TextFix['patches']): { n
     } else if (total === 0 && p.new && leaves.some((l) => l.get().includes(p.new))) already += 1;
     else failed.push({ current: p.current.slice(0, 80), reason: total === 0 ? 'фрагмент не найден' : `фрагмент встречается ${total} раз` });
   }
-  return { next, applied, already, failed, changed };
+  return { next, applied, already, repaired, failed, changed };
 }
 
 export async function applyAiTextRevisions(fixes: TextFix[], label: string): Promise<Array<{ id: string; kind: string; status: RevisionStatus; failed?: Array<{ current: string; reason: string }> }>> {
@@ -456,8 +472,11 @@ export async function applyAiTextRevisions(fixes: TextFix[], label: string): Pro
   const out: Array<{ id: string; kind: string; status: RevisionStatus; failed?: Array<{ current: string; reason: string }> }> = [];
   const touchedItems: string[] = [];
   for (const f of fixes) {
-    const reason = `${label}: ${f.reason_ru}`.slice(0, 1000);
     const patches = f.patches.map((p) => ({ ...p, field: normaliseField(p.field) }));
+    const repairOnly = (res: { applied: number; repaired: number }) => res.applied > 0 && res.applied === res.repaired;
+    const reasonFor = (res: { applied: number; repaired: number }) => (repairOnly(res)
+      ? `${label}: исправление повторов — дополнение этой правки было вставлено несколько раз при повторных выкладках; оставлена одна копия. Исходная правка: ${f.reason_ru}`
+      : `${label}: ${f.reason_ru}`).slice(0, 1000);
     if (f.kind === 'item') {
       // Stimulus texts and criteria of a task: a new item revision (keys and prompts are not touched here).
       if (patches.some((p) => !p.field || !ITEM_TEXT_FIELDS.some((k) => p.field!.startsWith(k)))) { out.push({ id: f.id, kind: f.kind, status: 'changed_since', failed: [{ current: '', reason: 'поле задания не разрешено' }] }); continue; }
@@ -465,7 +484,7 @@ export async function applyAiTextRevisions(fixes: TextFix[], label: string): Pro
       if (!it) { out.push({ id: f.id, kind: f.kind, status: 'missing' }); continue; }
       const res = applyTextPatches(it.envelope, patches);
       if (!res.applied) { out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'already', failed: res.failed.length ? res.failed : undefined }); continue; }
-      await reviseItemEnvelope(it as { item_id: string; module: string; current_hash: string }, res.next as ItemEnvelope, Object.fromEntries(res.changed.map((c) => [c.path, { before: c.before, after: c.after }])), reason);
+      await reviseItemEnvelope(it as { item_id: string; module: string; current_hash: string }, res.next as ItemEnvelope, Object.fromEntries(res.changed.map((c) => [c.path, { before: c.before, after: c.after }])), reasonFor(res));
       touchedItems.push(f.id);
       out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'applied', failed: res.failed.length ? res.failed : undefined });
       continue;
@@ -489,7 +508,7 @@ export async function applyAiTextRevisions(fixes: TextFix[], label: string): Pro
     const { error: ue } = await db.from(spec.table).update({ [spec.col]: res.next, current_hash: hash, revision_id: rev.id, ...extra }).eq(spec.key, f.id).eq('current_hash', r.current_hash);
     if (ue) throw new Error(ue.message);
     const changes = Object.fromEntries(res.changed.map((c) => [c.path, { before: c.before, after: c.after }]));
-    await db.from('content_patches').insert({ content_kind: spec.kind, content_id: f.id, base_hash: r.current_hash, new_hash: hash, changes, reason, revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });
+    await db.from('content_patches').insert({ content_kind: spec.kind, content_id: f.id, base_hash: r.current_hash, new_hash: hash, changes, reason: reasonFor(res), revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });
     await db.from('content_releases').update({ revoked_at: new Date().toISOString(), revoked_reason: 'CONTENT_PATCHED: допуск относился к прежней ревизии' }).eq('content_kind', spec.kind).eq('content_id', f.id).is('revoked_at', null);
     await audit(null, 'content.patch', { id: f.id }, { base_hash: r.current_hash, new_hash: hash, system_actor: CONTENT_REVISION_ACTOR });
     out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'applied', failed: res.failed.length ? res.failed : undefined });

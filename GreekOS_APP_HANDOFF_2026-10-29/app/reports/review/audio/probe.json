@@ -1,333 +1,155 @@
 [
  {
-  "case": "RG-0003 «Α,» (вопрос) 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Α, καλά… Χωρίς διάβασμα;",
-  "text": "<phoneme alphabet=\"ipa\" ph=\"a\">Α</phoneme>, καλά… Χωρίς διάβασμα;",
-  "syllables_per_s": 5.56,
+  "case": "U-B1-021 дорожка A (кто: Άννα)",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Η Άννα θα φέρει τα εισιτήρια αύριο.",
+  "text": "<prosody rate=\"+0%\">Η Άννα θα φέρει τα εισιτήρια αύριο.</prosody>",
+  "syllables_per_s": 7.14,
   "f0": {
-   "median_hz": 100.0,
-   "range_st": 11.7
-  },
-  "azure": {
-   "text": "α καλά χωρίς διάβασμα",
-   "confidence": 0.6253158,
-   "wer_bare": 0.0,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "Α, καλά. Χωρίς διάβασμα.",
-   "wer_bare": 0.0,
-   "stress": [],
-   "spelled": []
-  }
- },
- {
-  "case": "RG-0003 «Α,» (вопрос) 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Α, καλά… Χωρίς διάβασμα;",
-  "text": "Ααα, καλά… Χωρίς διάβασμα;",
-  "syllables_per_s": 4.29,
-  "f0": {
-   "median_hz": 97.2,
-   "range_st": 13.9
-  },
-  "azure": {
-   "text": "alfa καλά χωρίς διάβασμα",
-   "confidence": 0.405619,
-   "wer_bare": 0.25,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "αλφα, αλφα, αλφα, καλά, χωρίς διάβασμα.",
-   "wer_bare": 0.75,
-   "stress": [],
-   "spelled": [
-    "αλφα"
-   ]
-  }
- },
- {
-  "case": "RG-0003 «Α,» (вопрос) 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Α, καλά… Χωρίς διάβασμα;",
-  "text": "Α καλά… Χωρίς διάβασμα;",
-  "syllables_per_s": 5.11,
-  "f0": {
-   "median_hz": 92.2,
-   "range_st": 10.9
-  },
-  "azure": {
-   "text": "άλφα καλά χωρίς διάβασμα",
-   "confidence": 0.6509047,
-   "wer_bare": 0.25,
-   "stress": [],
-   "spelled": [
-    "αλφα"
-   ]
-  },
-  "whisper": {
-   "text": "Άλφα καλά, χωρίς διάβασμα,",
-   "wer_bare": 0.25,
-   "stress": [],
-   "spelled": [
-    "αλφα"
-   ]
-  }
- },
- {
-  "case": "RG-0003 «Α,» (вопрос) 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Α, καλά… Χωρίς διάβασμα;",
-  "text": "Αα… καλά… Χωρίς διάβασμα;",
-  "syllables_per_s": 4.31,
-  "f0": {
-   "median_hz": 95.9,
-   "range_st": 11.0
-  },
-  "azure": {
-   "text": "άλφα καλά χωρίς διάβασμα",
-   "confidence": 0.52318954,
-   "wer_bare": 0.25,
-   "stress": [],
-   "spelled": [
-    "αλφα"
-   ]
-  },
-  "whisper": {
-   "text": "α, α, καλά. Χωρίς διάβασμα.",
-   "wer_bare": 0.25,
-   "stress": [],
-   "spelled": []
-  }
- },
- {
-  "case": "RG-0003 «Α,» (утверждение) 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
-  "text": "<phoneme alphabet=\"ipa\" ph=\"a\">Α</phoneme>, καλά έκανε. Το χρειαζόταν.",
-  "syllables_per_s": 5.88,
-  "f0": {
-   "median_hz": 127.8,
-   "range_st": 11.0
-  },
-  "azure": {
-   "text": "α καλά έκανε το χρειαζόταν",
-   "confidence": 0.70456,
-   "wer_bare": 0.0,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "Α, καλά έκανε. Το χρειαζόταν.",
-   "wer_bare": 0.0,
-   "stress": [],
-   "spelled": []
-  }
- },
- {
-  "case": "RG-0003 «Α,» (утверждение) 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
-  "text": "Ααα, καλά έκανε. Το χρειαζόταν.",
-  "syllables_per_s": 4.63,
-  "f0": {
-   "median_hz": 116.8,
-   "range_st": 14.6
-  },
-  "azure": {
-   "text": "alfa καλά έκανε το χρειαζόταν",
-   "confidence": 0.37017065,
-   "wer_bare": 0.2,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "α, α, α, καλέκανε. Το χρειαζόταν.",
-   "wer_bare": 0.6,
-   "stress": [],
-   "spelled": []
-  }
- },
- {
-  "case": "RG-0003 «Α,» (утверждение) 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
-  "text": "Α καλά έκανε. Το χρειαζόταν.",
-  "syllables_per_s": 5.56,
-  "f0": {
-   "median_hz": 118.9,
-   "range_st": 9.4
-  },
-  "azure": {
-   "text": "άλφα καλά έκανε το χρειαζόταν",
-   "confidence": 0.5651934,
-   "wer_bare": 0.2,
-   "stress": [],
-   "spelled": [
-    "αλφα"
-   ]
-  },
-  "whisper": {
-   "text": "ακαλάκανε. Το χρειαζόταν.",
-   "wer_bare": 0.6,
-   "stress": [],
-   "spelled": []
-  }
- },
- {
-  "case": "U-A1-007 буквы 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Άλφα, νι, νι, άλφα.",
-  "text": "Άλφα, <phoneme alphabet=\"ipa\" ph=\"ni\">νι</phoneme>, <phoneme alphabet=\"ipa\" ph=\"ni\">νι</phoneme>, άλφα.",
-  "syllables_per_s": 3.35,
-  "f0": {
-   "median_hz": 89.8,
+   "median_hz": 230.3,
    "range_st": 12.7
   },
   "azure": {
-   "text": "άλφα μ μη α",
-   "confidence": 0.43791386,
-   "wer_bare": 0.75,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "α, ν, ν, α",
-   "wer_bare": 1.0,
-   "stress": [],
-   "spelled": []
-  }
- },
- {
-  "case": "U-A1-007 буквы 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Άλφα, νι, νι, άλφα.",
-  "text": "Άλφα, νυ, νυ, άλφα.",
-  "syllables_per_s": 3.41,
-  "f0": {
-   "median_hz": 91.3,
-   "range_st": 12.8
-  },
-  "azure": {
-   "text": "άλφα μ μη α",
-   "confidence": 0.4337853,
-   "wer_bare": 0.75,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "α, ν, ν, α",
-   "wer_bare": 1.0,
-   "stress": [],
-   "spelled": []
-  }
- },
- {
-  "case": "U-A1-007 буквы 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Άλφα, νι, νι, άλφα.",
-  "text": "Άλφα — νι — νι — άλφα.",
-  "syllables_per_s": 2.51,
-  "f0": {
-   "median_hz": 96.2,
-   "range_st": 10.5
-  },
-  "azure": {
-   "text": "άλφα μ γιώτα ν γιώτα α",
-   "confidence": 0.38264045,
-   "wer_bare": 1.25,
-   "stress": [],
-   "spelled": [
-    "γιοτα"
-   ]
-  },
-  "whisper": {
-   "text": "α, ν', ν'α",
-   "wer_bare": 1.0,
-   "stress": [],
-   "spelled": []
-  }
- },
- {
-  "case": "U-A1-007 буквы 2",
-  "voice": "el-GR-NestorasNeural",
-  "reference": "Άλφα, νι, νι, άλφα.",
-  "text": "Άλφα, νι νι, άλφα.",
-  "syllables_per_s": 3.14,
-  "f0": {
-   "median_hz": 97.8,
-   "range_st": 13.0
-  },
-  "azure": {
-   "text": "α νι άλφα",
-   "confidence": 0.4436323,
-   "wer_bare": 0.5,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "α, νιγιότα, νιγιότα, α.",
-   "wer_bare": 1.0,
-   "stress": [],
-   "spelled": [
-    "γιοτα",
-    "νιγιοτα"
-   ]
-  }
- },
- {
-  "case": "Athina «Α,» контроль",
-  "voice": "el-GR-AthinaNeural",
-  "reference": "Α, καλά… Χωρίς διάβασμα;",
-  "text": "Α, καλά… Χωρίς διάβασμα;",
-  "syllables_per_s": 5.08,
-  "f0": {
-   "median_hz": 235.1,
-   "range_st": 10.3
-  },
-  "azure": {
-   "text": "άλφα καλά χωρίς διάβασμα",
-   "confidence": 0.68463534,
-   "wer_bare": 0.25,
-   "stress": [],
-   "spelled": [
-    "αλφα"
-   ]
-  },
-  "whisper": {
-   "text": "Άλφα, καλά, χωρίς διάβασμα.",
-   "wer_bare": 0.25,
-   "stress": [],
-   "spelled": [
-    "αλφα"
-   ]
-  }
- },
- {
-  "case": "Athina «Α,» контроль",
-  "voice": "el-GR-AthinaNeural",
-  "reference": "Α, καλά… Χωρίς διάβασμα;",
-  "text": "<phoneme alphabet=\"ipa\" ph=\"a\">Α</phoneme>, καλά… Χωρίς διάβασμα;",
-  "syllables_per_s": 5.49,
-  "f0": {
-   "median_hz": 235.1,
-   "range_st": 10.7
-  },
-  "azure": {
-   "text": "α καλά χωρίς διάβασμα",
-   "confidence": 0.74577725,
+   "text": "η άννα θα φέρει τα εισιτήρια αύριο",
+   "confidence": 0.7123732,
    "wer_bare": 0.0,
    "stress": [],
    "spelled": []
   },
   "whisper": {
-   "text": "Α, καλά. Χωρίς διάβασμα.",
+   "text": "η άνα θα φέρεται στη τηρία αύριου.",
+   "wer_bare": 0.714,
+   "stress": [],
+   "spelled": []
+  },
+  "focus": {
+   "cut_s": null,
+   "pause_s": 0.0,
+   "versions": [
+    {
+     "from_s": 0.0,
+     "to_s": 2.67,
+     "whisper": "η άνα θα φέρεται στη τηρία αύριου.",
+     "words": {
+      "Άννα": {
+       "start_s": 0.28,
+       "dur_s": 0.18,
+       "f0_median_hz": 262.1,
+       "f0_peak_hz": 316.9,
+       "intensity_db": 80.9
+      },
+      "αύριο": {
+       "start_s": 1.44,
+       "dur_s": 0.36,
+       "f0_median_hz": 159.0,
+       "f0_peak_hz": 226.5,
+       "intensity_db": 71.2
+      }
+     }
+    }
+   ]
+  }
+ },
+ {
+  "case": "U-B1-021 дорожка A (кто: Άννα)",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Η Άννα θα φέρει τα εισιτήρια αύριο.",
+  "text": "<prosody rate=\"+0%\">Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Άννα</prosody> θα φέρει τα εισιτήρια αύριο.</prosody>",
+  "syllables_per_s": 6.94,
+  "f0": {
+   "median_hz": 231.5,
+   "range_st": 16.3
+  },
+  "azure": {
+   "text": "η άννα θα φέρει τα εισιτήρια αύριο",
+   "confidence": 0.79160047,
    "wer_bare": 0.0,
    "stress": [],
    "spelled": []
+  },
+  "whisper": {
+   "text": "Ιάννα θα φέρεται στη τηρία αύριο.",
+   "wer_bare": 0.714,
+   "stress": [],
+   "spelled": []
+  },
+  "focus": {
+   "cut_s": null,
+   "pause_s": 0.0,
+   "versions": [
+    {
+     "from_s": 0.0,
+     "to_s": 2.73,
+     "whisper": "Ιάννα θα φέρεται στη τηρία αύριο.",
+     "words": {
+      "Άννα": {
+       "start_s": 0.0,
+       "dur_s": 0.54,
+       "f0_median_hz": 328.9,
+       "f0_peak_hz": 397.4,
+       "intensity_db": 39.5
+      },
+      "αύριο": {
+       "start_s": 1.5,
+       "dur_s": 0.34,
+       "f0_median_hz": 160.7,
+       "f0_peak_hz": 224.8,
+       "intensity_db": 71.4
+      }
+     }
+    }
+   ]
+  }
+ },
+ {
+  "case": "U-B1-021 дорожка B (когда: αύριο)",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Η Άννα θα φέρει τα εισιτήρια αύριο.",
+  "text": "<prosody rate=\"+0%\">Η Άννα θα φέρει τα εισιτήρια <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>",
+  "syllables_per_s": 6.86,
+  "f0": {
+   "median_hz": 235.5,
+   "range_st": 7.8
+  },
+  "azure": {
+   "text": "η άννα θα φέρει τα εισιτήρια αύριο",
+   "confidence": 0.6680798,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "η άνα θα φέρεται στη τηρία αύριο.",
+   "wer_bare": 0.571,
+   "stress": [],
+   "spelled": []
+  },
+  "focus": {
+   "cut_s": null,
+   "pause_s": 0.0,
+   "versions": [
+    {
+     "from_s": 0.0,
+     "to_s": 2.76,
+     "whisper": "η άνα θα φέρεται στη τηρία αύριο.",
+     "words": {
+      "Άννα": {
+       "start_s": 0.28,
+       "dur_s": 0.18,
+       "f0_median_hz": 264.5,
+       "f0_peak_hz": 317.5,
+       "intensity_db": 80.6
+      },
+      "αύριο": {
+       "start_s": 1.44,
+       "dur_s": 0.4,
+       "f0_median_hz": 211.0,
+       "f0_peak_hz": 286.6,
+       "intensity_db": 74.3
+      }
+     }
+    }
+   ]
   }
  }
 ]

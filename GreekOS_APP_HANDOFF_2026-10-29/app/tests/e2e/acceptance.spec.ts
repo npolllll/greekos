@@ -329,6 +329,12 @@ test.describe.serial('final acceptance on the real corpus', () => {
     console.log('COURSE WALK', JSON.stringify({ units: units?.length ?? 0, byLevel, deadEnds: deadEnds.length }));
     expect(deadEnds, JSON.stringify(deadEnds.slice(0, 5))).toEqual([]);
     expect(report.filter((r) => r.completed).length).toBe(units?.length ?? -1);
+    // A reading text written into the task is shown with its question (before 15.11, 48 tasks showed the
+    // question alone), in each stored form: { text }, { text, origin }, { text_el }.
+    for (const [itemId, snippet] of [['U-A1-016-I10', 'Έχουμε μόνο έναν χυμό.'], ['U-A2-019-I13', 'Καθαρισμός της παραλίας'], ['U-A2-013-I10', 'Η Νίνα πηγαίνει στη βιβλιοθήκη']] as const) {
+      await page.goto(at(page, `/practice/${itemId}?context=lesson`));
+      await expect(page.getByText(snippet, { exact: false }).first(), itemId).toBeVisible();
+    }
     // The learner's course shows the lessons as passed and the home screen keeps the progress.
     await page.goto(at(page, '/course'));
     await expect(page.locator('.unit-row', { hasText: 'Пройден' }).first()).toBeVisible();

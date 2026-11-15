@@ -38,8 +38,47 @@ export function spokenForm(text: string): string {
  * «Α» as a label («Επιλέξτε Α, Β ή Γ») is not at a sentence start and stays «άλφα».
  */
 const PH = (text: string, ipa: string) => `<phoneme alphabet="ipa" ph="${ipa}">${text}</phoneme>`;
+
+/**
+ * Contrastive focus that a task asks the learner to hear (prosody, not wording). In these recordings one
+ * sentence is said in versions that differ only by which word is stressed, and the voice read them alike, so
+ * the tasks could not be solved by ear. The Azure Greek voices ignore <emphasis>. A raised, slower and louder
+ * focus word gives the contrast: on probe 2, 15.11.2026, the focus word was 4.3–4.7 semitones higher and
+ * longer in the version that stresses it, and both recognisers still read the script. Versions in one file
+ * are separated by a pause. Whether it sounds natural is for a native listener.
+ * Keyed by recording: the same sentence carries a different focus in different files.
+ */
+export const FOCUS_BY_AUDIO: Record<string, string[]> = {
+  // U-B2-016-I12: version 1 — who (Μαρία), version 2 — when (αύριο).
+  'U-B2-016-I12-AUDIO': ['Μαρία', 'αύριο'],
+  // U-B1-021-I03/I04: track A corrects who brings the tickets (Άννα, not Πέτρος), track B — when (αύριο, not today).
+  'U-B1-021-AUD01': ['Άννα'],
+  'U-B1-021-AUD02': ['αύριο'],
+};
+const F_OPEN = '\u27EA';
+const F_CLOSE = '\u27EB';
+const F_BREAK = '\u27C2';
+const FOCUS_PROSODY = '<prosody pitch="+25%" rate="-15%" volume="+30%">';
+
+/** What the voice reads for a recording with a contrastive focus: the focus word of each sentence marked. */
+export function focusText(audioId: string, text: string): string {
+  const focus = FOCUS_BY_AUDIO[audioId];
+  if (!focus) return text;
+  const versions = text.split(/(?<=\.)\s+/u);
+  if (versions.length !== focus.length) return text;
+  return versions
+    .map((v, i) => v.replace(new RegExp(`(^|[^\\p{L}])(${focus[i]})(?=[^\\p{L}]|$)`, 'u'), `$1${F_OPEN}$2${F_CLOSE}`))
+    .join(` ${F_BREAK}`);
+}
+
+/** The text without focus marks (for engines that take plain text, and for the recogniser's reference). */
+export function plainText(text: string): string {
+  return text.replaceAll(F_OPEN, '').replaceAll(F_CLOSE, '').replaceAll(` ${F_BREAK}`, ' ').replaceAll(F_BREAK, '');
+}
+
 export function spokenSsmlMarkup(escaped: string): string {
   return escaped
+    .replaceAll(F_OPEN, FOCUS_PROSODY).replaceAll(F_CLOSE, '</prosody>').replaceAll(F_BREAK, '<break time="800ms"/>')
     .replace(/(^|[.!;?…]\s+|«)([Αα])(?=\s*[,!…])/gu, (_m, pre: string, a: string) => `${pre}${PH(a, 'a')}`)
     .replace(/(^|[\s,.—–-])([Νν]ι)(?=[\s,.—–-]|$)/gu, (_m, pre: string, ni: string) => `${pre}${PH(ni, 'ni')}`);
 }
