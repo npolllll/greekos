@@ -4,11 +4,20 @@
   "assets_cast_approved": 0
  },
  "digital": {
-  "confirmed": 2,
-  "skipped": []
+  "confirmed": 0,
+  "skipped": [
+   {
+    "asset_id": "5d7cfb8e-077e-43fc-9ece-88a2bf9246c4",
+    "reason": "статус AUDIO_VERIFIED_DIGITAL"
+   },
+   {
+    "asset_id": "8ed4aa34-5660-4ceb-925b-c4dfffa7b12b",
+    "reason": "статус AUDIO_VERIFIED_DIGITAL"
+   }
+  ]
  },
  "listening": {
-  "written": 11
+  "written": 131
  },
  "sample": {
   "written": 30,
