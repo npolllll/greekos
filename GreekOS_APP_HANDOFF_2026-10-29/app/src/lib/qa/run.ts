@@ -48,7 +48,7 @@ export async function unknownGreekWords(words: Set<string>): Promise<{ unknown: 
 
 export interface BatchScope { kind: 'all' | 'unit' | 'module' | 'items'; ids?: string[]; module?: string }
 
-const ITEM_COLS = 'item_id, module, unit_id, item_type, level, scoring_strategy, requires_audio, competency_ids, audio_job_ids, envelope, current_hash, revision_id';
+const ITEM_COLS = 'item_id, module, unit_id, item_type, level, section, scoring_strategy, requires_audio, competency_ids, audio_job_ids, envelope, current_hash, revision_id';
 // Error-correction tasks contain deliberate mistakes in the prompt/stimulus.
 const INTENTIONAL = /исправ|ошибк|лишн|найдите неверн|ударени|поставьте знак/i;
 

@@ -1,2 +1,2 @@
-acceptance,e2e,release-readiness,db-state,qa-fails
-# 2026-11-15 final acceptance on main 4c6c340
+speaking-b1,release-readiness,qa-fails,db-state
+# 2026-11-15 final main 722058d: correction priority check (B1 only, test budget), readiness

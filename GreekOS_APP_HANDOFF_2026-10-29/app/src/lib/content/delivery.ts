@@ -1,6 +1,6 @@
 import { buildItemDTO, assertNoLeak, type ItemDTO } from './dto.ts';
 import { adminClient } from '../supabase/admin.ts';
-import { loadTextObjects, playableAudio, devPreviewAudio, releaseMap, itemAccess, PUBLIC_VIEWER, type ItemRow, type ItemAccess, type Viewer } from './repo.ts';
+import { loadTextObjects, playableAudio, devPreviewAudio, releaseMap, itemAccess, awaitsRecording, PUBLIC_VIEWER, type ItemRow, type ItemAccess, type Viewer } from './repo.ts';
 import { scriptSegments } from '../audio/pipeline.ts';
 
 export interface DeliveredItem {
@@ -35,7 +35,7 @@ export async function deliverItems(rows: ItemRow[], opts: { examMode?: boolean; 
     const firstAudio = r.audio_job_ids.map((a) => audio.get(a)).find(Boolean);
     // Access is always computed from learner-grade audio; dev-only audio only lets the owner listen.
     const devFirst = !firstAudio ? r.audio_job_ids.map((a) => devAudio.get(a)).find(Boolean) : undefined;
-    const learnerSpeech = r.requires_audio && r.audio_job_ids.length === 0;
+    const learnerSpeech = r.requires_audio && r.audio_job_ids.length === 0 && !awaitsRecording(r);
     let dto: ItemDTO;
     try {
       dto = buildItemDTO({

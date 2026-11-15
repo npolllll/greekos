@@ -107,3 +107,17 @@ describe('AI review text fixes in lessons, scenarios and cards', () => {
     expect((c.next as typeof env).original_payload.criteria[0]).toBe('комната2');
   });
 });
+
+describe('a listening task whose recording does not exist yet', () => {
+  const base = { item_id: 'X', module: 'core', unit_id: 'U', item_type: 'short_answer', level: 'A1', pool: null, scoring_strategy: 'EXACT_WITH_REVIEW_FALLBACK', competency_ids: [], prerequisite_ids: [], error_tags: [], envelope: {} as never, current_hash: 'h' };
+  const released = new Map([['X', { content_hash: 'h', decision: 'APPROVED', revoked_at: null, expires_at: null } as never]]);
+  it('waits for audio instead of becoming a speaking task', async () => {
+    const { itemAccess, awaitsRecording } = await import('@/lib/content/repo');
+    const listening = { ...base, section: 'listening', requires_audio: true, audio_job_ids: [] };
+    expect(awaitsRecording(listening)).toBe(true);
+    expect(itemAccess(listening, released, new Map()).learnerUsable).toBe(false);
+    expect(itemAccess({ ...listening, requires_audio: false }, released, new Map()).reason).toBe('AUDIO_PENDING');
+    // A speaking task (the learner's own speech) stays usable without stimulus audio.
+    expect(itemAccess({ ...listening, section: 'speaking' }, released, new Map()).learnerUsable).toBe(true);
+  });
+});
