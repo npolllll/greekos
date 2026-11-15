@@ -161,6 +161,8 @@ def assets():
       select a.id, a.audio_id, a.object_path, a.voice_map, a.segment_cues, a.digital_status, a.asr_roundtrip, a.technical_report, a.cast_snapshot,
              j.text_el, j.segments
       from public.audio_assets a join public.audio_jobs j on j.audio_id = a.audio_id where a.invalidated_at is null) t""") or []
+    only = [x for x in os.environ.get('REVIEW_IDS', '').split(',') if x]
+    if only: rows = [r for r in rows if r['audio_id'] in only]
     results = []
     t0 = time.time()
     for r in rows:
@@ -185,7 +187,7 @@ def assets():
             res['error'] = str(e)[:200]
         results.append(res)
         print(json.dumps({'audio_id': res['audio_id'], 'status': res['digital_status'], 'dur': res.get('acoustics', {}).get('duration_s'), 'sps': res.get('syllables_per_s'), 'f0': res.get('acoustics', {}).get('f0'), 'w_wer': res.get('whisper', {}).get('wer_accent_insensitive'), 'err': res.get('error')}, ensure_ascii=False), flush=True)
-    json.dump(results, open(f'{OUT}/assets.json', 'w'), ensure_ascii=False, indent=1)
+    json.dump(results, open(f'{OUT}/assets-partial.json' if only else f'{OUT}/assets.json', 'w'), ensure_ascii=False, indent=1)
 
 # ---------------- 2. candidate voices ----------------
 TEST_SET = [

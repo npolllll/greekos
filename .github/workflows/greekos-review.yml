@@ -36,7 +36,8 @@ jobs:
         id: task
         run: |
           t=$(head -n1 ops/review-request | tr -d '[:space:]')
-          echo "tasks=,$t," >> "$GITHUB_OUTPUT"; echo "Tasks: $t"
+          ids=$(sed -n 2p ops/review-request | tr -d '[:space:]')
+          echo "tasks=,$t," >> "$GITHUB_OUTPUT"; echo "ids=$ids" >> "$GITHUB_OUTPUT"; echo "Tasks: $t; ids: ${ids:-all}"
       - name: PostgreSQL 17 client
         run: |
           sudo apt-get update -qq
@@ -53,8 +54,10 @@ jobs:
       - name: corpus (current content after all revisions)
         if: contains(steps.task.outputs.tasks, ',corpus,')
         run: bash scripts/review/export-corpus.sh
-      - name: assets (142 course audio files)
+      - name: assets (142 course audio files, or only the ids on line 2)
         if: contains(steps.task.outputs.tasks, ',assets,')
+        env:
+          REVIEW_IDS: ${{ steps.task.outputs.ids }}
         run: python3 scripts/review/audio_review.py assets
       - name: voices (candidate Azure voices on a Greek test set)
         if: contains(steps.task.outputs.tasks, ',voices,')
@@ -63,14 +66,25 @@ jobs:
         if: contains(steps.task.outputs.tasks, ',probe,')
         run: python3 scripts/review/audio_review.py probe
       - uses: actions/setup-node@v4
-        if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,')
+        if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,') || contains(steps.task.outputs.tasks, ',render,')
         with:
           node-version: '22'
           cache: npm
           cache-dependency-path: GreekOS_APP_HANDOFF_2026-10-29/app/package-lock.json
       - name: Node dependencies
-        if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,')
+        if: contains(steps.task.outputs.tasks, ',sample-show,') || contains(steps.task.outputs.tasks, ',apply,') || contains(steps.task.outputs.tasks, ',render,')
         run: npm ci --no-audit --no-fund
+      - name: render (re-render the audio jobs on line 2 with the current casting; Azure F0, no charge)
+        if: contains(steps.task.outputs.tasks, ',render,') && steps.task.outputs.ids != ''
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://${{ secrets.SUPABASE_PROJECT_REF }}.supabase.co
+          TTS_PROVIDER: azure
+          ASR_PROVIDER: azure
+          AZURE_SPEECH_TIER: F0
+        run: |
+          mkdir -p reports/review/audio
+          npx tsx --conditions=react-server scripts/audio-cli.ts render-batch --ids "${{ steps.task.outputs.ids }}" --force --budget-cap 0 > reports/review/audio/render.json
+          node -e "const r=require('./reports/review/audio/render.json'); console.log(JSON.stringify({total:r.total,rendered:r.rendered,counts:r.counts}))"
       - name: sample-show (the release sample of the latest full QA batch)
         if: contains(steps.task.outputs.tasks, ',sample-show,')
         env:
