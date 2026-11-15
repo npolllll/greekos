@@ -1,3 +1,3 @@
-probe
+corpus,assets,sample-show
 
-# U-B1-021 tracks A/B: the same sentence with the focus on who (Άννα) or when (αύριο), as the pipeline will render it
+# after deploy 85f83e2, 2026-11-15: all 142 current files (two recognisers, acoustics, focus), corpus, release sample
