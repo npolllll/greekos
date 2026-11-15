@@ -84,10 +84,10 @@ describe('lesson order', () => {
 describe('AI review text fixes in lessons, scenarios and cards', () => {
   const scenario = { nodes: [{ node_id: 'OPEN', assistant_el: 'Καλημέρα! Τι θέλεις;', acceptable_examples_el: ['Θέλω ένα καφέ.'] }, { node_id: 'B1', assistant_el: 'Τι θέλεις;' }] };
   it('replaces a snippet that occurs exactly once and leaves the original untouched', () => {
-    const r = applyTextPatches(scenario, [{ op: 'replace_text', field: 'acceptable_examples_el', current: 'ένα καφέ', new: 'έναν καφέ' }]);
+    const r = applyTextPatches(scenario, [{ op: 'replace_text', field: 'nodes[0].acceptable_examples_el', current: 'ένα καφέ', new: 'έναν καφέ' }]);
     expect(r.applied).toBe(1);
-    expect((r.next as typeof scenario).nodes[0].acceptable_examples_el[0]).toBe('Θέλω έναν καφέ.');
-    expect(scenario.nodes[0].acceptable_examples_el[0]).toBe('Θέλω ένα καφέ.');
+    expect((r.next as typeof scenario).nodes[0].acceptable_examples_el![0]).toBe('Θέλω έναν καφέ.');
+    expect(scenario.nodes[0].acceptable_examples_el![0]).toBe('Θέλω ένα καφέ.');
     expect(r.changed[0].path).toBe('nodes[0].acceptable_examples_el[0]');
   });
   it('refuses an ambiguous snippet and an absent one; reports an already applied fix', () => {
@@ -100,5 +100,10 @@ describe('AI review text fixes in lessons, scenarios and cards', () => {
     expect(again.applied).toBe(0);
     expect(again.already).toBe(1);
     expect(applyTextPatches(scenario, [{ op: 'replace_text', current: 'Γεια', new: 'Γεια σου' }]).failed[0].reason).toBe('фрагмент не найден');
+    // A prefix is a whole path segment: «nodes[1]» does not reach «nodes[10]», «criteria» not «original_payload.criteria».
+    const env = { criteria: ['комната2'], original_payload: { criteria: ['комната2'] } };
+    const c = applyTextPatches(env, [{ op: 'replace_text', field: 'criteria', current: 'комната2', new: 'комната 2' }]);
+    expect(c.applied).toBe(1);
+    expect((c.next as typeof env).original_payload.criteria[0]).toBe('комната2');
   });
 });

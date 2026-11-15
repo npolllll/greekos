@@ -7,6 +7,7 @@ import { scoreDeterministic, type DeterministicScore } from '../scoring/score.ts
 import { assessOpenResponse, type AiAssessment } from '../ai/assessor.ts';
 import { llmConfigured } from '../providers/llm.ts';
 import { taskKindFor, adapterFor, type Verdict, type ItemEnvelope } from '../content/types.ts';
+import { restoreNumberSpacing } from '../content/spacing.ts';
 import { localDateOf } from './calendar.ts';
 import { scheduleLadder, resolveReview, type ReviewRow } from './reviews.ts';
 import { refreshCompetencyState } from './state.ts';
@@ -235,7 +236,8 @@ const CYRILLIC = /[А-Яа-яЁё]/g;
 /** Russian explanation first; the author's Greek-only note stays visible underneath at B1–B2. */
 export function explanationsFor(e: Pick<ItemEnvelope, 'answer_explanation_ru' | 'original_payload' | 'level'>, hidden: boolean): { explanation_ru: string | null; explanation_el: string | null } {
   if (hidden) return { explanation_ru: null, explanation_el: null };
-  const rationale = typeof e.original_payload?.rationale === 'string' ? e.original_payload.rationale.trim() : '';
+  // Author's notes lost spaces around numbers on import («цифры6 и2»); shown with them restored.
+  const rationale = typeof e.original_payload?.rationale === 'string' ? restoreNumberSpacing(e.original_payload.rationale.trim()) : '';
   const ru = typeof e.answer_explanation_ru === 'string' && e.answer_explanation_ru.trim() ? e.answer_explanation_ru.trim() : null;
   // An author's note written in English (editor notes of part of the exam bank) is not learner feedback.
   const latin = rationale.match(/[A-Za-z]/g)?.length ?? 0;

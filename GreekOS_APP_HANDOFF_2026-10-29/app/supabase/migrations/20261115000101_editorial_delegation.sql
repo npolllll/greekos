@@ -38,8 +38,8 @@ alter table public.cast_roles add constraint cast_roles_approval_source_check ch
 alter table public.audio_job_casting drop constraint if exists audio_job_casting_approval_source_check;
 alter table public.audio_job_casting add constraint audio_job_casting_approval_source_check check (approval_source is null or approval_source in ('owner', 'ai_editorial_delegated'));
 
--- Revision history (content_patches) also for speaking scenarios and Real Greek cards: the final AI
--- review of 15.11.2026 corrects Greek in persona lines and cards. Widening a check; reversible.
+-- Revision history (content_patches) also for speaking scenarios, Real Greek cards and text objects (exam
+-- texts): the final AI review of 15.11.2026 corrects Greek in them. Widening a check; reversible.
 alter table public.content_patches drop constraint if exists content_patches_content_kind_check;
 alter table public.content_patches add constraint content_patches_content_kind_check
-  check (content_kind in ('item', 'unit', 'pegp_packet', 'singleton', 'scenario', 'rg_expression'));
+  check (content_kind in ('item', 'unit', 'pegp_packet', 'singleton', 'scenario', 'rg_expression', 'object'));
