@@ -1,5 +1,5 @@
 import { adapterFor, choiceOptions, type ItemEnvelope, type ResponseKind } from './types.ts';
-import { restoreNumberSpacing as spaceNumbers } from './spacing.ts';
+import { displaySpacing, restorePunctuationSpacing } from './spacing.ts';
 
 /**
  * Candidate DTO: an allowlist of learner-visible fields. Keys, accepted alternatives, model
@@ -120,11 +120,12 @@ export function buildItemDTO(params: {
     type: item.type,
     level: item.level,
     response_kind: kind,
-    prompt: item.prompt,
+    // Russian instructions lost spaces after commas on import (U-A2-014/015); restored for display only.
+    prompt: restorePunctuationSpacing(item.prompt),
     options: kind === 'choice' ? choiceOptions(item.options) : [],
     stimulus,
     // Imported criteria lost spaces around numbers («комната2»); shown with them restored.
-    criteria_ru: params.examMode ? [] : (item.criteria ?? []).filter((c): c is string => typeof c === 'string').map(spaceNumbers),
+    criteria_ru: params.examMode ? [] : (item.criteria ?? []).filter((c): c is string => typeof c === 'string').map(displaySpacing),
     requires_audio: item.requires_audio,
     audio: item.requires_audio ? params.audio ?? { status: 'unavailable', reason: 'AUDIO_PENDING' } : null,
     format_hint_ru: formatHint(item.type),
