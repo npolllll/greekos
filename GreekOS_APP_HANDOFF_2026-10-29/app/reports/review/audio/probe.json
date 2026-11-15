@@ -1,0 +1,1932 @@
+[
+ {
+  "case": "RG-0003 «Α,» (вопрос)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά… Χωρίς διάβασμα;",
+  "text": "Α, καλά… Χωρίς διάβασμα;",
+  "syllables_per_s": 4.84,
+  "f0": {
+   "median_hz": 92.2,
+   "range_st": 11.8
+  },
+  "azure": {
+   "text": "άλφα καλά χωρίς διάβασμα",
+   "confidence": 0.57289267,
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  },
+  "whisper": {
+   "text": "Άλφα, καλά, χωρίς διάβασμα",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  }
+ },
+ {
+  "case": "RG-0003 «Α,» (вопрос)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά… Χωρίς διάβασμα;",
+  "text": "α, καλά… Χωρίς διάβασμα;",
+  "syllables_per_s": 4.84,
+  "f0": {
+   "median_hz": 91.4,
+   "range_st": 11.8
+  },
+  "azure": {
+   "text": "άλφα καλά χωρίς διάβασμα",
+   "confidence": 0.39083213,
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  },
+  "whisper": {
+   "text": "Άλφα, καλά, χωρις διάβασμα",
+   "wer_bare": 0.25,
+   "stress": [
+    "χωρίς→χωρις"
+   ],
+   "spelled": [
+    "αλφα"
+   ]
+  }
+ },
+ {
+  "case": "RG-0003 «Α,» (вопрос)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά… Χωρίς διάβασμα;",
+  "text": "Αα, καλά… Χωρίς διάβασμα;",
+  "syllables_per_s": 4.35,
+  "f0": {
+   "median_hz": 93.5,
+   "range_st": 10.9
+  },
+  "azure": {
+   "text": "άλφα καλά χωρίς διάβασμα",
+   "confidence": 0.5413095,
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  },
+  "whisper": {
+   "text": "α, α, καλά, χωρίς διάβασμα.",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "RG-0003 «Α,» (вопрос)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά… Χωρίς διάβασμα;",
+  "text": "Α! Καλά… Χωρίς διάβασμα;",
+  "syllables_per_s": 4.66,
+  "f0": {
+   "median_hz": 105.4,
+   "range_st": 12.6
+  },
+  "azure": {
+   "text": "άλφα χωρίς διάβασμα",
+   "confidence": 0.5413737,
+   "wer_bare": 0.5,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  },
+  "whisper": {
+   "text": "α, καλά, χωρίς διάβασμα",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "RG-0003 «Α,» (вопрос)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά… Χωρίς διάβασμα;",
+  "text": "Ά, καλά… Χωρίς διάβασμα;",
+  "syllables_per_s": 4.04,
+  "f0": {
+   "median_hz": 95.6,
+   "range_st": 10.9
+  },
+  "azure": {
+   "text": "άλφα με τόνο καλά χωρίς διάβασμα",
+   "confidence": 0.6311723,
+   "wer_bare": 0.75,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  },
+  "whisper": {
+   "text": "α με τόνο, καλά, χωρίς διάβασμα,",
+   "wer_bare": 0.5,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "RG-0003 «Α,» (утверждение)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
+  "text": "Α, καλά έκανε. Το χρειαζόταν.",
+  "syllables_per_s": 5.18,
+  "f0": {
+   "median_hz": 120.4,
+   "range_st": 11.3
+  },
+  "azure": {
+   "text": "α καλά έκανε το χρειαζόταν",
+   "confidence": 0.76196235,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Άλφα καλά έκανε. Το χρειαζόταν.",
+   "wer_bare": 0.2,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  }
+ },
+ {
+  "case": "RG-0003 «Α,» (утверждение)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
+  "text": "α, καλά έκανε. Το χρειαζόταν.",
+  "syllables_per_s": 5.18,
+  "f0": {
+   "median_hz": 121.5,
+   "range_st": 11.4
+  },
+  "azure": {
+   "text": "α καλά έκανε το χρειαζόταν",
+   "confidence": 0.7557056,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Άλφα καλά έκανε. Το χρειαζόταν.",
+   "wer_bare": 0.2,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  }
+ },
+ {
+  "case": "RG-0003 «Α,» (утверждение)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
+  "text": "Αα, καλά έκανε. Το χρειαζόταν.",
+  "syllables_per_s": 4.83,
+  "f0": {
+   "median_hz": 125.2,
+   "range_st": 13.9
+  },
+  "azure": {
+   "text": "alfa καλά έκανε το χρειαζόταν",
+   "confidence": 0.45064086,
+   "wer_bare": 0.2,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "α α καλά έκανε. Το χρειαζόταν.",
+   "wer_bare": 0.2,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "RG-0003 «Α,» (утверждение)",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
+  "text": "Ά, καλά έκανε. Το χρειαζόταν.",
+  "syllables_per_s": 4.37,
+  "f0": {
+   "median_hz": 121.4,
+   "range_st": 11.6
+  },
+  "azure": {
+   "text": "άλφα με τόνο καλά έκανε το χρειαζόταν",
+   "confidence": 0.6751811,
+   "wer_bare": 0.6,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  },
+  "whisper": {
+   "text": "Άλφα με τόνο. Καλά έκανε. Το χρειαζόταν.",
+   "wer_bare": 0.6,
+   "stress": [],
+   "spelled": [
+    "αλφα"
+   ]
+  }
+ },
+ {
+  "case": "RG-0010 «στ’»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Ήταν στ’ αλήθεια ειδικός;",
+  "text": "Ήταν στ’ αλήθεια ειδικός;",
+  "syllables_per_s": 3.95,
+  "f0": {
+   "median_hz": 225.5,
+   "range_st": 11.7
+  },
+  "azure": {
+   "text": "ήταν σ τ αλήθεια ειδικός",
+   "confidence": 0.47080857,
+   "wer_bare": 0.5,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ήταν σύγματάφ, αλήθεια ειδικός.",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "σιγμα",
+    "ταφ"
+   ]
+  }
+ },
+ {
+  "case": "RG-0010 «στ’»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Ήταν στ’ αλήθεια ειδικός;",
+  "text": "Ήταν στ' αλήθεια ειδικός;",
+  "syllables_per_s": 5.04,
+  "f0": {
+   "median_hz": 223.2,
+   "range_st": 11.3
+  },
+  "azure": {
+   "text": "ήταν έκτη αλήθεια ειδικός",
+   "confidence": 0.69204974,
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ήταν έκτη αλήθεια ειδικός.",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "RG-0010 «στ’»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Ήταν στ’ αλήθεια ειδικός;",
+  "text": "Ήταν σταλήθεια ειδικός;",
+  "syllables_per_s": 5.56,
+  "f0": {
+   "median_hz": 229.9,
+   "range_st": 12.7
+  },
+  "azure": {
+   "text": "ήταν στα αλήθεια ειδικός",
+   "confidence": 0.62739956,
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ήταν σταλήθεια ειδικός.",
+   "wer_bare": 0.5,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "RG-0010 «στ’»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Ήταν στ’ αλήθεια ειδικός;",
+  "text": "Ήταν στα αλήθεια ειδικός;",
+  "syllables_per_s": 5.11,
+  "f0": {
+   "median_hz": 224.7,
+   "range_st": 12.5
+  },
+  "azure": {
+   "text": "ήταν στα αλήθεια ειδικός",
+   "confidence": 0.7589184,
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ήταν στα αλήθεια ειδικός.",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "RG-0010 «Ντεμέκ»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Ντεμέκ ειδικός! Δεν ήξερε ούτε πού είναι το πρόβλημα.",
+  "text": "Ντεμέκ ειδικός! Δεν ήξερε ούτε πού είναι το πρόβλημα.",
+  "syllables_per_s": 5.26,
+  "f0": {
+   "median_hz": 108.0,
+   "range_st": 10.5
+  },
+  "azure": {
+   "text": "ντεμέκιδικός δεν ήξερε ούτε πού είναι το πρόβλημα",
+   "confidence": 0.32147095,
+   "wer_bare": 0.222,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δε με κειδικός. Δεν ξερεούτε πού είναι το πρόβλημα.",
+   "wer_bare": 0.556,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "RG-0010 «Ντεμέκ»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Ντεμέκ ειδικός! Δεν ήξερε ούτε πού είναι το πρόβλημα.",
+  "text": "Ντεμέκ, ειδικός! Δεν ήξερε ούτε πού είναι το πρόβλημα.",
+  "syllables_per_s": 4.92,
+  "f0": {
+   "median_hz": 107.9,
+   "range_st": 12.8
+  },
+  "azure": {
+   "text": "ντεμέκ ειδικός δεν ήξερε ούτε πού είναι το πρόβλημα",
+   "confidence": 0.5663446,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δε μεκ, ειδικός. Δεν ξερεούτε πού είναι το πρόβλημα.",
+   "wer_bare": 0.444,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-B1-008 «Γι’»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Δεν βρήκε εισιτήριο. Γι’ αυτό θα έρθει αύριο.",
+  "text": "Δεν βρήκε εισιτήριο. Γι’ αυτό θα έρθει αύριο.",
+  "syllables_per_s": 4.73,
+  "f0": {
+   "median_hz": 109.6,
+   "range_st": 12.2
+  },
+  "azure": {
+   "text": "δεν βρήκε εισιτήριο αυτό θα έρθει αύριο",
+   "confidence": 0.5880319,
+   "wer_bare": 0.125,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δε βρει και εισητήριο. Γαμαγιώτα. Αυτό θα έρθει αύριο.",
+   "wer_bare": 0.625,
+   "stress": [],
+   "spelled": [
+    "γαμα",
+    "γιοτα"
+   ]
+  }
+ },
+ {
+  "case": "U-B1-008 «Γι’»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Δεν βρήκε εισιτήριο. Γι’ αυτό θα έρθει αύριο.",
+  "text": "Δεν βρήκε εισιτήριο. Γι' αυτό θα έρθει αύριο.",
+  "syllables_per_s": 5.88,
+  "f0": {
+   "median_hz": 109.6,
+   "range_st": 12.6
+  },
+  "azure": {
+   "text": "δεν βρήκε εισιτήριο γιαυτό θα έρθει αύριο",
+   "confidence": 0.57253915,
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δεν βρει και εισητήριο. Γι' αυτό θα έρθει αύριο.",
+   "wer_bare": 0.375,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-B1-008 «Γι’»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Δεν βρήκε εισιτήριο. Γι’ αυτό θα έρθει αύριο.",
+  "text": "Δεν βρήκε εισιτήριο. Γιαυτό θα έρθει αύριο.",
+  "syllables_per_s": 5.88,
+  "f0": {
+   "median_hz": 109.8,
+   "range_st": 12.8
+  },
+  "azure": {
+   "text": "δεν βρήκε εισιτήριο γιαυτό θα έρθει αύριο",
+   "confidence": 0.60747546,
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δε βρει και εισητήριο. Γι' αυτό θα έρθει αύριο.",
+   "wer_bare": 0.5,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-B1-008 «Γι’»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Δεν βρήκε εισιτήριο. Γι’ αυτό θα έρθει αύριο.",
+  "text": "Δεν βρήκε εισιτήριο. Για αυτό θα έρθει αύριο.",
+  "syllables_per_s": 5.88,
+  "f0": {
+   "median_hz": 109.7,
+   "range_st": 12.7
+  },
+  "azure": {
+   "text": "δεν βρήκε εισιτήριο για αυτό θα έρθει αύριο",
+   "confidence": 0.6154841,
+   "wer_bare": 0.125,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δεν βρει και εισητήριο. Γι' αυτό θα έρθει αύριο.",
+   "wer_bare": 0.375,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "KEG-B2-L03-AUD2 «Γι’»",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "text": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "syllables_per_s": 4.7,
+  "f0": {
+   "median_hz": 170.0,
+   "range_st": 9.3
+  },
+  "azure": {
+   "text": "γαμαιότα αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε",
+   "confidence": 0.7868379,
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Γαμαγιότα. Αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": [
+    "γαμα",
+    "γιοτα"
+   ]
+  }
+ },
+ {
+  "case": "KEG-B2-L03-AUD2 «Γι’»",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "text": "Γιαυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "syllables_per_s": 5.37,
+  "f0": {
+   "median_hz": 172.2,
+   "range_st": 9.4
+  },
+  "azure": {
+   "text": "για αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε",
+   "confidence": 0.68024206,
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Γι' αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "KEG-B2-L03-AUD2 «Γι’»",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "text": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "syllables_per_s": 4.97,
+  "f0": {
+   "median_hz": 185.6,
+   "range_st": 13.8
+  },
+  "azure": {
+   "text": "γαμαιότα αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε",
+   "confidence": 0.7512286,
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Γαμαγιώτα. Αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": [
+    "γαμα",
+    "γιοτα"
+   ]
+  }
+ },
+ {
+  "case": "KEG-B2-L03-AUD2 «Γι’»",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "text": "Γιαυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "syllables_per_s": 5.98,
+  "f0": {
+   "median_hz": 190.3,
+   "range_st": 13.7
+  },
+  "azure": {
+   "text": "γι αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε",
+   "confidence": 0.78577495,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Γι' αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "KEG-B2-L03-AUD2 «Γι’»",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "text": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "syllables_per_s": 5.62,
+  "f0": {
+   "median_hz": 227.8,
+   "range_st": 8.9
+  },
+  "azure": {
+   "text": "γαμαιότα αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε",
+   "confidence": 0.77019763,
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Γαμαγιώτα αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": [
+    "γαμα",
+    "γιοτα"
+   ]
+  }
+ },
+ {
+  "case": "KEG-B2-L03-AUD2 «Γι’»",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Γι’ αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "text": "Γιαυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+  "syllables_per_s": 6.74,
+  "f0": {
+   "median_hz": 238.8,
+   "range_st": 9.0
+  },
+  "azure": {
+   "text": "για αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε",
+   "confidence": 0.7439804,
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Γι' αυτό θέλω συγκεκριμένη προσφορά πριν αποφασίσουμε.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-A1-007 буквы",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Άλφα, νι, νι, άλφα.",
+  "text": "Άλφα, νι, νι, άλφα.",
+  "syllables_per_s": 2.67,
+  "f0": {
+   "median_hz": 99.8,
+   "range_st": 11.1
+  },
+  "azure": {
+   "text": "α νι τα α",
+   "confidence": 0.16230714,
+   "wer_bare": 0.75,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "α, νιγιότα, νιγιότα, α.",
+   "wer_bare": 1.0,
+   "stress": [],
+   "spelled": [
+    "γιοτα",
+    "νιγιοτα"
+   ]
+  }
+ },
+ {
+  "case": "U-A1-007 буквы",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Άλφα, νι, νι, άλφα.",
+  "text": "Άλφα. Νι. Νι. Άλφα.",
+  "syllables_per_s": 3.21,
+  "f0": {
+   "median_hz": 97.6,
+   "range_st": 11.3
+  },
+  "azure": {
+   "text": "άλφα είναι γιώργο άλφα",
+   "confidence": 0.4936624,
+   "wer_bare": 0.5,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Άλφα. Λιγιότινο Άλφα.",
+   "wer_bare": 0.5,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-A1-007 буквы",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Άλφα, νι, νι, άλφα.",
+  "text": "Άλφα, νυ, νυ, άλφα.",
+  "syllables_per_s": 3.41,
+  "f0": {
+   "median_hz": 91.3,
+   "range_st": 12.8
+  },
+  "azure": {
+   "text": "άλφα μ μη α",
+   "confidence": 0.42229965,
+   "wer_bare": 0.75,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "α, ν, ν, α",
+   "wer_bare": 1.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-A1-007 буквы",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Άλφα, νι, νι, άλφα.",
+  "text": "Άλφα, νη, νη, άλφα.",
+  "syllables_per_s": 3.41,
+  "f0": {
+   "median_hz": 90.6,
+   "range_st": 12.7
+  },
+  "azure": {
+   "text": "ανοί",
+   "confidence": 0.18596743,
+   "wer_bare": 1.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "α, ν, ν, α",
+   "wer_bare": 1.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-A2-006 «συνάδελφός μου»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Όχι. Αλλά η συνάδελφός μου εργάζεται μέχρι τις δύο.",
+  "text": "Όχι. Αλλά η συνάδελφός μου εργάζεται μέχρι τις δύο.",
+  "syllables_per_s": 6.59,
+  "f0": {
+   "median_hz": 104.0,
+   "range_st": 8.7
+  },
+  "azure": {
+   "text": "όχι αλλά η συναδέλφός μου εργάζεται μέχρι τις δύο",
+   "confidence": 0.6360518,
+   "wer_bare": 0.0,
+   "stress": [
+    "συνάδελφός→συναδέλφός"
+   ],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Όχι, άλλες είναι αδελφός μου εργάζεται μέχρι τις δύο.",
+   "wer_bare": 0.333,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-A2-006 «συνάδελφός μου»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Όχι. Αλλά η συνάδελφός μου εργάζεται μέχρι τις δύο.",
+  "text": "Όχι. Αλλά η συνάδελφος μου εργάζεται μέχρι τις δύο.",
+  "syllables_per_s": 6.61,
+  "f0": {
+   "median_hz": 105.5,
+   "range_st": 8.6
+  },
+  "azure": {
+   "text": "όχι αλλά η συνάδελφός μου εργάζεται μέχρι τις δύο",
+   "confidence": 0.67876947,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Όχι. Αλλά η συνάδελφος μου εργάζεται μέχρι τις δύο.",
+   "wer_bare": 0.0,
+   "stress": [
+    "συνάδελφός→συνάδελφος"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-B2-016-I14 «πενήντα… όχι»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Η συμμετοχή κοστίζει πενήντα… όχι, δεκαπέντε ευρώ.",
+  "text": "Η συμμετοχή κοστίζει πενήντα… όχι, δεκαπέντε ευρώ.",
+  "syllables_per_s": 6.12,
+  "f0": {
+   "median_hz": 221.9,
+   "range_st": 8.7
+  },
+  "azure": {
+   "text": "η συμμετοχή κοστίζει πενήντα ή όχι δεκαπέντε ευρώ",
+   "confidence": 0.7499698,
+   "wer_bare": 0.143,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Η συμμετοχή κοστίζει 50 εόχι, 15 ευρώ.",
+   "wer_bare": 0.429,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-B2-016-I14 «πενήντα… όχι»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Η συμμετοχή κοστίζει πενήντα… όχι, δεκαπέντε ευρώ.",
+  "text": "Η συμμετοχή κοστίζει πενήντα... όχι, δεκαπέντε ευρώ.",
+  "syllables_per_s": 5.96,
+  "f0": {
+   "median_hz": 218.6,
+   "range_st": 9.3
+  },
+  "azure": {
+   "text": "η συμμετοχή κοστίζει πενήντα οχι δεκαπέντε ευρώ",
+   "confidence": 0.6956411,
+   "wer_bare": 0.0,
+   "stress": [
+    "όχι→οχι"
+   ],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Η συμμετοχή κοστίζει 50 γόχι 15 ευρώ.",
+   "wer_bare": 0.429,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "U-B2-016-I14 «πενήντα… όχι»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Η συμμετοχή κοστίζει πενήντα… όχι, δεκαπέντε ευρώ.",
+  "text": "Η συμμετοχή κοστίζει πενήντα, όχι, δεκαπέντε ευρώ.",
+  "syllables_per_s": 6.01,
+  "f0": {
+   "median_hz": 224.4,
+   "range_st": 9.6
+  },
+  "azure": {
+   "text": "η συμμετοχή κοστίζει πενήντα όχι δεκαπέντε ευρώ",
+   "confidence": 0.6747692,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Η συμμετοχή κοστίζει 50, όχι, 15 ευρώ.",
+   "wer_bare": 0.286,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "Athina «Ε,»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Ε, καλά, δεν πειράζει!",
+  "text": "Ε, καλά, δεν πειράζει!",
+  "syllables_per_s": 2.45,
+  "f0": {
+   "median_hz": 212.3,
+   "range_st": 11.7
+  },
+  "azure": {
+   "text": "ε καλά δεν πειράζει",
+   "confidence": 0.75127363,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Έψιλον, καλά, δεν πειράζει.",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "εψιλον"
+   ]
+  }
+ },
+ {
+  "case": "Athina «Ε,»",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Ε, καλά, δεν πειράζει!",
+  "text": "Ε καλά, δεν πειράζει!",
+  "syllables_per_s": 3.6,
+  "f0": {
+   "median_hz": 218.6,
+   "range_st": 11.9
+  },
+  "azure": {
+   "text": "ε καλά δεν πειράζει",
+   "confidence": 0.77516425,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Έψιλον καλά, δεν πειράζει.",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "εψιλον"
+   ]
+  }
+ },
+ {
+  "case": "Athina «Ε,»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Ε, καλά, δεν πειράζει!",
+  "text": "Ε, καλά, δεν πειράζει!",
+  "syllables_per_s": 3.12,
+  "f0": {
+   "median_hz": 100.4,
+   "range_st": 12.6
+  },
+  "azure": {
+   "text": "ε καλά δεν πειράζει",
+   "confidence": 0.58254915,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Έψιλον, καλά, δεν πειράζει.",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "εψιλον"
+   ]
+  }
+ },
+ {
+  "case": "Athina «Ε,»",
+  "voice": "el-GR-NestorasNeural",
+  "reference": "Ε, καλά, δεν πειράζει!",
+  "text": "Ε καλά, δεν πειράζει!",
+  "syllables_per_s": 3.42,
+  "f0": {
+   "median_hz": 110.7,
+   "range_st": 11.2
+  },
+  "azure": {
+   "text": "ε καλά δεν πειράζει",
+   "confidence": 0.701913,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Έψιλον καλά. Δεν πειράζει.",
+   "wer_bare": 0.25,
+   "stress": [],
+   "spelled": [
+    "εψιλον"
+   ]
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Όχι. Βλέπω την Εύα στην είσοδο.",
+  "text": "Όχι. Βλέπω την Εύα στην είσοδο.",
+  "syllables_per_s": 4.09,
+  "f0": {
+   "median_hz": 160.3,
+   "range_st": 9.3
+  },
+  "azure": {
+   "text": "όχι βλέπω την εύα στην είσοδο",
+   "confidence": 0.8309793,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Όχι. Βλέπω την έβα στην ίσοδο.",
+   "wer_bare": 0.333,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Όχι. Βλέπω την Εύα στην είσοδο.",
+  "text": "Όχι. Βλέπω την Εύα στην είσοδο.",
+  "syllables_per_s": 4.37,
+  "f0": {
+   "median_hz": 208.2,
+   "range_st": 14.6
+  },
+  "azure": {
+   "text": "όχι βλέπω την εύα στην είσοδο",
+   "confidence": 0.77704555,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Όχι, βλέπω την έβα στην ίσοδο.",
+   "wer_bare": 0.333,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Όχι. Βλέπω την Εύα στην είσοδο.",
+  "text": "Όχι. Βλέπω την Εύα στην είσοδο.",
+  "syllables_per_s": 5.36,
+  "f0": {
+   "median_hz": 236.9,
+   "range_st": 10.2
+  },
+  "azure": {
+   "text": "όχι βλέπω την εύα στην είσοδο",
+   "confidence": 0.72114044,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Όχι. Βλέπω την έβα στην ίσοδο.",
+   "wer_bare": 0.333,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος.",
+  "text": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος.",
+  "syllables_per_s": 5.9,
+  "f0": {
+   "median_hz": 172.2,
+   "range_st": 10.3
+  },
+  "azure": {
+   "text": "συμφωνώ με τα φυτά διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος",
+   "confidence": 0.8261243,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μία μόνη μία λαγή πριν υπολογήσουμε το κόστος.",
+   "wer_bare": 0.286,
+   "stress": [
+    "μια→μία"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος.",
+  "text": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος.",
+  "syllables_per_s": 6.28,
+  "f0": {
+   "median_hz": 199.3,
+   "range_st": 10.8
+  },
+  "azure": {
+   "text": "συμφωνώ με τα φυτά διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος",
+   "confidence": 0.7865272,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μία μόνη μία λαγή πριν υπολογήσουμε το κόστος.",
+   "wer_bare": 0.286,
+   "stress": [
+    "μια→μία"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος.",
+  "text": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος.",
+  "syllables_per_s": 7.24,
+  "f0": {
+   "median_hz": 233.0,
+   "range_st": 10.2
+  },
+  "azure": {
+   "text": "συμφωνώ με τα φυτά διαφωνώ όμως με μια μόνιμη αλλαγή πριν υπολογίσουμε το κόστος",
+   "confidence": 0.8374331,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Συμφωνώ με τα φυτά. Διαφωνώ όμως με μία μόνη μία λαγή πριν υπολογήσουμε το κόστος.",
+   "wer_bare": 0.286,
+   "stress": [
+    "μια→μία"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+  "text": "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+  "syllables_per_s": 5.02,
+  "f0": {
+   "median_hz": 168.1,
+   "range_st": 11.2
+  },
+  "azure": {
+   "text": "θα το συζητούσα αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά",
+   "confidence": 0.8108068,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θα το συζητούσα. Αρκεί να ξέρουμε ποιος τα φροντίζει τα φυτά.",
+   "wer_bare": 0.091,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+  "text": "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+  "syllables_per_s": 5.1,
+  "f0": {
+   "median_hz": 191.0,
+   "range_st": 14.0
+  },
+  "azure": {
+   "text": "θα το συζητούσα αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά",
+   "confidence": 0.88187647,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θα το συζητούσα. Αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+  "text": "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+  "syllables_per_s": 5.78,
+  "f0": {
+   "median_hz": 238.7,
+   "range_st": 9.4
+  },
+  "azure": {
+   "text": "θα το συζητούσα αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά",
+   "confidence": 0.8152366,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θα το συζητούσα, αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση.",
+  "text": "Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση.",
+  "syllables_per_s": 6.21,
+  "f0": {
+   "median_hz": 166.0,
+   "range_st": 10.1
+  },
+  "azure": {
+   "text": "δεν έχω αντίρρηση για την πέμπτη προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση",
+   "confidence": 0.80562466,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δεν έχω αντίρηση για την Μπέμπτη. Προτείνω μόνο να αρχίσουμε με μια δοκιμαστική συνάντηση.",
+   "wer_bare": 0.143,
+   "stress": [
+    "μία→μια"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση.",
+  "text": "Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση.",
+  "syllables_per_s": 6.64,
+  "f0": {
+   "median_hz": 197.2,
+   "range_st": 13.6
+  },
+  "azure": {
+   "text": "δεν έχω αντίρρηση για την πέμπτη προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση",
+   "confidence": 0.78238463,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δεν έχω αντήρηση για την πέμπτη. Προτείνω μόνο να αρχίσουμε με μια δοκιμαστική συνάντηση.",
+   "wer_bare": 0.071,
+   "stress": [
+    "μία→μια"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση.",
+  "text": "Δεν έχω αντίρρηση για την Πέμπτη. Προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση.",
+  "syllables_per_s": 7.73,
+  "f0": {
+   "median_hz": 235.3,
+   "range_st": 10.2
+  },
+  "azure": {
+   "text": "δεν έχω αντίρρηση για την πέμπτη προτείνω μόνο να αρχίσουμε με μία δοκιμαστική συνάντηση",
+   "confidence": 0.7907931,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Δεν έχω αντήρηση για την πέμπτη. Προτείνω μόνο να αρχίσουμε με μια δοκιμαστική συνάντηση.",
+   "wer_bare": 0.071,
+   "stress": [
+    "μία→μια"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+  "text": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+  "syllables_per_s": 4.91,
+  "f0": {
+   "median_hz": 169.2,
+   "range_st": 9.8
+  },
+  "azure": {
+   "text": "θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου αν υπάρχει σοβαρή βλάβη θα χρειαστούμε άλλη λύση",
+   "confidence": 0.78771937,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+  "text": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+  "syllables_per_s": 5.21,
+  "f0": {
+   "median_hz": 195.6,
+   "range_st": 14.3
+  },
+  "azure": {
+   "text": "θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου αν υπάρχει σοβαρή βλάβη θα χρειαστούμε άλλη λύση",
+   "confidence": 0.7931663,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+  "text": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε άλλη λύση.",
+  "syllables_per_s": 6.11,
+  "f0": {
+   "median_hz": 237.6,
+   "range_st": 9.7
+  },
+  "azure": {
+   "text": "θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου αν υπάρχει σοβαρή βλάβη θα χρειαστούμε άλλη λύση",
+   "confidence": 0.85974896,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θα στείλω αύριο το αποτέλεσμα του τεχνικού ελέγχου. Αν υπάρχει σοβαρή βλάβη, θα χρειαστούμε αλληλίση.",
+   "wer_bare": 0.125,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "text": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "syllables_per_s": 5.24,
+  "f0": {
+   "median_hz": 175.7,
+   "range_st": 9.9
+  },
+  "azure": {
+   "text": "ο νόμος ψηφίστηκε ενώ ο νομός ετοιμάζεται",
+   "confidence": 0.75595456,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ο νόμος ψηφίστηκε ενώ ο νόμος ετοιμάζεται.",
+   "wer_bare": 0.0,
+   "stress": [
+    "νομός→νόμος"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "text": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "syllables_per_s": 5.36,
+  "f0": {
+   "median_hz": 197.4,
+   "range_st": 14.6
+  },
+  "azure": {
+   "text": "ο νόμος ψηφίστηκε ενώ ο νομός ετοιμάζεται",
+   "confidence": 0.8375372,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "ο νόμος ψηφίστηκε, ενώ ο νόμος ετοιμάζεται.",
+   "wer_bare": 0.0,
+   "stress": [
+    "νομός→νόμος"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "text": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "syllables_per_s": 6.1,
+  "f0": {
+   "median_hz": 236.1,
+   "range_st": 9.4
+  },
+  "azure": {
+   "text": "ο νόμος ψηφίστηκε ενώ ο νόμος ετοιμάζεται",
+   "confidence": 0.7683495,
+   "wer_bare": 0.0,
+   "stress": [
+    "νομός→νόμος"
+   ],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ο νόμος ψηφίστηκε ενώ ο νόμος ετοιμάζεται.",
+   "wer_bare": 0.0,
+   "stress": [
+    "νομός→νόμος"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "text": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "syllables_per_s": 3.12,
+  "f0": {
+   "median_hz": 163.9,
+   "range_st": 7.2
+  },
+  "azure": {
+   "text": "πότε θα έρθεις ποτέ δεν αργείς",
+   "confidence": 0.7125715,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Πότε εθέρθεις, ποτέ δεν αργείς.",
+   "wer_bare": 0.333,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "text": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "syllables_per_s": 3.77,
+  "f0": {
+   "median_hz": 213.8,
+   "range_st": 12.9
+  },
+  "azure": {
+   "text": "πότε θα έρθεις ποτέ δεν αργείς",
+   "confidence": 0.7172191,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Πότε θα έρθεις, ποτέ δεν αργείς.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "text": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "syllables_per_s": 5.44,
+  "f0": {
+   "median_hz": 252.1,
+   "range_st": 9.6
+  },
+  "azure": {
+   "text": "πατερίζ ποτέ δεν αργείς",
+   "confidence": 0.53820467,
+   "wer_bare": 0.5,
+   "stress": [
+    "πότε→ποτέ"
+   ],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Πατεραίς, ποτέ δεν αργείς.",
+   "wer_bare": 0.5,
+   "stress": [
+    "πότε→ποτέ"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "text": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "syllables_per_s": 5.0,
+  "f0": {
+   "median_hz": 173.3,
+   "range_st": 10.2
+  },
+  "azure": {
+   "text": "το ποτήρι είναι γεμάτο η θεσσαλονίκη είναι κοντά",
+   "confidence": 0.80982584,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Το ποτήρι είναι γεμάτο, η θεσαλονίκη είναι κοντά.",
+   "wer_bare": 0.125,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "text": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "syllables_per_s": 5.19,
+  "f0": {
+   "median_hz": 224.0,
+   "range_st": 13.0
+  },
+  "azure": {
+   "text": "το ποτήρι είναι γεμάτο η θεσσαλονίκη είναι κοντά",
+   "confidence": 0.75516295,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "text": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "syllables_per_s": 6.15,
+  "f0": {
+   "median_hz": 234.6,
+   "range_st": 10.3
+  },
+  "azure": {
+   "text": "το ποτήρι είναι γεμάτο η θεσσαλονίκη είναι κοντά",
+   "confidence": 0.8546761,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Το ποτήρι είναι γεμάτο, ή θεσσαλονίκι είναι κοντά.",
+   "wer_bare": 0.125,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "de-DE-SeraphinaMultilingualNeural",
+  "reference": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "text": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "syllables_per_s": 7.32,
+  "f0": {
+   "median_hz": 167.9,
+   "range_st": 9.6
+  },
+  "azure": {
+   "text": "θέλω να μιλήσω με τον γιατρό για την εξέταση",
+   "confidence": 0.82924473,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θέλω να μιλήσω με το γιατρό για την εξέταση.",
+   "wer_bare": 0.111,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-GB-AdaMultilingualNeural",
+  "reference": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "text": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "syllables_per_s": 7.59,
+  "f0": {
+   "median_hz": 196.5,
+   "range_st": 13.0
+  },
+  "azure": {
+   "text": "θέλω να μιλήσω με τον γιατρό για την εξέταση",
+   "confidence": 0.8130493,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_F кандидаты",
+  "voice": "en-US-AvaMultilingualNeural",
+  "reference": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "text": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "syllables_per_s": 8.87,
+  "f0": {
+   "median_hz": 247.5,
+   "range_st": 13.0
+  },
+  "azure": {
+   "text": "θέλω να μιλήσω με τον γιατρό για την εξέταση",
+   "confidence": 0.86017543,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "de-DE-FlorianMultilingualNeural",
+  "reference": "Όχι, δεν έχω χρόνο τώρα. Μην περιμένεις εδώ, σε παρακαλώ.",
+  "text": "Όχι, δεν έχω χρόνο τώρα. Μην περιμένεις εδώ, σε παρακαλώ.",
+  "syllables_per_s": 6.19,
+  "f0": {
+   "median_hz": 146.8,
+   "range_st": 14.5
+  },
+  "azure": {
+   "text": "όχι δεν έχω χρόνο τώρα μην περιμένεις εδώ σε παρακαλώ",
+   "confidence": 0.7905113,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Όχι, δεν έχω χρόνο τώρα. Μην περιμένεις εδώ, σε παρακαλώ.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "en-US-AshTurboMultilingualNeural",
+  "reference": "Όχι, δεν έχω χρόνο τώρα. Μην περιμένεις εδώ, σε παρακαλώ.",
+  "text": "Όχι, δεν έχω χρόνο τώρα. Μην περιμένεις εδώ, σε παρακαλώ.",
+  "syllables_per_s": 6.37,
+  "f0": {
+   "median_hz": 138.4,
+   "range_st": 18.2
+  },
+  "azure": {
+   "text": "όχι δεν έχω χρόνο τώρα μην περιμένεις εδώ σε παρακαλώ",
+   "confidence": 0.89232874,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Όχι. Δεν έχω χρόνο τώρα. Μην περιμένεις εδώ. Σε παρακαλώ.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "de-DE-FlorianMultilingualNeural",
+  "reference": "Κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη.",
+  "text": "Κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη.",
+  "syllables_per_s": 6.13,
+  "f0": {
+   "median_hz": 139.4,
+   "range_st": 13.5
+  },
+  "azure": {
+   "text": "και εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη",
+   "confidence": 0.769315,
+   "wer_bare": 0.1,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "και εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη.",
+   "wer_bare": 0.1,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "en-US-AshTurboMultilingualNeural",
+  "reference": "Κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη.",
+  "text": "Κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη.",
+  "syllables_per_s": 6.23,
+  "f0": {
+   "median_hz": 136.3,
+   "range_st": 15.0
+  },
+  "azure": {
+   "text": "κι εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη",
+   "confidence": 0.815694,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "και εγώ θα ρωτήσω ποιος μπορεί να μοιραστεί την επίβλεψη.",
+   "wer_bare": 0.1,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "de-DE-FlorianMultilingualNeural",
+  "reference": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "text": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "syllables_per_s": 6.2,
+  "f0": {
+   "median_hz": 133.4,
+   "range_st": 13.7
+  },
+  "azure": {
+   "text": "ο νόμος ψηφίστηκε ενώ ο νομός ετοιμάζεται",
+   "confidence": 0.7581549,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ο νόμος ψηφίστηκε ενώ ο νόμος ετοιμάζεται.",
+   "wer_bare": 0.0,
+   "stress": [
+    "νομός→νόμος"
+   ],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "en-US-AshTurboMultilingualNeural",
+  "reference": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "text": "Ο νόμος ψηφίστηκε, ενώ ο νομός ετοιμάζεται.",
+  "syllables_per_s": 6.15,
+  "f0": {
+   "median_hz": 129.6,
+   "range_st": 16.3
+  },
+  "azure": {
+   "text": "ο νόμος ψηφίστηκε ενώ ο νομός ετοιμάζεται",
+   "confidence": 0.77668434,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ο νόμος ψηφίστηκε ενώ ο νομός ετοιμάζεται.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "de-DE-FlorianMultilingualNeural",
+  "reference": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "text": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "syllables_per_s": 4.0,
+  "f0": {
+   "median_hz": 131.0,
+   "range_st": 14.0
+  },
+  "azure": {
+   "text": "πότε θα έρθεις ποτέ δεν αργείς",
+   "confidence": 0.68232334,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Πότε θα ερθείς, ποτέ δεν αργείς.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "en-US-AshTurboMultilingualNeural",
+  "reference": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "text": "Πότε θα έρθεις; Ποτέ δεν αργείς.",
+  "syllables_per_s": 5.0,
+  "f0": {
+   "median_hz": 152.9,
+   "range_st": 15.5
+  },
+  "azure": {
+   "text": "πότε θα ρθεις ποτέ δεν αργείς",
+   "confidence": 0.59186107,
+   "wer_bare": 0.167,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Πότε θα φεύγεις, ποτέ δεν αργείς.",
+   "wer_bare": 0.167,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "de-DE-FlorianMultilingualNeural",
+  "reference": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "text": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "syllables_per_s": 5.24,
+  "f0": {
+   "median_hz": 141.2,
+   "range_st": 13.3
+  },
+  "azure": {
+   "text": "το ποτήρι είναι γεμάτο η θεσσαλονίκη είναι κοντά",
+   "confidence": 0.81937784,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Το ποτήρι είναι γεμάτο. Η θεσαλονίκη είναι κοντά.",
+   "wer_bare": 0.125,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "en-US-AshTurboMultilingualNeural",
+  "reference": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "text": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+  "syllables_per_s": 5.79,
+  "f0": {
+   "median_hz": 159.7,
+   "range_st": 17.1
+  },
+  "azure": {
+   "text": "το ποτήρι είναι γεμάτο η θεσσαλονίκη είναι κοντά",
+   "confidence": 0.85867405,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Το ποτήρι είναι γεμάτο. Η Θεσσαλονίκη είναι κοντά.",
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "de-DE-FlorianMultilingualNeural",
+  "reference": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "text": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "syllables_per_s": 8.41,
+  "f0": {
+   "median_hz": 142.7,
+   "range_st": 13.2
+  },
+  "azure": {
+   "text": "θέλω να μιλήσω με τον γιατρό για την εξέταση",
+   "confidence": 0.8469712,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θέλω να μιλήσω με το γιατρό για την εξέταση.",
+   "wer_bare": 0.111,
+   "stress": [],
+   "spelled": []
+  }
+ },
+ {
+  "case": "ROLE_CAFE_M кандидаты",
+  "voice": "en-US-AshTurboMultilingualNeural",
+  "reference": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "text": "Θέλω να μιλήσω με τον γιατρό για την εξέταση.",
+  "syllables_per_s": 8.29,
+  "f0": {
+   "median_hz": 150.1,
+   "range_st": 11.8
+  },
+  "azure": {
+   "text": "θέλω να μιλήσω με τον γιατρό για την εξέταση",
+   "confidence": 0.77596486,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Θέλω να μιλήσω με το γιατρό για την εξέταση.",
+   "wer_bare": 0.111,
+   "stress": [],
+   "spelled": []
+  }
+ }
+]
