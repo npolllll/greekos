@@ -1,0 +1,14 @@
+{
+ "voices": {
+  "job_rows": 242,
+  "assets_cast_approved": 0
+ },
+ "release": {
+  "status": "pending",
+  "reason": "нет действующей политики владельца с поручением AI-редактору"
+ },
+ "audio_release": {
+  "status": "pending",
+  "reason": "нет действующей политики владельца с поручением AI-редактору"
+ }
+}
