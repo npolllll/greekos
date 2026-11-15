@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { adminClient } from '../supabase/admin.ts';
 import { HttpError, type SessionUser } from '../auth.ts';
-import { loadItem, releaseMap, playableAudio, itemAccess, type ItemRow } from '../content/repo.ts';
+import { loadItem, releaseMap, playableAudio, itemAccess, awaitsRecording, type ItemRow } from '../content/repo.ts';
 import { scoreDeterministic, type DeterministicScore } from '../scoring/score.ts';
 import { assessOpenResponse, type AiAssessment } from '../ai/assessor.ts';
 import { llmConfigured } from '../providers/llm.ts';
@@ -94,7 +94,7 @@ export async function submitAttempt(user: SessionUser, req: AttemptRequest): Pro
   const assisted = req.assistance !== 'none';
   const correct = verdict === 'CORRECT' || verdict === 'ACCEPTABLE_VARIANT';
   // A typed answer to a spoken task is a written fallback: stored and assessed, never spoken mastery.
-  const learnerSpeechTask = SPOKEN_TYPES.has(item.item_type) || (item.requires_audio && item.audio_job_ids.length === 0);
+  const learnerSpeechTask = SPOKEN_TYPES.has(item.item_type) || (item.requires_audio && item.audio_job_ids.length === 0 && !awaitsRecording(item));
   const spokenTyped = learnerSpeechTask && req.response_source === 'typed';
   const masteryCounted = !preview && !spokenTyped && !NO_MASTERY_CONTEXTS.has(req.context) && reliable && !assisted && (correct || verdict === 'INCORRECT_CONFIRMED');
 

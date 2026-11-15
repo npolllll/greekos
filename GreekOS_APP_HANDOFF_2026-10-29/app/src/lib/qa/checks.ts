@@ -246,6 +246,7 @@ export interface ItemForQa {
   unit_id: string | null;
   item_type: string;
   level: string | null;
+  section?: string | null;
   scoring_strategy: string;
   requires_audio: boolean;
   competency_ids: string[];
@@ -338,7 +339,9 @@ export function checkItem(it: ItemForQa, ctx: QaContext): Finding[] {
   // A task with its own recording that is not marked as audio would be shown without the recording and
   // without its (hidden) transcript — unanswerable (found by the final AI review, 15.11.2026).
   if (!it.requires_audio && it.audio_job_ids.length) f.push({ check_id: 'modality.audio_flag', severity: 'blocking', field: 'requires_audio', message_ru: 'У задания есть запись, но оно не помечено как задание на слух: ученик не увидит ни записи, ни текста.', evidence: { audio_job_ids: it.audio_job_ids } });
-  if (it.requires_audio && !it.audio_job_ids.length) f.push({ check_id: 'modality.spoken', severity: 'info', field: 'requires_audio', message_ru: 'Требуется речь ученика (не стимул): оценивается только по подтверждённому транскрипту.' });
+  // A listening task whose recording is not made yet stays closed (it is not a speaking task).
+  if (it.section === 'listening' && !it.audio_job_ids.length) f.push({ check_id: 'modality.awaits_recording', severity: 'info', field: 'audio_job_ids', message_ru: 'Задание на слух ждёт записи, которой ещё нет: до неё ученику не показывается.' });
+  else if (it.requires_audio && !it.audio_job_ids.length) f.push({ check_id: 'modality.spoken', severity: 'info', field: 'requires_audio', message_ru: 'Требуется речь ученика (не стимул): оценивается только по подтверждённому транскрипту.' });
   // Sources and rights
   const claimIds = ctx.itemClaims.get(it.item_id) ?? [];
   const unknownClaims = claimIds.filter((c) => !ctx.claims.has(c));

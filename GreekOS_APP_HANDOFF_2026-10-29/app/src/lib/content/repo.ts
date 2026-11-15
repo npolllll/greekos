@@ -192,12 +192,21 @@ export interface ItemAccess {
   devPreview: boolean;
 }
 
+/**
+ * A listening task whose recording does not exist yet («После будущей записи: …»): it waits for audio.
+ * It is neither a speaking task nor a text task — without the recording it cannot be answered.
+ */
+export function awaitsRecording(row: Pick<ItemRow, 'section' | 'audio_job_ids'>): boolean {
+  return row.section === 'listening' && row.audio_job_ids.length === 0;
+}
+
 export function itemAccess(row: ItemRow, releases: Map<string, ReleaseRow>, audio: Map<string, PlayableAudio>): ItemAccess {
   const rel = releases.get(row.item_id);
   const released = !!rel;
   // requires_audio without audio jobs = the learner must SPEAK (no stimulus audio to wait for);
   // that is enforced at answer time (voice + confirmed transcript), not by gating the item.
-  const audioReady = !row.requires_audio || row.audio_job_ids.length === 0 || row.audio_job_ids.every((a) => audio.has(a));
+  // A listening task without its recording waits for audio instead.
+  const audioReady = !awaitsRecording(row) && (!row.requires_audio || row.audio_job_ids.length === 0 || row.audio_job_ids.every((a) => audio.has(a)));
   const devAudio = row.audio_job_ids.some((a) => audio.get(a)?.dev_only);
   return { released, audioReady, learnerUsable: released && audioReady, reason: !released ? 'CONTENT_GATED' : !audioReady ? 'AUDIO_PENDING' : 'OK', devPreview: isDevPreviewRelease(rel) || (released && audioReady && devAudio) };
 }
