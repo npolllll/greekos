@@ -500,8 +500,7 @@ export async function applyAiTextRevisions(fixes: TextFix[], label: string): Pro
     if (!res.applied) { out.push({ id: f.id, kind: f.kind, status: res.failed.length ? 'changed_since' : 'already', failed: res.failed.length ? res.failed : undefined }); continue; }
     const hash = sha256Hex(stableStringify(res.next));
     const payloadPrivate = f.kind === 'unit' ? { unit_id: f.id, content_hash: hash, teaching_material: res.next, patched_from: r.current_hash } : { [spec.key]: f.id, payload: res.next, patched_from: r.current_hash };
-    const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: spec.kind, content_id: f.id, content_hash: hash, module: spec.module, payload_private: payloadPrivate }).select('id').single();
-    if (error) throw new Error(error.message);
+    const rev = { id: await revisionFor(spec.kind, f.id, hash, spec.module, payloadPrivate) };
     // A scenario's objective column mirrors its payload (shown in the scenario list).
     const objective = f.kind === 'scenario' ? (res.next as { learning_objective?: unknown }).learning_objective : undefined;
     const extra = typeof objective === 'string' ? { objective_ru: objective } : {};
@@ -541,12 +540,24 @@ export async function applyAudioFlagRevisions(): Promise<{ applied: string[] }> 
 }
 
 /** A new immutable item revision with history and revocation, for envelope fields `patchItem` does not edit. */
+/**
+ * The revision of exactly this content. Content that returns to an earlier state (a repair that undoes
+ * repeated copies) reuses that revision: a revision is unique per kind, id and content hash.
+ */
+async function revisionFor(kind: string, id: string, hash: string, module: string | null, payload: unknown): Promise<string> {
+  const db = adminClient();
+  const { data: prior } = await db.from('content_revisions').select('id').eq('content_kind', kind).eq('content_id', id).eq('content_hash', hash).maybeSingle();
+  if (prior) return prior.id as string;
+  const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: kind, content_id: id, content_hash: hash, module, payload_private: payload }).select('id').single();
+  if (error) throw new Error(error.message);
+  return rev.id as string;
+}
+
 async function reviseItemEnvelope(row: { item_id: string; module: string; current_hash: string }, next: ItemEnvelope, changes: Record<string, { before: unknown; after: unknown }>, reason: string): Promise<string> {
   const db = adminClient();
   const hash = contentHash(next);
   if (hash === row.current_hash) return hash;
-  const { data: rev, error } = await db.from('content_revisions').insert({ content_kind: 'item', content_id: row.item_id, content_hash: hash, module: row.module, payload_private: next }).select('id').single();
-  if (error) throw new Error(error.message);
+  const rev = { id: await revisionFor('item', row.item_id, hash, row.module, next) };
   const { error: ue } = await db.from('items').update({ envelope: next, current_hash: hash, revision_id: rev.id }).eq('item_id', row.item_id).eq('current_hash', row.current_hash);
   if (ue) throw new Error(ue.message);
   await db.from('content_patches').insert({ content_kind: 'item', content_id: row.item_id, base_hash: row.current_hash, new_hash: hash, changes, reason, revision_id: rev.id, created_by: null, system_actor: CONTENT_REVISION_ACTOR });

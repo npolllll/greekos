@@ -143,7 +143,8 @@ fi
 run cloud_env npx tsx --conditions=react-server scripts/qa-content-revisions.ts
 # Releases are bound to the hashes a FULL run checked. A new full run whenever content changed after the
 # last one, or the last one ran without the spelling dictionary (otherwise revised objects read as STALE).
-STALE=$(sql "select (select coalesce(max(started_at), 'epoch') from public.qa_batches where status = 'COMPLETED' and scope->>'kind' = 'all' and coalesce((counts->>'spelling_checked')::int, 0) = 1) < (select coalesce(max(created_at), 'epoch') from public.content_revisions)")
+# A patch counts too: a repair can return content to an earlier revision without creating a new one.
+STALE=$(sql "select (select coalesce(max(started_at), 'epoch') from public.qa_batches where status = 'COMPLETED' and scope->>'kind' = 'all' and coalesce((counts->>'spelling_checked')::int, 0) = 1) < greatest((select coalesce(max(created_at), 'epoch') from public.content_revisions), (select coalesce(max(created_at), 'epoch') from public.content_patches))")
 if [ "$STALE" = "t" ] || [ "$DRY" = 1 ]; then run cloud_env npx tsx scripts/qa-batch.ts --label "Полный прогон после развёртывания $(date -u +%F)"
 else echo "полный прогон актуален: контент после него не менялся"; fi
 
