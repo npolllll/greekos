@@ -1,2 +1,2 @@
-e2e,release-readiness,qa-fails
-# 2026-11-15 final main fb86a08: course walk with reading texts shown
+release-readiness
+# 2026-11-15 baseline before the fix: audio ready for the AI editor except the owner items
