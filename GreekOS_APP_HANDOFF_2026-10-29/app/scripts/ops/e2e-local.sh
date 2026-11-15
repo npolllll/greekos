@@ -37,6 +37,16 @@ npx tsx scripts/qa-batch.ts --label "e2e: первый полный прогон
 npx tsx --conditions=react-server scripts/qa-autofix.ts > "$OUT/qa-autofix.json"
 npx tsx --conditions=react-server scripts/qa-engineering-fixes.ts > "$OUT/qa-engineering.json"
 npx tsx --conditions=react-server scripts/qa-content-revisions.ts | tee "$OUT/content-revisions.json"
+# Repeated deploys change nothing, and copies left by the earlier non-idempotent text fix are repaired: production
+# had the U-B1-011 addition six times (15.11.2026). Recreate that state, then run the revisions twice.
+TAIL=' В повседневной речи простое «закрыто» (магазин, касса, дверь) обычно передают прилагательным κλειστός: Το ταμείο είναι κλειστό; κλεισμένος подчёркивает результат чьего-то действия, а κλεισμένο τραπέζι/δωμάτιο значит «забронированный».'
+echo "update public.units set teaching = jsonb_set(teaching, '{theory_ru}', to_jsonb(replace(teaching->>'theory_ru', :'tail', repeat(:'tail', 6)))) where unit_id = 'U-B1-011';" | psql "$DB" -X -v ON_ERROR_STOP=1 -q -v tail="$TAIL"
+npx tsx --conditions=react-server scripts/qa-content-revisions.ts > "$OUT/content-revisions-repair.json"
+npx tsx --conditions=react-server scripts/qa-content-revisions.ts > "$OUT/content-revisions-again.json"
+COPIES=$(echo "select (length(teaching->>'theory_ru') - length(replace(teaching->>'theory_ru', :'tail', ''))) / length(:'tail') from public.units where unit_id = 'U-B1-011';" | psql "$DB" -X -At -v tail="$TAIL")
+REPAIRED=$(jq '.final_review.texts.applied' "$OUT/content-revisions-repair.json"); AGAIN=$(jq '.final_review.texts.applied' "$OUT/content-revisions-again.json")
+echo "U-B1-011 repair: copies now $COPIES, repair run applied $REPAIRED, next run applied $AGAIN"
+[ "$COPIES" = 1 ] && [ "$REPAIRED" = 1 ] && [ "$AGAIN" = 0 ] || { echo "::error::text fix repair is not idempotent"; exit 1; }
 npx tsx scripts/qa-batch.ts --label "e2e: полный прогон после правок" | tee "$OUT/qa-final.json"
 
 # The product suite reads the corpus snapshot (git-ignored locally): export it from the loaded database.
