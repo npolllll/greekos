@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { spokenForm } from '@/lib/audio/spoken-form';
+import { spokenForm, spokenKey, spokenSsmlMarkup } from '@/lib/audio/spoken-form';
 
 /** Spoken form for the voice (probe 15.11.2026: Azure spelled these forms as letter names). */
 describe('spoken form for Greek TTS', () => {
@@ -16,5 +16,15 @@ describe('spoken form for Greek TTS', () => {
   });
   it('removes the second accent only for words the voice mis-stressed', () => {
     expect(spokenForm('Αλλά η συνάδελφός μου εργάζεται.')).toBe('Αλλά η συνάδελφος μου εργάζεται.');
+  });
+  it('reads the interjection «Α» and the letter name «νι» with IPA phonemes', () => {
+    expect(spokenSsmlMarkup('Α, καλά… Χωρίς διάβασμα;')).toBe('<phoneme alphabet="ipa" ph="a">Α</phoneme>, καλά… Χωρίς διάβασμα;');
+    expect(spokenSsmlMarkup('Ναι. Α! Ήρθες;')).toBe('Ναι. <phoneme alphabet="ipa" ph="a">Α</phoneme>! Ήρθες;');
+    expect(spokenSsmlMarkup('Άλφα, νι, νι, άλφα.')).toBe('Άλφα, <phoneme alphabet="ipa" ph="ni">νι</phoneme>, <phoneme alphabet="ipa" ph="ni">νι</phoneme>, άλφα.');
+    // A label stays a letter name; words containing «νι» are untouched.
+    expect(spokenSsmlMarkup('Επιλέξτε Α, Β ή Γ.')).toBe('Επιλέξτε Α, Β ή Γ.');
+    expect(spokenSsmlMarkup('Η Νίκη και ο Γιάννης νικάνε.')).toBe('Η Νίκη και ο Γιάννης νικάνε.');
+    expect(spokenKey('Καλημέρα σας.')).toBeNull();
+    expect(spokenKey('Α, καλά έκανε.')).not.toBeNull();
   });
 });

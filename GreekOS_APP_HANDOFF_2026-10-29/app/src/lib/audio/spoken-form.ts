@@ -6,6 +6,7 @@
  *   «Γι’ αυτό»     → read «γάμα γιώτα, αυτό»      → spoken «Γιαυτό»     (both recognisers then read «γι’ αυτό»)
  *   «στ’ αλήθεια»  → read «σίγμα ταυ αλήθεια»     → spoken «σταλήθεια»
  *   «συνάδελφός μου» (two accent marks) → stressed on -δέλ- → spoken «συνάδελφος μου»
+ *   «Α, καλά…» (interjection) → read «άλφα»; «νι» in spelling → read «νι γιώτα» (phoneme tags, see below)
  * Each rule is narrow and tested; nothing else in the text is touched.
  */
 const VOWEL = 'αάεέηήιίοόυύωώϊϋΐΰΑΆΕΈΗΉΙΊΟΌΥΎΩΏ';
@@ -30,9 +31,17 @@ export function spokenForm(text: string): string {
   return t;
 }
 
-/** SSML-level rules on already-escaped text (for forms only a phoneme tag reads right). */
+/**
+ * SSML-level rules on already-escaped text (forms only a phoneme tag reads right; probe 2, 15.11.2026):
+ *   interjection «Α,» at the start of a sentence → read «άλφα»; with an IPA [a] both recognisers read «α»
+ *   letter name «νι» in spelling («Άλφα, νι, νι, άλφα») → read «νι γιώτα»; with IPA [ni] it is the letter name
+ * «Α» as a label («Επιλέξτε Α, Β ή Γ») is not at a sentence start and stays «άλφα».
+ */
+const PH = (text: string, ipa: string) => `<phoneme alphabet="ipa" ph="${ipa}">${text}</phoneme>`;
 export function spokenSsmlMarkup(escaped: string): string {
-  return escaped;
+  return escaped
+    .replace(/(^|[.!;?…]\s+|«)([Αα])(?=\s*[,!…])/gu, (_m, pre: string, a: string) => `${pre}${PH(a, 'a')}`)
+    .replace(/(^|[\s,.—–-])([Νν]ι)(?=[\s,.—–-]|$)/gu, (_m, pre: string, ni: string) => `${pre}${PH(ni, 'ni')}`);
 }
 
 /** The spoken form when it differs from the text (part of a course file's render key), else null. */
