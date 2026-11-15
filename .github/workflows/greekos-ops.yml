@@ -135,7 +135,7 @@ jobs:
       - name: acceptance
         if: contains(steps.task.outputs.tasks, ',acceptance,') || contains(steps.task.outputs.tasks, ',acceptance-speaking,')
         env:
-          ACCEPT_STEPS: ${{ contains(steps.task.outputs.tasks, ',acceptance-speaking,') && 'speaking.mobile' || '' }}
+          ACCEPT_STEPS: ${{ contains(steps.task.outputs.tasks, ',acceptance-speaking,') && 'speaking,speaking.mobile' || '' }}
         run: |
           npx playwright install --with-deps chromium
           npx tsx scripts/ops/acceptance.ts

@@ -163,6 +163,8 @@ async function main() {
       check('access.owner_login_one_time_link', /\/admin/.test(owner.url()));
       await shot(owner, 'owner-admin');
     });
+    // A Speaking-only run still needs the owner's session for the text dialogues (owner preview).
+    if (!owner && ONLY.includes('speaking')) { owner = await ownerPage(browser); await owner.waitForURL(/\/admin/, { timeout: 30_000 }); }
     if (!owner && !ONLY.length) throw new Error('no owner session');
     const op = owner as unknown as Page;
 
