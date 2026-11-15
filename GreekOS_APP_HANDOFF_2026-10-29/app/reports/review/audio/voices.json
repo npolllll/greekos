@@ -4,111 +4,2845 @@
   "locale": "el-GR",
   "gender": "Female",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.39,
+    "syllables_per_s": 7.22,
+    "f0": {
+     "median_hz": 234.6,
+     "range_st": 11.2
+    },
+    "longest_pause_s": 1.01,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.834165,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.333,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Καλημέρα σας! Θα ήθελε ένα καφεφρέντο, μέτριο και ένα νερό παρακαλώ!"
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.97,
+    "syllables_per_s": 7.17,
+    "f0": {
+     "median_hz": 223.5,
+     "range_st": 12.1
+    },
+    "longest_pause_s": 1.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8136886,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.091,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 1.0,
+     "text": "Πότε φεύγει το λεωφορίο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο."
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.16,
+    "syllables_per_s": 7.19,
+    "f0": {
+     "median_hz": 230.7,
+     "range_st": 11.2
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.82590026,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.231,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.993,
+     "text": "Ο νόμος ξυφείς τηκεχθές, ενώ ο νομός Χαλκηδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 4.86,
+    "syllables_per_s": 7.59,
+    "f0": {
+     "median_hz": 224.3,
+     "range_st": 9.2
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.7975434,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.583,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Το διαμέρισμα έχει 2 υπνοδομάτια και κοστίζει 450 ευρωτομίνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 5.05,
+    "syllables_per_s": 6.74,
+    "f0": {
+     "median_hz": 222.1,
+     "range_st": 12.3
+    },
+    "longest_pause_s": 0.95,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.69771874,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.994,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.67,
+    "syllables_per_s": 6.22,
+    "f0": {
+     "median_hz": 235.5,
+     "range_st": 9.7
+    },
+    "longest_pause_s": 0.28,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7875834,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.222,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 3.86,
+    "syllables_per_s": 7.69,
+    "f0": {
+     "median_hz": 229.8,
+     "range_st": 11.7
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.84753186,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.545,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την πέντη στη 6,5 απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.84,
+    "syllables_per_s": 4.39,
+    "f0": {
+     "median_hz": 223.6,
+     "range_st": 11.5
+    },
+    "longest_pause_s": 0.97,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7485443,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.4,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Έψιλον, καλά, δεν πειράζει. Τα λέμε αύριο στην πλατιέρη στο τέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.301,
+   "whisper_greek_p": 0.997,
+   "azure_confidence": 0.794,
+   "stress_mismatches": 0,
+   "syllables_per_s": 6.776,
+   "f0_median_hz": 228.012,
+   "f0_range_st": 11.112
+  }
  },
  {
   "voice": "el-GR-NestorasNeural",
   "locale": "el-GR",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.71,
+    "syllables_per_s": 7.07,
+    "f0": {
+     "median_hz": 110.3,
+     "range_st": 13.6
+    },
+    "longest_pause_s": 1.02,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8054629,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.25,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Καλημέρα σας! Θα ήθελα ένα καφεφρέντο, μέτριο και ένα νερό παρακαλώ!"
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 5.21,
+    "syllables_per_s": 6.89,
+    "f0": {
+     "median_hz": 103.7,
+     "range_st": 13.7
+    },
+    "longest_pause_s": 1.05,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.79334056,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.091,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Πότε φεύγει το λεωφορίο για τη Θεσσαλονίκη? Ποτέ δεν αργει τόσο!"
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.35,
+    "syllables_per_s": 7.58,
+    "f0": {
+     "median_hz": 111.6,
+     "range_st": 11.3
+    },
+    "longest_pause_s": 0.28,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.78024685,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.991,
+     "text": "Ο νόμος ψηφίστηκε χθές, ενώ ο νομός Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 4.79,
+    "syllables_per_s": 7.9,
+    "f0": {
+     "median_hz": 108.8,
+     "range_st": 7.1
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.8293777,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.583,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Το διαμέρισμα έχει 2 υπνοδομάτια και κοστίζει 450 ευρωτομίνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 5.45,
+    "syllables_per_s": 6.48,
+    "f0": {
+     "median_hz": 110.5,
+     "range_st": 11.4
+    },
+    "longest_pause_s": 1.07,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.74092263,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.91,
+    "syllables_per_s": 5.95,
+    "f0": {
+     "median_hz": 116.6,
+     "range_st": 9.5
+    },
+    "longest_pause_s": 0.28,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.76919293,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.111,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 4.05,
+    "syllables_per_s": 7.46,
+    "f0": {
+     "median_hz": 109.0,
+     "range_st": 10.1
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.77574074,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.273,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την πέντη στη σεξή και μισή το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 6.11,
+    "syllables_per_s": 4.96,
+    "f0": {
+     "median_hz": 104.6,
+     "range_st": 11.5
+    },
+    "longest_pause_s": 1.04,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7393131,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.2,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Έψιλον, καλά, δεν πειράζει. Τα λέμε αύριο στην πλατεία Εριστωτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.198,
+   "whisper_greek_p": 0.997,
+   "azure_confidence": 0.779,
+   "stress_mismatches": 0,
+   "syllables_per_s": 6.786,
+   "f0_median_hz": 109.388,
+   "f0_range_st": 11.025
+  }
  },
  {
   "voice": "de-DE-FlorianMultilingualNeural",
   "locale": "de-DE",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.22,
+    "syllables_per_s": 6.53,
+    "f0": {
+     "median_hz": 141.4,
+     "range_st": 13.1
+    },
+    "longest_pause_s": 0.55,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.7522391,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ frendo μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Καλημέρα σας! Θα ήθελα έναν καφεφρέντο, μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.38,
+    "syllables_per_s": 6.21,
+    "f0": {
+     "median_hz": 144.0,
+     "range_st": 13.2
+    },
+    "longest_pause_s": 0.5,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8773006,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο!"
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.28,
+    "syllables_per_s": 6.86,
+    "f0": {
+     "median_hz": 134.6,
+     "range_st": 12.1
+    },
+    "longest_pause_s": 0.42,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.77807605,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Ο νόμος ψηφίστηκε χθές ενώ ο νομός Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 4.79,
+    "syllables_per_s": 6.73,
+    "f0": {
+     "median_hz": 137.2,
+     "range_st": 11.4
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.7666204,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.417,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Το διαμέρισμα έχει 2 υπνοδομάτια και κοστίζει 450 ευρώ των μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.65,
+    "syllables_per_s": 5.92,
+    "f0": {
+     "median_hz": 135.6,
+     "range_st": 14.7
+    },
+    "longest_pause_s": 0.47,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8227009,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.967,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.62,
+    "syllables_per_s": 5.6,
+    "f0": {
+     "median_hz": 139.6,
+     "range_st": 13.7
+    },
+    "longest_pause_s": 0.48,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.76049155,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.111,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 3.77,
+    "syllables_per_s": 6.75,
+    "f0": {
+     "median_hz": 144.4,
+     "range_st": 14.7
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.837993,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.455,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 1.0,
+     "text": "Η συνάντηση μεταφέρθηκε την μπέμπτης της 6η και 1.5η το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.54,
+    "syllables_per_s": 4.49,
+    "f0": {
+     "median_hz": 145.4,
+     "range_st": 14.9
+    },
+    "longest_pause_s": 0.5,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7271563,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.1,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Εψιλον καλά δεν πειράζει. Τα λέμε αύριο στην πλατεία αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.021,
+   "whisper_wer_bare": 0.166,
+   "whisper_greek_p": 0.994,
+   "azure_confidence": 0.79,
+   "stress_mismatches": 0,
+   "syllables_per_s": 6.136,
+   "f0_median_hz": 140.275,
+   "f0_range_st": 13.475
+  }
  },
  {
   "voice": "de-DE-SeraphinaMultilingualNeural",
   "locale": "de-DE",
   "gender": "Female",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.61,
+    "syllables_per_s": 5.79,
+    "f0": {
+     "median_hz": 170.1,
+     "range_st": 9.9
+    },
+    "longest_pause_s": 0.52,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.75945705,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.9,
+     "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.83,
+    "syllables_per_s": 5.34,
+    "f0": {
+     "median_hz": 163.2,
+     "range_st": 10.5
+    },
+    "longest_pause_s": 0.44,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8566007,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο!"
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.95,
+    "syllables_per_s": 5.87,
+    "f0": {
+     "median_hz": 174.6,
+     "range_st": 10.5
+    },
+    "longest_pause_s": 0.38,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [
+      "νομός→νόμος"
+     ],
+     "confidence": 0.7550471,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νόμος χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [
+      "νομός→νόμος"
+     ],
+     "lang": "el",
+     "lang_p": 0.959,
+     "text": "Ο νόμος ψηφίστηκε χθές ενώ ο νόμος Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 5.42,
+    "syllables_per_s": 5.85,
+    "f0": {
+     "median_hz": 169.5,
+     "range_st": 7.3
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.81429,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.417,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζει 450 ευρώτο μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.95,
+    "syllables_per_s": 5.25,
+    "f0": {
+     "median_hz": 165.3,
+     "range_st": 9.1
+    },
+    "longest_pause_s": 0.48,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8371516,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.913,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.85,
+    "syllables_per_s": 4.95,
+    "f0": {
+     "median_hz": 166.0,
+     "range_st": 9.4
+    },
+    "longest_pause_s": 0.37,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7523644,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.222,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.995,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 4.42,
+    "syllables_per_s": 5.57,
+    "f0": {
+     "median_hz": 172.9,
+     "range_st": 8.8
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7901759,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.364,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την μπέμπτης της 6η και μισή του απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 6.01,
+    "syllables_per_s": 3.93,
+    "f0": {
+     "median_hz": 169.2,
+     "range_st": 9.4
+    },
+    "longest_pause_s": 0.49,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.786906,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.2,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Εψιλον, καλά, δεν πειράζει. Τα λέμε αύριο στην πλατεία Ριστωτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.16,
+   "whisper_greek_p": 0.97,
+   "azure_confidence": 0.794,
+   "stress_mismatches": 2,
+   "syllables_per_s": 5.319,
+   "f0_median_hz": 168.85,
+   "f0_range_st": 9.363
+  }
  },
  {
   "voice": "en-AU-WilliamMultilingualNeural",
   "locale": "en-AU",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 5.94,
+    "syllables_per_s": 6.22,
+    "f0": {
+     "median_hz": 108.8,
+     "range_st": 11.5
+    },
+    "longest_pause_s": 0.45,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7847716,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.994,
+     "text": "Καλημέρα σας! Θα ήθελα έναν καφεφρέντο, μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.41,
+    "syllables_per_s": 5.98,
+    "f0": {
+     "median_hz": 103.4,
+     "range_st": 10.7
+    },
+    "longest_pause_s": 0.46,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8280885,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο!"
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.25,
+    "syllables_per_s": 6.79,
+    "f0": {
+     "median_hz": 103.7,
+     "range_st": 10.2
+    },
+    "longest_pause_s": 0.39,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8350656,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [
+      "νομός→νόμος"
+     ],
+     "lang": "el",
+     "lang_p": 0.994,
+     "text": "Ο νόμος ψηφίστηκε χθές, ενώ ο νόμος Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 4.81,
+    "syllables_per_s": 6.64,
+    "f0": {
+     "median_hz": 104.4,
+     "range_st": 8.6
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.8062737,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.5,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζει 450 ευρωτομίνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.7,
+    "syllables_per_s": 5.57,
+    "f0": {
+     "median_hz": 104.1,
+     "range_st": 12.0
+    },
+    "longest_pause_s": 0.44,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7813697,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.58,
+    "syllables_per_s": 5.42,
+    "f0": {
+     "median_hz": 110.3,
+     "range_st": 12.0
+    },
+    "longest_pause_s": 0.34,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.82179785,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.222,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 3.75,
+    "syllables_per_s": 6.67,
+    "f0": {
+     "median_hz": 108.5,
+     "range_st": 9.7
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.72077245,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.545,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την BEM της της 6η και 1,5η το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.49,
+    "syllables_per_s": 4.27,
+    "f0": {
+     "median_hz": 104.4,
+     "range_st": 11.4
+    },
+    "longest_pause_s": 0.44,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.710167,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.2,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "εψιλον καλά δεν πειράζει τα λέμε αύριο στην πλατεία ριστωτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.214,
+   "whisper_greek_p": 0.997,
+   "azure_confidence": 0.786,
+   "stress_mismatches": 1,
+   "syllables_per_s": 5.945,
+   "f0_median_hz": 105.95,
+   "f0_range_st": 10.762
+  }
  },
  {
   "voice": "en-GB-AdaMultilingualNeural",
   "locale": "en-GB",
   "gender": "Female",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.59,
+    "syllables_per_s": 5.71,
+    "f0": {
+     "median_hz": 191.8,
+     "range_st": 14.0
+    },
+    "longest_pause_s": 0.43,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.74463934,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.985,
+     "text": "Καλημέρα σας! Θα ήθελα έναν καφεφρέντο, μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.62,
+    "syllables_per_s": 5.61,
+    "f0": {
+     "median_hz": 197.5,
+     "range_st": 15.3
+    },
+    "longest_pause_s": 0.42,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.83248544,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 1.0,
+     "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη? Ποτέ δεν αργει τόσο."
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.71,
+    "syllables_per_s": 6.25,
+    "f0": {
+     "median_hz": 191.6,
+     "range_st": 11.7
+    },
+    "longest_pause_s": 0.44,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7743005,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [
+      "νομός→νόμος"
+     ],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Ο νόμος ψηφίστηκε χθές ενώ ο νόμος Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 5.01,
+    "syllables_per_s": 6.37,
+    "f0": {
+     "median_hz": 190.7,
+     "range_st": 7.4
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.7906286,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.5,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζει 450 ευρωτομήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.78,
+    "syllables_per_s": 5.41,
+    "f0": {
+     "median_hz": 191.3,
+     "range_st": 14.4
+    },
+    "longest_pause_s": 0.41,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8075052,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.987,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.85,
+    "syllables_per_s": 5.07,
+    "f0": {
+     "median_hz": 215.0,
+     "range_st": 12.8
+    },
+    "longest_pause_s": 0.42,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.79276353,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 4.03,
+    "syllables_per_s": 6.18,
+    "f0": {
+     "median_hz": 188.1,
+     "range_st": 9.8
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7869781,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.545,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την μπέμπτης της 6η και 1.5η πόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.71,
+    "syllables_per_s": 4.03,
+    "f0": {
+     "median_hz": 196.9,
+     "range_st": 15.4
+    },
+    "longest_pause_s": 0.44,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.77032566,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.1,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Έψιλον, καλά, δεν πειράζει. Τα λέμε αύριο στην πλατεία Αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.174,
+   "whisper_greek_p": 0.995,
+   "azure_confidence": 0.787,
+   "stress_mismatches": 1,
+   "syllables_per_s": 5.579,
+   "f0_median_hz": 195.363,
+   "f0_range_st": 12.6
+  }
  },
  {
   "voice": "en-GB-OllieMultilingualNeural",
   "locale": "en-GB",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.54,
+    "syllables_per_s": 5.84,
+    "f0": {
+     "median_hz": 122.4,
+     "range_st": 12.9
+    },
+    "longest_pause_s": 0.51,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.80355084,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Καλημέρα σας! Θα ήθελα έναν καφεφρέντο, μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.75,
+    "syllables_per_s": 5.57,
+    "f0": {
+     "median_hz": 119.5,
+     "range_st": 12.0
+    },
+    "longest_pause_s": 0.49,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8215754,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο!"
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.6,
+    "syllables_per_s": 6.37,
+    "f0": {
+     "median_hz": 119.0,
+     "range_st": 10.0
+    },
+    "longest_pause_s": 0.4,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8312537,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [
+      "νομός→νόμος"
+     ],
+     "lang": "el",
+     "lang_p": 0.995,
+     "text": "Ο νόμος ψηφίστηκε χθές ενώ ο νόμος Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 5.14,
+    "syllables_per_s": 6.16,
+    "f0": {
+     "median_hz": 115.2,
+     "range_st": 10.6
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.825264,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.5,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζει 450 ευρωτομήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.91,
+    "syllables_per_s": 5.34,
+    "f0": {
+     "median_hz": 115.8,
+     "range_st": 15.0
+    },
+    "longest_pause_s": 0.5,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.73279625,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.989,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.84,
+    "syllables_per_s": 5.03,
+    "f0": {
+     "median_hz": 125.8,
+     "range_st": 13.4
+    },
+    "longest_pause_s": 0.42,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8140428,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.222,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Αν είχα περισσότερο χρόνο θα μάθε να να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 4.03,
+    "syllables_per_s": 6.2,
+    "f0": {
+     "median_hz": 125.0,
+     "range_st": 11.4
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7808673,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.545,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την μπέμπτης της 6η και 1.5η."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.96,
+    "syllables_per_s": 3.91,
+    "f0": {
+     "median_hz": 115.9,
+     "range_st": 12.4
+    },
+    "longest_pause_s": 0.43,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.77344424,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.1,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 1.0,
+     "text": "Εψιλον, καλά, δεν πειράζει. Τα λέμε αύριο στην πλατεία Αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.201,
+   "whisper_greek_p": 0.996,
+   "azure_confidence": 0.798,
+   "stress_mismatches": 1,
+   "syllables_per_s": 5.552,
+   "f0_median_hz": 119.825,
+   "f0_range_st": 12.213
+  }
  },
  {
   "voice": "en-US-AdamMultilingualNeural",
   "locale": "en-US",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.14,
+    "syllables_per_s": 5.76,
+    "f0": {
+     "median_hz": 116.9,
+     "range_st": 15.5
+    },
+    "longest_pause_s": 0.45,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.73432195,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Καλημέρα σας, θα ήθελα έναν καφεφρέντο, μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.29,
+    "syllables_per_s": 6.09,
+    "f0": {
+     "median_hz": 106.8,
+     "range_st": 15.6
+    },
+    "longest_pause_s": 0.4,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8162144,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.091,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.989,
+     "text": "Πότε φεύγει το λεωφορίο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο."
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.35,
+    "syllables_per_s": 6.64,
+    "f0": {
+     "median_hz": 107.5,
+     "range_st": 14.5
+    },
+    "longest_pause_s": 0.4,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.77931786,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.231,
+     "stress": [
+      "νομός→νόμος"
+     ],
+     "lang": "el",
+     "lang_p": 0.917,
+     "text": "Ο νόμος συφήστηκε εφθές ενώ ο νόμος Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 4.8,
+    "syllables_per_s": 6.62,
+    "f0": {
+     "median_hz": 109.2,
+     "range_st": 11.0
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.8118977,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.5,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.994,
+     "text": "Το διαμέρισμα έχει 2 υπνοδομάτια και κοστίζεται 450 ευρώ το μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.35,
+    "syllables_per_s": 5.9,
+    "f0": {
+     "median_hz": 126.3,
+     "range_st": 14.3
+    },
+    "longest_pause_s": 0.39,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8043203,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.763,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.86,
+    "syllables_per_s": 4.9,
+    "f0": {
+     "median_hz": 108.0,
+     "range_st": 16.2
+    },
+    "longest_pause_s": 0.38,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.74172467,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.222,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.993,
+     "text": "Αν είχα περισσότερο χρόνο θα μάθε να να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 4.03,
+    "syllables_per_s": 6.04,
+    "f0": {
+     "median_hz": 111.2,
+     "range_st": 11.8
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.83240616,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.545,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την 5 της της 6η και 1,5 το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.25,
+    "syllables_per_s": 4.61,
+    "f0": {
+     "median_hz": 115.6,
+     "range_st": 14.6
+    },
+    "longest_pause_s": 0.4,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7112825,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.1,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.995,
+     "text": "εύσυλλον, καλά δεν πειράζει. Τα λέμε αύριο στην πλατεία Αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.232,
+   "whisper_greek_p": 0.956,
+   "azure_confidence": 0.779,
+   "stress_mismatches": 1,
+   "syllables_per_s": 5.82,
+   "f0_median_hz": 112.688,
+   "f0_range_st": 14.188
+  }
  },
  {
   "voice": "en-US-AlloyTurboMultilingualNeural",
   "locale": "en-US",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.1,
+    "syllables_per_s": 6.65,
+    "f0": {
+     "median_hz": 147.7,
+     "range_st": 14.6
+    },
+    "longest_pause_s": 0.53,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.73238486,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 1.0,
+     "stress": [],
+     "lang": "es",
+     "lang_p": 0.528,
+     "text": "CalimeraSas, Zayce la enancafefrendo, métrio, quien anero, paracalo."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.22,
+    "syllables_per_s": 6.52,
+    "f0": {
+     "median_hz": 146.5,
+     "range_st": 13.6
+    },
+    "longest_pause_s": 0.5,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8497989,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο."
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.51,
+    "syllables_per_s": 6.56,
+    "f0": {
+     "median_hz": 144.3,
+     "range_st": 13.4
+    },
+    "longest_pause_s": 0.44,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8077333,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [
+      "νομός→νόμος"
+     ],
+     "lang": "el",
+     "lang_p": 0.982,
+     "text": "Ο νόμος ψηφίστηκε χθες ενώ ο νόμος Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 4.71,
+    "syllables_per_s": 6.89,
+    "f0": {
+     "median_hz": 146.4,
+     "range_st": 9.8
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7207514,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.333,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.995,
+     "text": "Το διαμέρισμα έχει 2 υπνοδομάτια και κοστίζει 450 ευρώ τον μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.41,
+    "syllables_per_s": 6.17,
+    "f0": {
+     "median_hz": 149.7,
+     "range_st": 16.1
+    },
+    "longest_pause_s": 0.5,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7869204,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.951,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.67,
+    "syllables_per_s": 5.47,
+    "f0": {
+     "median_hz": 147.4,
+     "range_st": 15.1
+    },
+    "longest_pause_s": 0.43,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.85756636,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.111,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.98,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 3.94,
+    "syllables_per_s": 6.4,
+    "f0": {
+     "median_hz": 153.2,
+     "range_st": 14.7
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7795764,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.364,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την 5η, 6η και 1η το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.11,
+    "syllables_per_s": 4.9,
+    "f0": {
+     "median_hz": 150.6,
+     "range_st": 16.0
+    },
+    "longest_pause_s": 0.48,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7414474,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.1,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Εψύλον. Καλά, δεν πειράζει. Τα λέμε αύριο στην πλατεία Αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.0,
+   "whisper_wer_bare": 0.248,
+   "whisper_greek_p": 0.863,
+   "azure_confidence": 0.785,
+   "stress_mismatches": 1,
+   "syllables_per_s": 6.195,
+   "f0_median_hz": 148.225,
+   "f0_range_st": 14.162
+  }
  },
  {
   "voice": "en-US-AmandaMultilingualNeural",
   "locale": "en-US",
   "gender": "Female",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.19,
+    "syllables_per_s": 6.22,
+    "f0": {
+     "median_hz": 227.7,
+     "range_st": 13.3
+    },
+    "longest_pause_s": 0.45,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.76684904,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.992,
+     "text": "Καλημέρα σας, θα ήθελα έναν καφεφρέντο μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.31,
+    "syllables_per_s": 6.12,
+    "f0": {
+     "median_hz": 201.0,
+     "range_st": 15.3
+    },
+    "longest_pause_s": 0.43,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8197327,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.091,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Πότε φεύγει το λεωφορίο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο."
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.62,
+    "syllables_per_s": 6.22,
+    "f0": {
+     "median_hz": 212.2,
+     "range_st": 12.5
+    },
+    "longest_pause_s": 0.35,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.77331656,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [
+      "νομός→νόμος"
+     ],
+     "lang": "el",
+     "lang_p": 0.976,
+     "text": "Ο νόμος ψηφίστηκε χθές, ενώ ο νόμος Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 5.08,
+    "syllables_per_s": 6.28,
+    "f0": {
+     "median_hz": 202.5,
+     "range_st": 11.2
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.7843308,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.333,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.943,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζεται 350 ευρώ τον μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.44,
+    "syllables_per_s": 5.74,
+    "f0": {
+     "median_hz": 223.9,
+     "range_st": 12.3
+    },
+    "longest_pause_s": 0.43,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8220269,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.954,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.89,
+    "syllables_per_s": 4.9,
+    "f0": {
+     "median_hz": 216.0,
+     "range_st": 12.7
+    },
+    "longest_pause_s": 0.4,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.73376244,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.111,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.988,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθαιναν να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 4.11,
+    "syllables_per_s": 5.98,
+    "f0": {
+     "median_hz": 218.2,
+     "range_st": 12.1
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8008592,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.273,
+     "stress": [
+      "απόγευμα→απογεύμα"
+     ],
+     "lang": "el",
+     "lang_p": 0.989,
+     "text": "Η συνάντηση μεταφέρθηκε την πέμπτης της έξη και μισή το απογεύμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.38,
+    "syllables_per_s": 4.37,
+    "f0": {
+     "median_hz": 222.1,
+     "range_st": 10.9
+    },
+    "longest_pause_s": 0.43,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8088945,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.2,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Εψύλον. Καλά, δεν πειράζει. Τα λέμε αύριο στην πλατία Αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.157,
+   "whisper_greek_p": 0.98,
+   "azure_confidence": 0.789,
+   "stress_mismatches": 2,
+   "syllables_per_s": 5.729,
+   "f0_median_hz": 215.45,
+   "f0_range_st": 12.537
+  }
  },
  {
   "voice": "en-US-AndrewMultilingualNeural",
   "locale": "en-US",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.2,
+    "syllables_per_s": 6.05,
+    "f0": {
+     "median_hz": 114.5,
+     "range_st": 14.2
+    },
+    "longest_pause_s": 0.46,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.78901005,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.25,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.864,
+     "text": "Καλημέρα σας, θα είθελα έναν καφεφρέντο μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.42,
+    "syllables_per_s": 5.87,
+    "f0": {
+     "median_hz": 114.3,
+     "range_st": 14.7
+    },
+    "longest_pause_s": 0.44,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7866433,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.091,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Πότε φεύγει το λεωφορίο για τη Θεσσαλονίκη. Ποτέ δεν αργεί τόσο."
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.75,
+    "syllables_per_s": 5.95,
+    "f0": {
+     "median_hz": 113.2,
+     "range_st": 11.6
+    },
+    "longest_pause_s": 0.31,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.81308275,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Ο νόμος ψηφίστηκε χθές ενώ ο νομός Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 5.51,
+    "syllables_per_s": 5.65,
+    "f0": {
+     "median_hz": 111.6,
+     "range_st": 10.0
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.7977705,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.417,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζει 450 ευρώτο μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.76,
+    "syllables_per_s": 5.19,
+    "f0": {
+     "median_hz": 107.9,
+     "range_st": 15.6
+    },
+    "longest_pause_s": 0.39,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7937941,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.988,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.62,
+    "syllables_per_s": 5.26,
+    "f0": {
+     "median_hz": 115.8,
+     "range_st": 14.6
+    },
+    "longest_pause_s": 0.37,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7603523,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.222,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.992,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 4.28,
+    "syllables_per_s": 5.64,
+    "f0": {
+     "median_hz": 122.0,
+     "range_st": 11.9
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.760532,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.364,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Η συνάντηση μεταφέρθηκε την 5 της της 6η και μισή το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.74,
+    "syllables_per_s": 4.1,
+    "f0": {
+     "median_hz": 113.9,
+     "range_st": 12.4
+    },
+    "longest_pause_s": 0.41,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7294663,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.1,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "εψύλον, καλά, δεν πειράζει. Τα λέμε αύριο στην πλατεία Αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.19,
+   "whisper_greek_p": 0.979,
+   "azure_confidence": 0.779,
+   "stress_mismatches": 0,
+   "syllables_per_s": 5.464,
+   "f0_median_hz": 114.15,
+   "f0_range_st": 13.125
+  }
  },
  {
   "voice": "en-US-AshTurboMultilingualNeural",
   "locale": "en-US",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.26,
+    "syllables_per_s": 6.57,
+    "f0": {
+     "median_hz": 139.2,
+     "range_st": 17.8
+    },
+    "longest_pause_s": 0.5,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.77407026,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Καλημέρα σας! Θα ήθελα έναν καφεφρέντο, μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.08,
+    "syllables_per_s": 6.54,
+    "f0": {
+     "median_hz": 131.9,
+     "range_st": 18.3
+    },
+    "longest_pause_s": 0.42,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8434029,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο!"
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.24,
+    "syllables_per_s": 6.94,
+    "f0": {
+     "median_hz": 128.7,
+     "range_st": 14.8
+    },
+    "longest_pause_s": 0.47,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7536413,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.154,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Ο νόμος ψηφίστηκε χθές ενώ ο νομός Χαλκυδικής ετοιμάζεται για τη τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 4.45,
+    "syllables_per_s": 7.16,
+    "f0": {
+     "median_hz": 134.5,
+     "range_st": 14.6
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.8171684,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.333,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζει 450 ευρώ το μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.45,
+    "syllables_per_s": 6.15,
+    "f0": {
+     "median_hz": 127.0,
+     "range_st": 18.5
+    },
+    "longest_pause_s": 0.49,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7742807,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.988,
+     "text": "Συγγνώμη. Δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.54,
+    "syllables_per_s": 5.64,
+    "f0": {
+     "median_hz": 144.4,
+     "range_st": 18.8
+    },
+    "longest_pause_s": 0.45,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.78890026,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.111,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 3.66,
+    "syllables_per_s": 6.85,
+    "f0": {
+     "median_hz": 140.4,
+     "range_st": 14.1
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7903667,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.455,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Η συνάντηση μεταφέρθηκε την 5 της 6η και 1.5η το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.47,
+    "syllables_per_s": 4.5,
+    "f0": {
+     "median_hz": 141.2,
+     "range_st": 18.6
+    },
+    "longest_pause_s": 0.47,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.71708107,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.2,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Εψύλον. Καλά, δεν πειράζει. Τα λένε αύριο στην πλατεία Αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.178,
+   "whisper_greek_p": 0.997,
+   "azure_confidence": 0.782,
+   "stress_mismatches": 0,
+   "syllables_per_s": 6.294,
+   "f0_median_hz": 135.912,
+   "f0_range_st": 16.938
+  }
  },
  {
   "voice": "en-US-AvaMultilingualNeural",
   "locale": "en-US",
   "gender": "Female",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 5.84,
+    "syllables_per_s": 5.99,
+    "f0": {
+     "median_hz": 240.8,
+     "range_st": 8.3
+    },
+    "longest_pause_s": 0.48,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7948443,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.912,
+     "text": "Καλημέρα σας! Θα είσαιλα έναν καφέ φρέδο, μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.12,
+    "syllables_per_s": 6.52,
+    "f0": {
+     "median_hz": 237.3,
+     "range_st": 10.5
+    },
+    "longest_pause_s": 0.44,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.77413964,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.091,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Πότε φεύγει το λεωφορίο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο."
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.0,
+    "syllables_per_s": 6.59,
+    "f0": {
+     "median_hz": 224.6,
+     "range_st": 10.2
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7606279,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.154,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.994,
+     "text": "Ο νόμος ψηφίστηκε εχθές ενώ ο νομός Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 4.55,
+    "syllables_per_s": 7.06,
+    "f0": {
+     "median_hz": 232.4,
+     "range_st": 8.7
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.083,
+     "stress": [],
+     "confidence": 0.793157,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ το μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.417,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζει 450 ευρώτο μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.08,
+    "syllables_per_s": 6.42,
+    "f0": {
+     "median_hz": 245.7,
+     "range_st": 8.8
+    },
+    "longest_pause_s": 0.39,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8511318,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.991,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.41,
+    "syllables_per_s": 5.64,
+    "f0": {
+     "median_hz": 237.7,
+     "range_st": 9.6
+    },
+    "longest_pause_s": 0.36,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8583685,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.111,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.996,
+     "text": "Αν είχα περισσότερο χρόνο θα μάθαιναν να παίζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 3.67,
+    "syllables_per_s": 6.75,
+    "f0": {
+     "median_hz": 235.3,
+     "range_st": 10.4
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8583017,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.455,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την 5η, 6η και 1.30 το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.04,
+    "syllables_per_s": 4.42,
+    "f0": {
+     "median_hz": 242.0,
+     "range_st": 9.4
+    },
+    "longest_pause_s": 0.42,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7382193,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.2,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "εψύλον καλά δεν πειράζει. Τα λέμε αύριο στην πλατεία αριστωτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.01,
+   "whisper_wer_bare": 0.199,
+   "whisper_greek_p": 0.986,
+   "azure_confidence": 0.804,
+   "stress_mismatches": 0,
+   "syllables_per_s": 6.174,
+   "f0_median_hz": 236.975,
+   "f0_range_st": 9.488
+  }
  },
  {
   "voice": "en-US-BrandonMultilingualNeural",
   "locale": "en-US",
   "gender": "Male",
   "type": "Neural",
-  "sentences": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "sentences": [
+   {
+    "text": "Καλημέρα σας. Θα ήθελα έναν καφέ φρέντο, μέτριο, και ένα νερό, παρακαλώ.",
+    "duration_s": 6.38,
+    "syllables_per_s": 5.95,
+    "f0": {
+     "median_hz": 129.7,
+     "range_st": 14.2
+    },
+    "longest_pause_s": 0.53,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7747905,
+     "text": "καλημέρα σας θα ήθελα έναν καφέ φρέντο μέτριο και ένα νερό παρακαλώ"
+    },
+    "whisper": {
+     "wer_bare": 0.167,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.991,
+     "text": "Καλημέρα σας! Θα ήθελα έναν καφεφρέντο, μέτριο και ένα νερό παρακαλώ."
+    }
+   },
+   {
+    "text": "Πότε φεύγει το λεωφορείο για τη Θεσσαλονίκη; Ποτέ δεν αργεί τόσο.",
+    "duration_s": 4.72,
+    "syllables_per_s": 5.74,
+    "f0": {
+     "median_hz": 140.9,
+     "range_st": 12.8
+    },
+    "longest_pause_s": 0.52,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.8391393,
+     "text": "πότε φεύγει το λεωφορείο για τη θεσσαλονίκη ποτέ δεν αργεί τόσο"
+    },
+    "whisper": {
+     "wer_bare": 0.091,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Πότε φεύγει το λεωφορίο για τη Θεσσαλονίκη? Ποτέ δεν αργεί τόσο!"
+    }
+   },
+   {
+    "text": "Ο νόμος ψηφίστηκε χθες, ενώ ο νομός Χαλκιδικής ετοιμάζεται για την τουριστική περίοδο.",
+    "duration_s": 5.69,
+    "syllables_per_s": 6.19,
+    "f0": {
+     "median_hz": 118.2,
+     "range_st": 13.8
+    },
+    "longest_pause_s": 0.3,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7470019,
+     "text": "ο νόμος ψηφίστηκε χθες ενώ ο νομός χαλκιδικής ετοιμάζεται για την τουριστική περίοδο"
+    },
+    "whisper": {
+     "wer_bare": 0.077,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Ο νόμος ψηφίστηκε χθές ενώ ο νομός Χαλκυδικής ετοιμάζεται για την τουριστική περίοδο."
+    }
+   },
+   {
+    "text": "Το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα.",
+    "duration_s": 5.3,
+    "syllables_per_s": 6.08,
+    "f0": {
+     "median_hz": 134.7,
+     "range_st": 10.0
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7712923,
+     "text": "το διαμέρισμα έχει δύο υπνοδωμάτια και κοστίζει τετρακόσια πενήντα ευρώ τον μήνα"
+    },
+    "whisper": {
+     "wer_bare": 0.25,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.997,
+     "text": "Το διαμέρισμα έχει δύο υπνοδομάτια και κοστίζει 450 ευρώ τον μήνα."
+    }
+   },
+   {
+    "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά;",
+    "duration_s": 4.95,
+    "syllables_per_s": 5.35,
+    "f0": {
+     "median_hz": 123.8,
+     "range_st": 14.3
+    },
+    "longest_pause_s": 0.54,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7791059,
+     "text": "συγγνώμη δεν κατάλαβα μπορείτε να το πείτε λίγο πιο αργά"
+    },
+    "whisper": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.981,
+     "text": "Συγγνώμη, δεν κατάλαβα. Μπορείτε να το πείτε λίγο πιο αργά."
+    }
+   },
+   {
+    "text": "Αν είχα περισσότερο χρόνο, θα μάθαινα να παίζω μπουζούκι.",
+    "duration_s": 3.9,
+    "syllables_per_s": 4.89,
+    "f0": {
+     "median_hz": 128.8,
+     "range_st": 13.5
+    },
+    "longest_pause_s": 0.31,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.776071,
+     "text": "αν είχα περισσότερο χρόνο θα μάθαινα να παίζω μπουζούκι"
+    },
+    "whisper": {
+     "wer_bare": 0.333,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.998,
+     "text": "Αν είχα περισσότερο χρόνο, θα μάθε να να πέζω μπουζούκι."
+    }
+   },
+   {
+    "text": "Η συνάντηση μεταφέρθηκε την Πέμπτη στις έξι και μισή το απόγευμα.",
+    "duration_s": 4.19,
+    "syllables_per_s": 6.01,
+    "f0": {
+     "median_hz": 131.4,
+     "range_st": 13.1
+    },
+    "longest_pause_s": 0.0,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.75260425,
+     "text": "η συνάντηση μεταφέρθηκε την πέμπτη στις έξι και μισή το απόγευμα"
+    },
+    "whisper": {
+     "wer_bare": 0.364,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Η συνάντηση μεταφέρθηκε την BEM της της 6η και μισή το απόγευμα."
+    }
+   },
+   {
+    "text": "Ε, καλά, δεν πειράζει! Τα λέμε αύριο στην πλατεία Αριστοτέλους.",
+    "duration_s": 5.61,
+    "syllables_per_s": 4.27,
+    "f0": {
+     "median_hz": 136.4,
+     "range_st": 14.3
+    },
+    "longest_pause_s": 0.53,
+    "azure": {
+     "wer_bare": 0.0,
+     "stress": [],
+     "confidence": 0.7671681,
+     "text": "ε καλά δεν πειράζει τα λέμε αύριο στην πλατεία αριστοτέλους"
+    },
+    "whisper": {
+     "wer_bare": 0.1,
+     "stress": [],
+     "lang": "el",
+     "lang_p": 0.999,
+     "text": "Εψιλών, καλά, δεν πειράζει. Τα λέμε αύριο στην πλατεία Αριστοτέλους."
+    }
+   }
+  ],
+  "summary": {
+   "azure_wer_bare": 0.0,
+   "whisper_wer_bare": 0.173,
+   "whisper_greek_p": 0.995,
+   "azure_confidence": 0.776,
+   "stress_mismatches": 0,
+   "syllables_per_s": 5.56,
+   "f0_median_hz": 130.488,
+   "f0_range_st": 13.25
+  }
  }
 ]

@@ -59,7 +59,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.158,
+   "wer_accent_insensitive": 0.158,
+   "stress_mismatches": [],
+   "text": "Το μάθημα αρχίζει στις πέντε. Όχι, σήμερα αρχίζει στις έξι. Στις έξι εντάξει. Θα είμαι εκεί."
+  }
  },
  {
   "audio_id": "D-A2-LISTENING-01-AUD01",
@@ -129,7 +134,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.226,
+   "wer_accent_insensitive": 0.194,
+   "stress_mismatches": [],
+   "text": "Δεν βρίσκω το δέμα μου. Στήλτε μας πρώτα τον κοδικό της παραγγελίας. Μετά θα ελέγξουμε που βρίσκεται. Να έρθω στο κατάστημα. Όχι ακόμη. Περιμένετε την απάντησή μας."
+  }
  },
  {
   "audio_id": "D-B1-LISTENING-01-AUD01",
@@ -191,7 +201,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.216,
+   "wer_accent_insensitive": 0.216,
+   "stress_mismatches": [],
+   "text": "Η παρουσίαση θα γίνε στην έθωση του δεύτερου ορόφου για τις τον πρώτο γίνονται εργασίες. Αλλάζει και η ώρα. Όχι, παραμένει στις έντεκα. Αν κάποιος χρειάζεται βοήθεια με την πρόσβαση, ας μας ενημερώσει πριν έρθει."
+  }
  },
  {
   "audio_id": "KEG-B2-L01-AUD1",
@@ -308,7 +323,15 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.251,
+   "wer_accent_insensitive": 0.248,
+   "stress_mismatches": [
+    "καθεμιάς→καθέμιας",
+    "σημειώστε→σημείωστε"
+   ],
+   "text": "Καλησπέρα σας. Είμαι η συντονίστρη του προγράμματος «Ανιχτό αρχείο». Θα σας εξηγήσω πώς θα λειτουργήσει η πρώτη δοκιμαστική φάση. Θέλουμε να συγκεντρώσουμε παλές φωτογραφίες της περιοχής και της ιστορίες που τις συνοδεύουν, χωρίς να ζητήσουμε από κανέναν αποχωριστή οριστικά τα προσωπικά του αντικείμενα. Η συμμετοχή είναι προερετική και δεν χρειάζεται προηγούμενη εμπειρία. Η δοκιμή θα διαρκέσει οι "
+  }
  },
  {
   "audio_id": "KEG-B2-L01-AUD2",
@@ -421,7 +444,12 @@
    ]
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.133,
+   "wer_accent_insensitive": 0.129,
+   "stress_mismatches": [],
+   "text": "Είμαι η Άνα. Πρέπει να αποφασίσουμε πως θα οργανώσουμε τη γιορτή της γειτονιάς. Εγώ προτιμόν να γίνει το απόγευμα γιατί το προή εργάζομαι. Θα ήθελα επίσης να υπάρχει χώρος όπου τα παιδιά μπορούν να συμμετέχουν σε μια ίσυχη δραστηριότητα. Δεν έχω αντήρηση για τη μουσική, αρκεί να μην καλύπτει κάθε σεζήτηση. Είμαι ο μάνος. Συμφωνώ για το απόγευμα. Το προή δεν μπορώ ούτε εγώ. Για το χώρο όμως θα διάλ"
+  }
  },
  {
   "audio_id": "KEG-B2-L02-AUD1",
@@ -538,7 +566,14 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.143,
+   "wer_accent_insensitive": 0.137,
+   "stress_mismatches": [
+    "έναρξης→εναρξής"
+   ],
+   "text": "Καλησπέρα σας! Θα σας παρουσιάσω το πρόγραμμα «Νιχτερινός ουρανός» μία εσαγωγή στην παρατήρηση των άστρων γενήλικες χωρίς προηγούμενη εμπειρία. Δεν πρόκειται για μάθημα στρολογίας, ούτε για εκδρομή με ελεύθερη προσέλευση. Θέλουμε να μάθετε πως προετοιμάζεται μια παρατήρηση και για τις μερικές φορές η αναμονή είναι σημαντικότερη από τον εξοπλισμό. Το πρόγραμμα περιλαμβάνει πέντες εναντήσεις, παρότι"
+  }
  },
  {
   "audio_id": "KEG-B2-L02-AUD2",
@@ -649,7 +684,15 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.135,
+   "wer_accent_insensitive": 0.124,
+   "stress_mismatches": [
+    "παλιό→παλιο",
+    "δημοσιεύσουμε→δημοσίευσουμε"
+   ],
+   "text": "Είμαι η Δανάη. Σας κάλεσα για να συζητήσουμε την νέα σειρά υπητικών εκπομπών του συλλόγου μας. Έχω ήδη κρατήσει την έθουσα για τη σημερινή δοκιμή. Θα πρότεινε τα επεισόδια να διαρκούν 15 λεπτά. Έτσι μπορούμε να αναπτήσουμε ένα θέμα χωρίς να κουράζουμε όσους ακούν στη διαδρομή προς τη δουλειά. Δεν θα περιόριζα, πάντος, κάθε απάντηση του καλεσμένου με χρονόμετρο. Είμαι ο Πέτρος. Εγώ θα έδινα μισή ώρ"
+  }
  },
  {
   "audio_id": "KEG-B2-L03-AUD1",
@@ -768,7 +811,17 @@
    ]
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.161,
+   "wer_accent_insensitive": 0.146,
+   "stress_mismatches": [
+    "μπαλκονιού→μπαλκόνιου",
+    "φυσάει→φυσαει",
+    "αντί→αντι",
+    "άσκηση→ασκηση"
+   ],
+   "text": "Καλώς ήρθατε στην ενημέρωση για τον κύκλο, μπαλκόνη σε άνθυση. Το εργαστήριο πευθύνεται σε ανθρώπους που θέλουν να φροντίσουν λίγα φυτά στο σπίτι, χωρίς να διαθέτουν κύπο. Δεν υποσχόμαστε ότι κάθε χώρος είναι κατάλληλος για κάθε φυτό. Θα ξεκινήσουμε από την παρατήρηση του δικού σας μπαλκόνιου και θα αποφύγουμε τις αγορές μόνο με βάση μια όμορφη φωτογραφία. Ο κύκλος θα διαρκήσει 8 εβδομάδες. Η αρχι"
+  }
  },
  {
   "audio_id": "KEG-B2-L03-AUD2",
@@ -881,7 +934,16 @@
    ]
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.113,
+   "wer_accent_insensitive": 0.107,
+   "stress_mismatches": [
+    "μια→μία",
+    "μια→μία",
+    "μια→μία"
+   ],
+   "text": "Είμαι η Λένα. Έχω συγκεντρώσει τις προτάσεις για την ομαδική μας εκδρομή, αλλά δεν έχω κάνει καμία κράτηση. Εγώ προτιμό να φύγουμε παρασκευή απόγευμα, ώστε να έχουμε δύο ολόκληρες ημέρες στον προορισμό. Ξέρω ότι θα φτάσουμε αργά. Θα δεχόμουν το Σάββατο αν δεν βρεθεί λύση, όμως δεν είναι η πρώτη μου επιλογή. Ας ξεχωρίσουμε την προτιμάμε από όσα μπορούμε να ανεχτούμε. Είμαι ωραίς της. Εμένα με εξηπη"
+  }
  },
  {
   "audio_id": "RG-0001-TONE01",
@@ -951,7 +1013,15 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.368,
+   "wer_accent_insensitive": 0.263,
+   "stress_mismatches": [
+    "καλά→κάλα",
+    "καλά→κάλα"
+   ],
+   "text": "Πώς είσαι σήμερα? Κάλα. Ευχαριστώ. Κοιμήθηκα αρκετά. Έχασα πάλι το κλειδί. Κάλα. Πώς έγινα αυτό?"
+  }
  },
  {
   "audio_id": "RG-0002-TONE01",
@@ -1021,7 +1091,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.345,
+   "wer_accent_insensitive": 0.345,
+   "stress_mismatches": [],
+   "text": "Σε δύο λεπτά θα καθαρίσω όλο το σπίτι. Ναι, καλά. Ούτε το τραπέζι δεν έχεις μαζέψει. Θεέρθει στη σέξη. Ναι, καλά, στη σέξη λοιπόν."
+  }
  },
  {
   "audio_id": "RG-0003-TONE01",
@@ -1099,7 +1174,12 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.231,
+   "wer_accent_insensitive": 0.231,
+   "stress_mismatches": [],
+   "text": "Δεν διάβασα τίποτα, αλλά είμαι βέβαιος ότι θα πάρω άριστα. Αλφα, καλά, χωρίς διάβασμα Η Μαρία ξεκουράστηκε. Αλφα, καλά έκανε. Το χρειαζόταν."
+  }
  },
  {
   "audio_id": "RG-0004-TONE01",
@@ -1169,7 +1249,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.259,
+   "wer_accent_insensitive": 0.259,
+   "stress_mismatches": [],
+   "text": "Δεν μπορώ να σηκώσω την τζάντα. Έλα, ρε Νίκο, θα σε βοηθήσω. Ρε, γιατί μου μιλάς έτσι. Συγγνώμη, δεν ήθελα να σενοχλήσω."
+  }
  },
  {
   "audio_id": "RG-0005-TONE01",
@@ -1239,7 +1324,15 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.412,
+   "wer_accent_insensitive": 0.294,
+   "stress_mismatches": [
+    "άντε→αντε",
+    "άντε→αντε"
+   ],
+   "text": "Είμαστε όλοι έτοιμοι. Αντε, πάμε. Το λεωφορείο περιμένει. Κέρδισα δύο ισθητήρια. Αντε, αλήθεια."
+  }
  },
  {
   "audio_id": "RG-0006-TONE01",
@@ -1326,7 +1419,16 @@
     ]
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.323,
+   "wer_accent_insensitive": 0.226,
+   "stress_mismatches": [
+    "μία→μια",
+    "μία→μια",
+    "μία→μια"
+   ],
+   "text": "Δεν μπορώ να λύσω την άσκηση. Έλα, προσπάθησε άλλη μια φορά. Είμαι εδώ. Τελείωσα όλο το βιβλίο σε μια ώρα. Έλα τώρα. Εκατώ σε λίδες σε μια ώρα."
+  }
  },
  {
   "audio_id": "RG-0007-TONE01",
@@ -1396,7 +1498,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.2,
+   "wer_accent_insensitive": 0.2,
+   "stress_mismatches": [],
+   "text": "Το παιδί κοιμάται. Εντάξει, θα μιλάμε σιγά. Θα ξεχάσει ο Πέτρος στη συνάντηση. Σιγά μην την ξεχάσει. Την έχει σημειώσει παντού."
+  }
  },
  {
   "audio_id": "RG-0008-TONE01",
@@ -1466,7 +1573,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.214,
+   "wer_accent_insensitive": 0.214,
+   "stress_mismatches": [],
+   "text": "Ελέγξαμε τις ημερομηνίες και όλοι μπορούμε την 3η. Λοιπόν, ας κλείσουμε τη συνάντηση για την 3η. Έχω κάτι να σου πω. Λοιπόν, σε ακούω."
+  }
  },
  {
   "audio_id": "RG-0009-TONE01",
@@ -1544,7 +1656,12 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.391,
+   "wer_accent_insensitive": 0.391,
+   "stress_mismatches": [],
+   "text": "γνωριζόμαστε 20 χρόνια. Είσαι το καρδάσι μου, πάντα με βοηθάς. Είναι αδελφό σου. Όχι, παλιός φίλος. Καρδάσι το λέω."
+  }
  },
  {
   "audio_id": "RG-0010-TONE01",
@@ -1622,7 +1739,12 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.312,
+   "wer_accent_insensitive": 0.281,
+   "stress_mismatches": [],
+   "text": "Έλεγχει ότι ήξερε να επισκευάζει τα πάντα. Δε μεκει δικός. Δεν ήξερε ούτε που είναι το πρόβλημα. Ήταν σύγματάφ, αλήθεια ή δικός. Δεν μπορώ να το κρίνω. Χρειαζόμαστε περισσότερα στοιχεία."
+  }
  },
  {
   "audio_id": "RG-0011-TONE01",
@@ -1700,7 +1822,14 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.28,
+   "wer_accent_insensitive": 0.24,
+   "stress_mismatches": [
+    "χαλαρά→χαλάρα"
+   ],
+   "text": "Πρέπει να τρέξουμε. Όχι, έχουμε μία ώρα. Πάμε, Χαλάρα. Η προθεσμία λίγει σε 10 λεπτά. Τότε ας τελειώσουμε πρώτα τη δουλειά."
+  }
  },
  {
   "audio_id": "RG-0012-TONE01",
@@ -1770,7 +1899,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.269,
+   "wer_accent_insensitive": 0.269,
+   "stress_mismatches": [],
+   "text": "Γιατί έφυγε τόσο νωρίς. Και καλά είχε δουλειά, αλλά εγώ δεν ομπίστεψα. Πώς περπατάει μετά την ανάρωση. Περπατάει αργά και καλά."
+  }
  },
  {
   "audio_id": "U-A1-001-AUD01",
@@ -1856,7 +1990,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.212,
+   "wer_accent_insensitive": 0.212,
+   "stress_mismatches": [],
+   "text": "Καλημέρα σας. Το όνομά σας παρακαλώ. Πέτρος Αντονίου. Είστε από την Πάτρα. Όχι, είμαι από τη Λάρισα. Τώρα μένω στην Πάτρα. Ευχαριστώ. Είστε φοιτητής. Ναι, είμαι φοιτητής."
+  }
  },
  {
   "audio_id": "U-A1-002-AUD01",
@@ -1926,7 +2065,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.304,
+   "wer_accent_insensitive": 0.304,
+   "stress_mismatches": [],
+   "text": "Βλέπεις το Μάριο. Όχι, βλέπω την Εύα στην ίσοδο. Ωραία. Εγώ περιμένω το Μάριο έξω. Η Εύα έρχεται τώρα."
+  }
  },
  {
   "audio_id": "U-A1-003-AUD01",
@@ -1996,7 +2140,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.4,
+   "wer_accent_insensitive": 0.4,
+   "stress_mismatches": [],
+   "text": "Ένα κυλόμιλα, παρακαλώ. Τρία ευρώ το κυλό. Θέλετε και χειμό. Όχι, ευχαριστώ. Τελικά θέλω δύο κυλαμίλα. Ωραία, έξι ευρώ."
+  }
  },
  {
   "audio_id": "U-A1-004-AUD01",
@@ -2066,7 +2215,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.148,
+   "wer_accent_insensitive": 0.148,
+   "stress_mismatches": [],
+   "text": "Αυτό το λεωφορείο πηγαίνει στο νοσοκομείο. Όχι, πηγαίνει στο κέντρο. Για το νοσοκομείο η στάση είναι απέναντι. Απέναντι από το φαρμακείο. Ναι, σωστά."
+  }
  },
  {
   "audio_id": "U-A1-005-AUD01",
@@ -2136,7 +2290,14 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.231,
+   "wer_accent_insensitive": 0.192,
+   "stress_mismatches": [
+    "φορές→φόρες"
+   ],
+   "text": "Μένεις εδώ κοντά. Εγώ όχι, αλλά η αδερφή μου μείνει δίπλα στη σχολή. Μιλάτε ελληνικά στο σπίτι. Μερικές φόρες. Συνήθως μιλάμε αγγλικά."
+  }
  },
  {
   "audio_id": "U-A1-006-AUD01",
@@ -2206,7 +2367,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.2,
+   "wer_accent_insensitive": 0.2,
+   "stress_mismatches": [],
+   "text": "Θέλω ένα μικρό κουτή. Μπορώ να δω αυτό. Αυτό είναι μεγάλο. Το μικρό είναι δίπλα. Ωραία! Μπορώ να το ανοίξω. Βεβαίως!"
+  }
  },
  {
   "audio_id": "U-A1-007-AUD01",
@@ -2292,7 +2458,12 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.364,
+   "wer_accent_insensitive": 0.364,
+   "stress_mismatches": [],
+   "text": "Πώς σε λένε? Με λένε άνα. Μπορείς να το πεις γράμμα γράμμα. Άλφα, νιγιότα, νιγιότα, άλφα. Ευχαριστώ."
+  }
  },
  {
   "audio_id": "U-A1-008-AUD01",
@@ -2354,7 +2525,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.188,
+   "wer_accent_insensitive": 0.188,
+   "stress_mismatches": [],
+   "text": "Πότε έρχεσαι? Αύριο. Θέλεις γάλα. Ναι, ευχαριστώ. Καφέ δεν πίνω ποτέ το βράδυ."
+  }
  },
  {
   "audio_id": "U-A1-009-AUD01",
@@ -2424,7 +2600,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.182,
+   "wer_accent_insensitive": 0.182,
+   "stress_mismatches": [],
+   "text": "Έχεις χρόνο σήμερα. Ναι, αλλά το καφέ είναι κλειστό. Μένουμε εδώ. Ναι, γιατί εδώ έχουμε καφέ και νερό."
+  }
  },
  {
   "audio_id": "U-A1-010-AUD01",
@@ -2494,7 +2675,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.143,
+   "wer_accent_insensitive": 0.143,
+   "stress_mismatches": [],
+   "text": "Είσαι ο Νίκος. Όχι, δεν είμαι ο Νίκος. Είμαι ο μάνος. Συγγνώμη. Έχεις χρόνο. Όχι, δεν έχω χρόνο τώρα. Μην περιμένεις εδώ, σε παρακαλώ."
+  }
  },
  {
   "audio_id": "U-A1-011-AUD01",
@@ -2564,7 +2750,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.161,
+   "wer_accent_insensitive": 0.161,
+   "stress_mismatches": [],
+   "text": "Έναν καφέ και τρία μπουκάλια νερό. Όχι, δύο μπουκάλια νερό, παρακαλώ. Ο καφές είναι για το φίλο μου. Ωραία! Η τσάντα σας. Η τσάντα μου είναι εδώ."
+  }
  },
  {
   "audio_id": "U-A1-012-AUD01",
@@ -2650,7 +2841,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.25,
+   "wer_accent_insensitive": 0.25,
+   "stress_mismatches": [],
+   "text": "Γεια σου! Με λένε Ανα. Εσύ! Είμαι ο Νίκος. Είσαι φυτήτρια. Όχι, είμαι δασκάλα. Δουλεύω σε σχολείο. Ο αδελφός μου είναι φυτητής. Τι σου αρέσει? Μου αρέσει η μουσική. Εσύ παίζεις ποδόσφερο. Όχι, βλέπω αγόνες, αλλά δεν παίζω."
+  }
  },
  {
   "audio_id": "U-A1-013-AUD01",
@@ -2736,7 +2932,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.195,
+   "wer_accent_insensitive": 0.195,
+   "stress_mismatches": [],
+   "text": "Πού είναι το σπίτι σου? Κοντά στο σχολείο. Η στάση είναι μπροστά στο σχολείο. Πηγαίνεις στη δουλειά με τα πόδια. Όχι, με το λέω φωρίο. Γυρίζω με τα πόδια. Έχει φούρνο κοντά. Ναι, δίπλα στο σπίτι."
+  }
  },
  {
   "audio_id": "U-A1-014-AUD01",
@@ -2806,7 +3007,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.438,
+   "wer_accent_insensitive": 0.438,
+   "stress_mismatches": [],
+   "text": "Η διβλιοθήκη είναι ανοιχτή την Κυριακή. Όχι. Το Σάββατο είναι ανοιχτή από τις 10 μέχρι τις 2. Και το μάθη με ελληνικών. Την 3 της 5, στην έθος αδύο."
+  }
  },
  {
   "audio_id": "U-A1-015-AUD01",
@@ -2892,7 +3098,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.382,
+   "wer_accent_insensitive": 0.382,
+   "stress_mismatches": [],
+   "text": "Πώς ελένε? Ελένη Δήμου. Μένει στην Αθήνα. Όχι, στην Πάτρα. Τι μήνη μαγράφη στη Μαρία. Είμαι στη βιβλιοθήκη μέχρι της έξη. Το βιβλίο σου είναι στο τραπέζι."
+  }
  },
  {
   "audio_id": "U-A1-016-AUD01",
@@ -2986,7 +3197,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.32,
+   "wer_accent_insensitive": 0.28,
+   "stress_mismatches": [],
+   "text": "Καλημέρα. Δύο νερά, παρακαλώ. Μικρά η μεγάλα. Μικρά. Πόσο κάνουν? Δύο ευρώ. Συγγνώμη, πάλι, παρακαλώ. Δύο ευρώ. Ευχαριστώ."
+  }
  },
  {
   "audio_id": "U-A1-017-AUD01",
@@ -3048,7 +3264,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.156,
+   "wer_accent_insensitive": 0.156,
+   "stress_mismatches": [],
+   "text": "Με λένε Πέτρο. Μένω στην Αθήνα. Είμαι φοιτητής. Το πρωί διαβάζω και το βράδυ δουλεύω σε καφέ. Πέζεις ποδόσφαιρο. Όχι, μου αρέσει μουσική. Ακούω μουσική μετά τη δουλειά."
+  }
  },
  {
   "audio_id": "U-A1-018-AUD01",
@@ -3126,7 +3347,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.333,
+   "wer_accent_insensitive": 0.333,
+   "stress_mismatches": [],
+   "text": "Πότε είναι η συνάντηση? Την Παρασκευής της 5 το απόγευμα μπροστά στο μουσείο. Μέσα στο μουσείο? Όχι μπροστά στο μουσείο. Εντάξει, την Παρασκευής της 5 μπροστά στο μουσείο."
+  }
  },
  {
   "audio_id": "U-A1-019-AUD01",
@@ -3171,7 +3397,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.667,
+   "wer_accent_insensitive": 0.667,
+   "stress_mismatches": [],
+   "text": "Πώς ελένε."
+  }
  },
  {
   "audio_id": "U-A1-019-AUD02",
@@ -3216,7 +3447,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.5,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "που μένεις."
+  }
  },
  {
   "audio_id": "U-A1-019-AUD03",
@@ -3261,7 +3497,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Είμαι από την Κύπρο, αλλά μένω στην Αθήνα."
+  }
  },
  {
   "audio_id": "U-A1-019-AUD04",
@@ -3306,7 +3547,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.143,
+   "wer_accent_insensitive": 0.143,
+   "stress_mismatches": [],
+   "text": "Δε μένω στην Αθήνα. Μένω στην Πάτρα."
+  }
  },
  {
   "audio_id": "U-A1-019-AUD05",
@@ -3351,7 +3597,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Μένεις στην Πάτρα."
+  }
  },
  {
   "audio_id": "U-A1-019-AUD06",
@@ -3396,7 +3647,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.667,
+   "wer_accent_insensitive": 0.667,
+   "stress_mismatches": [],
+   "text": "Τι δουλιακάνεις."
+  }
  },
  {
   "audio_id": "U-A1-019-AUD07",
@@ -3441,7 +3697,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.1,
+   "wer_accent_insensitive": 0.1,
+   "stress_mismatches": [],
+   "text": "Με λένε Μαρία. Είμαι από την Αθήνα. Μένω στη Λεμαισό."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD01",
@@ -3486,7 +3747,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.833,
+   "wer_accent_insensitive": 0.833,
+   "stress_mismatches": [],
+   "text": "Το Λεωφορίο 12-Φεύγης της 3."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD02",
@@ -3531,7 +3797,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.833,
+   "wer_accent_insensitive": 0.833,
+   "stress_mismatches": [],
+   "text": "Το Λεωφορίο 12-Φεύγης της 3."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD03",
@@ -3576,7 +3847,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.222,
+   "wer_accent_insensitive": 0.222,
+   "stress_mismatches": [],
+   "text": "Το μάθημα αρχίζει στη στρίς και μισή το απόγευμα."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD04",
@@ -3621,7 +3897,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.333,
+   "wer_accent_insensitive": 0.333,
+   "stress_mismatches": [],
+   "text": "Η συνάντηση είναι στις 4 παρατέταρ του το απόγευμα."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD05",
@@ -3666,7 +3947,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.333,
+   "wer_accent_insensitive": 0.333,
+   "stress_mismatches": [],
+   "text": "Σήμερα το μάθημα δεν είναι στην έθωσα 2. Είναι στην έθωσα 3."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD06",
@@ -3711,7 +3997,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.4,
+   "wer_accent_insensitive": 0.4,
+   "stress_mismatches": [],
+   "text": "Το μάθημα αρχίζει στις 10 πρωί στην έθωσα 4."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD07",
@@ -3756,7 +4047,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Σήμερα η συνάντηση είναι στις πέντε, όχι στις τέσσερις."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD08",
@@ -3801,7 +4097,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.875,
+   "wer_accent_insensitive": 0.875,
+   "stress_mismatches": [],
+   "text": "Το Λεωφορίο 20 Θεύγης της 8 π."
+  }
  },
  {
   "audio_id": "U-A1-020-AUD09",
@@ -3846,7 +4147,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.417,
+   "wer_accent_insensitive": 0.417,
+   "stress_mismatches": [],
+   "text": "Το μάθημα αρχίζει στις 6,5 το απόγευμα στην έθος 5."
+  }
  },
  {
   "audio_id": "U-A2-001-AUD01",
@@ -3916,7 +4222,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.278,
+   "wer_accent_insensitive": 0.278,
+   "stress_mismatches": [],
+   "text": "Πώς ήταν η Κυριακή σου? Πήγα στο λιμάνι το πρωί. Μετά συνάντησα την Ευακή πια με καφέ. Αγοράσατε η συντείρια για τη συναυλία. Όχι. Το ταμείο ήταν κλειστό. Έγραψα ένα μήνυμα στο διοργανωτή."
+  }
  },
  {
   "audio_id": "U-A2-002-AUD01",
@@ -3986,7 +4297,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.2,
+   "wer_accent_insensitive": 0.2,
+   "stress_mismatches": [],
+   "text": "Μπορείτε να έρθετε αύριο στις ενέα. Δεν μπορώ στις ενέα. Μπορώ να έρθω στις έντεκα. Ναι. Θα φέρετε και την έτηση. Θα τη στείλω σήμερα. Αύριο θα φέρω την ταυτότητά μου."
+  }
  },
  {
   "audio_id": "U-A2-003-AUD01",
@@ -4056,7 +4372,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.241,
+   "wer_accent_insensitive": 0.241,
+   "stress_mismatches": [],
+   "text": "Αυτά είναι τα κλειδιά σου. Όχι, είναι τις αδερφείς μου. Τα δικά μου είναι στην Ζάντα. Και το κινητό. Είναι του Πέτρου. Θα τον ενημερώσω."
+  }
  },
  {
   "audio_id": "U-A2-004-AUD01",
@@ -4126,7 +4447,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.25,
+   "wer_accent_insensitive": 0.25,
+   "stress_mismatches": [],
+   "text": "Είναι το δεύτερο δωμάτιο πιο ήσυχο. Ναι, βλέπεις την αυλή. Το πρώτο βλέπεις το δρόμο. Είναι και πιο φτυνό. Όχι, η τιμή είναι ίδια. Μπορείτε να τα δείτε και τα δύο αύριο."
+  }
  },
  {
   "audio_id": "U-A2-005-AUD01",
@@ -4196,7 +4522,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.182,
+   "wer_accent_insensitive": 0.182,
+   "stress_mismatches": [],
+   "text": "Βλέπεις τον πράσινο φάκελο? Ναι. Να τον ανοίξω. Όχι, μην τον ανοίξεις. Φέρε τον εδώ. Εντάξει, τον φέρνω."
+  }
  },
  {
   "audio_id": "U-A2-006-AUD01",
@@ -4278,7 +4609,12 @@
     ]
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.292,
+   "wer_accent_insensitive": 0.292,
+   "stress_mismatches": [],
+   "text": "Εργάζεστε αύριο το πρωί. Όχι. Αλλά εις είναι αδελφός μου, εργάζεται μέχρι τις δύο. Έρχεστε μαζί στις τρεις. Ναι, ερχόμαστε μαζί."
+  }
  },
  {
   "audio_id": "U-A2-007-AUD01",
@@ -4340,7 +4676,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.258,
+   "wer_accent_insensitive": 0.258,
+   "stress_mismatches": [],
+   "text": "Ο Νίκος λέει πως βιβλιοθεί και κλείνει στις 8. Επειδή έχω δουλειά, θα πάω στις 7. Αν αργήσω, θα σου στείλω μήνυμα. Όταν φτάσεις, θα είμαι στην ίσοδο."
+  }
  },
  {
   "audio_id": "U-A2-008-AUD01",
@@ -4410,7 +4751,12 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.182,
+   "wer_accent_insensitive": 0.152,
+   "stress_mismatches": [],
+   "text": "Χτές διάβαζα στην κουζίνα όταν ήρθε ο αδελφός μου. Τελείωσα στο βιβλίο. Όχι. Μιλήσαμε λίγο και μετά έγραψα ένα μήνυμα. Παλιότερα διάβαζα κάθε βράδυ, αλλά τώρα δεν έχω πολύ χρόνο."
+  }
  },
  {
   "audio_id": "U-A2-009-AUD01",
@@ -4488,7 +4834,14 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.22,
+   "wer_accent_insensitive": 0.195,
+   "stress_mismatches": [
+    "μια→μία"
+   ],
+   "text": "Έχετε κανένα δωμάτιο για πόψε. Έχουμε ένα μικρό δωμάτιο, αλλά δεν έχει μπαλκόνι. Δεν πειράζει. Περιμένο και μία φίλη. Έχει δύο κρεβάτια. Όχι, έχει μόνο ένα. Δεν έχουμε κανένα δίκλεινο σήμερα. Τότε θα ψάξω αλλού. Ευχαριστώ."
+  }
  },
  {
   "audio_id": "U-A2-010-AUD01",
@@ -4574,7 +4927,14 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.238,
+   "wer_accent_insensitive": 0.19,
+   "stress_mismatches": [
+    "μεσημέρι→μέσημέρι"
+   ],
+   "text": "Που τρώω συνήθως το μέσημέρι. Στο καφέ που είναι δίπλα στη σχολή. Είναι πολύ ακριβό. Όχι, αλλά συχνά έχει πολύ κόσμο. Σήμερα θα φάω στο σπίτι. Και αύριο. Αύριο θα πάω στο καφέ νωρίς στις 12."
+  }
  },
  {
   "audio_id": "U-A2-011-AUD01",
@@ -4676,7 +5036,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.298,
+   "wer_accent_insensitive": 0.298,
+   "stress_mismatches": [],
+   "text": "Καλημέρα. Έχω κράτηση για δύο νύχτες στο όνομα δί μου. Ναι, ένα μονόκληνο με προηνό. Συγγνώμη, ζήτησα δίκληνο χωρίς προηνό. Έχετε δίκιο. Το δίκληνο είναι 70 ευρώ τη νύχτα. Δηλαδή 140 ευρώ συνολικά. Ακριβώς. Μπορώ να πληρώσω με κάρτα. Βεβαίως."
+  }
  },
  {
   "audio_id": "U-A2-012-AUD01",
@@ -4762,7 +5127,14 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.462,
+   "wer_accent_insensitive": 0.442,
+   "stress_mismatches": [
+    "παλιό→παλιο"
+   ],
+   "text": "Καλημέρα. Θέλω να αλλάξω το ραντεβούμο με το γιατρό. Είναι για την 3η της 10η. Μπορείτε την δετάρτης της 11η. Δυστυχώς δουλεύω το πρωί. Υπάρχει ώρα μετά της 4ης. Την 5η της 5η. Ναι, μπορώ. Άρα την 5η της 5η. Σωστά. Το παλιο ραντεβού ακυρώνεται."
+  }
  },
  {
   "audio_id": "U-A2-013-AUD01",
@@ -4872,7 +5244,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.404,
+   "wer_accent_insensitive": 0.404,
+   "stress_mismatches": [],
+   "text": "Καλημέρα σας. Θέλω ένα εισητήριο για αύριο του πρωί. Για σήμερα στη ΣΕΝΕΑ. Όχι για σήμερα. Για αύριο, παρακαλώ. Αύριο υπάρχει λεωφορείο στις 8 και στις 10. Στις 10, παρακαλώ. Πόσο κουστίζει? 13 ευρώ. Συγγνώμη, είπατε 13 ή 30. 13. Ωραία. Ένα εισητήριο για αύριο στις 10. Ευχαριστώ."
+  }
  },
  {
   "audio_id": "U-A2-014-AUD01",
@@ -4974,7 +5351,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.203,
+   "wer_accent_insensitive": 0.186,
+   "stress_mismatches": [],
+   "text": "Τι έκανε στο Σάββατο, Μαρία? Πήγα στο πάρκο με τον αδελφό μου. Περπατήσαμε και μετά φάγαμε στο σπίτι. Σου άρεσε. Ναι, αλλά είχε πολύ κόσμο. Προτιμό να πηγαίνω νωρίς το πρωί. Θα πάς πάλι αυτό το Σάββατο? Όχι, θα πάω στη βιβλιοθήκη. Θέλω να διαβάσω εκεί. Τι ώρα? Δεν ξέρω ακόμη."
+  }
  },
  {
   "audio_id": "U-A2-015-AUD01",
@@ -5084,7 +5466,12 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.309,
+   "wer_accent_insensitive": 0.291,
+   "stress_mismatches": [],
+   "text": "Τι γράφεις, Πέτρο. Ένα μήνι μας στο γυμναστήριο. Χτές άφησα εκεί μια μπλετσάντα. Θέλεις να αλλάξεις την ώρα του μαθήματος. Όχι. Ρωτάω αν βρήκαν τη τσάντα. Θα πας σήμερα. Δεν μπορώ σήμερα. Γράφω ότι μπορώ να πάω αύριο μετά της έξιτ' απόγευμα. Σου απάντησαν. Όχι ακόμη."
+  }
  },
  {
   "audio_id": "U-A2-016-AUD01",
@@ -5129,7 +5516,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Έγραψα."
+  }
  },
  {
   "audio_id": "U-A2-016-AUD02",
@@ -5174,7 +5566,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Μαθήματα."
+  }
  },
  {
   "audio_id": "U-A2-017-AUD01",
@@ -5236,7 +5633,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.269,
+   "wer_accent_insensitive": 0.269,
+   "stress_mismatches": [],
+   "text": "Θα ήθελα ένα ραντεβούτη τρίτη. Την τρίτη δεν υπάρχει διαθέση μή ώρα. Μπορείτε την πέμπτη στις δέκα. Ναι, την πέμπτη στις δέκα. Ευχαριστώ."
+  }
  },
  {
   "audio_id": "U-A2-017-AUD02",
@@ -5298,7 +5700,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.28,
+   "wer_accent_insensitive": 0.28,
+   "stress_mismatches": [],
+   "text": "Θα ήθελα ένα ραντεβούτη τρίτη. Την τρίτη δεν υπάρχει διαθέση μή ώρα. Μπορείτε την πέμπτη στις δέκα. Ναι, την πέμπτη στις δέκα."
+  }
  },
  {
   "audio_id": "U-A2-017-AUD03",
@@ -5343,7 +5750,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.222,
+   "wer_accent_insensitive": 0.222,
+   "stress_mismatches": [],
+   "text": "Την τρίτη δεν υπάρχει διαθέση μή ώρα. Μπορείτε την πέμπτη."
+  }
  },
  {
   "audio_id": "U-A2-017-AUD04",
@@ -5417,7 +5829,12 @@
     ]
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.353,
+   "wer_accent_insensitive": 0.235,
+   "stress_mismatches": [],
+   "text": "Θέλω μια μαύρη τσάντα. Δεν έχουμε μαύρι. Έχουμε μπλέ. Εντάξει, θα πάρω την μπλέ."
+  }
  },
  {
   "audio_id": "U-A2-017-AUD05",
@@ -5471,7 +5888,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.3,
+   "wer_accent_insensitive": 0.3,
+   "stress_mismatches": [],
+   "text": "Τιλεφωνήστε μας αύριο, παρακαλώ. Εντάξει, θα σας τηλεφωνήσω."
+  }
  },
  {
   "audio_id": "U-A2-017-AUD06",
@@ -5533,7 +5955,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.235,
+   "wer_accent_insensitive": 0.235,
+   "stress_mismatches": [],
+   "text": "Μπορείτε την δετάρτη. Όχι, μόνο την παρασκευή το πρωί. Εντάξει, την παρασκευή το πρωί."
+  }
  },
  {
   "audio_id": "U-A2-017-AUD07",
@@ -5595,7 +6022,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.4,
+   "wer_accent_insensitive": 0.4,
+   "stress_mismatches": [],
+   "text": "Να βρεθούμε την Κυριακή. Δεν μπορώ. Το Σάββατος της 12. Ναι, εντάξει."
+  }
  },
  {
   "audio_id": "U-A2-018-AUD01",
@@ -5640,7 +6072,14 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.083,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [
+    "όνομά→όνομα"
+   ],
+   "text": "Πρώτα γράψτε το όνομα σας. Μετά πάρτε έναν αριθμό και περιμένετε εδώ."
+  }
  },
  {
   "audio_id": "U-A2-018-AUD02",
@@ -5685,7 +6124,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Πάρτε έναν αριθμό και περιμένετε εδώ."
+  }
  },
  {
   "audio_id": "U-A2-018-AUD03",
@@ -5730,7 +6174,14 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.067,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [
+    "όνομά→όνομα"
+   ],
+   "text": "Πρώτα γράψτε το όνομα σας. Μετά πάρτε έναν αριθμό. Στο τέλος περιμένετε να σας καλέσουμε."
+  }
  },
  {
   "audio_id": "U-A2-018-AUD04",
@@ -5775,7 +6226,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Θα σας στείλουμε μήνυμα. Αν δεν λάβετε μήνυμα, τηλεφωνήστε μας."
+  }
  },
  {
   "audio_id": "U-A2-018-AUD05",
@@ -5820,7 +6276,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Περιμένετε λίγο. Μην κλείσετε τη σελίδα."
+  }
  },
  {
   "audio_id": "U-A2-018-AUD06",
@@ -5865,7 +6326,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.25,
+   "wer_accent_insensitive": 0.25,
+   "stress_mismatches": [],
+   "text": "Ψάξτε πρώτα στοράφι. Αν δεν βρείτε το βιβλίο, ρωτήστε στον γραφείο."
+  }
  },
  {
   "audio_id": "U-A2-018-AUD07",
@@ -5910,7 +6376,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.182,
+   "wer_accent_insensitive": 0.182,
+   "stress_mismatches": [],
+   "text": "Περιμένετε το μήνυμα. Μετά πάρτε τα υλικά από την έθος αδύο."
+  }
  },
  {
   "audio_id": "U-A2-018-AUD08",
@@ -5955,7 +6426,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.083,
+   "wer_accent_insensitive": 0.083,
+   "stress_mismatches": [],
+   "text": "Πρώτα συμπληρώστε τη φόρμα. Μετά πατήστε Αποστωλή. Αν εμφανιστεί πρόβλημα, ζητήστε βοήθεια."
+  }
  },
  {
   "audio_id": "U-B1-001-AUD01",
@@ -6025,7 +6501,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.261,
+   "wer_accent_insensitive": 0.261,
+   "stress_mismatches": [],
+   "text": "Θα έχεις τελειώσει την παρουσίαση μέχρι της έξη. Το κείμενο θα το έχω τελειώσει. Οι εικόνες όμως δεν είναι έτοιμες. Μπορώ να τις ετοιμάσω εγώ. Ωραία! Στης έξη θα ελέγουμε μαζί τις τελευταίες ελίδες. Μέχρι τις 7 θα έχουμε στήλη το αρχείο."
+  }
  },
  {
   "audio_id": "U-B1-002-AUD01",
@@ -6095,7 +6576,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.2,
+   "wer_accent_insensitive": 0.2,
+   "stress_mismatches": [],
+   "text": "Όταν έφτασες, είχε αρχίσει η συνάντηση. Όχι, όλοι περίμεναν έξω. Και τι έγινε? Ήρθε η πέφθυνη, άνοιξε την πόρτα και μπήκαμε."
+  }
  },
  {
   "audio_id": "U-B1-003-AUD01",
@@ -6165,7 +6651,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.273,
+   "wer_accent_insensitive": 0.242,
+   "stress_mismatches": [],
+   "text": "Τί σου είπε ο υπέφθινος. Μου είπε ότι η έθουσα είναι διαθέσιμη. Με ρώτησε όμως πώς άτομα θα έρθουν. Έκλεισε λοιπόν η κράτηση. Όχι ακόμη. Πρέπει πρώτα να παντήσω."
+  }
  },
  {
   "audio_id": "U-B1-004-AUD01",
@@ -6243,7 +6734,12 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.31,
+   "wer_accent_insensitive": 0.31,
+   "stress_mismatches": [],
+   "text": "Έχεις τα κλειδιά μου. Ναι, να σου τα δώσω τώρα. Όχι, μην τα αφήσεις εδώ. Δώσ' τα στην ίκη, παρακαλώ. Εντάξει, θα τη σταδώσω."
+  }
  },
  {
   "audio_id": "U-B1-005-AUD01",
@@ -6313,7 +6809,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.233,
+   "wer_accent_insensitive": 0.233,
+   "stress_mismatches": [],
+   "text": "Έχουμε τις προτάσεις των γονέων και των μαθητών. Το μαθητών, ναι. Το γονέον θα τις λάβουμε αύριο. Τότε μην ολοκληρώσουμε την έκθεση σήμερα. Σύμφωνοι, θα περιμένουμε."
+  }
  },
  {
   "audio_id": "U-B1-006-AUD01",
@@ -6391,7 +6892,12 @@
     "accent_mismatches": []
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.188,
+   "wer_accent_insensitive": 0.188,
+   "stress_mismatches": [],
+   "text": "Αν φτάσω πριν από τις έξι, θα σε περιμένω στην ίσοδο. Κι αν αργήσεις. Θα σου στείλω μήνυμα. Μην περιμένεις χωρίς ενημέρωση. Ωραία! Θα ελέγξω το τηλεφονό μου."
+  }
  },
  {
   "audio_id": "U-B1-007-AUD01",
@@ -6461,7 +6967,14 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.2,
+   "wer_accent_insensitive": 0.171,
+   "stress_mismatches": [
+    "μήνυμά→μήνυμα"
+   ],
+   "text": "Διάβασα το μήνυμα σας. Θέλετε να κυρώσετε τη συμμετοχή. Όχι, θέλω να αλλάξω ώρα αν υπάρχει δυνατότητα. Θα ελέγξω τα ντμήματα και θα σας απαντήσω αύριο. Ευχαριστώ. Περιμένω την ενημέρωσή σας."
+  }
  },
  {
   "audio_id": "U-B1-008-AUD01",
@@ -6531,7 +7044,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.324,
+   "wer_accent_insensitive": 0.324,
+   "stress_mismatches": [],
+   "text": "Γιατί άλλαξε στην ώρα. Επειδή το λεωφορείο φτάνει αργότερα. Έκλεισα το τραπέζι για τις οκτώ για να προλάβουν όλοι. Και ο Νίκος. Δε βρει και η Σιτήριο. Γαμαγιώτα. Αυτό θα έρθει αύριο."
+  }
  },
  {
   "audio_id": "U-B1-009-AUD01",
@@ -6601,7 +7119,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.345,
+   "wer_accent_insensitive": 0.345,
+   "stress_mismatches": [],
+   "text": "Έχετε κλείσει δωμάτιο. Ναι, έχουμε κλείσει αποχθές. Κοιτά η σητήρια. Τα είχαμε αγοράσει πριν κλείσουμε το δωμάτιο. Αλλά δεν έχουμε κτυπώσει ακόμη την επιβεβαίωση."
+  }
  },
  {
   "audio_id": "U-B1-010-AUD01",
@@ -6679,7 +7202,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.293,
+   "wer_accent_insensitive": 0.268,
+   "stress_mismatches": [],
+   "text": "Χτές το τεχνικό πρόβλημα λύθηκε από την ομάδα μας. Εργαστήκατε μέχρι αργά. Ναι. Εγώ ήρθαστης σε νέα και εργάστηκα μέχρι της έξη. Όταν ετοιμαζόμου να φύγω, θυμήθηκα ένα τελευταίο μήνυμα. Το έστειλες. Ναι, και μετά έφυγα."
+  }
  },
  {
   "audio_id": "U-B1-011-SCRIPT",
@@ -6773,7 +7301,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.211,
+   "wer_accent_insensitive": 0.211,
+   "stress_mismatches": [],
+   "text": "Γιατί είσαι κουρασμένος. Πέρασα το πρωί περπατώντας τη γειτονιά και βγάζοντας φωτογραφίες. Οι οδηγίες για την έκθεση είναι έτοιμες. Ναι, είναι γραμμένες θελεινικά. Τις άφησα πάνω στο τραπέζι. Ωραία! Μπήκα πριν λίγο στην έθουσα. Οι δύο πίσω πόρτες ήταν κλεισμένες. Ξέρεις ποιος της έκλεισε. Όχι. Θα ρωτήσω την υπεύθυνη."
+  }
  },
  {
   "audio_id": "U-B1-012-SCRIPT",
@@ -6859,7 +7392,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.161,
+   "wer_accent_insensitive": 0.145,
+   "stress_mismatches": [],
+   "text": "Ψάχνω την τσάντα που άφησα εδώ το πρωί. Έχει μπλέτη κέτα. Αυτή που είναι δίπλα στην πόρτα. Όχι. Εκείνη έχει κόκκινη κέτα. Η τσάντα που ψάχνω έχει και δύο μικρές τσέπες. Την έχει ο συνάδελφος που δουλεύει στην υποδοχή. Θα σου δείξω που είναι. Ευχαριστώ. Εννοείς τον κύριο που φοράει πράσινο πουκάμισο. Ναι, τον κύριο Λάμπρου."
+  }
  },
  {
   "audio_id": "U-B1-013-SCRIPT",
@@ -6945,7 +7483,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.196,
+   "wer_accent_insensitive": 0.196,
+   "stress_mismatches": [],
+   "text": "Να στείλω τώρα την πρόσκληση. Όχι ακόμη. Στείλ την αφού ελέγξεις την νέα διεύθυνση. Ωραία. Και οι καρέκλες. Θα περιμένουμε μέχρι να φτάσει το φορτιγό. Μετά θα τις βάλουμε στην έθωσα. Πριν φύγω θα σε πάρω τηλέφωνο. Εντάξει. Εγώ θα μείνω εδώ μέχρι τις 7."
+  }
  },
  {
   "audio_id": "U-B1-014-AUD01",
@@ -7023,7 +7566,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.273,
+   "wer_accent_insensitive": 0.273,
+   "stress_mismatches": [],
+   "text": "Έκλεισες στη βιβλιοθήκη. Ναι, άλλο εκπαιδευτής ξέχασα μέσα τη τσάντα του. Μπορείς να ξεκλειδώσεις την πόρτα. Βέβαια. Μετά πρέπει να ξαναγράψω την ανακίνωση. Η ώρα είναι λάθος. Άλλαξε μόνο την ώρα. Ο τόπος και η μέρα είναι σωστά."
+  }
  },
  {
   "audio_id": "U-B1-015-AUD01",
@@ -7109,7 +7657,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.35,
+   "wer_accent_insensitive": 0.325,
+   "stress_mismatches": [],
+   "text": "Έστειλε την έτηση, αλλά δεν έχω λάβη πιβεβαίωση. Πότε τη στείλατε? Χτές το απόγευμα. Περιμένετε με χρειάβριο. Αν δεν έρθει μήνυμα, τηλεφωνείστε ξανά. Χρειάζεται να έρθω στο γραφείο. Όχι, προς το παρόν δεν χρειάζεται."
+  }
  },
  {
   "audio_id": "U-B1-016-AUD01",
@@ -7195,7 +7748,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.231,
+   "wer_accent_insensitive": 0.231,
+   "stress_mismatches": [],
+   "text": "Δεν θυμάμαι τη λέξη. Θέλω κάτι για να ανοίξω αυτό το μπουκάλι. Έχει θελό ή μεταλικό καπάκι. Μεταλικό καπάκι. Τότε αυτό το ανοιχτήρι κάνει. Ωραία! Μπορώ να το δοκιμάσω. Ναι, εδώ στον Πάγκο."
+  }
  },
  {
   "audio_id": "U-B1-017-AUD01",
@@ -7273,7 +7831,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.254,
+   "wer_accent_insensitive": 0.254,
+   "stress_mismatches": [],
+   "text": "Η συνάντηση για την νέα έθωσα θα γίνει την μπέμπτης της έξητο απόγευμα. Πρέπει να κάνουμε κράτηση για να έρθουμε στη συνάντηση. Όχι, για τη συνάντηση δεν χρειάζεται κράτηση. Για τη χρήσιτη σέθωσα σ' από ομάδα, όμως, χρειάζεται. Θα αποφασιστούν τότε οι προηνές ώρες. Όχι, απαραίτητα. Θα ακούσουμε πρώτα τις προτάσεις των επισκεπτών."
+  }
  },
  {
   "audio_id": "U-B1-018-AUD01",
@@ -7318,7 +7881,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.124,
+   "wer_accent_insensitive": 0.124,
+   "stress_mismatches": [],
+   "text": "Καλησπέρα σε όλους! Από την επόμενη εβδομάδα το εργαστήρι υπολογιστών θα λειτουργεί και κάθε τετάρτη από τις 5 μέχρι τις 7 το απόγευμα. Η αλλαγή γίνεται επειδή αρκετή κάτι και εργάζονται το πρωί και δεν μπορούσαν να έρθουν. Το πρωινό πρόγραμμα της δευτέρας δεν αλλάζει. Την τετάρτη μπορείτε να εξασκηθείτε στην αποστολή μηνυμάτων και στη χρήση απλών ηλεκτρονικών φορμών. Δεν πρόκειται για μάθη με επι"
+  }
  },
  {
   "audio_id": "U-B1-018-AUD02",
@@ -7363,7 +7931,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.115,
+   "wer_accent_insensitive": 0.115,
+   "stress_mismatches": [],
+   "text": "Καλησπέρα σε όλους! Από την επόμενη εβδομάδα, το εργαστήρι υπολογιστών θα λειτουργεί και κάθε τετάρτη από τις 5 μέχρι τις 7 το απόγευμα. Η αλλαγή γίνεται επειδή αρκετοί κάτι και εργάζονται το πρωί και δεν μπορούσαν να έρθουν. Το πρωινό πρόγραμμα της δευτέρας δεν αλλάζει. Την τετάρτη μπορείτε να εξασκηθείτε στην αποστολή μηνυμάτων και στη χρήση απλών ηλεκτρονικών φορμών. Δεν πρόκειται για μάθη με ε"
+  }
  },
  {
   "audio_id": "U-B1-018-AUD03",
@@ -7408,7 +7981,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.124,
+   "wer_accent_insensitive": 0.124,
+   "stress_mismatches": [],
+   "text": "Καλησπέρα σε όλους! Από την επόμενη εβδομάδα το εργαστήρι υπολογιστών θα λειτουργεί και κάθε τετάρτη από τις 5 μέχρι τις 7 το απόγευμα. Η αλλαγή γίνεται επειδή αρκετή κάτι και εργάζονται το πρωί και δεν μπορούσαν να έρθουν. Το πρωινό πρόγραμμα της δευτέρας δεν αλλάζει. Την τετάρτη μπορείτε να εξασκηθείτε στην αποστολή μηνυμάτων και στη χρήση απλών ηλεκτρονικών φορμών. Δεν πρόκειται για μάθη με επι"
+  }
  },
  {
   "audio_id": "U-B1-018-AUD04",
@@ -7453,7 +8031,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.115,
+   "wer_accent_insensitive": 0.115,
+   "stress_mismatches": [],
+   "text": "Καλησπέρα σε όλους! Από την επόμενη εβδομάδα το εργαστήρι υπολογιστών θα λειτουργεί και κάθε τετάρτη από τις 5 μέχρι τις 7 το απόγευμα. Η αλλαγή γίνεται επειδή αρκετή κάτι και εργάζονται το πρωί και δεν μπορούσαν να έρθουν. Το πρωινό πρόγραμμα της δευτέρας δεν αλλάζει. Την τετάρτη μπορείτε να εξασκηθείτε στην αποστολή μηνυμάτων και στη χρήση απλών ηλεκτρονικών φορμών. Δεν πρόκειται για μάθη με επι"
+  }
  },
  {
   "audio_id": "U-B1-018-AUD05",
@@ -7498,7 +8081,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.124,
+   "wer_accent_insensitive": 0.124,
+   "stress_mismatches": [],
+   "text": "Καλησπέρα σε όλους! Από την επόμενη εβδομάδα το εργαστήρι υπολογιστών θα λειτουργεί και κάθε τετάρτη από τις 5 μέχρι τις 7 το απόγευμα. Η αλλαγή γίνεται επειδή αρκετή κάτι και εργάζονται το πρωί και δεν μπορούσαν να έρθουν. Το πρωινό πρόγραμμα της δευτέρας δεν αλλάζει. Την τετάρτη μπορείτε να εξασκηθείτε στην αποστολή μηνυμάτων και στη χρήση απλών ηλεκτρονικών φορμών. Δεν πρόκειται για μάθη με επι"
+  }
  },
  {
   "audio_id": "U-B1-018-AUD06",
@@ -7543,7 +8131,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.276,
+   "wer_accent_insensitive": 0.276,
+   "stress_mismatches": [],
+   "text": "Από αυτή την εβδομάδα η διβλιοθήκη θα μείνει ανοιχτή την παρασκευή μέχρι της 8. βράδυ. Η αλλαγία φορά μόνο την παρασκευή. Το ορράριο του Σαββάτου παραμένει το ίδιο."
+  }
  },
  {
   "audio_id": "U-B1-018-AUD07",
@@ -7588,7 +8181,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.227,
+   "wer_accent_insensitive": 0.227,
+   "stress_mismatches": [],
+   "text": "Η ομάδα της γητονιάς χρειάζεται θελοντέζεται γιορτή. Αν θέλετε να βοηθήσετε, στείλτε μήνυμα μέχρι την 3η. Δεν χρειάζεται προηγούμενη εμπειρία."
+  }
  },
  {
   "audio_id": "U-B1-018-AUD08",
@@ -7633,7 +8231,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.217,
+   "wer_accent_insensitive": 0.217,
+   "stress_mismatches": [],
+   "text": "Αυτή την εβδομάδα, η προπόνιση της 5 της μεταφέρεται στην παρασκευή, επειδή η έθουσα δεν είναι διαθέσιμη. Η προπόνιση της Κυριακής θα γίνει κανονικά."
+  }
  },
  {
   "audio_id": "U-B1-019-AUD01",
@@ -7719,7 +8322,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.148,
+   "wer_accent_insensitive": 0.125,
+   "stress_mismatches": [],
+   "text": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη? Στην αρχή πήγαινα μόνο για να δανισθώ βιβλία. Μία μέρα είδα μια ανακίνωση για θελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες στην εβδομάδα ήταν αρκετές. Ήταν εύκολη πρώτη μέρα. Όχι ακριβώς. Δεν ήξερα που βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος σε θελοντής"
+  }
  },
  {
   "audio_id": "U-B1-019-AUD02",
@@ -7805,7 +8413,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.148,
+   "wer_accent_insensitive": 0.125,
+   "stress_mismatches": [],
+   "text": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη? Στην αρχή πήγαινα μόνο για να δανισθώ βιβλία. Μία μέρα είδα μια ανακίνωση για θελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες στην εβδομάδα ήταν αρκετές. Ήταν εύκολη πρώτη μέρα. Όχι ακριβώς. Δεν ήξερα που βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος σε θελοντής"
+  }
  },
  {
   "audio_id": "U-B1-019-AUD03",
@@ -7891,7 +8504,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.148,
+   "wer_accent_insensitive": 0.125,
+   "stress_mismatches": [],
+   "text": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη? Στην αρχή πήγαινα μόνο για να δανισθώ βιβλία. Μία μέρα είδα μια ανακίνωση για θελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες στην εβδομάδα ήταν αρκετές. Ήταν εύκολη πρώτη μέρα. Όχι ακριβώς. Δεν ήξερα που βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος σε θελοντής"
+  }
  },
  {
   "audio_id": "U-B1-019-AUD04",
@@ -7977,7 +8595,15 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.156,
+   "wer_accent_insensitive": 0.125,
+   "stress_mismatches": [
+    "μια→μία",
+    "μια→μία"
+   ],
+   "text": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη? Στην αρχή πήγαινα μόνο για να δανισθώ βιβλία. Μία μέρα είδα μία ανακίνωση για θελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες στην εβδομάδα ήταν αρκετές. Ήταν εύκολη πρώτη μέρα. Όχι, ακριβώς. Δεν ήξερα που βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσω λάθος πληροφορία. Ένας άλλος σε θελοντή"
+  }
  },
  {
   "audio_id": "U-B1-019-AUD05",
@@ -8063,7 +8689,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.164,
+   "wer_accent_insensitive": 0.141,
+   "stress_mismatches": [],
+   "text": "Πώς ξεκίνησες να βοηθάς στη βιβλιοθήκη? Στην αρχή πήγαινα μόνο για να δανισθώ βιβλία. Μία μέρα είδα μια ανακίνωση για θελοντές και μίλησα με την υπεύθυνη. Νόμιζα ότι θα χρειαζόταν να έρχομαι κάθε μέρα, αλλά μου εξήγησε ότι δύο ώρες στην εβδομάδα ήταν αρκετές. Ήταν εύκολη πρώτη μέρα. Όχι, ακριβώς. Δεν ήξερα που βρίσκονταν όλα τα βιβλία και φοβόμουν μήπως δώσει ολάθος πληροφορία. Ένας άλλος σε θελον"
+  }
  },
  {
   "audio_id": "U-B1-019-AUD06",
@@ -8108,7 +8739,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.217,
+   "wer_accent_insensitive": 0.217,
+   "stress_mismatches": [],
+   "text": "Στην πρώτη προποννηση δυσκολεύτηκα και ήθελα να φύγω. Μίλησα όμως με τον προποννητή που μου πρότεινε πιο απλές ασκήσεις. Τελικά αποφάσες αναμείνω."
+  }
  },
  {
   "audio_id": "U-B1-019-AUD07",
@@ -8153,7 +8789,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.056,
+   "wer_accent_insensitive": 0.056,
+   "stress_mismatches": [],
+   "text": "Νόμιζα ότι το λεωφορείο θα αργούσε λόγο της βροχής. Τελικά έφτασε στην ώρα του και πρόλαβα τη συνάντηση."
+  }
  },
  {
   "audio_id": "U-B1-019-AUD08",
@@ -8198,7 +8839,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.143,
+   "wer_accent_insensitive": 0.143,
+   "stress_mismatches": [],
+   "text": "Εγώ γράφτηκα χωρίς να δω το μάθημα και μετά κατάλαβα ότι δεν μου τέριαζε. Θα σας πρότει να αναζητήσετε πρώτα να παρακολουθήσετε ένα μάθημα και μετά να αποφασήσετε."
+  }
  },
  {
   "audio_id": "U-B1-021-AUD01",
@@ -8243,7 +8889,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.714,
+   "wer_accent_insensitive": 0.714,
+   "stress_mismatches": [],
+   "text": "Ιάννα θα φέρεται στη τήρια αύριο."
+  }
  },
  {
   "audio_id": "U-B1-021-AUD02",
@@ -8288,7 +8939,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.857,
+   "wer_accent_insensitive": 0.857,
+   "stress_mismatches": [],
+   "text": "Ιάννα θα φέρεται στη τηρία αύριου."
+  }
  },
  {
   "audio_id": "U-B2-001-AUD01",
@@ -8377,7 +9033,15 @@
     ]
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.226,
+   "wer_accent_insensitive": 0.189,
+   "stress_mismatches": [
+    "μια→μία",
+    "μια→μία"
+   ],
+   "text": "Τι προτείνετε για τον χώρο? Περισότερο πράσινο, αλλά όχι να κλείσει η διαδρομή προς τη βιβλιοθήκη. Συμφωνώ με τα φυτά. Διαφωνώ όμως με μία μόνη μία λαγή πριν υπολογήσουμε το κόστος. Ας κάνουμε πρώτα μία δοκιμή ενός μήνα. Θα το συζητούσα. Αρκεί να ξέρουμε ποιος θα φροντίζει τα φυτά."
+  }
  },
  {
   "audio_id": "U-B2-002-AUD01",
@@ -8459,7 +9123,12 @@
     ]
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.194,
+   "wer_accent_insensitive": 0.194,
+   "stress_mismatches": [],
+   "text": "Να γράψω τα διεθνή συνέδρια. Όχι, τα διεθνή συνέδρια. Και πρόσεξε, η έκθεση αφορά τη σειρά των γεγονότων όχι τα έτια τους. Άρα δεν πρέπει να προσθέσω εξήγηση για τα έτια. Ακριβώς."
+  }
  },
  {
   "audio_id": "U-B2-003-AUD01",
@@ -8529,7 +9198,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.114,
+   "wer_accent_insensitive": 0.114,
+   "stress_mismatches": [],
+   "text": "Αν είχες δει το μήνυμα, θα είχες έρθει. Ναι, αλλά το διάβασα μετά τη συνάντηση. Μπορούμε να μιλήσουμε τώρα. Αν είχα χρόνο τώρα, θα μιλούσαμε. Πρέπει όμως να φύγω. Μπορώ αύριο."
+  }
  },
  {
   "audio_id": "U-B2-004-AUD01",
@@ -8599,7 +9273,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.135,
+   "wer_accent_insensitive": 0.135,
+   "stress_mismatches": [],
+   "text": "Το πρώτο πρόγραμμα έχει περισσότερες ώρες. Άρα είναι καλύτερο. Όχι, απαραίτητα. Το δεύτερο έχει λιγότερες ώρες, αλλά περισσότερη προσωπική ανατροφοδότηση. Για μένα αυτό είναι σημαντικότερο. Τότε ας ελέγξουμε και το ράριο πριν αποφασίσουμε."
+  }
  },
  {
   "audio_id": "U-B2-005-AUD01",
@@ -8669,7 +9348,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.214,
+   "wer_accent_insensitive": 0.214,
+   "stress_mismatches": [],
+   "text": "Σας καλώς χητικά με την έτησή μου. Να τη στείλω με ηλεκτρονικό ταχυδρομίο. Όχι, μέσω της πλατφόρμας. Σύμφωνα με τον κανονισμό, χρειάζεται και υπογραφή. Η καθηστέρηση οφείλεται στο τεχνικό πρόβλημα. Ναι. Λόγω της Βλάβης, δώσαμε δύο επιπλέον ημέρες."
+  }
  },
  {
   "audio_id": "U-B2-006-SCRIPT",
@@ -8775,7 +9459,15 @@
     ]
    }
   ],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.211,
+   "wer_accent_insensitive": 0.197,
+   "stress_mismatches": [
+    "έλεγχα→ελέγχα",
+    "μήνυμα→μήνυμά"
+   ],
+   "text": "Μπορούμε να στείλουμε την ανακίνωση τώρα. Όχι ακόμη. Ο τίτλος έχει διορθωθεί, αλλά πρέπει να ελέγξουμε τις ώρες. Νόμιζα ότι τις είχες ελέγξιχτές. Ελέγχα τις ώρες όταν ήρθε ένα νέο πρόγραμμα. Πρέπει να συγκρίνω τα δύο αρχία. Θα μπορούσες να το κάνεις μέχρι τις 3. Ναι, μπορώ. Θα σου στείλω μήνυμο όταν τελειώσω. Ωραία! Θα περιμένω το μήνυμά σου πριν στείλω την ανακίνωση."
+  }
  },
  {
   "audio_id": "U-B2-007-AUD01",
@@ -8861,7 +9553,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.206,
+   "wer_accent_insensitive": 0.206,
+   "stress_mismatches": [],
+   "text": "Έχοντας ελέγξη τα αρχία, μπορούμε να τα στείλουμε. Τα κείμενα είναι διορθωμένα, αλλά δύο εικόνες δεν έχουν ακόμη άδια χρήσεις. Άρα δεν γράφουμε ότι όλο το υλικό είναι έτοιμο. Ακριβώς. Μπορώ να στείλω μόνο τα κείμενα στην ομάδα για έναν τελευταίο έλεγχο. Κάνε το, εξηγώντας γιατί οι εικόνες θα ακολουθήσουν αργότερα. Θα αναφέρω την Άδια Ποεκρεμή, χωρίς να υποσχεθώ συγκεκριμένη μερομηνία."
+  }
  },
  {
   "audio_id": "U-B2-008-AUD01",
@@ -8947,7 +9644,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.152,
+   "wer_accent_insensitive": 0.152,
+   "stress_mismatches": [],
+   "text": "Μίλησες με την εκπαιδεύτερη για την αλλαγή. Ναι. Είπε ότι μπορεί να έρθει την παρασκευή, αλλά ζήτησε να μην ανακοινώσουμε ακόμη την ώρα. Γιατί? Περιμένη απάντηση από τη συνεργάτηδα με την οποία θα παρουσιάσει το σεμινάριο. Άρα μπορούμε να ενημερώσουμε όσους έχουν ήδη εγγραφεί μόνο για την ημέρα. Ακριβώς. Η ώρα παραμένει ανοιχτή. Θα εξηγήσω ότι δεν πρόκειται για κύρωση."
+  }
  },
  {
   "audio_id": "U-B2-012-AUD00",
@@ -8992,7 +9694,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.188,
+   "wer_accent_insensitive": 0.188,
+   "stress_mismatches": [],
+   "text": "Αρχικά είπαμε στις έξι, αλλά θα βρεθούμε στις επτά, επειδή δουλεύομαι έχετε στις έξι και μισή."
+  }
  },
  {
   "audio_id": "U-B2-012-AUD01",
@@ -9079,7 +9786,15 @@
    ]
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.09,
+   "wer_accent_insensitive": 0.082,
+   "stress_mismatches": [
+    "σύγκρουση→συγκρουσή",
+    "χρηματοδότηση→χρήματοδότηση"
+   ],
+   "text": "Καλησπέρα σας. Θα σας παρουσιάσω την πρόταση για ένα μικρό εργαστήριο επισκεδής στη δημοτική βιβλιοθήκη της φανταστικής μας πόλης. Δεν πρόκειται για κατάστημα ούτε για υπηρεσία που αναλαμβάνει κάθε βλάβη. Στόχος είναι οι κάτι και να μάθουν να φροντίζουν απλά αντικείμενα και να ανταλάσσουν εμπειρίες με τη βοήθεια θελοντών. Η πρώτη σκέψη ήταν να συναντιόμαστε κάθε Σάββατο. Ίστερα που συζήτηση με το "
+  }
  },
  {
   "audio_id": "U-B2-012-AUD02",
@@ -9124,7 +9839,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.176,
+   "wer_accent_insensitive": 0.176,
+   "stress_mismatches": [],
+   "text": "Η ομάδα του Κύπου προτείνει να ανοίγει ο χώρος δύο πογέβματα την εβδομάδα. Αρχικά συζητήθηκε καθημερινή λειτουργία, αλλά οι διαθέσιμει θελοντές δεν απαρκούν. Η συμμετοχή θα είναι δωρεάν. Όποιος θέλει μπορεί να φέρει σπόρους, χωρίς αυτόν αποτελεί προϋπόθεση ισόδου. Μετά από 6 εβδομάδες θα εξετάσουμε αν οι επισκέπτες μπορούν να φροντίσουν τα φυτά χωρίς σε νεχιβοήθεια. Δεν έχουμε ακόμη στοιχεία για ε"
+  }
  },
  {
   "audio_id": "U-B2-012-AUD03",
@@ -9169,7 +9889,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.19,
+   "wer_accent_insensitive": 0.19,
+   "stress_mismatches": [],
+   "text": "Η συνάντηση δεν θα γίνει τελικά στην αυλή αλλά στην έθωση του πρώτον ρόφου. Έτσι θα μπορούμε να χρησιμοποιήσουμε το προβολέα. Οστόσο, αν ο θόρυβος από το δρόμο εμποδίζει το μάθημα, θα να ζητήσουμε άλλον χώρο. Προς το παρόν δεν αλλάζει η ώρα."
+  }
  },
  {
   "audio_id": "U-B2-015-AUD01",
@@ -9305,7 +10030,16 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.138,
+   "wer_accent_insensitive": 0.125,
+   "stress_mismatches": [
+    "μία→μια",
+    "μία→μια",
+    "ελεγχθεί→ελέγχθεί"
+   ],
+   "text": "Ευχαριστώ που ήρθατε. Πρέπει να προτείνουμε πως θα λειτουργήσει η έθωσα της γειτονιάς τον επόμενο μήνα. Έχουμε δύο ελεύθερα απογεύματα, την τρίτη και την πέντη. Αρχικά σκέφτηκα να κάνουμε προβολές ταινιών και τις δύο ημέρες, αλλά θα ήθελα να ακούσω τις ανάγκες σας πριν αποφασίσουμε. Οι προβολές είναι ωραία ιδέα, όμως υπάρχουν μαθητές που ψάχνουν είσυχο χώρο για διάβασμα. Στο σπίτι δεν έχουν όλοι δ"
+  }
  },
  {
   "audio_id": "U-B2-015-AUD02",
@@ -9393,7 +10127,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.183,
+   "wer_accent_insensitive": 0.183,
+   "stress_mismatches": [],
+   "text": "Για την εκδρομή προτείνω να φύγουμε στις 8 ώστε να έχουμε χρόνο για περπάτημα. Εγώ μπορώ μόνο μετά τη σαναία. Αν φύγεται νωρίτερα θα έρθω μόνος μου. Δεν με απασχολεί τόσο η ώρα όσο η επιστροφή. Πρέπει να είμαι πίσω πριν από τις 6. Πριν κλείσουμε μεταφορά ας δούμε τον καιρό. Αν προβλέπετε δυνατή βροχή προτείνω να αναβάλουμε. Άρα δεν έχουμε ακόμη κινή η ώρα αναχώρησης. Θα ελέγξω πρώτο τον καιρό και "
+  }
  },
  {
   "audio_id": "U-B2-015-AUD03",
@@ -9481,7 +10220,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.157,
+   "wer_accent_insensitive": 0.157,
+   "stress_mismatches": [],
+   "text": "Ο μικρός χώρος είναι φθινότερος, αλλά δεν χωρά 20 άτομα. Τότε προτιμώ το μεγαλύτερο, αν το κόστος δεν ξεπερνά τον προϋπολογισμό μας. Η τιμή που έχουμε αφορά μόνο την έθουσα, όχι τον εξοπλισμό. Άρα δεν πρέπει να κάνουμε κράτηση ακόμη. Θα ρωτήσω σήμερα για την πρόσθετη χρέωση και θα σας ενημερώσω. Ωραία! Κρατάμε την προτίμηση για το μεγάλο χώρο, αλλά αποφασίζουμε μετά την απάντηση."
+  }
  },
  {
   "audio_id": "U-B2-016-I11-AUDIO",
@@ -9526,7 +10270,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.231,
+   "wer_accent_insensitive": 0.231,
+   "stress_mismatches": [],
+   "text": "Θα βρεθούμε στις έξες συγγνώμη, στις 7 το απόγευμα, στην ίσοδο της Βιβλιοθήκης."
+  }
  },
  {
   "audio_id": "U-B2-016-I12-AUDIO",
@@ -9571,7 +10320,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.643,
+   "wer_accent_insensitive": 0.643,
+   "stress_mismatches": [],
+   "text": "Η Μαρία θα στείλει την έτηση αύριου."
+  }
  },
  {
   "audio_id": "U-B2-016-I13-AUDIO",
@@ -9616,7 +10370,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.0,
+   "wer_accent_insensitive": 0.0,
+   "stress_mismatches": [],
+   "text": "Αν βρέξει, θα μεταφέρουμε τη συνάντηση μέσα. Αν δεν βρέξει, θα μείνουμε στην αυλή. Προς το παρόν δεν αλλάζουμε την ώρα."
+  }
  },
  {
   "audio_id": "U-B2-016-I14-AUDIO",
@@ -9661,7 +10420,12 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.318,
+   "wer_accent_insensitive": 0.318,
+   "stress_mismatches": [],
+   "text": "Η συμμετοχή κοστίζει 50 ΕΩΥ, 15 ΕΟΥ. Τα 50 ήταν η αρχική τιμή, πριν καλυφθή ένα μέρος των εξόδων από το σύλλογο."
+  }
  },
  {
   "audio_id": "U-B2-016-I15-AUDIO",
@@ -9706,6 +10470,11 @@
    "accent_mismatches": []
   },
   "stored_failed_segments": [],
-  "error": "open() got an unexpected keyword argument 'metadata_errors'"
+  "whisper": {
+   "wer": 0.081,
+   "wer_accent_insensitive": 0.081,
+   "stress_mismatches": [],
+   "text": "Θα πάρουμε το λεωφορείο στην πλατεία και μετά μισό λεπτό, η στάση εκεί είναι κλειστή. Θα κατεβούμε στην προηγούμενη στάση και θα περπατήσουμε 10 λεπτά. Αν κάποιος δυσκολεύεται στο περπάτημα, ας βρούμε άλλη λύση πριν φύγουμε."
+  }
  }
 ]
