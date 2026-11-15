@@ -1,358 +1,151 @@
 [
  {
-  "case": "U-B2-016-I12 выделение 2: ответственный (1), день (2); как в конвейере (внешний prosody rate)",
+  "case": "U-B1-021 дорожка A (кто: Άννα)",
   "voice": "el-GR-AthinaNeural",
-  "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
-  "text": "<prosody rate=\"+0%\">Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.</prosody>",
-  "syllables_per_s": 6.01,
+  "reference": "Η Άννα θα φέρει τα εισιτήρια αύριο.",
+  "text": "<prosody rate=\"+0%\">Η Άννα θα φέρει τα εισιτήρια αύριο.</prosody>",
+  "syllables_per_s": 7.14,
   "f0": {
-   "median_hz": 232.6,
-   "range_st": 11.9
+   "median_hz": 230.3,
+   "range_st": 12.7
   },
   "azure": {
-   "text": "η μαρία θα στείλει την αίτηση αύριο η μαρία θα στείλει την αίτηση αύριο",
-   "confidence": 0.7917137,
+   "text": "η άννα θα φέρει τα εισιτήρια αύριο",
+   "confidence": 0.7123732,
    "wer_bare": 0.0,
    "stress": [],
    "spelled": []
   },
   "whisper": {
-   "text": "Η Μαρία θα στείλει την έτηση αύριου.",
-   "wer_bare": 0.643,
+   "text": "η άνα θα φέρεται στη τηρία αύριου.",
+   "wer_bare": 0.714,
    "stress": [],
    "spelled": []
   },
   "focus": {
-   "cut_s": 2.28,
-   "pause_s": 0.96,
+   "cut_s": null,
+   "pause_s": 0.0,
    "versions": [
     {
      "from_s": 0.0,
-     "to_s": 2.28,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριου.",
+     "to_s": 2.67,
+     "whisper": "η άνα θα φέρεται στη τηρία αύριου.",
      "words": {
-      "Μαρία": {
-       "start_s": 0.22,
-       "dur_s": 0.3,
-       "f0_median_hz": 235.9,
-       "f0_peak_hz": 303.9,
+      "Άννα": {
+       "start_s": 0.28,
+       "dur_s": 0.18,
+       "f0_median_hz": 262.1,
+       "f0_peak_hz": 316.9,
+       "intensity_db": 80.9
+      },
+      "αύριο": {
+       "start_s": 1.44,
+       "dur_s": 0.36,
+       "f0_median_hz": 159.0,
+       "f0_peak_hz": 226.5,
+       "intensity_db": 71.2
+      }
+     }
+    }
+   ]
+  }
+ },
+ {
+  "case": "U-B1-021 дорожка A (кто: Άννα)",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Η Άννα θα φέρει τα εισιτήρια αύριο.",
+  "text": "<prosody rate=\"+0%\">Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Άννα</prosody> θα φέρει τα εισιτήρια αύριο.</prosody>",
+  "syllables_per_s": 6.94,
+  "f0": {
+   "median_hz": 231.5,
+   "range_st": 16.3
+  },
+  "azure": {
+   "text": "η άννα θα φέρει τα εισιτήρια αύριο",
+   "confidence": 0.79160047,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "Ιάννα θα φέρεται στη τηρία αύριο.",
+   "wer_bare": 0.714,
+   "stress": [],
+   "spelled": []
+  },
+  "focus": {
+   "cut_s": null,
+   "pause_s": 0.0,
+   "versions": [
+    {
+     "from_s": 0.0,
+     "to_s": 2.73,
+     "whisper": "Ιάννα θα φέρεται στη τηρία αύριο.",
+     "words": {
+      "Άννα": {
+       "start_s": 0.0,
+       "dur_s": 0.54,
+       "f0_median_hz": 328.9,
+       "f0_peak_hz": 397.4,
+       "intensity_db": 39.5
+      },
+      "αύριο": {
+       "start_s": 1.5,
+       "dur_s": 0.34,
+       "f0_median_hz": 160.7,
+       "f0_peak_hz": 224.8,
+       "intensity_db": 71.4
+      }
+     }
+    }
+   ]
+  }
+ },
+ {
+  "case": "U-B1-021 дорожка B (когда: αύριο)",
+  "voice": "el-GR-AthinaNeural",
+  "reference": "Η Άννα θα φέρει τα εισιτήρια αύριο.",
+  "text": "<prosody rate=\"+0%\">Η Άννα θα φέρει τα εισιτήρια <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>",
+  "syllables_per_s": 6.86,
+  "f0": {
+   "median_hz": 235.5,
+   "range_st": 7.8
+  },
+  "azure": {
+   "text": "η άννα θα φέρει τα εισιτήρια αύριο",
+   "confidence": 0.6680798,
+   "wer_bare": 0.0,
+   "stress": [],
+   "spelled": []
+  },
+  "whisper": {
+   "text": "η άνα θα φέρεται στη τηρία αύριο.",
+   "wer_bare": 0.571,
+   "stress": [],
+   "spelled": []
+  },
+  "focus": {
+   "cut_s": null,
+   "pause_s": 0.0,
+   "versions": [
+    {
+     "from_s": 0.0,
+     "to_s": 2.76,
+     "whisper": "η άνα θα φέρεται στη τηρία αύριο.",
+     "words": {
+      "Άννα": {
+       "start_s": 0.28,
+       "dur_s": 0.18,
+       "f0_median_hz": 264.5,
+       "f0_peak_hz": 317.5,
        "intensity_db": 80.6
       },
       "αύριο": {
-       "start_s": 1.36,
-       "dur_s": 0.4,
-       "f0_median_hz": 169.7,
-       "f0_peak_hz": 245.1,
-       "intensity_db": 73.1
-      }
-     }
-    },
-    {
-     "from_s": 2.28,
-     "to_s": 5.28,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριου.",
-     "words": {
-      "Μαρία": {
-       "start_s": 2.82,
-       "dur_s": 0.32,
-       "f0_median_hz": 237.0,
-       "f0_peak_hz": 305.4,
-       "intensity_db": 80.6
-      },
-      "αύριο": {
-       "start_s": 3.98,
-       "dur_s": 0.4,
-       "f0_median_hz": 167.5,
-       "f0_peak_hz": 244.4,
-       "intensity_db": 72.9
-      }
-     }
-    }
-   ]
-  }
- },
- {
-  "case": "U-B2-016-I12 выделение 2: ответственный (1), день (2); как в конвейере (внешний prosody rate)",
-  "voice": "el-GR-AthinaNeural",
-  "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
-  "text": "<prosody rate=\"+0%\">Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>",
-  "syllables_per_s": 5.8,
-  "f0": {
-   "median_hz": 242.6,
-   "range_st": 12.8
-  },
-  "azure": {
-   "text": "η μαρία θα στείλει την αίτηση αύριο η μαρία θα στείλει την αίτηση αύριο",
-   "confidence": 0.7796073,
-   "wer_bare": 0.0,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "Η Μαρία θα στείλει την έτηση αύριο.",
-   "wer_bare": 0.571,
-   "stress": [],
-   "spelled": []
-  },
-  "focus": {
-   "cut_s": 2.73,
-   "pause_s": 1.77,
-   "versions": [
-    {
-     "from_s": 0.0,
-     "to_s": 2.73,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριου.",
-     "words": {
-      "Μαρία": {
-       "start_s": 0.24,
-       "dur_s": 0.34,
-       "f0_median_hz": 302.5,
-       "f0_peak_hz": 384.0,
-       "intensity_db": 79.9
-      },
-      "αύριο": {
        "start_s": 1.44,
-       "dur_s": 0.38,
-       "f0_median_hz": 169.1,
-       "f0_peak_hz": 243.0,
-       "intensity_db": 73.0
-      }
-     }
-    },
-    {
-     "from_s": 2.73,
-     "to_s": 6.22,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριο.",
-     "words": {
-      "Μαρία": {
-       "start_s": 3.69,
-       "dur_s": 0.3,
-       "f0_median_hz": 236.1,
-       "f0_peak_hz": 304.5,
-       "intensity_db": 80.3
-      },
-      "αύριο": {
-       "start_s": 4.85,
-       "dur_s": 0.44,
-       "f0_median_hz": 221.4,
-       "f0_peak_hz": 295.7,
-       "intensity_db": 75.3
-      }
-     }
-    }
-   ]
-  }
- },
- {
-  "case": "U-B2-016-I12 выделение 2: ответственный (1), день (2); как в конвейере (внешний prosody rate)",
-  "voice": "el-GR-AthinaNeural",
-  "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
-  "text": "<prosody rate=\"+0%\">Η <prosody pitch=\"+35%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+35%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.</prosody>",
-  "syllables_per_s": 5.8,
-  "f0": {
-   "median_hz": 244.2,
-   "range_st": 14.3
-  },
-  "azure": {
-   "text": "η μαρία θα στείλει την αίτηση αύριο η μαρία θα στείλει την αίτηση αύριο",
-   "confidence": 0.78323215,
-   "wer_bare": 0.0,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "Η Μαρία θα στείλει την έτηση αύριο.",
-   "wer_bare": 0.571,
-   "stress": [],
-   "spelled": []
-  },
-  "focus": {
-   "cut_s": 2.74,
-   "pause_s": 1.76,
-   "versions": [
-    {
-     "from_s": 0.0,
-     "to_s": 2.74,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριου.",
-     "words": {
-      "Μαρία": {
-       "start_s": 0.24,
-       "dur_s": 0.34,
-       "f0_median_hz": 330.7,
-       "f0_peak_hz": 404.0,
-       "intensity_db": 80.1
-      },
-      "αύριο": {
-       "start_s": 1.44,
-       "dur_s": 0.38,
-       "f0_median_hz": 169.4,
-       "f0_peak_hz": 242.9,
-       "intensity_db": 73.1
-      }
-     }
-    },
-    {
-     "from_s": 2.74,
-     "to_s": 6.22,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριο.",
-     "words": {
-      "Μαρία": {
-       "start_s": 3.7,
-       "dur_s": 0.3,
-       "f0_median_hz": 236.0,
-       "f0_peak_hz": 305.6,
-       "intensity_db": 80.1
-      },
-      "αύριο": {
-       "start_s": 4.84,
-       "dur_s": 0.46,
-       "f0_median_hz": 238.2,
-       "f0_peak_hz": 303.5,
-       "intensity_db": 74.8
-      }
-     }
-    }
-   ]
-  }
- },
- {
-  "case": "U-B2-016-I12 выделение 2: ответственный (1), день (2); как в конвейере (внешний prosody rate)",
-  "voice": "el-GR-AthinaNeural",
-  "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
-  "text": "<prosody rate=\"+0%\">Η <prosody pitch=\"+30%\" rate=\"-10%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+30%\" rate=\"-10%\">αύριο</prosody>.</prosody>",
-  "syllables_per_s": 5.9,
-  "f0": {
-   "median_hz": 244.9,
-   "range_st": 13.8
-  },
-  "azure": {
-   "text": "η μαρία θα στείλει την αίτηση αύριο η μαρία θα στείλει την αίτηση αύριο",
-   "confidence": 0.83416814,
-   "wer_bare": 0.0,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "Η Μαρία θα στείλει την έτηση αύριο.",
-   "wer_bare": 0.571,
-   "stress": [],
-   "spelled": []
-  },
-  "focus": {
-   "cut_s": 2.73,
-   "pause_s": 1.77,
-   "versions": [
-    {
-     "from_s": 0.0,
-     "to_s": 2.73,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριου.",
-     "words": {
-      "Μαρία": {
-       "start_s": 0.22,
-       "dur_s": 0.36,
-       "f0_median_hz": 314.8,
-       "f0_peak_hz": 399.9,
-       "intensity_db": 80.0
-      },
-      "αύριο": {
-       "start_s": 1.42,
        "dur_s": 0.4,
-       "f0_median_hz": 167.5,
-       "f0_peak_hz": 243.6,
-       "intensity_db": 72.8
-      }
-     }
-    },
-    {
-     "from_s": 2.73,
-     "to_s": 6.15,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριο.",
-     "words": {
-      "Μαρία": {
-       "start_s": 3.68,
-       "dur_s": 0.3,
-       "f0_median_hz": 236.8,
-       "f0_peak_hz": 305.1,
-       "intensity_db": 80.2
-      },
-      "αύριο": {
-       "start_s": 4.85,
-       "dur_s": 0.4,
-       "f0_median_hz": 228.4,
-       "f0_peak_hz": 309.0,
-       "intensity_db": 75.1
-      }
-     }
-    }
-   ]
-  }
- },
- {
-  "case": "U-B2-016-I12 выделение 2: ответственный (1), день (2); как в конвейере (внешний prosody rate)",
-  "voice": "el-GR-AthinaNeural",
-  "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
-  "text": "Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.",
-  "syllables_per_s": 5.8,
-  "f0": {
-   "median_hz": 242.6,
-   "range_st": 12.8
-  },
-  "azure": {
-   "text": "η μαρία θα στείλει την αίτηση αύριο η μαρία θα στείλει την αίτηση αύριο",
-   "confidence": 0.78111285,
-   "wer_bare": 0.0,
-   "stress": [],
-   "spelled": []
-  },
-  "whisper": {
-   "text": "Η Μαρία θα στείλει την έτηση αύριο.",
-   "wer_bare": 0.571,
-   "stress": [],
-   "spelled": []
-  },
-  "focus": {
-   "cut_s": 2.73,
-   "pause_s": 1.77,
-   "versions": [
-    {
-     "from_s": 0.0,
-     "to_s": 2.73,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριου.",
-     "words": {
-      "Μαρία": {
-       "start_s": 0.22,
-       "dur_s": 0.36,
-       "f0_median_hz": 302.2,
-       "f0_peak_hz": 384.0,
-       "intensity_db": 80.3
-      },
-      "αύριο": {
-       "start_s": 1.44,
-       "dur_s": 0.38,
-       "f0_median_hz": 169.1,
-       "f0_peak_hz": 243.0,
-       "intensity_db": 73.0
-      }
-     }
-    },
-    {
-     "from_s": 2.73,
-     "to_s": 6.22,
-     "whisper": "Η Μαρία θα στείλει την έτηση αύριο.",
-     "words": {
-      "Μαρία": {
-       "start_s": 3.69,
-       "dur_s": 0.3,
-       "f0_median_hz": 236.1,
-       "f0_peak_hz": 304.5,
-       "intensity_db": 80.3
-      },
-      "αύριο": {
-       "start_s": 4.85,
-       "dur_s": 0.44,
-       "f0_median_hz": 221.4,
-       "f0_peak_hz": 295.7,
-       "intensity_db": 75.3
+       "f0_median_hz": 211.0,
+       "f0_peak_hz": 286.6,
+       "intensity_db": 74.3
       }
      }
     }
