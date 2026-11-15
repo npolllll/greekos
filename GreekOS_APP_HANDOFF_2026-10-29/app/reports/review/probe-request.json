@@ -1,51 +1,20 @@
 [
  {
-  "case": "RG-0003 «Α,» (вопрос) 2",
-  "reference": "Α, καλά… Χωρίς διάβασμα;",
-  "voices": [
-   "el-GR-NestorasNeural"
-  ],
-  "variants": [
-   "<phoneme alphabet=\"ipa\" ph=\"a\">Α</phoneme>, καλά… Χωρίς διάβασμα;",
-   "Ααα, καλά… Χωρίς διάβασμα;",
-   "Α καλά… Χωρίς διάβασμα;",
-   "Αα… καλά… Χωρίς διάβασμα;"
-  ]
- },
- {
-  "case": "RG-0003 «Α,» (утверждение) 2",
-  "reference": "Α, καλά έκανε. Το χρειαζόταν.",
-  "voices": [
-   "el-GR-NestorasNeural"
-  ],
-  "variants": [
-   "<phoneme alphabet=\"ipa\" ph=\"a\">Α</phoneme>, καλά έκανε. Το χρειαζόταν.",
-   "Ααα, καλά έκανε. Το χρειαζόταν.",
-   "Α καλά έκανε. Το χρειαζόταν."
-  ]
- },
- {
-  "case": "U-A1-007 буквы 2",
-  "reference": "Άλφα, νι, νι, άλφα.",
-  "voices": [
-   "el-GR-NestorasNeural"
-  ],
-  "variants": [
-   "Άλφα, <phoneme alphabet=\"ipa\" ph=\"ni\">νι</phoneme>, <phoneme alphabet=\"ipa\" ph=\"ni\">νι</phoneme>, άλφα.",
-   "Άλφα, νυ, νυ, άλφα.",
-   "Άλφα — νι — νι — άλφα.",
-   "Άλφα, νι νι, άλφα."
-  ]
- },
- {
-  "case": "Athina «Α,» контроль",
-  "reference": "Α, καλά… Χωρίς διάβασμα;",
+  "case": "U-B2-016-I12 выделение: ответственный (1), день (2)",
+  "reference": "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
   "voices": [
    "el-GR-AthinaNeural"
   ],
   "variants": [
-   "Α, καλά… Χωρίς διάβασμα;",
-   "<phoneme alphabet=\"ipa\" ph=\"a\">Α</phoneme>, καλά… Χωρίς διάβασμα;"
+   "Η Μαρία θα στείλει την αίτηση αύριο. Η Μαρία θα στείλει την αίτηση αύριο.",
+   "Η <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">Μαρία</prosody> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <prosody pitch=\"+25%\" rate=\"-15%\" volume=\"+30%\">αύριο</prosody>.",
+   "Η <prosody pitch=\"+35%\" rate=\"-20%\" volume=\"+30%\">Μαρία</prosody> <prosody pitch=\"-12%\">θα στείλει την αίτηση αύριο.</prosody> <break time=\"800ms\"/><prosody pitch=\"-8%\">Η Μαρία θα στείλει την αίτηση</prosody> <prosody pitch=\"+35%\" rate=\"-20%\" volume=\"+30%\">αύριο</prosody>.",
+   "Η <prosody pitch=\"+50%\" rate=\"-25%\" volume=\"+40%\">Μαρία</prosody> <prosody pitch=\"-15%\">θα στείλει την αίτηση αύριο.</prosody> <break time=\"800ms\"/><prosody pitch=\"-10%\">Η Μαρία θα στείλει την αίτηση</prosody> <prosody pitch=\"+50%\" rate=\"-25%\" volume=\"+40%\">αύριο</prosody>.",
+   "Η <emphasis level=\"strong\">Μαρία</emphasis> θα στείλει την αίτηση αύριο. <break time=\"800ms\"/>Η Μαρία θα στείλει την αίτηση <emphasis level=\"strong\">αύριο</emphasis>."
+  ],
+  "focus_words": [
+   "Μαρία",
+   "αύριο"
   ]
  }
 ]

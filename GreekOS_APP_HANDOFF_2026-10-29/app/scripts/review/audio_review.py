@@ -260,6 +260,49 @@ LETTER_NAMES = ['αλφα', 'βιτα', 'γαμα', 'δελτα', 'εψιλον'
 def spelled_letters(hyp, ref):
     h, r = phon(hyp), phon(ref)
     return [n for n in LETTER_NAMES if n in h and n not in r]
+def focus_prosody(wav_bytes, targets):
+    """Contrastive focus, measured: the file is split at its longest pause into versions; in each version
+    Whisper gives word times and the pitch (median and peak F0), loudness and length of every target word
+    are measured. A focus that is heard should show the target word higher, louder or longer in the version
+    that stresses it than in the version that does not."""
+    m = whisper()
+    if not m: return None
+    with open('/tmp/greekos-focus.wav', 'wb') as f: f.write(wav_bytes)
+    snd = parselmouth.Sound('/tmp/greekos-focus.wav')
+    inten = snd.to_intensity(time_step=0.01)
+    iv, tx = inten.values[0], inten.xs()
+    thr = float(np.max(iv)) - 30.0
+    lo, hi = int(len(iv) * 0.2), int(len(iv) * 0.8)
+    best, run, start, cut = 0, 0, 0, None
+    for i in range(lo, hi):
+        if iv[i] < thr:
+            if run == 0: start = i
+            run += 1
+            if run > best: best, cut = run, float(tx[start + run // 2])
+        else: run = 0
+    bounds = [(0.0, cut), (cut, snd.duration)] if cut else [(0.0, snd.duration)]
+    pitch = snd.to_pitch(time_step=0.01, pitch_floor=70, pitch_ceiling=450)
+    f0, tf = pitch.selected_array['frequency'], pitch.xs()
+    versions = []
+    for (a, b) in bounds:
+        part = snd.extract_part(from_time=a, to_time=b).resample(16000)
+        segs, _ = m.transcribe(part.values[0].astype(np.float32), language='el', beam_size=5, word_timestamps=True, vad_filter=False, condition_on_previous_text=False)
+        ws = [w for sg in segs for w in (sg.words or [])]
+        text = ' '.join(w.word.strip() for w in ws)
+        row = {'from_s': round(a, 2), 'to_s': round(b, 2), 'whisper': text, 'words': {}}
+        for t in targets:
+            hit = next((w for w in ws if strip_accents(w.word.strip(' ,.;')).lower() == strip_accents(t).lower()), None)
+            if not hit: row['words'][t] = None; continue
+            s0, s1 = a + hit.start, a + hit.end
+            mk = (tf >= s0) & (tf <= s1)
+            v = f0[mk]; v = v[v > 0]
+            im = (tx >= s0) & (tx <= s1)
+            row['words'][t] = {'start_s': round(s0, 2), 'dur_s': round(s1 - s0, 2),
+                               'f0_median_hz': round(float(np.median(v)), 1) if v.size else None, 'f0_peak_hz': round(float(np.max(v)), 1) if v.size else None,
+                               'intensity_db': round(float(np.mean(iv[im])), 1) if im.any() else None}
+        versions.append(row)
+    return {'cut_s': round(cut, 2) if cut else None, 'pause_s': round(best * 0.01, 2), 'versions': versions}
+
 def probe():
     req = json.load(open('reports/review/probe-request.json'))
     voice_locale = {v['ShortName']: v['Locale'] for v in json.loads(http(f'https://{REGION}.tts.speech.microsoft.com/cognitiveservices/voices/list', None, {'Ocp-Apim-Subscription-Key': KEY}))}
@@ -280,10 +323,11 @@ def probe():
                         'azure': {'text': az.get('text'), 'confidence': az.get('confidence'), 'wer_bare': wer_bare(case['reference'], az.get('text', '')), 'stress': stress_mismatches(case['reference'], az.get('text', '')), 'spelled': spelled(az.get('text', ''))},
                         'whisper': {'text': wh['text'], 'wer_bare': wer_bare(case['reference'], wh['text']), 'stress': stress_mismatches(case['reference'], wh['text']), 'spelled': spelled(wh['text'])} if wh else None,
                     })
+                    if case.get('focus_words'): row['focus'] = focus_prosody(wav, case['focus_words'])
                 except Exception as e:  # noqa: BLE001
                     row['error'] = str(e)[:200]
                 out.append(row)
-                print(json.dumps({k: row.get(k) for k in ('case', 'voice', 'text')} | {'az': (row.get('azure') or {}).get('text'), 'wh': (row.get('whisper') or {}).get('text')}, ensure_ascii=False), flush=True)
+                print(json.dumps({k: row.get(k) for k in ('case', 'voice', 'text')} | {'az': (row.get('azure') or {}).get('text'), 'wh': (row.get('whisper') or {}).get('text'), 'focus': row.get('focus')}, ensure_ascii=False), flush=True)
                 time.sleep(3.2)  # F0: stay under 20 transactions per minute
     json.dump(out, open(f'{OUT}/probe.json', 'w'), ensure_ascii=False, indent=1)
 
