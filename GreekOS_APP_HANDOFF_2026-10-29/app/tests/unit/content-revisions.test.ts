@@ -121,3 +121,14 @@ describe('a listening task whose recording does not exist yet', () => {
     expect(itemAccess({ ...listening, section: 'speaking' }, released, new Map()).learnerUsable).toBe(true);
   });
 });
+
+describe('a text written into the task is shown', () => {
+  it('shows { text }, { text, origin } and { text_el }, but never a transcript reserved for after the attempt', async () => {
+    const { buildItemDTO } = await import('@/lib/content/dto');
+    const env = (stimulus: unknown) => ({ item_id: 'X', type: 'short_answer', module: 'core', level: 'A1', prompt: 'Π;', options: [], stimulus, requires_audio: false, criteria: [] }) as never;
+    expect(buildItemDTO({ item: env({ text: 'Με λένε Σοφία.' }), contentHash: 'h' }).stimulus).toEqual({ kind: 'inline', text: 'Με λένε Σοφία.' });
+    expect(buildItemDTO({ item: env({ text: 'Κείμενο.', origin: 'ORIGINAL_GREEKOS_TEXT' }), contentHash: 'h' }).stimulus?.text).toBe('Κείμενο.');
+    expect(buildItemDTO({ item: env({ text_el: 'Συμμετοχή δωρεάν.' }), contentHash: 'h' }).stimulus?.text).toBe('Συμμετοχή δωρεάν.');
+    expect(buildItemDTO({ item: env({ text_el: 'Απομαγνητοφώνηση.', display_policy: 'AFTER_ATTEMPT_ONLY' }), contentHash: 'h' }).stimulus).toBeNull();
+  });
+});
