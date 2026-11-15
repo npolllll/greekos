@@ -162,3 +162,14 @@ describe('a text written into the task is shown', () => {
     expect(buildItemDTO({ item, contentHash: 'h', textObject: { text: 'Η ιστορία.' } }).stimulus?.summary).toBeUndefined();
   });
 });
+
+describe('spacing restored for display', () => {
+  it('adds the space lost after punctuation in Russian text, never in Greek or in decimals', async () => {
+    const { restorePunctuationSpacing, displaySpacing } = await import('@/lib/content/spacing');
+    expect(restorePunctuationSpacing('сообщите другу,что вчера оставили у него книгу,и спросите,можно ли')).toBe('сообщите другу, что вчера оставили у него книгу, и спросите, можно ли');
+    expect(restorePunctuationSpacing('Ела дома.Не в парке')).toBe('Ела дома. Не в парке');
+    expect(displaySpacing('дома,30 минут,читали')).toBe('дома, 30 минут, читали');
+    expect(restorePunctuationSpacing('κράτησα ό,τι μου είχε φανεί χρήσιμο')).toBe('κράτησα ό,τι μου είχε φανεί χρήσιμο');
+    expect(restorePunctuationSpacing('1,5 часа; т.е. так')).toBe('1,5 часа; т.е. так');
+  });
+});
