@@ -137,22 +137,25 @@ export interface CastDecision { cast_role_id: string; voice_id: string | null; a
 export async function applyVoiceDecisions(voices: VoiceDecision[], cast: CastDecision[]) {
   const db = adminClient();
   const now = new Date().toISOString();
+  // qa_status keeps its existing vocabulary: the objective test passed (selected) or the voice is rejected;
+  // who decided and why is in approval_source / approval_note. Every write is checked.
+  const must = (label: string, r: { error: { message: string } | null }) => { if (r.error) throw new Error(`${label}: ${r.error.message}`); };
   for (const v of voices) {
-    await db.from('voice_catalog').update(v.approve
-      ? { approval_source: 'ai_editorial_delegated', approval_note: v.note, approved_at: now, qa_status: 'EDITORIAL_SELECTED' }
-      : { approval_source: null, approval_note: v.note, qa_status: 'EDITORIAL_DECLINED' }).eq('voice_id', v.voice_id).eq('approved_by_owner', false);
+    must(`voice ${v.voice_id}`, await db.from('voice_catalog').update(v.approve
+      ? { approval_source: 'ai_editorial_delegated', approval_note: v.note, approved_at: now, qa_status: 'TECH_QA_PASS' }
+      : { approval_source: null, approval_note: v.note, qa_status: 'REJECTED' }).eq('voice_id', v.voice_id).eq('approved_by_owner', false));
   }
   for (const c of cast) {
     const patch: Record<string, unknown> = { approved: c.approve, approved_by: null, approved_at: c.approve ? now : null, status: c.approve ? 'approved' : 'assigned', approval_source: c.approve ? 'ai_editorial_delegated' : null, approval_note: c.note };
     if (c.voice_id) patch.voice_id = c.voice_id;
-    await db.from('cast_roles').update(patch).eq('cast_role_id', c.cast_role_id);
+    must(`cast ${c.cast_role_id}`, await db.from('cast_roles').update(patch).eq('cast_role_id', c.cast_role_id));
   }
   const approvedRoles = new Set(cast.filter((c) => c.approve).map((c) => c.cast_role_id));
   const { data: jobs } = await db.from('audio_job_casting').select('audio_id, speaker_role, cast_role_id, approved');
   let jobRows = 0;
   for (const j of jobs ?? []) {
     if (!j.cast_role_id || !approvedRoles.has(j.cast_role_id) || j.approved) continue;
-    await db.from('audio_job_casting').update({ approved: true, approved_by: null, approved_at: now, approval_source: 'ai_editorial_delegated', updated_at: now }).eq('audio_id', j.audio_id).eq('speaker_role', j.speaker_role);
+    must(`job ${j.audio_id}`, await db.from('audio_job_casting').update({ approved: true, approved_by: null, approved_at: now, approval_source: 'ai_editorial_delegated', updated_at: now }).eq('audio_id', j.audio_id).eq('speaker_role', j.speaker_role));
     jobRows += 1;
   }
   const marked = await refreshAssetCastApproval();
