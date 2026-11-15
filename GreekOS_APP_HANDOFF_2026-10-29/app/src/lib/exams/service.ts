@@ -90,6 +90,12 @@ export async function candidateComponent(c: ComponentRow, viewer: Viewer = PUBLI
     if (phrase) last.phrase_bank = { ...(example?.answer ? { [`Пример (${example.gap ?? 0})`]: String(example.answer) } : {}), ...phrase };
     else if (words.length) last.word_bank = words;
   }
+  // A summary that the component's tasks fill in is a shared text too (KEG-B2-R01 did not list its own).
+  const summaryIds = [...new Set(rows.map((r) => (r.envelope.stimulus as { summary_id?: unknown } | null)?.summary_id).filter((x): x is string => typeof x === 'string' && !(c.text_ids ?? []).includes(x)))];
+  if (summaryIds.length) {
+    const sums = await loadTextObjects(summaryIds);
+    for (const id of summaryIds) { const pub = publicTextObject(sums.get(id)); if (pub) texts.push({ kind: 'text', text_id: id, ...pub }); }
+  }
   const comparison = form.comparison as { columns?: unknown } | undefined;
   const columns = Array.isArray(comparison?.columns) ? (comparison!.columns as unknown[]).filter((x): x is string => typeof x === 'string') : [];
   return {

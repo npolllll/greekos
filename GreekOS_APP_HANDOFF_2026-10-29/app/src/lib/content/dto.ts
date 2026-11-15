@@ -34,6 +34,8 @@ export interface StimulusDTO {
   example?: { gap: string | number; filled: string } | null;
   segments?: Array<{ label: string; text: string }>;
   focus?: Record<string, string | number>;
+  /** The summary with gaps that a «fill the summary» task is about (shown under the source text). */
+  summary?: { text: string };
 }
 
 const TEXT_FIELDS = ['text', 'original_text_el', 'text_el'] as const;
@@ -72,6 +74,8 @@ export function buildItemDTO(params: {
   item: ItemEnvelope;
   contentHash: string;
   textObject?: Record<string, unknown> | null;
+  /** The object named by `stimulus.summary_id` (a gapped summary of the text). */
+  summaryObject?: Record<string, unknown> | null;
   audio?: ItemDTO['audio'];
   examMode?: boolean;
   speakers?: string[];
@@ -94,6 +98,9 @@ export function buildItemDTO(params: {
       const focus: Record<string, string | number> = {};
       for (const k of ['gap', 'target_segment']) if (typeof st[k] === 'string' || typeof st[k] === 'number') focus[k] = st[k] as string | number;
       if (stimulus && Object.keys(focus).length) stimulus.focus = focus;
+      // «Fill gap (n) of the summary»: the gapped summary is shown with the text (before 15.11 it was not).
+      const summary = typeof st.summary_id === 'string' ? publicTextObject(params.summaryObject)?.text : undefined;
+      if (stimulus && summary) stimulus.summary = { text: summary };
     } else if (typeof st.asset_id === 'string') {
       // Listening cue: the transcript is NEVER substituted for missing audio.
       const focus: Record<string, string | number> = {};

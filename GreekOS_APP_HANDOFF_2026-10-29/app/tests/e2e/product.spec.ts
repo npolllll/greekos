@@ -85,6 +85,11 @@ test.describe('product on the real corpus (owner preview)', () => {
     expect(g.error).toBeNull();
     try {
     await login(page, tester);
+    // The paper of R01 carries its summary, which its own form did not list before 15.11.
+    await page.goto('/exams/KEG-B2-R01');
+    await page.getByRole('radio', { name: /Практика без таймера/ }).click();
+    await page.getByRole('button', { name: 'Начать' }).click();
+    await expect(page.getByText('Η πρώτη συνάντηση πραγματοποιήθηκε στη (1)', { exact: false }).first()).toBeVisible({ timeout: 30_000 });
     await page.goto('/exams/KEG-B2-R03');
     await page.getByRole('radio', { name: /Практика без таймера/ }).click();
     await page.getByRole('button', { name: 'Начать' }).click();

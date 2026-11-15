@@ -44,9 +44,11 @@ echo "update public.units set teaching = jsonb_set(teaching, '{theory_ru}', to_j
 npx tsx --conditions=react-server scripts/qa-content-revisions.ts > "$OUT/content-revisions-repair.json"
 npx tsx --conditions=react-server scripts/qa-content-revisions.ts > "$OUT/content-revisions-again.json"
 COPIES=$(echo "select (length(teaching->>'theory_ru') - length(replace(teaching->>'theory_ru', :'tail', ''))) / length(:'tail') from public.units where unit_id = 'U-B1-011';" | psql "$DB" -X -At -v tail="$TAIL")
-REPAIRED=$(jq '.final_review.texts.applied' "$OUT/content-revisions-repair.json"); AGAIN=$(jq '.final_review.texts.applied' "$OUT/content-revisions-again.json")
+# Every recorded revision counts («applied» anywhere in the report): the repair run applies only the repair,
+# the next run nothing at all — a deploy must not keep revising content.
+REPAIRED=$(jq '[.. | objects | .applied? | numbers] | add' "$OUT/content-revisions-repair.json"); AGAIN=$(jq '[.. | objects | .applied? | numbers] | add' "$OUT/content-revisions-again.json")
 echo "U-B1-011 repair: copies now $COPIES, repair run applied $REPAIRED, next run applied $AGAIN"
-[ "$COPIES" = 1 ] && [ "$REPAIRED" = 1 ] && [ "$AGAIN" = 0 ] || { echo "::error::text fix repair is not idempotent"; exit 1; }
+[ "$COPIES" = 1 ] && [ "$REPAIRED" = 1 ] && [ "$AGAIN" = 0 ] || { echo "::error::content revisions are not idempotent"; exit 1; }
 npx tsx scripts/qa-batch.ts --label "e2e: полный прогон после правок" | tee "$OUT/qa-final.json"
 
 # The product suite reads the corpus snapshot (git-ignored locally): export it from the loaded database.

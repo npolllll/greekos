@@ -238,7 +238,10 @@ export function explanationsFor(e: Pick<ItemEnvelope, 'answer_explanation_ru' | 
   if (hidden) return { explanation_ru: null, explanation_el: null };
   // Author's notes lost spaces around numbers on import («цифры6 и2»); shown with them restored.
   const rationale = typeof e.original_payload?.rationale === 'string' ? restoreNumberSpacing(e.original_payload.rationale.trim()) : '';
-  const ru = typeof e.answer_explanation_ru === 'string' && e.answer_explanation_ru.trim() ? e.answer_explanation_ru.trim() : null;
+  // The Russian explanation: a revision, else the author's own Russian note (ΠΕΓΠ and Real Greek keep it in
+  // `rationale_ru`; 95 tasks showed no explanation before 15.11).
+  const authorRu = typeof e.original_payload?.rationale_ru === 'string' ? restoreNumberSpacing(e.original_payload.rationale_ru.trim()) : '';
+  const ru = typeof e.answer_explanation_ru === 'string' && e.answer_explanation_ru.trim() ? e.answer_explanation_ru.trim() : authorRu || null;
   // An author's note written in English (editor notes of part of the exam bank) is not learner feedback.
   const latin = rationale.match(/[A-Za-z]/g)?.length ?? 0;
   const englishNote = !!rationale && latin > (rationale.match(/\p{L}/gu)?.length ?? 0) * 0.5;

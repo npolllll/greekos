@@ -157,6 +157,7 @@ export function ItemPlayer(props: {
             <div className="bank">{(Array.isArray(item.stimulus.phrase_bank) ? item.stimulus.phrase_bank.map((p, i) => [String(i + 1), p]) : Object.entries(item.stimulus.phrase_bank)).map(([k, p]) => <span key={k}><b>{k}</b> — {p}</span>)}</div>
           ) : null}
           {item.stimulus.word_bank?.length ? <div className="bank"><span>Банк слов: {item.stimulus.word_bank.join(' · ')}</span></div> : null}
+          {item.stimulus.summary ? <div className="mt8"><b>Περίληψη (заполните пропуски по тексту):{'\n'}</b>{item.stimulus.summary.text}</div> : null}
         </div>
       ) : null}
 

@@ -331,7 +331,8 @@ test.describe.serial('final acceptance on the real corpus', () => {
     expect(report.filter((r) => r.completed).length).toBe(units?.length ?? -1);
     // A reading text written into the task is shown with its question (before 15.11, 48 tasks showed the
     // question alone), in each stored form: { text }, { text, origin }, { text_el }.
-    for (const [itemId, snippet] of [['U-A1-016-I10', 'Έχουμε μόνο έναν χυμό.'], ['U-A2-019-I13', 'Καθαρισμός της παραλίας'], ['U-A2-013-I10', 'Η Νίνα πηγαίνει στη βιβλιοθήκη']] as const) {
+    // A «fill the summary» task shows the gapped summary too (21 ΚΕΓ tasks showed only the story before 15.11).
+    for (const [itemId, snippet] of [['U-A1-016-I10', 'Έχουμε μόνο έναν χυμό.'], ['U-A2-019-I13', 'Καθαρισμός της παραλίας'], ['U-A2-013-I10', 'Η Νίνα πηγαίνει στη βιβλιοθήκη'], ['KEG-B2-R01-S01', 'Η πρώτη συνάντηση πραγματοποιήθηκε στη (1)'], ['KEG-B2-R03-S01', 'Μια οικογένεια είχε ζητήσει δωμάτιο στο (1)']] as const) {
       await page.goto(at(page, `/practice/${itemId}?context=lesson`));
       await expect(page.getByText(snippet, { exact: false }).first(), itemId).toBeVisible();
     }

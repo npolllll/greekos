@@ -134,7 +134,11 @@ for aid, x in sorted(cur.items()):
     elif rev: asr += f"; Whisper small расходится (WER {ww}) — просмотрено AI-редактором: {rev['finding']}"
     metrics = {'duration_s': ac.get('duration_s'), 'syllables_per_s': x.get('syllables_per_s'), 'rms_dbfs': ac.get('rms_dbfs'), 'peak_dbfs': ac.get('peak_dbfs'), 'longest_pause_s': ac.get('longest_pause_s'), 'f0_by_voice_hz': {k.split(':')[-1]: round(sum(v) / len(v)) for k, v in by_voice.items()}, 'azure_wer': (x.get('stored_roundtrip') or {}).get('wer'), 'whisper_wer': (x.get('whisper') or {}).get('wer_accent_insensitive'), 'spelled_letters': sp}
     decision = 'ISSUE' if problems else 'OK'
-    note = ('AI-редактор (не человек): ' + ('; '.join(problems) if problems else f'технически чисто; {asr}{focus_note}; названий букв нет')) + '. Естественность и интонация человеком не оценивались.'
+    # The disclaimer leads, so that a note cut to its stored length never loses it; the focus measurement precedes the Whisper review.
+    if not problems and focus_note: asr = asr.replace('; Whisper', focus_note + '; Whisper', 1) if '; Whisper' in asr else asr + focus_note
+    body = '; '.join(problems) if problems else f'технически чисто; {asr}; названий букв нет'
+    note = 'AI-редактор (не человек; естественность и интонацию человек не оценивал): ' + body
+    if len(note) > 480: note = note[:479].rstrip() + '…'
     listening.append({'asset_id': x['asset_id'], 'audio_id': aid, 'decision': decision, 'note': note[:480], 'metrics': metrics})
     summary[decision] += 1
     if problems: summary['issues'].append((aid, problems))

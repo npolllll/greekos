@@ -1,0 +1,520 @@
+{
+ "review": "AI-редактор 15.11.2026: объяснения на русском для заданий, где пояснение автора было только на английском (не преподаватель)",
+ "revisions": [
+  {
+   "item_id": "KEG-B2-L02-A01",
+   "before_rationale": "Petros thirty; Sofia undecided.",
+   "explanation_ru": "Δανάη: «Θα πρότεινα τα επεισόδια να διαρκούν δεκαπέντε λεπτά». Πέτρος предлагает полчаса (μισή ώρα), а Σοφία решит только после пробы."
+  },
+  {
+   "item_id": "KEG-B2-L02-A02",
+   "before_rationale": "Danae no preference; Sofia remote.",
+   "explanation_ru": "Πέτρος: «Προτιμώ να καλούμε τους καλεσμένους εδώ, στο στούντιο». У Δανάη нет твёрдого мнения о месте записи, Σοφία за участие гостей на расстоянии."
+  },
+  {
+   "item_id": "KEG-B2-L02-A03",
+   "before_rationale": "Explicit remote inclusion.",
+   "explanation_ru": "Σοφία прямо говорит: «προτιμώ την εξ αποστάσεως συμμετοχή» — так могут участвовать и те, кто живёт далеко. Πέτρος, наоборот, хочет приглашать гостей в студию."
+  },
+  {
+   "item_id": "KEG-B2-L02-A04",
+   "before_rationale": "Petros none; Sofia undecided.",
+   "explanation_ru": "Δανάη: «θα ήθελα ένα σύντομο σήμα στην αρχή». Πέτρος начал бы сразу с голоса ведущего, без музыки, а у Σοφία пока нет мнения о музыке."
+  },
+  {
+   "item_id": "KEG-B2-L02-A05",
+   "before_rationale": "Sofia download; Danae no position.",
+   "explanation_ru": "Πέτρος хочет держать выпуски на странице «χωρίς να επιτρέπεται η λήψη τους». Σοφία, наоборот, предлагает файл для скачивания, а Δανάη об этом не говорит."
+  },
+  {
+   "item_id": "KEG-B2-L02-A06",
+   "before_rationale": "Danae only summary, Petros no statement.",
+   "explanation_ru": "Σοφία хочет выкладывать «πλήρη γραπτή απομαγνητοφώνηση» — для людей с нарушением слуха. Δανάη не обещает полного текста, только краткое резюме; Πέτρος об этом не говорит."
+  },
+  {
+   "item_id": "KEG-B2-L02-A07",
+   "before_rationale": "Explicit only summary at start.",
+   "explanation_ru": "Δανάη: «Προτείνω αρχικά μόνο μια σύντομη περίληψη». Полный текст она не обещает, пока не ясно, сколько времени он займёт."
+  },
+  {
+   "item_id": "KEG-B2-L02-A08",
+   "before_rationale": "Petros opposed; Sofia accepts decision but proposes nothing.",
+   "explanation_ru": "Δανάη отправляла бы гостям «έναν κατάλογο θεμάτων» до интервью. Πέτρος против: боится, что интервью превратится в чтение. Σοφία примет общее решение, но сама ничего не предлагает."
+  },
+  {
+   "item_id": "KEG-B2-L02-A09",
+   "before_rationale": "Sofia undecided.",
+   "explanation_ru": "Πέτρος: «προτείνω να το ακούσουν πέντε άνθρωποι εκτός της ομάδας μας». Σοφία о такой пробе ещё не решила."
+  },
+  {
+   "item_id": "KEG-B2-L02-A10",
+   "before_rationale": "Other speakers do not explicitly state permission requirement.",
+   "explanation_ru": "Σοφία: «Θεωρώ απαραίτητο να πάρουμε την άδειά του πριν από τη δημοσίευση». Другие говорящие этого не требуют."
+  },
+  {
+   "item_id": "KEG-B2-L02-N01",
+   "before_rationale": "Final count five; four explicitly superseded.",
+   "explanation_ru": "Встреч пять: «περιλαμβάνει πέντε συναντήσεις, παρότι στην πρώτη ανακοίνωση αναφέρονταν τέσσερις». Четыре — устаревшее число из первого объявления."
+  },
+  {
+   "item_id": "KEG-B2-L02-N02",
+   "before_rationale": "Eastern not western gate.",
+   "explanation_ru": "Сбор у восточного входа: «στην ανατολική είσοδο του πάρκου». Западный вход ближе к остановкам, но закрывается рано и для встречи не подходит."
+  },
+  {
+   "item_id": "KEG-B2-L02-N03",
+   "before_rationale": "Start not arrival ten minutes earlier.",
+   "explanation_ru": "Начало — «στις οκτώ και τέταρτο το βράδυ». Совет прийти на десять минут раньше — это не время начала."
+  },
+  {
+   "item_id": "KEG-B2-L02-N04",
+   "before_rationale": "Form, not social message.",
+   "explanation_ru": "Записываются через «ηλεκτρονική φόρμα»; сообщения в соцсети недостаточно. После «μέσω ηλεκτρονικής» нужен родительный падеж: φόρμας."
+  },
+  {
+   "item_id": "KEG-B2-L02-N05",
+   "before_rationale": "Tuesday deadline; Wednesday confirmation.",
+   "explanation_ru": "Форма закрывается во вторник: «Η φόρμα κλείνει την Τρίτη». Среда — день, когда рассылают подтверждения, а не последний день записи."
+  },
+  {
+   "item_id": "KEG-B2-L02-N06",
+   "before_rationale": "Capacity explicitly eighteen.",
+   "explanation_ru": "В группе восемнадцать мест: «Στην ομάδα χωρούν δεκαοκτώ άτομα». Дополнительных участников на месте не примут."
+  },
+  {
+   "item_id": "KEG-B2-L02-N07",
+   "before_rationale": "Red light; white contrasted.",
+   "explanation_ru": "Нужен фонарик с красным светом: «φακό με κόκκινο φως». Белый свет мешает глазам привыкнуть к темноте."
+  },
+  {
+   "item_id": "KEG-B2-L02-N08",
+   "before_rationale": "Alternative indoor location; day unchanged.",
+   "explanation_ru": "При сильной облачности встреча проходит «μέσα στο πλανητάριο» — в тот же день и в то же время, на другой день её не переносят."
+  },
+  {
+   "item_id": "KEG-B2-L02-N09",
+   "before_rationale": "Sketches, not required photos.",
+   "explanation_ru": "Дневник ведут «με σκίτσα και σύντομες σημειώσεις». Фотографии высокого разрешения не нужны, художественные способности не оцениваются."
+  },
+  {
+   "item_id": "KEG-B2-L02-N10",
+   "before_rationale": "Explicit last observation.",
+   "explanation_ru": "На последней встрече будут наблюдать Луну: «θα περιλαμβάνει και παρατήρηση της Σελήνης»."
+  },
+  {
+   "item_id": "KEG-B2-L03-A01",
+   "before_rationale": "Lena preference despite willingness Saturday.",
+   "explanation_ru": "Λένα: «Εγώ προτιμώ να φύγουμε Παρασκευή απόγευμα». Субботу она примет, только если не найдётся другого решения. Ορέστης может ехать только в субботу утром."
+  },
+  {
+   "item_id": "KEG-B2-L03-A02",
+   "before_rationale": "Others no expressed train preference.",
+   "explanation_ru": "Ορέστης: «Θα ήθελα επίσης να ταξιδέψουμε με τρένο» — можно разговаривать или отдыхать, и никому не нужно вести машину. Μυρτώ хочет микроавтобус, Λένα ещё не выбрала."
+  },
+  {
+   "item_id": "KEG-B2-L03-A03",
+   "before_rationale": "Specific rental not personal car.",
+   "explanation_ru": "Μυρτώ: «θα επέλεγα νοικιασμένο μικρό λεωφορείο με οδηγό» — арендованный микроавтобус с водителем, а не своя машина. Ορέστης за поезд."
+  },
+  {
+   "item_id": "KEG-B2-L03-A04",
+   "before_rationale": "Orestis outside; Myrto undecided.",
+   "explanation_ru": "Λένα: «θα προτιμούσα να μείνουμε σε μικρό ξενώνα στο κέντρο». Ορέστης хочет тихое место за пределами центра, Μυρτώ ждёт вариантов."
+  },
+  {
+   "item_id": "KEG-B2-L03-A05",
+   "before_rationale": "Not mere acceptance.",
+   "explanation_ru": "Ορέστης: «θα επέλεγα έναν ήσυχο χώρο έξω από το κέντρο» — это его собственное предпочтение, а не уступка. Λένα за центр."
+  },
+  {
+   "item_id": "KEG-B2-L03-A06",
+   "before_rationale": "Myrto rejects advance guide.",
+   "explanation_ru": "Ορέστης хочет «να κλείσουμε μια ξενάγηση το πρώτο πρωί». Μυρτώ, наоборот, не стала бы бронировать экскурсию заранее."
+  },
+  {
+   "item_id": "KEG-B2-L03-A07",
+   "before_rationale": "Explicit contrast.",
+   "explanation_ru": "Μυρτώ: «Δεν θα έκλεινα ξενάγηση εκ των προτέρων. Προτιμώ έναν ελεύθερο περίπατο». Экскурсию с гидом хочет Ορέστης."
+  },
+  {
+   "item_id": "KEG-B2-L03-A08",
+   "before_rationale": "Orestis accepts but proposes on-site; Myrto no view.",
+   "explanation_ru": "Λένα предлагает заранее забронировать ресторан: «μία κράτηση πριν φύγουμε». Ορέστης выбрал бы ресторан на месте (хотя уступит), у Μυρτώ нет мнения."
+  },
+  {
+   "item_id": "KEG-B2-L03-A09",
+   "before_rationale": "Myrto transport quotation not overall ceiling.",
+   "explanation_ru": "Ορέστης: «θεωρώ απαραίτητο να συμφωνήσουμε από τώρα ένα ανώτατο ποσό ανά άτομο». Μυρτώ просит конкретную цену за транспорт — это не общий лимит на человека."
+  },
+  {
+   "item_id": "KEG-B2-L03-A10",
+   "before_rationale": "Explicit task-sharing.",
+   "explanation_ru": "Μυρτώ: «να μοιραστούμε τις οργανωτικές εργασίες, αντί να περιμένουμε να τα κάνει όλα η Λένα»."
+  },
+  {
+   "item_id": "KEG-B2-L03-N01",
+   "before_rationale": "Four meetings across eight weeks; not eight meetings.",
+   "explanation_ru": "Встреч четыре: курс длится восемь недель, встречи раз в две недели — «θα γίνουν τέσσερις συναντήσεις». Восемь — это недели, а не встречи."
+  },
+  {
+   "item_id": "KEG-B2-L03-N02",
+   "before_rationale": "Adjacent room, not greenhouse itself.",
+   "explanation_ru": "Основное помещение — «την αίθουσα δίπλα στο θερμοκήπιο». Сама теплица занята другой программой."
+  },
+  {
+   "item_id": "KEG-B2-L03-N03",
+   "before_rationale": "Saturday superseded only first meeting.",
+   "explanation_ru": "Первую встречу перенесли «από το Σάββατο στην Κυριακή», время то же — одиннадцать утра. Остальные даты не менялись."
+  },
+  {
+   "item_id": "KEG-B2-L03-N04",
+   "before_rationale": "Exposure rather than exact instrument measurement.",
+   "explanation_ru": "Три дня записывают, сколько часов балкон получает «άμεσου ήλιου»; точные измерения прибором не нужны. После «άμεσου» нужен родительный падеж: ήλιου."
+  },
+  {
+   "item_id": "KEG-B2-L03-N05",
+   "before_rationale": "Clean unbroken empty pot; not chemicals.",
+   "explanation_ru": "Принести «μία άδεια γλάστρα, καθαρή και χωρίς σπασμένα σημεία». Землю и мелкие инструменты дадут на месте."
+  },
+  {
+   "item_id": "KEG-B2-L03-N06",
+   "before_rationale": "Seed set seven, attendance free.",
+   "explanation_ru": "Необязательный набор семян стоит «επτά ευρώ»; само участие в курсе бесплатное."
+  },
+  {
+   "item_id": "KEG-B2-L03-N07",
+   "before_rationale": "Telephone; personal social page excluded.",
+   "explanation_ru": "Место бронируют «τηλεφωνικά». Сообщение на личную страницу преподавателя звонка не заменяет."
+  },
+  {
+   "item_id": "KEG-B2-L03-N08",
+   "before_rationale": "Deadline fourteen hundred.",
+   "explanation_ru": "Звонки принимают «μέχρι την Παρασκευή στις δύο το μεσημέρι», то есть до 14:00."
+  },
+  {
+   "item_id": "KEG-B2-L03-N09",
+   "before_rationale": "No public publishing.",
+   "explanation_ru": "Фотографии используются «μόνο μέσα στην ομάδα» и публично не выкладываются."
+  },
+  {
+   "item_id": "KEG-B2-L03-N10",
+   "before_rationale": "Journal even unsuccessful growth.",
+   "explanation_ru": "На последнюю встречу приносят «το ημερολόγιο φροντίδας» — даже если какое-то растение выросло не так, как ожидали."
+  },
+  {
+   "item_id": "KEG-B2-R03-G01",
+   "before_rationale": "Actual recent itemized charges support τεκμηριώνεται.",
+   "explanation_ru": "(1): «Η πρώτη καταγραφή τεκμηριώνεται με βάση τις πρόσφατες αναλυτικές χρεώσεις» — список подтверждают реальные недавние списания по выписке; следующая фраза говорит о названиях этих списаний."
+  },
+  {
+   "item_id": "KEG-B2-R03-G02",
+   "before_rationale": "Representative interval is followed by contrast with unusual day.",
+   "explanation_ru": "(2): пользование отмечают «για ένα αντιπροσωπευτικό χρονικό διάστημα». Следующая фраза объясняет зачем: чтобы не решать по одному необычно загруженному или тихому дню."
+  },
+  {
+   "item_id": "KEG-B2-R03-G03",
+   "before_rationale": "If virtually unused, cheap service loses practical value; L contradicts following sentence about actual utility.",
+   "explanation_ru": "(3): дешёвая услуга теряет практическую ценность, «αν δεν χρησιμοποιείται σχεδόν ποτέ». Вариант L («независимо от того, что она даёт на деле») противоречит следующей фразе о реальной пользе."
+  },
+  {
+   "item_id": "KEG-B2-R03-G04",
+   "before_rationale": "Terms concern renewal and cancellation; reminder follows.",
+   "explanation_ru": "(4): перед подпиской читают условия «σχετικά με την ανανέωση και τη διακοπή» — дальше речь о пробном периоде и решении, продолжать ли."
+  },
+  {
+   "item_id": "KEG-B2-R03-G05",
+   "before_rationale": "Before end, contrasted after next charge.",
+   "explanation_ru": "(5): напоминание ставят «αρκετές ημέρες πριν από τη λήξη της δοκιμής». Противопоставление в той же фразе: «όχι όταν έχει ήδη εμφανιστεί η επόμενη χρέωση»."
+  },
+  {
+   "item_id": "KEG-B2-R03-G06",
+   "before_rationale": "Parallel purposes: not prettiest name but identification of overlapping functionality.",
+   "explanation_ru": "(6): параллель целей — сравнивают не ради самого красивого названия, а «για να εντοπίζονται πιθανές επικαλύψεις». Следующая фраза о двойной подписке это подтверждает."
+  },
+  {
+   "item_id": "KEG-B2-R03-G07",
+   "before_rationale": "All users even nonpayers; next sentence payer lacks knowledge.",
+   "explanation_ru": "(7): в обсуждение включают всех пользователей, «ακόμη κι αν δεν συμμετέχουν στην πληρωμή». Дальше: тот, кто платит, не всегда знает, чем пользуются остальные."
+  },
+  {
+   "item_id": "KEG-B2-R03-G08",
+   "before_rationale": "Trial reduction by temporary interruption; then missing function tracked.",
+   "explanation_ru": "(8): небольшой пробный отказ — «με προσωρινή διακοπή μιας μη απαραίτητης υπηρεσίας»; затем записывают, чего действительно не хватает."
+  },
+  {
+   "item_id": "KEG-B2-R03-G09",
+   "before_rationale": "Reassessment after completed trial excludes M before trial end.",
+   "explanation_ru": "(9): пересматривать решение имеет смысл «μετά από ένα συμφωνημένο χρονικό διάστημα», когда пробная пауза уже закончилась. Вариант M («за несколько дней до конца пробного периода») сюда не подходит."
+  },
+  {
+   "item_id": "KEG-B2-R03-G10",
+   "before_rationale": "Budget serves priorities; no absolute austerity.",
+   "explanation_ru": "(10): бюджет полезен, «όταν υπηρετεί τις προτεραιότητες των ανθρώπων». Дальше: выбор, который приносит радость и не мешает обязательствам, не отменяют только потому, что кому-то он кажется лишним."
+  },
+  {
+   "item_id": "KEG-B2-R03-G11",
+   "before_rationale": "επίγνωση requires genitive and paired cost/reasons.",
+   "explanation_ru": "(11): после «επίγνωση» нужен родительный падеж: «επίγνωση του συνολικού κόστους και των λόγων επιλογής» — понимание и затрат, и причин выбора."
+  },
+  {
+   "item_id": "KEG-B2-R03-G12",
+   "before_rationale": "Final evidential criteria contrast promotion impression.",
+   "explanation_ru": "(12): итоговое решение опирается «στην πραγματική χρήση και στις διαθέσιμες δυνατότητες» — противопоставление в той же фразе: «όχι μόνο στην εντύπωση που δημιούργησε μια προσφορά»."
+  },
+  {
+   "item_id": "KEG-B2-R03-M01",
+   "before_rationale": "Text evidence: earn some money before next decision, underestimated difficulty.",
+   "explanation_ru": "В начале рассказчик хотел «να κερδίσω λίγα χρήματα πριν αποφασίσω τι θα κάνω» и «δεν θεωρούσα τη δουλειά ιδιαίτερα δύσκολη» — простая временная работа, а не профессия на всю жизнь."
+  },
+  {
+   "item_id": "KEG-B2-R03-M02",
+   "before_rationale": "Text evidence: repeats book instead of reading confirmation; no gratuitous demands.",
+   "explanation_ru": "Рассказчик повторял запись из книги вместо того, чтобы прочитать подтверждение: «Αντί να το διαβάσω, άρχισα να επαναλαμβάνω τι έγραφε το βιβλίο». Отец не требовал ничего лишнего — он показывал несоответствие."
+  },
+  {
+   "item_id": "KEG-B2-R03-M03",
+   "before_rationale": "Text evidence: nearby lodging, covered price difference; inconvenience remains.",
+   "explanation_ru": "Семья согласилась, «επειδή υπήρχε συγκεκριμένη λύση και κάποιος αναλάμβανε την ευθύνη»: номер в соседней гостинице, доплата и помощь с багажом. Неудобство при этом не исчезло, а в своём доме номера на первом этаже не было."
+  },
+  {
+   "item_id": "KEG-B2-R03-M04",
+   "before_rationale": "Text evidence: immediate-call situations, limits not scripts.",
+   "explanation_ru": "Список — случаи, когда нужно сразу позвонить: «Δεν ήταν κατάλογος έτοιμων απαντήσεων, αλλά όριο της δικής μου αρμοδιότητας»."
+  },
+  {
+   "item_id": "KEG-B2-R03-M05",
+   "before_rationale": "Text evidence: modifies map instead of explaining gaps verbally.",
+   "explanation_ru": "Вместо устных объяснений он изменил карту, «ώστε να μπορεί να χρησιμοποιηθεί χωρίς εμένα» — материал должен работать и без автора."
+  },
+  {
+   "item_id": "KEG-B2-R03-M06",
+   "before_rationale": "Text evidence: paper times/simple phrases, slower more accurate.",
+   "explanation_ru": "Он написал время на бумаге, говорил простыми фразами и попросил показать, что ей нужно: «Η επικοινωνία έγινε πιο αργή, αλλά και πιο ακριβής». Громкий голос не помог."
+  },
+  {
+   "item_id": "KEG-B2-R03-M07",
+   "before_rationale": "Final paragraph: seeks related job, documents learned concrete skills.",
+   "explanation_ru": "Последний абзац: он выбирает работу по специальности, но «δεν σήμαινε ότι θεωρούσα τους μήνες στον ξενώνα χαμένο χρόνο» и описывает в резюме, чему научился."
+  },
+  {
+   "item_id": "KEG-B2-R03-S01",
+   "before_rationale": "Ground floor request, not actual assigned second floor.",
+   "explanation_ru": "Пропуск (1): «Μια οικογένεια είχε ζητήσει δωμάτιο στο ___» — в тексте: «Είχαν ζητήσει δωμάτιο στο ισόγειο». Второй этаж — ошибочная запись в книге, а не просьба семьи."
+  },
+  {
+   "item_id": "KEG-B2-R03-S02",
+   "before_rationale": "The confirmation message exposes discrepancy.",
+   "explanation_ru": "Пропуск (2): ошибка обнаружилась, «όταν εξετάστηκε το μήνυμα ___» — в тексте «το μήνυμα επιβεβαίωσης», которое показал отец. Нужен родительный падеж: επιβεβαίωσης."
+  },
+  {
+   "item_id": "KEG-B2-R03-S03",
+   "before_rationale": "Host covers difference, not all holiday costs.",
+   "explanation_ru": "Пропуск (3): тётя «ανέλαβε τη διαφορά ___» — в тексте: «να καλύψουμε τη διαφορά τιμής». Она взяла на себя разницу в цене, а не все расходы семьи."
+  },
+  {
+   "item_id": "KEG-B2-R03-S04",
+   "before_rationale": "List defines escalation boundary.",
+   "explanation_ru": "Пропуск (4): список определял, «πότε ο αφηγητής θα ζητούσε ___» — в тексте: «πότε να ζητήσω βοήθεια». Это граница его самостоятельных решений."
+  },
+  {
+   "item_id": "KEG-B2-R03-S05",
+   "before_rationale": "Map modified after user trial.",
+   "explanation_ru": "Пропуск (5): он улучшил «τον ___ του» — после пробы с гостем он изменил карту: «άλλαξα τον χάρτη». Нужен винительный падеж: τον χάρτη."
+  },
+  {
+   "item_id": "KEG-B2-R03-S06",
+   "before_rationale": "Times written on paper.",
+   "explanation_ru": "Пропуск (6): с туристкой он «έγραψε τις ώρες σε ___» — в тексте: «Έδειξα τις ώρες σε χαρτί»."
+  },
+  {
+   "item_id": "KEG-B2-R03-S07",
+   "before_rationale": "Chooses role related to studies.",
+   "explanation_ru": "Пропуск (7): в конце он предпочёл «εργασία σχετική με τις ___ του» — в тексте: «δουλειά σχετική με τις σπουδές μου»."
+  },
+  {
+   "item_id": "KEG-B2-S02-I1",
+   "before_rationale": "Assess individual contribution, not agreement with prescribed policy. No automatic failure for reasoned disagreement.",
+   "explanation_ru": "Оценивается ваш собственный вклад в обсуждение: аргументы, реакция на партнёра, поиск компромисса. Согласия с «правильной» позицией не требуется, аргументированное несогласие — не ошибка."
+  },
+  {
+   "item_id": "KEG-B2-S02-M1",
+   "before_rationale": "Each candidate develops a distinct opinion question without preparation; outline is not a required answer.",
+   "explanation_ru": "Каждый кандидат развивает свой вопрос без подготовки. Готового ответа нет: оценивается развёрнутое, связное и аргументированное мнение, а не совпадение с образцом."
+  },
+  {
+   "item_id": "KEG-B2-S02-M2",
+   "before_rationale": "Each candidate develops a distinct opinion question without preparation; outline is not a required answer.",
+   "explanation_ru": "Каждый кандидат развивает свой вопрос без подготовки. Готового ответа нет: оценивается развёрнутое, связное и аргументированное мнение, а не совпадение с образцом."
+  },
+  {
+   "item_id": "KEG-B2-S03-I1",
+   "before_rationale": "Assess individual contribution, not agreement with prescribed policy. No automatic failure for reasoned disagreement.",
+   "explanation_ru": "Оценивается ваш собственный вклад в обсуждение: аргументы, реакция на партнёра, поиск компромисса. Согласия с «правильной» позицией не требуется, аргументированное несогласие — не ошибка."
+  },
+  {
+   "item_id": "KEG-B2-S03-M1",
+   "before_rationale": "Each candidate develops a distinct opinion question without preparation; outline is not a required answer.",
+   "explanation_ru": "Каждый кандидат развивает свой вопрос без подготовки. Готового ответа нет: оценивается развёрнутое, связное и аргументированное мнение, а не совпадение с образцом."
+  },
+  {
+   "item_id": "KEG-B2-S03-M2",
+   "before_rationale": "Each candidate develops a distinct opinion question without preparation; outline is not a required answer.",
+   "explanation_ru": "Каждый кандидат развивает свой вопрос без подготовки. Готового ответа нет: оценивается развёрнутое, связное и аргументированное мнение, а не совпадение с образцом."
+  },
+  {
+   "item_id": "KEG-B2-U02-C2",
+   "before_rationale": "relative η οποία",
+   "explanation_ru": "(2): относительное местоимение после запятой — «η διαδρομή, η οποία περνούσε…». Артикль η уже стоит в тексте, поэтому из банка нужно «οποία»."
+  },
+  {
+   "item_id": "KEG-B2-U02-C3",
+   "before_rationale": "comparative πιο ... από",
+   "explanation_ru": "(3): сравнение «πιο γρήγορα από τους υπόλοιπους» — после πιο + наречие тот, с кем сравнивают, вводится предлогом από."
+  },
+  {
+   "item_id": "KEG-B2-U02-C4",
+   "before_rationale": "ώστε να purpose/result",
+   "explanation_ru": "(4): «ώστε να μπορούμε να συζητάμε» — ώστε να вводит цель или результат: чтобы мы могли разговаривать."
+  },
+  {
+   "item_id": "KEG-B2-U02-C5",
+   "before_rationale": "indirect location question πού",
+   "explanation_ru": "(5): косвенный вопрос о месте — «ρώτησε αν κάποιος γνώριζε πού βρισκόταν η παλιά βρύση». Вопросительное πού с ударением («где»), а не относительное που."
+  },
+  {
+   "item_id": "KEG-B2-U02-C6",
+   "before_rationale": "τόσο ... όσο correlation",
+   "explanation_ru": "(6): сравнение равенства τόσο … όσο: «αισθάνθηκα τόσο κουρασμένος όσο περίμενα» — устал так, как и ожидал, но был гораздо спокойнее."
+  },
+  {
+   "item_id": "KEG-B2-U02-E5",
+   "before_rationale": "Remove only θα immediately after να: να συντηρούν. Other θα occurrences express legitimate future/conditional reference and must remain.",
+   "explanation_ru": "(5): после να частица θα не ставится: «που θα μπορούσαν να συντηρούν μόνοι τους». Первое θα («θα μπορούσαν») выражает условность и остаётся."
+  },
+  {
+   "item_id": "KEG-B2-U02-F1",
+   "before_rationale": "Η πρώτη requires feminine noun naming recording.",
+   "explanation_ru": "(1): после «Η πρώτη» нужно существительное женского рода — «Η πρώτη καταγραφή αφορούσε…» («первая фиксация»). Прилагательные и причастие сюда не подходят."
+  },
+  {
+   "item_id": "KEG-B2-U02-F2",
+   "before_rationale": "Noun subject with η and των πληροφοριών.",
+   "explanation_ru": "(2): «Η ακρίβεια των πληροφοριών» — подлежащее, существительное с артиклем η и родительным των πληροφοριών. ακριβής — прилагательное, ακριβώς — наречие."
+  },
+  {
+   "item_id": "KEG-B2-U02-F3",
+   "before_rationale": "Ζήτησε τη συμβολή ενός ειδικού: contribution; other forms not noun object.",
+   "explanation_ru": "(3): «ζήτησε τη συμβολή ενός ειδικού» — после артикля τη нужно существительное: «вклад специалиста». Остальные варианты — прилагательные и наречие."
+  },
+  {
+   "item_id": "KEG-B2-U02-F4",
+   "before_rationale": "Οι περιγραφές έγιναν πιο συγκεκριμένες: feminine plural predicative adjective; noun, adverb, and participle do not fill this slot.",
+   "explanation_ru": "(4): «οι περιγραφές έγιναν πιο συγκεκριμένες» — после έγιναν πιο нужно прилагательное, согласованное с περιγραφές (ж. р., мн. ч.). Существительное, наречие и деепричастие не подходят."
+  },
+  {
+   "item_id": "KEG-B2-U02-F5",
+   "before_rationale": "Object after την τακτική; additional accent before του.",
+   "explanation_ru": "(5): «την τακτική ενημέρωσή του» — после την τακτική нужно существительное. Второе ударение в «ενημέρωσή του» ставится потому, что за словом с ударением на третьем слоге от конца идёт энклитика του."
+  },
+  {
+   "item_id": "KEG-B2-U02-F6",
+   "before_rationale": "Noun object after τη, social collaboration.",
+   "explanation_ru": "(6): «ενίσχυσε τη συνεργασία ανάμεσα σε ανθρώπους» — после τη нужно существительное: «сотрудничество». Прилагательные и наречие сюда не подходят."
+  },
+  {
+   "item_id": "KEG-B2-U03-C4",
+   "before_rationale": "ούτε…ούτε coordination",
+   "explanation_ru": "(4): «δεν ύψωσε ούτε τη φωνή του ούτε το χέρι του» — парное отрицание ούτε … ούτε: «ни голос, ни руку»."
+  },
+  {
+   "item_id": "KEG-B2-U03-C7",
+   "before_rationale": "ό,τι = whatever, free relative object; not ότι complement",
+   "explanation_ru": "(7): «κράτησα στις σημειώσεις μου ό,τι μου είχε φανεί χρήσιμο» — ό,τι с запятой значит «то, что; всё, что». Союз ότι («что») невозможен: после κράτησα нужно дополнение, а не придаточное."
+  },
+  {
+   "item_id": "KEG-B2-U03-E1",
+   "before_rationale": "σε περισσότερους: ότι cannot intervene before comparative adjective.",
+   "explanation_ru": "(1): «προσβάσιμες σε περισσότερους θεατές» — перед сравнительной степенью ότι не ставится, это слово лишнее."
+  },
+  {
+   "item_id": "KEG-B2-U03-E2",
+   "before_rationale": "Second ότι before και άδεια has no finite clause; first ότι introduces διευκρίνισαν complement.",
+   "explanation_ru": "(2): второе ότι лишнее — после него нет придаточного с глаголом: «δεν σήμαινε αυτομάτως και άδεια αλλαγής». Первое ότι вводит дополнение к διευκρίνισαν и остаётся."
+  },
+  {
+   "item_id": "KEG-B2-U03-E4",
+   "before_rationale": "Remove για immediately before στον χρόνο; the double preposition is invalid. Previous αρκετό για να was grammatically possible and is superseded.",
+   "explanation_ru": "(4): «χρειαζόταν προσοχή στον χρόνο που παρέμενε κάθε υπότιτλος» — два предлога подряд (για στον) невозможны, лишнее — για."
+  },
+  {
+   "item_id": "KEG-B2-U03-E5",
+   "before_rationale": "αφιερώσει ώρες στον έλεγχο: από cannot precede στον; removing στον leaves an ungrammatical phrase.",
+   "explanation_ru": "(5): «αφιερώνω ώρες σε κάτι»: «είχε αφιερώσει αρκετές ώρες στον αρχικό έλεγχο». Лишнее — από; если убрать στον, фраза станет неграмматичной."
+  },
+  {
+   "item_id": "KEG-B2-U03-E6",
+   "before_rationale": "ώστε η παραγωγή να ξεκινήσει: για incompatible with nominative subject clause.",
+   "explanation_ru": "(6): «ώστε η επόμενη παραγωγή να ξεκινήσει» — после ώστε идёт придаточное с подлежащим в именительном падеже, предлог για здесь лишний."
+  },
+  {
+   "item_id": "KEG-B2-U03-E7",
+   "before_rationale": "επειδή introduces cause directly; ότι cannot duplicate it.",
+   "explanation_ru": "(7): επειδή само вводит причину: «επειδή η μελλοντική χρήση απαιτούσε…». ότι после него лишнее."
+  },
+  {
+   "item_id": "KEG-B2-U03-F2",
+   "before_rationale": "Η εφαρμογή ... απαιτούσε: subject noun; implementation.",
+   "explanation_ru": "(2): «Η εφαρμογή του νέου προγράμματος απαιτούσε…» — подлежащее, существительное после артикля Η: «внедрение». Прилагательные и деепричастие не подходят."
+  },
+  {
+   "item_id": "KEG-B2-U03-F3",
+   "before_rationale": "σε ξεκάθαρους όρους: agreeing adjective, not noun/adverb/participle.",
+   "explanation_ru": "(3): «να συμφωνήσουμε σε ξεκάθαρους όρους» — прилагательное, согласованное с όρους (м. р., мн. ч., вин. п.). Существительное, наречие и деепричастие сюда не подходят."
+  },
+  {
+   "item_id": "KEG-B2-U03-F4",
+   "before_rationale": "τον έλεγχο πιο αποτελεσματικό: predicative adjective masculine acc.",
+   "explanation_ru": "(4): «έκανε τον έλεγχο πιο αποτελεσματικό» — после κάνω κάτι πιο… нужно прилагательное, согласованное с τον έλεγχο (м. р., вин. п.). Существительные и наречие не подходят."
+  },
+  {
+   "item_id": "KEG-B2-U03-F6",
+   "before_rationale": "τη σταθερότητα: abstract noun meaning durable routine.",
+   "explanation_ru": "(6): «θεωρήσαμε σημαντικότερη τη σταθερότητα της διαδικασίας» — после τη нужно существительное: «устойчивость процесса», которая сохранится и тогда, когда пройдёт первый энтузиазм."
+  },
+  {
+   "item_id": "PEGP-LANG-P04-01",
+   "before_rationale": "Locate explicit first-card fact; other regions not accepted.",
+   "explanation_ru": "В первой карточке: «η λίμνη Βιστωνίδα βρίσκεται στη Θράκη». Другие области в тексте с Βιστωνίδα не связаны."
+  },
+  {
+   "item_id": "PEGP-LANG-P04-02",
+   "before_rationale": "Feminine plural demonstrative refers to images, not cards in this immediate sentence.",
+   "explanation_ru": "«αυτές» — женский род, множественное число: в этой фразе это «εικόνες του 14ου αιώνα» (для них отмечают Византийский и христианский музей). Карточки (κάρτες) названы в других фразах."
+  },
+  {
+   "item_id": "PEGP-LANG-P04-04",
+   "before_rationale": "Replace Thrace with Macedonia; do not require full sentence.",
+   "explanation_ru": "Вергина связана с Македонией: «Στη δεύτερη συνδέουμε τη Βεργίνα με τη Μακεδονία». Достаточно исправить область, всю фразу переписывать не обязательно."
+  },
+  {
+   "item_id": "PEGP-LANG-P04-05",
+   "before_rationale": "Two correct relations, request, uncertainty; length a practice target not official exam rule.",
+   "explanation_ru": "Нужны две верные связи из карточек (например, Βιστωνίδα — Θράκη, Βεργίνα — Μακεδονία), просьба проверить имена и честное «не знаю часов работы». 40–60 слов — тренировочная цель, а не официальное правило экзамена."
+  },
+  {
+   "item_id": "PEGP-LANG-P04-06",
+   "before_rationale": "Two accurate facts; respond no organized trip, ask name check; react to question rather than recite.",
+   "explanation_ru": "Нужны два точных факта из карточек, ответ «нет, экскурсию не организуем» и просьба проверить одно имя. Важно реагировать на вопрос собеседника, а не пересказывать текст наизусть."
+  },
+  {
+   "item_id": "PEGP-LANG-P04-07",
+   "before_rationale": "Both geography links and genuine confirmation question.",
+   "explanation_ru": "Βιστωνίδα — во Фракии, Βεργίνα — в Македонии. Затем нужен настоящий уточняющий вопрос, например: «Είναι σωστή η γραφή των ονομάτων;»."
+  },
+  {
+   "item_id": "PEGP-LANG-P04-08",
+   "before_rationale": "Correct both swapped labels; state time information unavailable, not invented.",
+   "explanation_ru": "Исправьте обе перепутанные пары: Βιστωνίδα — Θράκη, Βεργίνα — Μακεδονία. О часах работы музея в карточках сведений нет — так и скажите, ничего не придумывая."
+  }
+ ]
+}
