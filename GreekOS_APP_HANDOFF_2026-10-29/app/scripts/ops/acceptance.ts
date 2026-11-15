@@ -462,10 +462,15 @@ async function main() {
     writeFileSync(`${OUT}/acceptance.json`, JSON.stringify(report, null, 1));
     const failed = report.checks.filter((c) => c.ok === false);
     console.log(`\n${report.checks.length - failed.length}/${report.checks.length} проверок пройдено`);
-    for (const s of report.speaking as Array<{ level?: string; mode?: string; turns: Array<{ learner: string; reply: string | null; engine: string; reason: string | null; ms: number }>; frames?: string[]; page?: string[] }>) {
+    for (const s of report.speaking as Array<{ level?: string; mode?: string; turns: Array<{ learner: string; reply: string | null; engine: string; reason: string | null; ms: number }>; feedback?: unknown[]; frames?: string[]; page?: string[] }>) {
       if (!s.level) { console.log(`\n== Speaking ${s.mode}`); for (const f of s.frames ?? []) console.log(`  ${f}`); for (const l of s.page ?? []) console.log(`  page: ${l}`); continue; }
       console.log(`\n== Speaking ${s.level}`);
-      for (const t of s.turns) console.log(`  ученик: ${t.learner}\n  AI [${t.engine}${t.reason ? `: ${t.reason}` : ''}, ${t.ms} мс]: ${t.reply}`);
+      s.turns.forEach((t, i) => {
+        console.log(`  ученик: ${t.learner}\n  AI [${t.engine}${t.reason ? `: ${t.reason}` : ''}, ${t.ms} мс]: ${t.reply}`);
+        // The written feedback on this learner turn (corrections), as the learner sees it after the dialogue.
+        const fb = s.feedback?.[i];
+        if (fb) console.log(`  отзыв: ${JSON.stringify(fb).slice(0, 400)}`);
+      });
     }
     if (report.asr) console.log(`\nASR: ${JSON.stringify(report.asr)}`);
     console.log(`\nPERF: ${JSON.stringify(report.perf)}`);
