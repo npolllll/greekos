@@ -1,53 +1,71 @@
 {
- "batch_id": "9a553322-d95c-4a15-b0df-de1c2eb1d674",
+ "batch_id": "d4092bef-f9d5-4e1d-9d78-10fe31e7d903",
  "releasable": 2019,
  "sample": [
   {
-   "item_id": "U-B1-014-I19",
-   "hash": "a8b878879e2332c8049af8720a98ca3d253514e915daa4f467ab45d218f01c81",
-   "item_type": "open_response",
-   "reviewed": null
-  },
-  {
-   "item_id": "U-A1-007-I09",
-   "hash": "658095ddeee174b4b1bdb79fc6b483a572553e76777e05496fe3aa858e59cf05",
+   "item_id": "U-A2-003-I05",
+   "hash": "bdff361eefc85c28f61bf07c0fb538fe56f2b26fff582acb9ca71b7b27b11f40",
    "item_type": "short_answer",
    "reviewed": null
   },
   {
-   "item_id": "U-B2-012-I02",
-   "hash": "c3e319e3965e8b2d5eab267933d9cfcced7085e7be709c8d62f58dde5cefef71",
-   "item_type": "mcq",
-   "reviewed": null
-  },
-  {
-   "item_id": "RG-0001-Q05",
-   "hash": "1b2573a9a4602c711c44d9c74b64a4f162d25baa72b4493ade5805708118bbc7",
-   "item_type": "retention",
-   "reviewed": null
-  },
-  {
-   "item_id": "PEGP-LANG-P05-08",
-   "hash": "90ce294b3cd0eed739cefe72d32a2c22c68150f47a5cf9dd8a473a5ffad53937",
-   "item_type": "D28_transfer",
-   "reviewed": null
-  },
-  {
-   "item_id": "KEG-B2-U03-E6",
-   "hash": "1f9e483bb0ec6af31b047401e92129cdbc4e258846fb7e43bb94fe77b8edbd0f",
+   "item_id": "KEG-B2-U02-E7",
+   "hash": "084a99f2f847d5d6eabb146aa699f8bfbc35a40fe396b124b42151f4cc4d75c1",
    "item_type": "extra_word",
    "reviewed": null
   },
   {
-   "item_id": "PEGP-P04-HIS-003",
-   "hash": "e74b0440ea157104b3d6064b438a0d955fd0d4ea318dbec95094972c65b44f17",
+   "item_id": "U-B2-013-I08",
+   "hash": "6da2ed4727d5ab082ce1acc12ecb4e5f0dbb5cdf1b0c3d48f0a3bcefbd0fbe71",
+   "item_type": "open_response",
+   "reviewed": null
+  },
+  {
+   "item_id": "KEG-B2-R02-M05",
+   "hash": "ce92cb335a56580e41ae76fa28133ac7e483e8b342ac8b2ddd9844adf2db2c92",
+   "item_type": "mcq",
+   "reviewed": null
+  },
+  {
+   "item_id": "PEGP-LANG-P04-02",
+   "hash": "6981bef75b5e8edb255f469b3228b88fff65e3b8dcb3e416e053abc1179aecf5",
+   "item_type": "reading_reference",
+   "reviewed": null
+  },
+  {
+   "item_id": "RG-0004-Q02",
+   "hash": "aca5b9d9e4506da5614d2960ee27cd30720967d64cdbf0a4eddd1265e832184b",
+   "item_type": "response",
+   "reviewed": null
+  },
+  {
+   "item_id": "RG-0011-Q03",
+   "hash": "9bd41682a6edcbdf896894cd7268436e30dc816401ff386f4b3be8e5d1d74daa",
+   "item_type": "register_switch",
+   "reviewed": null
+  },
+  {
+   "item_id": "KEG-B2-L02-A02",
+   "hash": "6127f1bc3dc243289da457c7e526bcec31c2ee0eab68c24b2e5cd9dafaa546cf",
+   "item_type": "multiple_assignment",
+   "reviewed": null
+  },
+  {
+   "item_id": "RG-0009-Q01",
+   "hash": "66d4b38e80e4aab38c28410b8d1607068581ba2775dc0b69914795407c209fcb",
+   "item_type": "meaning_in_context",
+   "reviewed": null
+  },
+  {
+   "item_id": "PEGP-P03-CUL-002",
+   "hash": "1bf37307707d288ec115e9010d8fbdd55f71e3a12344f9f6e66fc23daa8c4283",
    "item_type": "error_correction",
    "reviewed": null
   },
   {
-   "item_id": "PEGP-LANG-P04-01",
-   "hash": "5ab2807a84ad81ec430ef47bc75b6c32e20c24ac77b1a039f0d22345670a6fce",
-   "item_type": "reading_detail",
+   "item_id": "RG-0008-Q04",
+   "hash": "21944c45f8218d377f3a32716d0988aefd15b9884ef65cbae6a1ef8bd88c6feb",
+   "item_type": "production",
    "reviewed": null
   },
   {
@@ -57,68 +75,14 @@
    "reviewed": null
   },
   {
-   "item_id": "KEG-B2-L01-A02",
-   "hash": "0bf39c0ac0c78514b6c42d6f586219b0e50bf5b2810474f3d8741f89ec51890d",
-   "item_type": "multiple_assignment",
+   "item_id": "RG-0001-Q05",
+   "hash": "1b2573a9a4602c711c44d9c74b64a4f162d25baa72b4493ade5805708118bbc7",
+   "item_type": "retention",
    "reviewed": null
   },
   {
-   "item_id": "PEGP-LANG-P05-02",
-   "hash": "eeedaa0cae38d2cdd314ef0c93026319cabfe1bc68dd435d2a506fb4110f3b08",
-   "item_type": "reading_reference",
-   "reviewed": null
-  },
-  {
-   "item_id": "RG-0012-Q01",
-   "hash": "e33ec8c6b465fe94661beaf54f39ba50e1ad18293c230de7603fb002614e0899",
-   "item_type": "meaning_in_context",
-   "reviewed": null
-  },
-  {
-   "item_id": "RG-0011-Q04",
-   "hash": "8554f8d5b4c2851dbf47b6a6b64f9230310327cef20bce2e7b2ca3a68f5109ac",
-   "item_type": "production",
-   "reviewed": null
-  },
-  {
-   "item_id": "RG-0005-Q02",
-   "hash": "75055f7ea7893f383657440e17d5d7376c6df5b85b7a5606dcd61ef5382d8de7",
-   "item_type": "response",
-   "reviewed": null
-  },
-  {
-   "item_id": "RG-0006-Q03",
-   "hash": "82b2b498b2e358e5fec3438b3e70bd849361fcfce04d081d50de8a8b8116bbdb",
-   "item_type": "register_switch",
-   "reviewed": null
-  },
-  {
-   "item_id": "PEGP-LANG-P04-07",
-   "hash": "afac8792ce37614f8fca33ca2efef031e6d681a8ff985677159fc709658fbd6b",
-   "item_type": "D7_recall",
-   "reviewed": null
-  },
-  {
-   "item_id": "PEGP-P04-INS-002",
-   "hash": "c048a8c40e1167cda1bb240f79dd0248b3444ca0aa29a910f5870ea51d77b2af",
-   "item_type": "ordering",
-   "reviewed": null
-  },
-  {
-   "item_id": "PEGP-LANG-P04-06",
-   "hash": "0aa33327af24b6251ad80d5559acc77faf4f8eac08c92b50ce25c50c26d16d81",
-   "item_type": "spoken_interaction",
-   "reviewed": null
-  },
-  {
-   "item_id": "PEGP-LANG-P05-05",
-   "hash": "20be1db506d199a0613a1a5142bfc2fc2b2dade68947ec19c0e1756c57fcc391",
-   "item_type": "writing_transfer",
-   "reviewed": null
-  },
-  {
-   "item_id": "PEGP-LANG-P05-03",
-   "hash": "7234e54f4635f76b3719113b255d248d1af9379c86ca8675e0ef144e77c318dc",
+   "item_id": "PEGP-LANG-P04-03",
+   "hash": "84e76c24e5db6725a0d0ce962ea3c54423b4b206d59fa3913379d6717a98f5bf",
    "item_type": "reading_inference",
    "reviewed": null
   },
@@ -129,56 +93,92 @@
    "reviewed": null
   },
   {
-   "item_id": "U-A2-006-I09",
-   "hash": "d8ca89771d2b19cd4b81c0f723f8c00f8e2246e40e67a65d105712e1ff92061e",
-   "item_type": "short_answer",
+   "item_id": "PEGP-LANG-P04-01",
+   "hash": "5ab2807a84ad81ec430ef47bc75b6c32e20c24ac77b1a039f0d22345670a6fce",
+   "item_type": "reading_detail",
    "reviewed": null
   },
   {
-   "item_id": "KEG-B2-R01-G12",
-   "hash": "67f281dcbe7ace455e673f463335a2b6f0f70696b6fb8f5ea285c077e994048c",
-   "item_type": "mcq",
+   "item_id": "PEGP-LANG-P04-08",
+   "hash": "e3c6335d87d05d51b63af981eeb40b8e6f7c5344447398c047da7ec080460c7c",
+   "item_type": "D28_transfer",
    "reviewed": null
   },
   {
-   "item_id": "U-B1-007-I12",
-   "hash": "a93a53f8d64bbf6bf5edce913bbdd6e5c29030a49e9e73296464b474cbac7ca2",
+   "item_id": "PEGP-P03-HIS-003",
+   "hash": "a1aa88eb0be5f4cb198d23b178c3bac63bd56c965586a562c2647d0d3d9f57c7",
+   "item_type": "ordering",
+   "reviewed": null
+  },
+  {
+   "item_id": "PEGP-LANG-P04-06",
+   "hash": "0aa33327af24b6251ad80d5559acc77faf4f8eac08c92b50ce25c50c26d16d81",
+   "item_type": "spoken_interaction",
+   "reviewed": null
+  },
+  {
+   "item_id": "PEGP-LANG-P05-07",
+   "hash": "56a0eda463dee41bb184298d9eb991ee7db0f078d469dd711690d916d838baab",
+   "item_type": "D7_recall",
+   "reviewed": null
+  },
+  {
+   "item_id": "PEGP-LANG-P04-05",
+   "hash": "8339eb335b8c8adbd3e52e50a8e658007ee2cff3fefaa2d0b807110aefd110a4",
+   "item_type": "writing_transfer",
+   "reviewed": null
+  },
+  {
+   "item_id": "U-A1-012-I19",
+   "hash": "d47717d01f4333f9fcdcd6f1b9075dd229342d1e5dc9b3506e8ec1997a9297ec",
    "item_type": "open_response",
    "reviewed": null
   },
   {
-   "item_id": "U-A1-017-I02",
-   "hash": "9ae14109e885f77e19c9a6551ac0577efd46036e5b1b3606bac1e5d0613d1b1f",
-   "item_type": "mcq",
-   "reviewed": null
-  },
-  {
-   "item_id": "D-A2-READING-01",
-   "hash": "4f2178b8e1a8d62026370acf68109af625c921d8b5c6645795d86c904a222ee2",
-   "item_type": "short_answer",
-   "reviewed": null
-  },
-  {
-   "item_id": "U-B1-001-I16",
-   "hash": "7366210dd476b1b29ec2b33bcd9f91121e3e72e2b77718f9508850848f3ba2a1",
-   "item_type": "short_answer",
-   "reviewed": null
-  },
-  {
-   "item_id": "U-B1-023-I10",
-   "hash": "65ddc0de6315687210bad968088edb9b1d40b0b2ed889224e0822888a00355c6",
+   "item_id": "U-B1-024-I07",
+   "hash": "bd419179907b5f3b101e083f6ef11e11a13eff9d3d17e52b0680af127caafc82",
    "item_type": "open_response",
    "reviewed": null
   },
   {
-   "item_id": "U-A1-003-I01",
-   "hash": "12801c730cad22cbd20a9b2f763641ec6292e44baaad083b40d54bd3ea5ec259",
+   "item_id": "U-A1-017-I08",
+   "hash": "f376a118b06dbfe69da8a6a266562f28708f9eedd5a350f10d6b336322082dc0",
+   "item_type": "open_response",
+   "reviewed": null
+  },
+  {
+   "item_id": "U-A2-010-I05",
+   "hash": "78b9f47b43f2a75768d9d31427430ac5d4b75f4402a582901222c4d84945d26d",
    "item_type": "short_answer",
    "reviewed": null
   },
   {
-   "item_id": "U-B1-014-I13",
-   "hash": "1fd5515dad3791a3138723dd38eff56c81b2a54c6a57f83f020abb979eca6037",
+   "item_id": "U-B2-011-I01",
+   "hash": "9e1ea5fbd30feeefd71f5e8b20f17e263af7c83994a9aefbb53c5f1dabd9105c",
+   "item_type": "short_answer",
+   "reviewed": null
+  },
+  {
+   "item_id": "U-B1-020-I10",
+   "hash": "690724d255232de7cd6773ac5f29c14f3daabed3706f307f50929b582cb2a501",
+   "item_type": "open_response",
+   "reviewed": null
+  },
+  {
+   "item_id": "U-A2-014-I06",
+   "hash": "4a56ca32637ba18b585d1c82896e2caaf6bcf03254a9c0518f5b4746dece0476",
+   "item_type": "short_answer",
+   "reviewed": null
+  },
+  {
+   "item_id": "KEG-B2-U03-F5",
+   "hash": "7e98df9fddd870e5a933e3b66d83c5fd9a20ab028fe0b0af56e1260e13e9628e",
+   "item_type": "mcq",
+   "reviewed": null
+  },
+  {
+   "item_id": "U-B2-009-I03",
+   "hash": "7d8d074130fc2303ff123ce16ae8453474bca6d54f537a076b21fd0b272969bc",
    "item_type": "short_answer",
    "reviewed": null
   }

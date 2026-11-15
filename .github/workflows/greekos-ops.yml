@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: 'one or more, comma-separated: db-state, qa-fails, llm-diagnose, restore-test, acceptance, e2e, vercel-info, azure-pa'
+        description: 'one or more, comma-separated: db-state, qa-fails, llm-diagnose, restore-test, acceptance, acceptance-free (no paid Speaking), e2e, vercel-info, azure-pa'
         default: 'db-state'
         required: true
   push:
@@ -58,7 +58,7 @@ jobs:
           t="${INPUT_TASK:-}"
           [ -n "$t" ] || t=$(head -n1 ops/request | tr -d '[:space:]')
           for x in ${t//,/ }; do
-            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa|release-readiness|acceptance-speaking|speaking-b1|qa-full) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
+            case "$x" in db-state|llm-diagnose|restore-test|acceptance|e2e|auth-config|vercel-logs|vercel-rollback|vercel-redeploy|qa-fails|vercel-info|azure-pa|release-readiness|acceptance-speaking|speaking-b1|acceptance-free|qa-full) ;; *) echo "::error::unknown task '$x'"; exit 1;; esac
           done
           echo "tasks=,$t," >> "$GITHUB_OUTPUT"
           echo "name=${t//,/-}" >> "$GITHUB_OUTPUT"
@@ -133,8 +133,10 @@ jobs:
         if: contains(steps.task.outputs.tasks, ',restore-test,')
         run: bash scripts/ops/restore-test.sh
       - name: acceptance
-        if: contains(steps.task.outputs.tasks, ',acceptance,') || contains(steps.task.outputs.tasks, ',acceptance-speaking,') || contains(steps.task.outputs.tasks, ',speaking-b1,')
+        if: contains(steps.task.outputs.tasks, ',acceptance,') || contains(steps.task.outputs.tasks, ',acceptance-speaking,') || contains(steps.task.outputs.tasks, ',speaking-b1,') || contains(steps.task.outputs.tasks, ',acceptance-free,')
         env:
+          # acceptance-free: every step except the paid AI Speaking dialogues (test budget).
+          ACCEPT_SPEAKING: ${{ contains(steps.task.outputs.tasks, ',acceptance-free,') && '0' || (vars.ACCEPT_SPEAKING || '1') }}
           ACCEPT_STEPS: ${{ contains(steps.task.outputs.tasks, ',acceptance-speaking,') && 'speaking,speaking.mobile' || contains(steps.task.outputs.tasks, ',speaking-b1,') && 'speaking' || '' }}
           ACCEPT_SPEAKING_LEVELS: ${{ contains(steps.task.outputs.tasks, ',speaking-b1,') && 'B1' || 'A1,A2,B1,B2' }}
         run: |

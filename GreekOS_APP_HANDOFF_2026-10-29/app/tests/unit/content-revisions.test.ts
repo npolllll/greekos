@@ -69,6 +69,11 @@ describe('Russian explanations', () => {
     const base = { answer_explanation_ru: 'Объяснение по-русски', original_payload: { rationale: 'Η εξήγηση στα ελληνικά.' } };
     expect(explanationsFor({ ...base, level: 'B2' }, false)).toEqual({ explanation_ru: 'Объяснение по-русски', explanation_el: 'Η εξήγηση στα ελληνικά.' });
     expect(explanationsFor({ ...base, level: 'A2' }, false)).toEqual({ explanation_ru: 'Объяснение по-русски', explanation_el: null });
+    // ΠΕΓΠ / Real Greek keep the author's Russian note in rationale_ru: it is the explanation shown.
+    expect(explanationsFor({ level: 'B1', answer_explanation_ru: undefined, original_payload: { rationale_ru: 'Возничий — в музее Дельф.' } } as never, false)).toEqual({ explanation_ru: 'Возничий — в музее Дельф.', explanation_el: null });
+    // An English-only note is still not shown; a revision wins over the author's note.
+    expect(explanationsFor({ level: 'B2', answer_explanation_ru: undefined, original_payload: { rationale: 'Danae no preference; Sofia remote.' } } as never, false).explanation_ru).toBeNull();
+    expect(explanationsFor({ level: 'B1', answer_explanation_ru: 'Правка', original_payload: { rationale_ru: 'Автор' } } as never, false).explanation_ru).toBe('Правка');
     expect(explanationsFor({ ...base, level: 'B2' }, true)).toEqual({ explanation_ru: null, explanation_el: null });
     expect(explanationsFor({ level: 'A1', original_payload: { rationale: 'Пояснение автора.' } }, false)).toEqual({ explanation_ru: 'Пояснение автора.', explanation_el: null });
   });
@@ -147,5 +152,13 @@ describe('a text written into the task is shown', () => {
     expect(buildItemDTO({ item: env({ text: 'Κείμενο.', origin: 'ORIGINAL_GREEKOS_TEXT' }), contentHash: 'h' }).stimulus?.text).toBe('Κείμενο.');
     expect(buildItemDTO({ item: env({ text_el: 'Συμμετοχή δωρεάν.' }), contentHash: 'h' }).stimulus?.text).toBe('Συμμετοχή δωρεάν.');
     expect(buildItemDTO({ item: env({ text_el: 'Απομαγνητοφώνηση.', display_policy: 'AFTER_ATTEMPT_ONLY' }), contentHash: 'h' }).stimulus).toBeNull();
+  });
+  it('a «fill the summary» task shows the gapped summary with its source text', async () => {
+    const { buildItemDTO } = await import('@/lib/content/dto');
+    const item = { item_id: 'KEG-B2-R03-S01', type: 'short_answer', module: 'keg_b2', level: 'B2', prompt: 'Συμπληρώστε το κενό (1) της περίληψης.', options: [], stimulus: { gap: 1, text_id: 'T2', summary_id: 'SUM' }, requires_audio: false, criteria: [] } as never;
+    const dto = buildItemDTO({ item, contentHash: 'h', textObject: { text: 'Η ιστορία.' }, summaryObject: { text: 'Μια οικογένεια είχε ζητήσει δωμάτιο στο (1) ___.' } });
+    expect(dto.stimulus?.text).toBe('Η ιστορία.');
+    expect(dto.stimulus?.summary?.text).toContain('(1) ___');
+    expect(buildItemDTO({ item, contentHash: 'h', textObject: { text: 'Η ιστορία.' } }).stimulus?.summary).toBeUndefined();
   });
 });

@@ -19,7 +19,10 @@ import { PEGP_LANG_RIGHTS_ITEMS, PEGP_LANG_LICENSING, PEGP_LANG_RUBRIC, PEGP_P06
 export const CONTENT_REVISION_ACTOR = 'ai-assisted-content-revision/1.0';
 
 /** `supersedes`: earlier texts of this same revision that a re-run may replace (never anyone else's edit). */
-interface ExplanationRevision { item_id: string; before_rationale: string; explanation_ru: string; supersedes?: string[] }
+export interface ExplanationRevision { item_id: string; before_rationale: string; explanation_ru: string; supersedes?: string[] }
+
+const GREEK_ONLY_REASON = 'Методическая правка: объяснение ответа на русском (пояснение автора было только на греческом; греческие примеры сохранены). Подготовлено с помощью AI, не проверено преподавателем.';
+export const ENGLISH_ONLY_REASON = 'Методическая правка: объяснение ответа на русском (пояснение автора было только на английском и ученику не показывалось). Подготовлено AI-редактором по ключу и тексту задания, не проверено преподавателем.';
 
 /**
  * Russian explanations for items whose author's rationale was Greek-only (59 items in 15 lessons,
@@ -91,10 +94,10 @@ export const EXPLANATION_REVISIONS: ExplanationRevision[] = [
 
 export type RevisionStatus = 'applied' | 'already' | 'changed_since' | 'missing';
 
-export async function applyExplanationRevisions(): Promise<Array<{ item_id: string; status: RevisionStatus; new_hash?: string }>> {
+export async function applyExplanationRevisions(list: ExplanationRevision[] = EXPLANATION_REVISIONS, reason = GREEK_ONLY_REASON): Promise<Array<{ item_id: string; status: RevisionStatus; new_hash?: string }>> {
   const db = adminClient();
   const out: Array<{ item_id: string; status: RevisionStatus; new_hash?: string }> = [];
-  for (const r of EXPLANATION_REVISIONS) {
+  for (const r of list) {
     const { data: it } = await db.from('items').select('item_id, envelope, current_hash').eq('item_id', r.item_id).maybeSingle();
     if (!it) { out.push({ item_id: r.item_id, status: 'missing' }); continue; }
     const env = it.envelope as { answer_explanation_ru?: string; original_payload?: { rationale?: unknown } };
@@ -102,8 +105,7 @@ export async function applyExplanationRevisions(): Promise<Array<{ item_id: stri
     const replaceable = !env.answer_explanation_ru || (r.supersedes ?? []).includes(env.answer_explanation_ru);
     if (!replaceable || env.original_payload?.rationale !== r.before_rationale) { out.push({ item_id: r.item_id, status: 'changed_since' }); continue; }
     const p = await patchItem({ system: CONTENT_REVISION_ACTOR }, {
-      item_id: r.item_id, base_hash: it.current_hash, changes: { answer_explanation_ru: r.explanation_ru },
-      reason: 'Методическая правка: объяснение ответа на русском (пояснение автора было только на греческом; греческие примеры сохранены). Подготовлено с помощью AI, не проверено преподавателем.',
+      item_id: r.item_id, base_hash: it.current_hash, changes: { answer_explanation_ru: r.explanation_ru }, reason,
     }, { runQa: false });
     out.push({ item_id: r.item_id, status: 'applied', new_hash: p.new_hash });
   }

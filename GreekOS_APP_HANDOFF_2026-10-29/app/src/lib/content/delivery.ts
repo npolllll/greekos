@@ -18,7 +18,7 @@ export async function deliverItems(rows: ItemRow[], opts: { examMode?: boolean; 
   const [rel, audio, texts, devAudio] = await Promise.all([
     releaseMap('item', rows.map((r) => ({ id: r.item_id, hash: r.current_hash })), viewer),
     playableAudio([...new Set(rows.flatMap((r) => r.audio_job_ids))], viewer),
-    loadTextObjects([...new Set(rows.map((r) => (r.envelope.stimulus as { text_id?: string } | null)?.text_id).filter((x): x is string => typeof x === 'string'))]),
+    loadTextObjects([...new Set(rows.flatMap((r) => { const st = r.envelope.stimulus as { text_id?: string; summary_id?: string } | null; return [st?.text_id, st?.summary_id]; }).filter((x): x is string => typeof x === 'string'))]),
     opts.ownerPreview && !opts.examMode ? devPreviewAudio(audioIds) : Promise.resolve(new Map()),
   ]);
   // «Who said it?» items list every speaker of their recording (from the job's segments; not the key).
@@ -32,6 +32,7 @@ export async function deliverItems(rows: ItemRow[], opts: { examMode?: boolean; 
   for (const r of rows) {
     const access = itemAccess(r, rel, audio);
     const textId = (r.envelope.stimulus as { text_id?: string } | null)?.text_id;
+    const summaryId = (r.envelope.stimulus as { summary_id?: string } | null)?.summary_id;
     const firstAudio = r.audio_job_ids.map((a) => audio.get(a)).find(Boolean);
     // Access is always computed from learner-grade audio; dev-only audio only lets the owner listen.
     const devFirst = !firstAudio ? r.audio_job_ids.map((a) => devAudio.get(a)).find(Boolean) : undefined;
@@ -42,6 +43,7 @@ export async function deliverItems(rows: ItemRow[], opts: { examMode?: boolean; 
         item: r.envelope,
         contentHash: r.current_hash,
         textObject: textId ? texts.get(textId) ?? null : null,
+        summaryObject: summaryId ? texts.get(summaryId) ?? null : null,
         audio: r.requires_audio ? (access.audioReady && firstAudio ? { status: 'available', asset_id: firstAudio.asset_id, synthetic: true, ...(firstAudio.dev_only ? { dev_only: true as const, qa: firstAudio.qa } : {}) } : devFirst ? { status: 'available', asset_id: devFirst.asset_id, synthetic: true, dev_only: true, qa: devFirst.qa } : { status: 'unavailable', reason: 'AUDIO_PENDING' }) : null,
         examMode: opts.examMode,
         speakers: r.envelope.type === 'multiple_assignment' ? [...new Set(r.audio_job_ids.flatMap((a) => speakersByJob.get(a) ?? []))] : undefined,
