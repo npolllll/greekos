@@ -33,6 +33,10 @@ describe('Greek guard helpers', () => {
   it('repairs numeral gender agreement, both directions', () => {
     expect(fixNumeralAgreement('Είναι τρεις ευρώ, τέσσερις κιλά και τρία ώρες. Μία ευρώ.').text).toBe('Είναι τρία ευρώ, τέσσερα κιλά και τρεις ώρες. Ένα ευρώ.');
     expect(fixNumeralAgreement('Τρεις φίλοι και τέσσερα παιδιά.').fixes).toEqual([]);
+    // The noun left out after the article (acceptance 15.11.2026): «τις υπόλοιπες τέσσερα» → τέσσερις.
+    expect(fixNumeralAgreement('Σερβίρουμε τις υπόλοιπες τέσσερα τώρα.').text).toBe('Σερβίρουμε τις υπόλοιπες τέσσερις τώρα.');
+    expect(fixNumeralAgreement('Ήρθαν οι τρία.').text).toBe('Ήρθαν οι τρεις.');
+    expect(fixNumeralAgreement('Έδωσα σε όλους τους τρία ευρώ και τα τέσσερα παιδιά έφυγαν.').fixes).toEqual([]);
     // «ένα» + a frequent masculine accusative noun (the learner error a small model tends to echo).
     expect(fixNumeralAgreement('Εντάξει. Ένα καφέ και ένα νερό.').text).toBe('Εντάξει. Έναν καφέ και ένα νερό.');
   });

@@ -343,7 +343,7 @@ export interface TurnFeedback {
 }
 
 const FEEDBACK_SYSTEM = `Ты — внимательный преподаватель новогреческого для русскоязычных. Проверь одну реплику ученика в контексте разговора.
-Найди самую важную настоящую ошибку: форма слова, согласование (род, число, падеж), глагольная форма, предлог, артикль, неверное слово, порядок слов, ударение в написании.
+Найди самую важную настоящую ошибку. Сначала ошибки, которые меняют смысл: время и вид глагола (χθες/αύριο с неверным временем), лицо, отрицание, неверное слово. Потом формы: согласование (род, число, падеж), предлог, артикль, порядок слов, ударение в написании.
 - quote — точный фрагмент из реплики ученика (дословно, как он написан), 1–5 слов с ошибкой.
 - better_el — исправленный фрагмент на греческом (только этот фрагмент).
 - why_ru — одно короткое пояснение по-русски.
@@ -354,6 +354,7 @@ const FEEDBACK_SYSTEM = `Ты — внимательный преподават�
 Примеры:
 Реплика: «Θέλω δύο κιλό πορτοκάλι.» → {"has_issue":true,"quote":"δύο κιλό πορτοκάλι","better_el":"δύο κιλά πορτοκάλια","why_ru":"После числа больше одного нужно множественное число: κιλά, πορτοκάλια.","kind":"error"}
 Реплика: «Καλημέρα, θέλω ένα καφέ.» → {"has_issue":true,"quote":"ένα καφέ","better_el":"έναν καφέ","why_ru":"Ο καφές — мужской род, в винительном падеже: έναν καφέ.","kind":"error"}
+Реплика: «Χθες πάω στον γιατρό.» → {"has_issue":true,"quote":"Χθες πάω","better_el":"Χθες πήγα","why_ru":"О вчерашнем дне — прошедшее время (аорист): πήγα.","kind":"error"}
 Реплика: «Ένα κιλό μήλα, παρακαλώ.» → {"has_issue":false,"quote":"","better_el":"","why_ru":"","kind":"error"}
 Реплика: «Πόσο κάνει το εισιτήριο για τη Θεσσαλονίκη;» → {"has_issue":false,"quote":"","better_el":"","why_ru":"","kind":"error"}
 Реплика: «Πρέπει πάω στο γραφείο.» → {"has_issue":true,"quote":"Πρέπει πάω","better_el":"Πρέπει να πάω","why_ru":"После «πρέπει» глагол присоединяется через «να».","kind":"error"}`;
@@ -390,10 +391,19 @@ export async function ruleFeedback(text: string): Promise<TurnFeedback | null> {
 export async function feedbackOnLearnerTurn(p: { userId: string | null; sessionId: string; learnerText: string; context: string | null; level: string | null; signal?: AbortSignal; /** false: the model alone (qualification measures the model, not the rules). */ rules?: boolean }): Promise<TurnFeedback | null> {
   const text = p.learnerText.trim();
   if (!text || !/\p{Script=Greek}/u.test(text)) return null;
-  // Deterministic grammar rules first: certain, instant, and labelled as a rule, not as AI.
+  // Deterministic grammar rules: certain, instant, and labelled as a rule, not as AI.
   const rule = p.rules === false ? null : await ruleFeedback(text);
-  if (rule) return rule;
-  if (!generationAllowed()) return null;
+  if (!generationAllowed()) return rule;
+  // The model still looks for the error that matters most (a tense in «Χθες πάω…» outweighs an article
+  // form, acceptance 15.11.2026); its validated error wins only where it is about another part of the phrase.
+  const ai = await modelFeedback(p, text);
+  if (rule && ai && ai.kind === 'error' && !overlaps(fold(rule.quote), fold(ai.quote))) return ai;
+  return rule ?? ai;
+}
+
+const overlaps = (a: string, b: string) => !!a && !!b && (a.includes(b) || b.includes(a) || a.split(' ').some((w) => w.length > 2 && b.split(' ').includes(w)));
+
+async function modelFeedback(p: { userId: string | null; sessionId: string; context: string | null; level: string | null; signal?: AbortSignal }, text: string): Promise<TurnFeedback | null> {
   const r = await streamJson({
     userId: p.userId, operation: 'speaking_feedback', system: FEEDBACK_SYSTEM,
     messages: [{ role: 'user', content: `${p.context ? `Собеседник сказал: «${p.context}»\n` : ''}Уровень ученика: ${levelKey(p.level)}.\nРеплика: «${text}»` }],

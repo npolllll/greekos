@@ -69,7 +69,15 @@ export function fixNumeralAgreement(text: string): { text: string; fixes: string
     fixes.push(`${num} ${noun} → ${keepCase(to)} ${noun}`);
     return `${keepCase(to)}${sp}${noun}`;
   });
-  return { text: out, fixes };
+  // The noun can be left out: «τις υπόλοιπες τέσσερα (μερίδες)» — after the feminine/masculine plural
+  // article (at most one adjective between) the numeral is τρεις/τέσσερις («τους» is left alone: it is
+  // also a pronoun, «σε όλους τους τρία ευρώ»).
+  const out2 = out.replace(/(?<!\p{L})(τις|οι)(\s+[\p{Script=Greek}]+(?:ες|οι))?(\s+)(τρία|τέσσερα)(?!\p{L})/giu, (all: string, art: string, adj: string | undefined, sp: string, num: string) => {
+    const to = num.toLowerCase() === 'τρία' ? 'τρεις' : 'τέσσερις';
+    fixes.push(`${art}${adj ?? ''} ${num} → ${art}${adj ?? ''} ${to}`);
+    return `${art}${adj ?? ''}${sp}${to}`;
+  });
+  return { text: out2, fixes };
 }
 
 /**
