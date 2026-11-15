@@ -1,0 +1,72 @@
+{
+ "voices": [
+  {
+   "voice_id": "azure:el-GR-AthinaNeural",
+   "approve": true,
+   "note": "AI-редактор (не человек), 15.11.2026: родной el-GR голос. Тест 8 фраз: Azure WER 0,01; ошибок ударения 0 у обоих распознавателей; язык по Whisper — греческий 0,99–1,0; F0 ≈ 228 Гц. В 142 курсовых файлах ошибок ударения нет. Темп ≈ 6,8 слога/с (обычная речь); у ученика есть замедление 0,8×."
+  },
+  {
+   "voice_id": "azure:el-GR-NestorasNeural",
+   "approve": true,
+   "note": "AI-редактор (не человек), 15.11.2026: родной el-GR голос. Тест 8 фраз: Azure WER 0,01; ошибок ударения 0; язык по Whisper — греческий 0,99–1,0; F0 ≈ 109 Гц. Ошибки озвучки найдены только в написаниях «Γι’», «στ’», «Α,», «νι», «συνάδελφός» — исправлены формой для синтеза."
+  },
+  {
+   "voice_id": "azure:en-GB-AdaMultilingualNeural",
+   "approve": true,
+   "note": "AI-редактор (не человек), 15.11.2026: третий женский голос для сцен с несколькими говорящими (вместо Seraphina). Два прогона: Azure WER 0,00, Whisper WER 0,08 — лучший среди женских многоязычных; язык по Whisper — греческий ≥ 0,98; подтверждённых обоими распознавателями ошибок ударения нет. F0 ≈ 197 Гц: на 2,5 полутона ниже Athina плюс другой тембр."
+  },
+  {
+   "voice_id": "azure:de-DE-FlorianMultilingualNeural",
+   "approve": true,
+   "note": "AI-редактор (не человек), 15.11.2026: третий мужской голос. Два прогона: Azure WER 0,02; Whisper WER 0,06; язык — греческий ≥ 0,97; ошибок ударения, подтверждённых обоими распознавателями, нет. F0 ≈ 140 Гц: на 4,5 полутона выше Nestoras, хорошо различим."
+  },
+  {
+   "voice_id": "azure:de-DE-SeraphinaMultilingualNeural",
+   "approve": false,
+   "note": "AI-редактор, 15.11.2026: отклонён для греческого. В первом прогоне оба распознавателя услышали «νόμος» вместо «νομός» (ошибка ударения в минимальной паре); уверенность Whisper, что это греческий, местами 0,90 — признак акцента. Заменён на Ada."
+  },
+  {
+   "voice_id": "azure:en-US-AvaMultilingualNeural",
+   "approve": false,
+   "note": "AI-редактор, 15.11.2026: отклонён. Фраза «Πότε θα έρθεις;» не распознана обоими распознавателями («πατερίζ»), ошибка ударения «νομός→νόμος» у обоих; высота голоса почти совпадает с Athina."
+  }
+ ],
+ "cast": [
+  {
+   "cast_role_id": "NARRATOR_F",
+   "voice_id": "azure:el-GR-AthinaNeural",
+   "approve": true,
+   "note": "Женский голос уроков: родной el-GR, лучшие метрики."
+  },
+  {
+   "cast_role_id": "NARRATOR_M",
+   "voice_id": "azure:el-GR-NestorasNeural",
+   "approve": true,
+   "note": "Мужской голос диалогов: родной el-GR, лучшие метрики."
+  },
+  {
+   "cast_role_id": "TUTOR_F",
+   "voice_id": "azure:el-GR-AthinaNeural",
+   "approve": true,
+   "note": "Голос собеседника AI Speaking (женский): родной el-GR."
+  },
+  {
+   "cast_role_id": "TUTOR_M",
+   "voice_id": "azure:el-GR-NestorasNeural",
+   "approve": true,
+   "note": "Голос собеседника AI Speaking (мужской): родной el-GR."
+  },
+  {
+   "cast_role_id": "ROLE_CAFE_F",
+   "voice_id": "azure:en-GB-AdaMultilingualNeural",
+   "approve": true,
+   "note": "Третья женская роль (кафе, общественные места, экзаменационные сцены): Ada вместо Seraphina — точнее ударение и греческий без акцента по обоим распознавателям; 8 файлов перезаписываются."
+  },
+  {
+   "cast_role_id": "ROLE_CAFE_M",
+   "voice_id": "azure:de-DE-FlorianMultilingualNeural",
+   "approve": true,
+   "note": "Третья мужская роль: Florian — чистые метрики, хорошо отличим от Nestoras."
+  }
+ ]
+}

@@ -14,6 +14,7 @@ import { COST } from '../providers/budget.ts';
 import { analyzeWav, concatWav, normalizeLoudness, parseWav, pcmSamples, type TechnicalReport } from './wav.ts';
 import { alignmentDiff, chunkText, roundTrip, roundTripPass, segmentSignals, type RoundTripMetrics } from './roundtrip.ts';
 import { voiceApproved, type CatalogVoice, type CastRole } from '../voice/catalog.ts';
+import { spokenKey } from './spoken-form.ts';
 
 export const SYNTHESIS_VERSION = 'greekos-audio/2.2'; // 2.2: pause after the target in the Coqui carrier, natural phrase release kept
 
@@ -135,7 +136,8 @@ export function planJob(job: AudioJobRow, ctx: CastingContext): PlanResult {
   const engines = [...new Set([...distinctVoices].map((id) => ctx.voices.get(id)!.provider))];
   const cloudChars = segments.filter((s) => ctx.voices.get(s.voice_id)?.engine_kind === 'cloud').reduce((a, s) => a + s.text.length, 0);
   const settings = { version: SYNTHESIS_VERSION, voiceMap, gaps: [ROLE_GAP_MS, CHUNK_GAP_MS], format: 'wav-pcm16-24k', normalization: 'rms-20dbfs-peak-1dbfs' };
-  const idempotency_key = createHash('sha256').update(stableStringify({ settings, script_hash: job.script_hash, segments: segments.map((s) => [s.segment_id, s.voice_id, s.text]) })).digest('hex');
+  // The spoken form joins the key only where it differs from the text, so only those files re-render.
+  const idempotency_key = createHash('sha256').update(stableStringify({ settings, script_hash: job.script_hash, segments: segments.map((s) => { const sp = spokenKey(s.text); return sp === null ? [s.segment_id, s.voice_id, s.text] : [s.segment_id, s.voice_id, s.text, sp]; }) })).digest('hex');
   const plan = { audio_id: job.audio_id, script_hash: job.script_hash, voice_map: voiceMap, cast_map: castMap, segments, characters, estimated_cost_usd: Number((cloudChars * COST.ttsPerChar).toFixed(4)), cast_approved: castApproved, engines, idempotency_key };
   return { ok: true, plan: { ...plan, plan_hash: createHash('sha256').update(stableStringify(plan)).digest('hex') } };
 }

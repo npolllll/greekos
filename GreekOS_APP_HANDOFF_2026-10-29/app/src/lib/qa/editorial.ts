@@ -197,12 +197,43 @@ export async function recordEditorialListening(verdicts: ListeningVerdict[]) {
   for (const v of verdicts) {
     const { data: a } = await db.from('audio_assets').select('id, sha256, history, invalidated_at').eq('id', v.asset_id).maybeSingle();
     if (!a || a.invalidated_at) continue;
+    // Idempotent: the same verdict on the same file bytes is recorded once.
+    const last = [...((a.history as Array<{ event?: string; sha256?: string; decision?: string }>) ?? [])].reverse().find((h) => h.event === 'editorial_reviewed');
+    if (last && last.sha256 === a.sha256 && last.decision === v.decision) continue;
     const history = [...((a.history as unknown[]) ?? []), { at: new Date().toISOString(), event: 'editorial_reviewed', decision: v.decision, note: v.note.slice(0, 500), by: EDITOR_ACTOR, sha256: a.sha256, metrics: v.metrics ?? null }];
     await db.from('audio_assets').update({ history }).eq('id', a.id);
     written += 1;
   }
   await audit(null, 'audio.editorial_review', {}, { system_actor: EDITOR_ACTOR, written, issues: verdicts.filter((v) => v.decision === 'ISSUE').length });
   return { written };
+}
+
+/**
+ * A file the provider's own recogniser flagged only for recogniser artefacts (a number written as digits,
+ * «μια/μία», a second accent mark, words merged at a boundary) is confirmed digitally by the AI editor when
+ * a second, independent recogniser (Whisper) reads the flagged segments as the script. Stored as the AI
+ * editor's act with that evidence — never as listening by a person. A failed or missing technical QA, or a
+ * file the second recogniser also disputes, is not confirmed.
+ */
+export interface DigitalConfirmation { asset_id: string; sha256: string; evidence: Array<{ segment: string; azure: string; whisper: string; reason: string }> }
+export async function confirmDigitalEditorial(items: DigitalConfirmation[]) {
+  const db = adminClient();
+  let confirmed = 0;
+  const skipped: Array<{ asset_id: string; reason: string }> = [];
+  for (const c of items) {
+    const { data: a } = await db.from('audio_assets').select('id, audio_id, sha256, technical_status, digital_status, history, invalidated_at').eq('id', c.asset_id).maybeSingle();
+    if (!a || a.invalidated_at) { skipped.push({ asset_id: c.asset_id, reason: 'файл устарел' }); continue; }
+    if (a.sha256 !== c.sha256) { skipped.push({ asset_id: c.asset_id, reason: 'другой файл (sha256)' }); continue; }
+    if (a.technical_status !== 'TECHNICAL_PASS') { skipped.push({ asset_id: c.asset_id, reason: 'технический QA не пройден' }); continue; }
+    if (a.digital_status !== 'NEEDS_REVIEW' || !c.evidence.length) { skipped.push({ asset_id: c.asset_id, reason: `статус ${a.digital_status}` }); continue; }
+    const now = new Date().toISOString();
+    const history = [...((a.history as unknown[]) ?? []), { at: now, event: 'digital_confirmed_editorial', by: EDITOR_ACTOR, from: a.digital_status, sha256: a.sha256, evidence: c.evidence.slice(0, 12) }];
+    await db.from('audio_assets').update({ digital_status: 'AUDIO_VERIFIED_DIGITAL', render_status: 'DIGITAL_REVIEWED', history }).eq('id', a.id).eq('sha256', c.sha256);
+    await db.from('digital_qa_runs').insert({ content_kind: 'audio_asset', content_id: a.id, content_hash: a.sha256, check_kind: 'DIGITAL_AUDIO_QA', tool_id: `editorial:${EDITOR_ACTOR}+whisper-small`, verdict: 'PASS', report: { confirmed_by_second_recogniser: c.evidence, note: 'Подтверждено вторым независимым распознавателем; не прослушивание человеком' }, run_by: null });
+    confirmed += 1;
+  }
+  await audit(null, 'audio.digital_confirmed_editorial', {}, { system_actor: EDITOR_ACTOR, confirmed, skipped: skipped.length });
+  return { confirmed, skipped };
 }
 
 /** Releases every course audio file that has no blocker (provider terms recorded by the owner, digital QA, cast, review). */

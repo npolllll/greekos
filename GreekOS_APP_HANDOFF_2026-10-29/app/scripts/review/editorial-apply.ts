@@ -1,12 +1,12 @@
 /**
  * Applies the AI editor's recorded decisions to production (run by «GreekOS review»):
  *   sample-show            the release sample of the latest full QA batch → reports/review/sample.json
- *   apply                  reports/review/decisions/{voices,listening,sample}.json, then the delegated
+ *   apply                  reports/review/decisions/{voices,digital,listening,sample}.json, then the delegated
  *                          release (only under an owner-signed policy that delegates it)
  * Every write is the AI editor's (system actor); nothing is signed, nothing is attributed to the owner.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { applyVoiceDecisions, currentSample, editorialAudioRelease, editorialRelease, recordAiSampleReviews, recordEditorialListening, refreshAssetCastApproval, type AiSampleReview, type CastDecision, type ListeningVerdict, type VoiceDecision } from '../../src/lib/qa/editorial.ts';
+import { applyVoiceDecisions, confirmDigitalEditorial, currentSample, editorialAudioRelease, editorialRelease, recordAiSampleReviews, recordEditorialListening, refreshAssetCastApproval, type AiSampleReview, type CastDecision, type DigitalConfirmation, type ListeningVerdict, type VoiceDecision } from '../../src/lib/qa/editorial.ts';
 
 const DIR = 'reports/review';
 const read = <T,>(name: string): T | null => (existsSync(`${DIR}/decisions/${name}.json`) ? JSON.parse(readFileSync(`${DIR}/decisions/${name}.json`, 'utf8')) as T : null);
@@ -21,6 +21,8 @@ if (cmd === 'sample-show') {
   const voices = read<{ voices: VoiceDecision[]; cast: CastDecision[] }>('voices');
   if (voices) out.voices = await applyVoiceDecisions(voices.voices, voices.cast);
   else out.cast_refresh = await refreshAssetCastApproval();
+  const digital = read<DigitalConfirmation[]>('digital');
+  if (digital) out.digital = await confirmDigitalEditorial(digital);
   const listening = read<ListeningVerdict[]>('listening');
   if (listening) out.listening = await recordEditorialListening(listening);
   const sample = read<{ batch_id: string; reviews: AiSampleReview[] }>('sample');
